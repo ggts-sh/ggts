@@ -93,19 +93,13 @@ function compositionMembers(
   return members.length === 0 ? [seed] : members;
 }
 
-/** Stack/fill total at the seed, regardless of inspect mode. */
+/** Stack/fill total at the seed. Prefer grouping by x (stacked col/area). */
 export function compositionGroupTotal(model: RenderModel, seed: CandidateFacts): number | null {
-  let best: number | null = null;
-  let bestCount = 0;
   for (const axis of ["x", "y"] as const) {
     const members = compositionMembers(model, seed, axis);
     if (members === null) continue;
     const total = groupMagnitudeTotal(model, members, axis);
-    if (total === null) continue;
-    if (members.length > bestCount) {
-      best = total;
-      bestCount = members.length;
-    }
+    if (total !== null) return total;
   }
-  return best;
+  return null;
 }

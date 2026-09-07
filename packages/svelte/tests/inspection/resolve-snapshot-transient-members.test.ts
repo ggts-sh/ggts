@@ -281,6 +281,37 @@ describe("selectTransientMembers top-k by value (#1274)", () => {
     expect(inspection.groupTotal).toBe(15);
     model.dispose();
   });
+
+  it("exact stacked total stays on the hovered category when heights collide", () => {
+    const data = [
+      { id: "a", x: "A", y: 10, series: "s1" },
+      { id: "b", x: "B", y: 10, series: "s1" },
+      { id: "c", x: "C", y: 10, series: "s1" },
+    ];
+    const model = runPipeline(
+      gg(data, aes({ x: "x", y: "y", fill: "series" }))
+        .geomCol({ position: "stack" })
+        .spec(),
+      { width: 400, height: 300 },
+    );
+    const seed = [...Array(model.candidates.size).keys()]
+      .map((id) => model.candidates.candidate(id)!)
+      .find((c) => c.xValue === "B")!;
+    const inspection = materializeInspection(
+      {
+        model,
+        seed,
+        mode: "exact",
+        state: "transient",
+        source: "pointer",
+      },
+      resolvedTarget(model, seed, "exact")!,
+      "complete",
+      (index) => (model.row(index) as { id: string } | null)?.id ?? null,
+    );
+    expect(inspection.groupTotal).toBe(10);
+    model.dispose();
+  });
 });
 
 describe("groupTotal / groupMemberCount multi-layer honesty (#1389)", () => {

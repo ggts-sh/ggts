@@ -45,5 +45,5 @@
     y="Sovereigns"
     fill="Deviation"
   />
-  <Inspect mode="exact" pin tooltipTotal="bottom" />
+  <Inspect mode="exact" pin />
 </GGPlot>
