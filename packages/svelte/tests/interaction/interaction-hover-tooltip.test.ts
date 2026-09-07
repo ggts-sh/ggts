@@ -236,4 +236,67 @@ describe("hover + tooltip (overlays, never a pipeline re-run)", () => {
     await until(() => container.querySelector(".gg-tooltip") !== null);
     expect(container.querySelector(".gg-hover-ring")).not.toBeNull();
   });
+
+  it("exact stacked bars show a Total row when tooltipTotal is bottom", async () => {
+    let model: RenderModel | null = null;
+    const stacked = [
+      { bag: "A", count: 1, type: "Orden" },
+      { bag: "A", count: 2, type: "Resolución" },
+      { bag: "A", count: 3, type: "Decreto" },
+    ];
+    const { container } = render(GGPlot, {
+      data: stacked,
+      aes: { x: "bag", y: "count", fill: "type" },
+      layers: [{ geom: "col", position: "stack" }],
+      inspect: { mode: "exact", tooltipTotal: "bottom" },
+      onrender: (m: RenderModel) => {
+        model = m;
+      },
+      ...size,
+    });
+    const m = requireModel(model);
+    let seed = m.candidates.candidate(0);
+    for (let id = 0; id < m.candidates.size; id++) {
+      const candidate = m.candidates.candidate(id);
+      if (candidate?.kind === "rects") {
+        seed = candidate;
+        break;
+      }
+    }
+    if (seed === null || seed.kind !== "rects") throw new Error("expected rect candidate");
+    const capture = container.querySelector(".gg-capture")!;
+    pointerMoveAt(capture, seed.x, seed.y);
+    await until(() => container.querySelector(".gg-tooltip") !== null);
+    expect(container.querySelector(".gg-tooltip-axis")).toBeNull();
+    const total = container.querySelector(".gg-tooltip-total");
+    expect(total).not.toBeNull();
+    expect(total?.textContent).toContain("Total");
+    expect(total?.textContent).toContain("6");
+    const members = container.querySelector(".gg-tooltip-members")!;
+    expect(members.lastElementChild).toBe(total);
+  });
+
+  it("exact stacked bars omit Total under auto without forcing mode x", async () => {
+    let model: RenderModel | null = null;
+    const stacked = [
+      { bag: "A", count: 1, type: "Orden" },
+      { bag: "A", count: 2, type: "Resolución" },
+    ];
+    const { container } = render(GGPlot, {
+      data: stacked,
+      aes: { x: "bag", y: "count", fill: "type" },
+      layers: [{ geom: "col", position: "stack" }],
+      inspect: { mode: "exact" },
+      onrender: (m: RenderModel) => {
+        model = m;
+      },
+      ...size,
+    });
+    const m = requireModel(model);
+    const seed = m.candidates.candidate(0);
+    if (seed === null) throw new Error("expected candidate");
+    pointerMoveAt(container.querySelector(".gg-capture")!, seed.x, seed.y);
+    await until(() => container.querySelector(".gg-tooltip") !== null);
+    expect(container.querySelector(".gg-tooltip-total")).toBeNull();
+  });
 });

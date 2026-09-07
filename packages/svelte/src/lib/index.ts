@@ -37,6 +37,8 @@ export type { AreaMode, InteractionSource, LegendFocusOptions } from "./interact
 export type { IntervalSelection, LegendFocusChange, PlotDatum } from "./interaction/interaction.js";
 export type { InspectMode, LegendFocusClear, LegendFocusEvent } from "./interaction/interaction.js";
 export type { InspectInput, InteractionTool, LegendFocusInput } from "./interaction/interaction.js";
+export type { TooltipTotal } from "./interaction/interaction.js";
+
 export type { BrushSelection, InspectOptions, PlotInspection } from "./interaction/interaction.js";
 export type { PlotSelection, PointSelection, TooltipContext } from "./interaction/interaction.js";
 export type { SelectInput, SelectOptions, TooltipField } from "./interaction/interaction.js";

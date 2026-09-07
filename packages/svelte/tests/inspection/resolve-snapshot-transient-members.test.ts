@@ -216,6 +216,71 @@ describe("selectTransientMembers top-k by value (#1274)", () => {
     dodged.dispose();
     parallel.dispose();
   });
+
+  it("exact stacked inspection reports groupTotal without listing the axis group", () => {
+    const data = Array.from({ length: 5 }, (_, index) => ({
+      id: `s${index}`,
+      x: "A",
+      y: index + 1,
+      series: `s${index}`,
+    }));
+    const model = runPipeline(
+      gg(data, aes({ x: "x", y: "y", fill: "series" }))
+        .geomCol({ position: "stack" })
+        .spec(),
+      { width: 400, height: 300 },
+    );
+    const seed = model.candidates.candidate(0)!;
+    const inspection = materializeInspection(
+      {
+        model,
+        seed,
+        mode: "exact",
+        state: "transient",
+        source: "pointer",
+      },
+      resolvedTarget(model, seed, "exact")!,
+      "complete",
+      (index) => (model.row(index) as { id: string } | null)?.id ?? null,
+    );
+    expect(inspection.mode).toBe("exact");
+    expect(inspection.members).toHaveLength(1);
+    expect(inspection.groupTotal).toBe(15);
+    model.dispose();
+  });
+
+  it("exact stacked bars still total the category group when the stack is flipped", () => {
+    const data = Array.from({ length: 5 }, (_, index) => ({
+      id: `s${index}`,
+      x: "A",
+      y: index + 1,
+      series: `s${index}`,
+    }));
+    const model = runPipeline(
+      gg(data, aes({ x: "x", y: "y", fill: "series" }))
+        .geomCol({ position: "stack" })
+        .coordFlip()
+        .spec(),
+      { width: 400, height: 300 },
+    );
+    const seed = model.candidates.candidate(0)!;
+    const inspection = materializeInspection(
+      {
+        model,
+        seed,
+        mode: "exact",
+        state: "transient",
+        source: "pointer",
+      },
+      resolvedTarget(model, seed, "exact")!,
+      "complete",
+      (index) => (model.row(index) as { id: string } | null)?.id ?? null,
+    );
+    expect(inspection.mode).toBe("exact");
+    expect(inspection.members).toHaveLength(1);
+    expect(inspection.groupTotal).toBe(15);
+    model.dispose();
+  });
 });
 
 describe("groupTotal / groupMemberCount multi-layer honesty (#1389)", () => {

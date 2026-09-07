@@ -21,6 +21,8 @@ export {
 
 export type InteractionSource = "pointer" | "keyboard" | "touch" | "programmatic";
 export type InspectMode = "auto" | "exact" | "x" | "y" | "xy";
+export type TooltipTotal = "auto" | "off" | "top" | "bottom";
+
 export type ResolvedInspectMode = Exclude<InspectMode, "auto">;
 export type AreaMode = "x" | "y" | "xy";
 export type InteractionTool = "inspect" | "point" | "select-area" | "zoom-area";
@@ -57,6 +59,14 @@ interface PlotInspectionBase<Row, Key> {
   readonly state: "transient" | "pinned";
   readonly source: InteractionSource;
   readonly panelId: string | null;
+  /**
+   * Sum of unique series contributions in the composition group (stack/fill),
+   * independent of inspect `mode`. `null` when the group is not additive
+   * (identity/dodge) or has no finite numeric contribution. Exact/xy keep a
+   * single listed member; the total still covers the whole stack.
+   */
+  readonly groupTotal?: number | null;
+
   readonly focus: PlotDatum<Row, Key>;
   readonly members: NonEmptyReadonlyArray<PlotDatum<Row, Key>>;
 }
@@ -167,6 +177,19 @@ export interface InspectOptions<Row = Record<string, CellValue>, Key = PropertyK
    * flicker when the pointer crosses gaps between rect marks (#633).
    */
   readonly muteSiblings?: boolean;
+  /**
+   * Where the default tooltip shows a single group total (stack/fill sum
+   * across series at the focused category). Independent of inspect `mode`:
+   * stacked bars can keep `mode="exact"` and still show a Total row.
+   *
+   * - `"auto"` (default): Total at the bottom when the group is additive
+   *   (stack/fill) and has more than one series. Axis-mode (`x`/`y`)
+   *   inspections already do this; exact/xy do not unless opted in.
+   * - `"off"`: never show Total.
+   * - `"top"` / `"bottom"`: force Total when a numeric group total exists.
+   */
+  readonly tooltipTotal?: TooltipTotal;
+
   /**
    * Durable row identity for interaction payloads (pin rebind, selection
    * keys, legend focus). Preferred over the deprecated GGPlot `key` prop.

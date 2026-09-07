@@ -27,6 +27,26 @@ describe("<Inspect> capability child", () => {
     expect(registry!.layers.map((l) => l.kind)).not.toContain("inspect");
   });
 
+  it("registers tooltipTotal from the Inspect child", () => {
+    let registry: LayerRegistry | undefined;
+    render(InspectChildPlot, {
+      useInspect: true,
+      inspectMode: "exact",
+      inspectTooltipTotal: "bottom",
+      captureRegistry: (r: LayerRegistry) => {
+        registry = r;
+      },
+    });
+    expect(registry!.capabilities("inspect")).toEqual([{ mode: "exact", tooltipTotal: "bottom" }]);
+    const resolved = resolveInspectCapability({
+      children: registry!.capabilities("inspect"),
+    });
+    expect(normalizeInteractionConfig({ inspect: resolved.input }).inspect).toMatchObject({
+      mode: "exact",
+      tooltipTotal: "bottom",
+    });
+  });
+
   it("enables inspect config from child alone (no GGPlot inspect prop)", () => {
     let registry: LayerRegistry | undefined;
     render(InspectChildPlot, {

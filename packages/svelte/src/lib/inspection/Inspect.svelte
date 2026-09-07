@@ -4,7 +4,7 @@
    *
    * Presence enables inspection (tooltip, crosshair, pin, keyboard). Props
    * match InspectOptions (mode, pin, maxDistance, contentMode, muteSiblings,
-   * content). Empty `<Inspect />` ≡ `inspect={true}` on GGPlot.
+   * tooltipTotal, content). Empty `<Inspect />` ≡ `inspect={true}` on GGPlot.
    *
    * Host-only: not folded into PortableSpec. Mark eligibility remains
    * `inspect={false}` on individual geoms.
@@ -19,7 +19,9 @@
   import type {
     InspectMode,
     PlotInspectionChange,
+    TooltipTotal,
   } from "../interaction/interaction.js";
+
   import { definedProps } from "../layers/plot-layer.svelte.js";
   import { registerHostCapability } from "../geoms/registry.svelte.js";
 
@@ -29,6 +31,8 @@
     maxDistance?: number;
     contentMode?: "informational" | "interactive";
     muteSiblings?: boolean;
+    tooltipTotal?: TooltipTotal;
+
     /**
      * Durable row identity (column or accessor). Preferred over deprecated
      * GGPlot `key`. Default when omitted: `id` column or row index.
@@ -51,6 +55,7 @@
     "muteSiblings",
     "identity",
     "content",
+    "tooltipTotal",
   ]);
 
   const props: Props = $props();

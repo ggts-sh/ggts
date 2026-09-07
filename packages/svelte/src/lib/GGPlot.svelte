@@ -338,6 +338,8 @@
           pin={engine.interactionConfig.inspect?.pin ?? true}
           tooltipBorder={currentModel.scene.theme.tooltipBorder}
           axisFormatters={currentModel.axisFormatters}
+          tooltipTotal={engine.interactionConfig.inspect?.tooltipTotal ??
+            "auto"}
           onenter={() => (engine.tooltipHovered = true)}
           onleave={() => {
             engine.tooltipHovered = false;
@@ -375,6 +377,8 @@
           pin={engine.interactionConfig.inspect?.pin ?? true}
           tooltipBorder={currentModel.scene.theme.tooltipBorder}
           axisFormatters={currentModel.axisFormatters}
+          tooltipTotal={engine.interactionConfig.inspect?.tooltipTotal ??
+            "auto"}
           onexited={() => presence.clearGhost(ghostGenerationAtMount)}
         />
       {/if}
