@@ -294,9 +294,15 @@ describe("selectTransientMembers top-k by value (#1274)", () => {
         .spec(),
       { width: 400, height: 300 },
     );
-    const seed = [...Array(model.candidates.size).keys()]
-      .map((id) => model.candidates.candidate(id)!)
-      .find((c) => c.xValue === "B")!;
+    let seed = model.candidates.candidate(0)!;
+    for (let id = 0; id < model.candidates.size; id++) {
+      const candidate = model.candidates.candidate(id);
+      if (candidate?.xValue === "B") {
+        seed = candidate;
+        break;
+      }
+    }
+
     const inspection = materializeInspection(
       {
         model,
