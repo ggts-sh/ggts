@@ -20684,14 +20684,14 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["@ggsvelte/svelte"],
   },
   {
-    id: "heading:guide-lifecycle:experimental-527",
+    id: "heading:guide-lifecycle:experimental-528",
     kind: "heading",
-    title: "experimental (527)",
+    title: "experimental (528)",
     summary:
-      "experimental (527) in Lifecycle & editions. API stability tags per export, and the defaults-edition mechanism.",
-    href: "/guide/lifecycle#experimental-527",
+      "experimental (528) in Lifecycle & editions. API stability tags per export, and the defaults-edition mechanism.",
+    href: "/guide/lifecycle#experimental-528",
     keywords: ["Lifecycle & editions", "Reference"],
-    exact: ["experimental (527)"],
+    exact: ["experimental (528)"],
   },
   {
     id: "heading:guide-lifecycle:stable-intent-238",
@@ -40600,6 +40600,15 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/lifecycle#ggsvelte-svelte",
     keywords: ["@ggsvelte/svelte", ".", "type", "experimental"],
     exact: ["TooltipField"],
+  },
+  {
+    id: "api:ggsvelte-svelte:TooltipTotal",
+    kind: "api",
+    title: "TooltipTotal",
+    summary: "@ggsvelte/svelte · type · experimental.",
+    href: "/guide/lifecycle#ggsvelte-svelte",
+    keywords: ["@ggsvelte/svelte", ".", "type", "experimental"],
+    exact: ["TooltipTotal"],
   },
   {
     id: "api:ggsvelte-svelte:TransformedColorScaleOptions",
