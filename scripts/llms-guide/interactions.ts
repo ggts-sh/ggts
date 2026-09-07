@@ -52,6 +52,9 @@ dominant axis for \`x\` or \`y\`, Euclidean distance for \`xy\`, and geometry
 containment plus tolerance for \`exact\`. Rect marks (\`geom_col\` / \`geom_bar\`)
 never draw a point ring; default hover is tooltip-only. Pass
 \`muteSiblings\` on \`<Inspect>\` to mute non-focused bars via the interaction mask.
+\`tooltipTotal="bottom"\` or \`"top"\` adds a stack/fill Total on exact inspection
+without switching \`mode\` to \`"x"\` / \`"y"\`.
+
 
 For custom HTML, pass a Svelte 5 snippet on \`content\`. Informational content is
 the default; choose \`contentMode="interactive"\` only when the pinned tooltip

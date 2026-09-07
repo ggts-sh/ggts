@@ -3,7 +3,10 @@
 
   import type { CellValue } from "@ggsvelte/core";
 
-  import type { PlotInspectionChange } from "../interaction/interaction.js";
+  import type {
+    PlotInspectionChange,
+    TooltipTotal,
+  } from "../interaction/interaction.js";
   import {
     collapseIdenticalDisplayMembers,
     defaultTooltipRows,
@@ -14,6 +17,7 @@
   } from "./display-members.js";
   import { TRANSIENT_MEMBER_LIMIT } from "./resolver.js";
   import { shouldShowTooltipPinHint } from "./tooltip-chrome.js";
+  import { tooltipTotalPlacement } from "./tooltip-total.js";
 
   const {
     inspection,
@@ -42,6 +46,7 @@
      * use these so stat-layer temporal values match the axis header (#1113).
      */
     axisFormatters = null,
+    tooltipTotal = "auto",
   }: {
     inspection: PlotInspectionChange<Record<string, CellValue>, PropertyKey>;
     width: number;
@@ -67,6 +72,7 @@
     pin?: boolean;
     tooltipBorder?: string;
     axisFormatters?: TooltipAxisFormatters | null;
+    tooltipTotal?: TooltipTotal;
   } = $props();
 
   const showPinHint = $derived(
@@ -163,13 +169,16 @@
       : 0,
   );
 
-  const stackTotal = $derived(
-    inspection.mode === "x" || inspection.mode === "y"
-      ? inspection.groupTotal
-      : null,
+  const totalPlacement = $derived(
+    tooltipTotalPlacement({
+      tooltipTotal,
+      groupTotal: inspection.groupTotal,
+      memberCount: displayMembers.length,
+      mode: inspection.mode,
+    }),
   );
-  const showStackTotal = $derived(
-    stackTotal !== null && displayMembers.length > 1,
+  const stackTotal = $derived(
+    totalPlacement === null ? null : (inspection.groupTotal ?? null),
   );
 
   const departing = $derived(motion === "exit");
@@ -220,6 +229,12 @@
       <div class="gg-tooltip-axis">{inspection.axisLabel}</div>
     {/if}
     <div class="gg-tooltip-members">
+      {#if totalPlacement === "top" && stackTotal !== null}
+        <dl class="gg-tooltip-total gg-tooltip-total-top">
+          <dt>Total</dt>
+          <dd>{formatTooltipCell(stackTotal)}</dd>
+        </dl>
+      {/if}
       {#each shownMembers as member, index (`${member.layerIndex}:${String(member.key)}:${index}`)}
         <dl class:gg-tooltip-focus={member === inspection.focus}>
           {#each defaultTooltipRows( member.fields, inspection.mode, { labs } ) as row (row.key)}
@@ -233,13 +248,14 @@
           {/each}
         </dl>
       {/each}
-      {#if showStackTotal && stackTotal !== null}
+      {#if totalPlacement === "bottom" && stackTotal !== null}
         <dl class="gg-tooltip-total">
           <dt>Total</dt>
           <dd>{formatTooltipCell(stackTotal)}</dd>
         </dl>
       {/if}
     </div>
+
     {#if overflowCount > 0}
       <!-- Overflow is a data-completeness signal; keep it even when the pin
            affordance is silent for flat chrome (#1069 / Devin). -->
@@ -357,6 +373,15 @@
     border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
     padding-top: 4px;
     margin-top: 2px;
+  }
+
+  .gg-tooltip-total-top {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    padding-bottom: 4px;
+    margin-bottom: 2px;
   }
 
   dt {

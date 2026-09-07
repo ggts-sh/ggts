@@ -216,6 +216,108 @@ describe("selectTransientMembers top-k by value (#1274)", () => {
     dodged.dispose();
     parallel.dispose();
   });
+
+  it("exact stacked inspection reports groupTotal without listing the axis group", () => {
+    const data = Array.from({ length: 5 }, (_, index) => ({
+      id: `s${index}`,
+      x: "A",
+      y: index + 1,
+      series: `s${index}`,
+    }));
+    const model = runPipeline(
+      gg(data, aes({ x: "x", y: "y", fill: "series" }))
+        .geomCol({ position: "stack" })
+        .spec(),
+      { width: 400, height: 300 },
+    );
+    const seed = model.candidates.candidate(0)!;
+    const inspection = materializeInspection(
+      {
+        model,
+        seed,
+        mode: "exact",
+        state: "transient",
+        source: "pointer",
+      },
+      resolvedTarget(model, seed, "exact")!,
+      "complete",
+      (index) => (model.row(index) as { id: string } | null)?.id ?? null,
+    );
+    expect(inspection.mode).toBe("exact");
+    expect(inspection.members).toHaveLength(1);
+    expect(inspection.groupTotal).toBe(15);
+    model.dispose();
+  });
+
+  it("exact stacked bars still total the category group when the stack is flipped", () => {
+    const data = Array.from({ length: 5 }, (_, index) => ({
+      id: `s${index}`,
+      x: "A",
+      y: index + 1,
+      series: `s${index}`,
+    }));
+    const model = runPipeline(
+      gg(data, aes({ x: "x", y: "y", fill: "series" }))
+        .geomCol({ position: "stack" })
+        .coordFlip()
+        .spec(),
+      { width: 400, height: 300 },
+    );
+    const seed = model.candidates.candidate(0)!;
+    const inspection = materializeInspection(
+      {
+        model,
+        seed,
+        mode: "exact",
+        state: "transient",
+        source: "pointer",
+      },
+      resolvedTarget(model, seed, "exact")!,
+      "complete",
+      (index) => (model.row(index) as { id: string } | null)?.id ?? null,
+    );
+    expect(inspection.mode).toBe("exact");
+    expect(inspection.members).toHaveLength(1);
+    expect(inspection.groupTotal).toBe(15);
+    model.dispose();
+  });
+
+  it("exact stacked total stays on the hovered category when heights collide", () => {
+    const data = [
+      { id: "a", x: "A", y: 10, series: "s1" },
+      { id: "b", x: "B", y: 10, series: "s1" },
+      { id: "c", x: "C", y: 10, series: "s1" },
+    ];
+    const model = runPipeline(
+      gg(data, aes({ x: "x", y: "y", fill: "series" }))
+        .geomCol({ position: "stack" })
+        .spec(),
+      { width: 400, height: 300 },
+    );
+    let seed = model.candidates.candidate(0)!;
+    for (let id = 0; id < model.candidates.size; id++) {
+      const candidate = model.candidates.candidate(id);
+      if (candidate?.xValue === "B") {
+        seed = candidate;
+        break;
+      }
+    }
+
+    const inspection = materializeInspection(
+      {
+        model,
+        seed,
+        mode: "exact",
+        state: "transient",
+        source: "pointer",
+      },
+      resolvedTarget(model, seed, "exact")!,
+      "complete",
+      (index) => (model.row(index) as { id: string } | null)?.id ?? null,
+    );
+    expect(inspection.groupTotal).toBe(10);
+    model.dispose();
+  });
 });
 
 describe("groupTotal / groupMemberCount multi-layer honesty (#1389)", () => {

@@ -38,6 +38,8 @@ function resolveInspect<Row, Key>(
     maxDistance,
     contentMode: value.contentMode ?? "informational",
     muteSiblings: value.muteSiblings ?? false,
+    tooltipTotal: value.tooltipTotal ?? "auto",
+
     ...(value.content !== undefined && { content: value.content }),
   });
 }

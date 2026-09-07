@@ -9,7 +9,11 @@
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import Inspect from "../../src/lib/inspection/Inspect.svelte";
   import type { LayerRegistry } from "../../src/lib/geoms/registry.svelte.js";
-  import type { InspectMode } from "../../src/lib/interaction/interaction.js";
+  import type {
+    InspectMode,
+    TooltipTotal,
+  } from "../../src/lib/interaction/interaction.js";
+
   import ThemeRegistryCapture from "./ThemeRegistryCapture.svelte";
 
   const {
@@ -19,6 +23,8 @@
     secondInspectMode,
     propInspect,
     inspectIdentity,
+    inspectTooltipTotal,
+
     captureRegistry,
     onrender,
     ondiagnostic,
@@ -30,6 +36,8 @@
     secondInspectMode?: InspectMode;
     propInspect?: boolean | { mode?: InspectMode; identity?: PropertyKey };
     inspectIdentity?: PropertyKey;
+    inspectTooltipTotal?: TooltipTotal;
+
     captureRegistry?: (registry: LayerRegistry) => void;
     onrender?: (model: unknown, spec: PortableSpec) => void;
     ondiagnostic?: (diagnostic: PlotDiagnostic) => void;
@@ -56,7 +64,11 @@
     <ThemeRegistryCapture capture={captureRegistry} />
   {/if}
   {#if useInspect}
-    <Inspect mode={inspectMode} identity={inspectIdentity} />
+    <Inspect
+      mode={inspectMode}
+      identity={inspectIdentity}
+      tooltipTotal={inspectTooltipTotal}
+    />
   {/if}
   {#if useSecondInspect}
     <Inspect mode={secondInspectMode} />

@@ -40,6 +40,21 @@ describe("interaction capability normalization", () => {
     });
   });
 
+  it("defaults tooltipTotal to auto and accepts off, top, and bottom", () => {
+    expect(normalizeInteractionConfig({ inspect: true }).inspect).toMatchObject({
+      tooltipTotal: "auto",
+    });
+    expect(normalizeInteractionConfig({ inspect: { tooltipTotal: "off" } }).inspect).toMatchObject({
+      tooltipTotal: "off",
+    });
+    expect(normalizeInteractionConfig({ inspect: { tooltipTotal: "top" } }).inspect).toMatchObject({
+      tooltipTotal: "top",
+    });
+    expect(
+      normalizeInteractionConfig({ inspect: { tooltipTotal: "bottom" } }).inspect,
+    ).toMatchObject({ tooltipTotal: "bottom" });
+  });
+
   it("keeps legend focus opt-in and enables previews by default", () => {
     expect(normalizeInteractionConfig({ legendFocus: true })).toMatchObject({
       interactive: true,
