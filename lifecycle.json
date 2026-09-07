@@ -7990,6 +7990,10 @@
           "kind": "type",
           "lifecycle": "experimental"
         },
+        "TooltipTotal": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
         "TransformedColorScaleOptions": {
           "kind": "type",
           "lifecycle": "experimental"

@@ -19,6 +19,7 @@ import {
   type InspectionSnapshotCompleteness,
   type ResolveInspectionInput,
 } from "./resolver.js";
+import { compositionGroupTotal } from "./group-total.js";
 
 export interface CoordinatedInspectionInput<
   Row extends Record<string, CellValue>,
@@ -112,6 +113,15 @@ function candidateBatchRole(
   )
     return `${candidate.kind}:missing`;
   return roles[candidate.batchIndex] ?? `${candidate.kind}:missing`;
+}
+
+function exactGroupTotalToken(
+  mode: ResolvedInspectMode,
+  model: RenderModel,
+  seed: CandidateFacts,
+): string {
+  if (mode !== "exact" && mode !== "xy") return "";
+  return String(compositionGroupTotal(model, seed));
 }
 
 /**
@@ -221,7 +231,9 @@ export function createInspectionCoordinator<
       focusIdentity,
       semanticMembers.join(";"),
       input.state,
+      exactGroupTotalToken(input.mode, input.model, input.seed),
     ].join("|");
+
     const range = target.group?.range;
     // Mirror fingerprintMembers: transient pinches presentation id to the same
     // member window as materialize (layoutEpoch + range already cover the bucket).

@@ -189,4 +189,61 @@ describe("inspection coordinator", () => {
     first.dispose();
     resized.dispose();
   });
+
+  it("pinned exact snapshots treat a stack-total change as a semantic change", () => {
+    const firstRows = [
+      { id: "a", x: "A", y: 1, series: "s1" },
+      { id: "b", x: "A", y: 2, series: "s2" },
+    ];
+    const nextRows = [
+      { id: "a", x: "A", y: 1, series: "s1" },
+      { id: "b", x: "A", y: 9, series: "s2" },
+    ];
+    const first = runPipeline(
+      gg(firstRows, aes({ x: "x", y: "y", fill: "series" }))
+        .geomCol({ position: "stack" })
+        .spec(),
+      { width: 400, height: 300 },
+    );
+    const next = runPipeline(
+      gg(nextRows, aes({ x: "x", y: "y", fill: "series" }))
+        .geomCol({ position: "stack" })
+        .spec(),
+      { width: 400, height: 300 },
+    );
+    const coordinator = createInspectionCoordinator(idKeys(firstRows));
+    const seed = first.candidates.candidate(0)!;
+    const pinned = coordinator.resolve({
+      model: first,
+      seed,
+      mode: "exact",
+      state: "pinned",
+      source: "pointer",
+      identityEpoch: "same-ids",
+      layoutEpoch: first.runId,
+    });
+    expect(pinned?.snapshot.groupTotal).toBe(3);
+    let nextSeed = next.candidates.candidate(0)!;
+    for (let id = 0; id < next.candidates.size; id++) {
+      const candidate = next.candidates.candidate(id);
+      if (candidate?.rowIndex === seed.rowIndex) {
+        nextSeed = candidate;
+        break;
+      }
+    }
+
+    const updated = coordinator.resolve({
+      model: next,
+      seed: nextSeed,
+      mode: "exact",
+      state: "pinned",
+      source: "pointer",
+      identityEpoch: "same-ids",
+      layoutEpoch: next.runId,
+    });
+    expect(updated?.snapshot.groupTotal).toBe(10);
+    expect(updated?.semanticChanged).toBe(true);
+    first.dispose();
+    next.dispose();
+  });
 });
