@@ -95,6 +95,8 @@ function compositionMembers(
 
 /** Stack/fill total at the seed. Prefer grouping by x (stacked col/area). */
 export function compositionGroupTotal(model: RenderModel, seed: CandidateFacts): number | null {
+  const position = model.layerPositions?.[seed.layerIndex];
+  if (position !== "stack" && position !== "fill") return null;
   for (const axis of ["x", "y"] as const) {
     const members = compositionMembers(model, seed, axis);
     if (members === null) continue;
