@@ -103,7 +103,7 @@ jobs:
         run: |
           set -euo pipefail
           shard_args=(
-            --coverage --project chromium "--shard=${SHARD}" --reporter=blob
+            --coverage --project chromium "--shard=${SHARD}" --reporter=default --reporter=blob
             --coverage.thresholds.statements=0 --coverage.thresholds.branches=0
             --coverage.thresholds.functions=0 --coverage.thresholds.lines=0
           )
