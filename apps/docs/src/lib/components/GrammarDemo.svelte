@@ -29,6 +29,7 @@
   let loadStarted = $state(false);
   let liveReady = $state(false);
   let shellVisible = $state(true);
+  let mounted = $state(false);
   /** True when the user tabbed into the shell; hand focus to .gg-capture on ready. */
   let restoreKeyboardFocus = $state(false);
 
@@ -87,6 +88,7 @@
   }
 
   onMount(() => {
+    mounted = true;
     const el = host;
     if (el === null) return;
     return observeUserIntent(el, ensureLive);
@@ -196,7 +198,8 @@
       type="button"
       class="load-interactive"
       onclick={ensureLive}
-      aria-disabled={loadStarted}
+      disabled={!mounted}
+      aria-disabled={!mounted || loadStarted}
       aria-busy={loadStarted}
     >
       {loadStarted ? "Loading…" : "Load interactive chart"}
