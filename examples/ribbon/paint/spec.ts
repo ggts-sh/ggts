@@ -1,4 +1,4 @@
-import { aes, fillPaintLinear, gg, glow, strokePaintLinear } from "@ggsvelte/spec";
+import { aes, fillPaintLinear, gg, glow, strokePaintLinear } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { series } from "./data.js";

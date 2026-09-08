@@ -6,7 +6,7 @@
  * impossible here — bunfig.toml preload registers the full grammar for the
  * whole test process.)
  *
- * Seam B (fresh process): a bare `@ggsvelte/core` import registers NOTHING;
+ * Seam B (fresh process): a bare `@ggts-sh/core` import registers NOTHING;
  * unregistered geom/stat errors point at registerAll()/registerBasic();
  * registerBasic() unlocks identity charts only; registerAll() unlocks the
  * full grammar (and Temporal).
@@ -139,7 +139,7 @@ describe("fresh-process registration gating (Seam B)", () => {
       import { registerAll, registerBasic, renderToSVGString, runPipeline } from ${JSON.stringify(
         path.join(coreRoot, "src", "index.ts"),
       )};
-      import { aes, gg } from "@ggsvelte/spec";
+      import { aes, gg } from "@ggts-sh/spec";
 
       const rows = [
         { x: 1, y: 10 }, { x: 2, y: 20 }, { x: 3, y: 15 }, { x: 4, y: 25 }, { x: 5, y: 22 },
@@ -199,8 +199,8 @@ describe("fresh-process registration gating (Seam B)", () => {
 
     // registerAll(): full grammar + interaction candidates (#1421).
     expect(out.smoothAfterAll).toBe("rendered");
-    expect(out.candidatesFresh).toContain("require @ggsvelte/core");
+    expect(out.candidatesFresh).toContain("require @ggts-sh/core");
     expect(out.candidatesAfterAll).not.toContain("not registered");
-    expect(out.candidatesAfterAll).not.toContain("require @ggsvelte/core");
+    expect(out.candidatesAfterAll).not.toContain("require @ggts-sh/core");
   }, 60_000);
 });

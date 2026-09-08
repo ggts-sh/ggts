@@ -1,5 +1,5 @@
 /** Resolve guide precedence, visibility, strict merge identity, and ordering. */
-import type { GuideSpec, GuidesSpec, Scales, StyleAesthetic } from "@ggsvelte/spec";
+import type { GuideSpec, GuidesSpec, Scales, StyleAesthetic } from "@ggts-sh/spec";
 
 import type { GuidePlan } from "../layout/guide-plan-types.js";
 import type { DiscreteLegendInput, LegendInput, ResolvedLegendAppearance } from "../legend.js";
@@ -26,7 +26,7 @@ export interface AxisGuideAppearance {
   showTicks: boolean;
   showLabels: boolean;
   collision: "auto" | "preserve" | "ellipsis";
-  theme?: import("@ggsvelte/spec").GuideThemeSpec;
+  theme?: import("@ggts-sh/spec").GuideThemeSpec;
 }
 
 export function resolveAxisGuide(

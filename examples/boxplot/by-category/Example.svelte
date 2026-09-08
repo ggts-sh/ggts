@@ -6,7 +6,7 @@
     Labs,
     ScaleXDiscrete,
     ThemeFew,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { michelsonRuns } from "./data.js";
 </script>

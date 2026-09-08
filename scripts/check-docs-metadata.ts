@@ -87,7 +87,7 @@ function validateBuiltRoute(
   const expectedSeo = buildSeoDocument(route, config.canonicalBase);
   const socialImage = expectedSeo.image.url;
   for (const [kind, markup] of [
-    ["Open Graph site name", '<meta property="og:site_name" content="ggsvelte"/>'],
+    ["Open Graph site name", '<meta property="og:site_name" content="ggts"/>'],
     ["Open Graph type", '<meta property="og:type" content="website"/>'],
     ["Open Graph title", `<meta property="og:title" content="${title}"/>`],
     ["Open Graph description", `<meta property="og:description" content="${description}"/>`],

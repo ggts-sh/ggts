@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeTufte,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { chocolateBarsSample } from "./data.js";
 </script>

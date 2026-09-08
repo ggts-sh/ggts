@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Coord, GeomPoint, GGPlot, Scale } from "@ggsvelte/svelte";
+  import { Coord, GeomPoint, GGPlot, Scale } from "@ggts-sh/svelte";
 
   const rows = [
     { x: 1, y: 2, g: "a" },

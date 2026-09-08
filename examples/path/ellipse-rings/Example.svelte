@@ -8,7 +8,7 @@
     registerEllipse,
     ScaleColorDiscrete,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   // stat= override: the shell registers only its default stat (#1420).
   registerEllipse();

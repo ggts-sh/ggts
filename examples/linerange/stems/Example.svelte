@@ -7,7 +7,7 @@
     ScaleXDiscrete,
     ScaleYContinuous,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { groupIntervals } from "./data.js";
 </script>

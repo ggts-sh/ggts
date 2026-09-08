@@ -3,7 +3,7 @@
   import {
     scaleColorGradient2,
     type Gradient2ScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

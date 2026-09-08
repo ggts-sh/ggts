@@ -1,7 +1,7 @@
 /**
  * Warn and clear color mappings on fill-only geoms.
  */
-import type { NormalizedGeomName } from "@ggsvelte/spec";
+import type { NormalizedGeomName } from "@ggts-sh/spec";
 
 import type { ColorBinding, PipelineWarning } from "./types.js";
 

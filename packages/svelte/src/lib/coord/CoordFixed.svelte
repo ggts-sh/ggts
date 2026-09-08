@@ -5,7 +5,7 @@
    * Also exported as `CoordEqual` (alias of `coordEqual = coordFixed`).
    * Emits NO markup.
    */
-  import { coordFixed, type CoordFixedOptions } from "@ggsvelte/spec";
+  import { coordFixed, type CoordFixedOptions } from "@ggts-sh/spec";
 
   import {
     createPlotLayer,

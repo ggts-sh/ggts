@@ -1,7 +1,7 @@
 /**
  * ydensity stat → LayerFrame (violin polygons from mirrored density).
  */
-import type { ViolinParams } from "@ggsvelte/spec";
+import type { ViolinParams } from "@ggts-sh/spec";
 
 import { statYDensity } from "../stats/ydensity.js";
 import type { ColumnTable } from "../table.js";

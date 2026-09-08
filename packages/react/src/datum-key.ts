@@ -1,4 +1,4 @@
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 
 export type DatumKey =
   | PropertyKey
@@ -68,20 +68,4 @@ export function resolveDatumKey(input: {
   if (input.explicit !== undefined) return input.explicit;
   if (dataHasIdIdentityColumn(input.data)) return "id";
   return (_row, index) => index;
-}
-
-export function applyDatumKey(
-  key: DatumKey,
-  row: Record<string, CellValue> | null,
-  index: number,
-): PropertyKey {
-  if (typeof key === "function") {
-    if (row === null) return index;
-    return key(row, index);
-  }
-  if (row !== null) {
-    const value = row[String(key)];
-    if (isPropertyKeyIdentity(value)) return value;
-  }
-  return index;
 }

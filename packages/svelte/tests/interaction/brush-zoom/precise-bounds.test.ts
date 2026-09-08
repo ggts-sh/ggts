@@ -2,7 +2,7 @@ import { fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 import { withGrammarAsSpec } from "../../helpers/ggplot-input.js";
 
-import type { RenderModel } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
 import GGPlot from "../../../src/lib/GGPlot.svelte";
 import { createPlotInteraction } from "../../../src/lib/interaction/controller.svelte.js";
 import { render } from "../../helpers/render.js";

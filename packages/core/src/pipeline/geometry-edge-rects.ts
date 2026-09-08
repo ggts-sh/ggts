@@ -5,7 +5,7 @@
  * transformed xmin/xmax/ymin/ymax edges (or band-centered tile slots) and
  * support optional per-rect stroke outlines.
  */
-import type { RasterParams, TileParams } from "@ggsvelte/spec";
+import type { RasterParams, TileParams } from "@ggts-sh/spec";
 
 import type { RectsBatch } from "../scene.js";
 import { linetypeIndex, type Linetype } from "../scales/style.js";

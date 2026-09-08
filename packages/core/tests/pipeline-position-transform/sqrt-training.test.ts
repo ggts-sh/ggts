@@ -2,7 +2,7 @@
  * Position transform — sqrt-training.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, scaleXSqrt } from "@ggsvelte/spec";
+import { aes, gg, scaleXSqrt } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import { size, xScale } from "./fixtures.ts";
 

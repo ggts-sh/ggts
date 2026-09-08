@@ -24,7 +24,7 @@ function migrate(source: string): string {
 function plot(openTag: string): string {
   return [
     '<script lang="ts">',
-    '  import { GeomPoint, GGPlot } from "@ggsvelte/svelte";',
+    '  import { GeomPoint, GGPlot } from "@ggts-sh/svelte";',
     "</script>",
     "",
     openTag,
@@ -38,7 +38,7 @@ describe("migratePlotProps — value-escape-hatch props", () => {
   it("rewrites coord to <Coord value={…}/> and imports the component", () => {
     const before = [
       '<script lang="ts">',
-      '  import { GeomPoint, GGPlot } from "@ggsvelte/svelte";',
+      '  import { GeomPoint, GGPlot } from "@ggts-sh/svelte";',
       "</script>",
       "",
       '<GGPlot data={rows} aes={{ x: "a", y: "b" }} coord={coordFixed()}>',
@@ -50,7 +50,7 @@ describe("migratePlotProps — value-escape-hatch props", () => {
     expect(migrate(before)).toBe(
       [
         '<script lang="ts">',
-        '  import { Coord, GeomPoint, GGPlot } from "@ggsvelte/svelte";',
+        '  import { Coord, GeomPoint, GGPlot } from "@ggts-sh/svelte";',
         "</script>",
         "",
         '<GGPlot data={rows} aes={{ x: "a", y: "b" }}>',
@@ -67,7 +67,7 @@ describe("migratePlotProps — value-escape-hatch props", () => {
     // case-insensitively, so this list is unsorted and only grows at the end.
     const before = [
       '<script lang="ts">',
-      '  import { GGPlot, GeomPoint } from "@ggsvelte/svelte";',
+      '  import { GGPlot, GeomPoint } from "@ggts-sh/svelte";',
       "</script>",
       "",
       '<GGPlot data={rows} coord="flip">',
@@ -77,7 +77,7 @@ describe("migratePlotProps — value-escape-hatch props", () => {
     ].join("\n");
 
     expect(migrate(before)).toContain(
-      'import { GGPlot, GeomPoint, Coord } from "@ggsvelte/svelte";',
+      'import { GGPlot, GeomPoint, Coord } from "@ggts-sh/svelte";',
     );
     expect(migrate(before)).toContain('<Coord value="flip" />');
   });
@@ -142,7 +142,7 @@ describe("migratePlotProps — theme", () => {
     expect(result.skipped).toHaveLength(1);
     expect(result.skipped[0]?.prop).toBe("theme");
     expect(result.skipped[0]?.docUrl).toBe(
-      "https://ggsvelte.sh/guide/upgrading#compose-the-theme-as-a-child-layer",
+      "https://ggts.sh/guide/upgrading#compose-the-theme-as-a-child-layer",
     );
   });
 
@@ -173,7 +173,7 @@ describe("migratePlotProps — element surgery", () => {
     const after = migrate(
       [
         '<script lang="ts">',
-        '  import { GeomPoint, GGPlot, ScaleColorDiscrete } from "@ggsvelte/svelte";',
+        '  import { GeomPoint, GGPlot, ScaleColorDiscrete } from "@ggts-sh/svelte";',
         "</script>",
         "",
         '<GGPlot data={rows} scales={{ color: { scheme: "viridis" } }}>',
@@ -191,7 +191,7 @@ describe("migratePlotProps — element surgery", () => {
     const after = migrate(
       [
         '<script lang="ts">',
-        '  import { GGPlot } from "@ggsvelte/svelte";',
+        '  import { GGPlot } from "@ggts-sh/svelte";',
         "</script>",
         "",
         '<GGPlot data={rows} spec={spec} theme="dark" />',
@@ -202,7 +202,7 @@ describe("migratePlotProps — element surgery", () => {
     expect(after).toBe(
       [
         '<script lang="ts">',
-        '  import { GGPlot, Theme } from "@ggsvelte/svelte";',
+        '  import { GGPlot, Theme } from "@ggts-sh/svelte";',
         "</script>",
         "",
         "<GGPlot data={rows} spec={spec}>",
@@ -217,7 +217,7 @@ describe("migratePlotProps — element surgery", () => {
     const after = migrate(
       [
         '<script lang="ts">',
-        '  import { GeomPoint, GGPlot } from "@ggsvelte/svelte";',
+        '  import { GeomPoint, GGPlot } from "@ggts-sh/svelte";',
         "</script>",
         "",
         '<div class="chart">',
@@ -236,7 +236,7 @@ describe("migratePlotProps — element surgery", () => {
     const after = migrate(
       [
         '<script lang="ts">',
-        '  import { GeomPoint, GGPlot } from "@ggsvelte/svelte";',
+        '  import { GeomPoint, GGPlot } from "@ggts-sh/svelte";',
         "</script>",
         "",
         '<GGPlot data={a} theme="dark"><GeomPoint /></GGPlot>',
@@ -253,7 +253,7 @@ describe("migratePlotProps — element surgery", () => {
     const after = migrate(
       [
         '<script lang="ts">',
-        '  import { GGPlot as Plot } from "@ggsvelte/svelte";',
+        '  import { GGPlot as Plot } from "@ggts-sh/svelte";',
         "</script>",
         "",
         '<Plot data={rows} theme="dark">',
@@ -286,7 +286,7 @@ describe("migratePlotProps — ignores non-rule attribute names", () => {
 describe("migratePlotProps — ADR 0013 acceptance criteria", () => {
   const messy = [
     '<script lang="ts">',
-    '  import { GeomPoint, GGPlot } from "@ggsvelte/svelte";',
+    '  import { GeomPoint, GGPlot } from "@ggts-sh/svelte";',
     "",
     "  const rows = [{ x: 1, y: 2 }];",
     "</script>",
@@ -327,7 +327,7 @@ describe("migratePlotProps — ADR 0013 acceptance criteria", () => {
       // No GGPlot import at all.
       '<script lang="ts">\n  import { GGPlot } from "./local.js";\n</script>\n\n<GGPlot theme="dark" />\n',
       // Already migrated.
-      '<script lang="ts">\n  import { GGPlot, Theme } from "@ggsvelte/svelte";\n</script>\n\n<GGPlot data={rows}>\n  <Theme name="dark" />\n</GGPlot>\n',
+      '<script lang="ts">\n  import { GGPlot, Theme } from "@ggts-sh/svelte";\n</script>\n\n<GGPlot data={rows}>\n  <Theme name="dark" />\n</GGPlot>\n',
       // Only non-deprecated props.
       plot("<GGPlot data={rows} width={480} inspect>"),
     ]) {

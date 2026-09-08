@@ -10,7 +10,7 @@ import {
   STYLE_ORDINAL_SCALE_HELPERS,
   builderScaleHelperNames,
   scaleCapabilityCamelHelpers,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import {
   BUILDER_SCALES_PATH,

@@ -1,7 +1,7 @@
 /**
  * Smooth fitted-line path batch.
  */
-import type { SmoothParams } from "@ggsvelte/spec";
+import type { SmoothParams } from "@ggts-sh/spec";
 
 import type { GeometryBatch } from "../scene.js";
 import { linetypeIndex, type Linetype } from "../scales/style.js";

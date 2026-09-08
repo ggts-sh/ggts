@@ -11,6 +11,7 @@ describe("public export surface (split-safe)", () => {
   it("exposes exactly the documented runtime export set from gen-llms", async () => {
     const mod = await import("../gen-llms.ts");
     const expected = [
+      "AGENTS_MD",
       "FACETS_COORDINATES_MD",
       "GETTING_STARTED_MD",
       "INTERACTIONS_MD",

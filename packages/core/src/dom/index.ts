@@ -1,5 +1,5 @@
 /// <reference lib="dom" />
-// @ggsvelte/core/dom — DOM entrypoint: canvas batch renderers (decision 0006
+// @ggts-sh/core/dom — DOM entrypoint: canvas batch renderers (decision 0006
 // strata recipes). Browser-only; never imported by the pure entry. The Svelte
 // adapter composes these into the strata DOM;
 // renderToSVGString never touches this module (always all-SVG).

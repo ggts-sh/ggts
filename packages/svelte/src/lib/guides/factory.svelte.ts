@@ -11,7 +11,7 @@
  * `builder.guides` shallow-merges by channel, so a child never field-merges
  * into a prop's guide object.
  */
-import type { GuidesSpec } from "@ggsvelte/spec";
+import type { GuidesSpec } from "@ggts-sh/spec";
 
 import { definedProps } from "../layers/plot-layer.svelte.js";
 

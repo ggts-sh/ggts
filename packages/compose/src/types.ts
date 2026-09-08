@@ -18,7 +18,7 @@ import type {
   StatName,
   ThemeName,
   ThemeSpec,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 /** Aesthetic channel a GuideLegend may enable for focus/filter. */
 export type LegendAestheticChannel =

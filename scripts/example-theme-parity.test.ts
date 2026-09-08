@@ -16,7 +16,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import { EXAMPLES } from "../examples/manifest.ts";
 
@@ -27,7 +27,7 @@ const PASSTHROUGH = /<GGPlot\b[^>]*\{spec\}/g;
 const GGPLOT_TAG = /<GGPlot\b/g;
 const ANY_THEME_PROP = /\btheme=/g;
 
-/** Named theme shells exported from `@ggsvelte/svelte` (ThemeName → component). */
+/** Named theme shells exported from `@ggts-sh/svelte` (ThemeName → component). */
 const THEME_SHELL: Readonly<Record<string, string>> = {
   default: "ThemeDefault",
   light: "ThemeLight",

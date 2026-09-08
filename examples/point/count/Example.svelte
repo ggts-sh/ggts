@@ -5,7 +5,7 @@
     Inspect,
     Labs,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { galtonHeights } from "./data.js";
 </script>

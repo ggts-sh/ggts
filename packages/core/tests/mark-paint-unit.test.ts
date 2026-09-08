@@ -4,7 +4,7 @@
  * radial resolve/defs, canvas gradient mapping, and subpath AABB math.
  */
 import { describe, expect, it } from "bun:test";
-import type { GradientPaint, GlowSpec } from "@ggsvelte/spec";
+import type { GradientPaint, GlowSpec } from "@ggts-sh/spec";
 
 import {
   canvasGradientStyle,

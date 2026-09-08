@@ -1,5 +1,5 @@
-import { buildCandidateStore, planStrata, runPipeline } from "@ggsvelte/core";
-import { drawStratum } from "@ggsvelte/core/dom";
+import { buildCandidateStore, planStrata, runPipeline } from "@ggts-sh/core";
+import { drawStratum } from "@ggts-sh/core/dom";
 
 import { scatterSpec } from "../workload-specs";
 import { fmtK, opts, stubContext, type Workload } from "./shared";

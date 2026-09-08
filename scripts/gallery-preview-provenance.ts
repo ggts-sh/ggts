@@ -99,13 +99,13 @@ export function sharedExampleSourcePaths(exampleDir: string, examplesRoot: strin
 }
 
 /**
- * Repo-relative paths of `@ggsvelte/svelte/data` teaching tables imported from
- * an example (e.g. `packages/svelte/src/lib/data/chocolate-bars.ts`). Hashed so
+ * Repo-relative paths of `@ggts-sh/core/data` teaching tables imported from
+ * an example (e.g. `packages/core/src/data/chocolate-bars.ts`). Hashed so
  * gallery provenance notices package-data edits that change rendered previews.
  */
 export function packageDataSourcePaths(exampleDir: string, examplesRoot: string): string[] {
   const repoRoot = resolve(examplesRoot, "..");
-  const dataRoot = resolve(repoRoot, "packages/svelte/src/lib/data");
+  const dataRoot = resolve(repoRoot, "packages/core/src/data");
   const dataRootPrefix = dataRoot + sep;
   const found = new Set<string>();
   const importRe = /from\s+["'](\.\.[^"']+)["']/g;

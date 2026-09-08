@@ -1,7 +1,7 @@
 /**
  * Categorical identity scatter stores palette indexes, not a string per point.
  */
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { describe, expect, it } from "bun:test";
 
 import { registerBasicPoints } from "../src/pipeline/register-basic-points.ts";

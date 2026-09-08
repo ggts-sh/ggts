@@ -1,4 +1,4 @@
-// @ggsvelte/compose — framework-free PortableSpec assembly.
+// @ggts-sh/compose — framework-free PortableSpec assembly.
 // @lifecycle-default experimental
 export {
   assemblePortableSpec,
@@ -42,3 +42,24 @@ export type {
   PlotLayerLike,
 } from "./types.js";
 export type { PlotInteractionScope, ZoomInput, ZoomOptions } from "./interaction-scope.js";
+
+export {
+  isCompositionDiagnostic,
+  isDuplicateScaleChannelDiagnostic,
+  isDuplicateMergeKeyDiagnostic,
+  isDuplicatePlotLayerDiagnostic,
+  duplicateScaleChannelDiagnostic,
+  duplicateMergeKeyDiagnostic,
+  duplicatePlotLayerDiagnostic,
+  collectCompositionDiagnostics,
+  compositionAdvisoryDedupKey,
+} from "./composition-diagnostics.js";
+export type {
+  CompositionDiagnosticCode,
+  DuplicateScaleChannelDiagnostic,
+  DuplicateMergeKeyKind,
+  DuplicateMergeKeyDiagnostic,
+  DuplicatePlotLayerKind,
+  DuplicatePlotLayerDiagnostic,
+  CompositionDiagnostic,
+} from "./composition-diagnostics.js";

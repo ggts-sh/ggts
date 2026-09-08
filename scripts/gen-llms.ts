@@ -14,11 +14,13 @@
  * scripts/gen-llms/*.test.ts; apps/docs imports it via the `$scripts` alias
  * for its prerendered endpoints and guide pages.
  */
-import { CURRENT_EDITION, THEME_NAMES } from "@ggsvelte/spec";
+import { CURRENT_EDITION, THEME_NAMES } from "@ggts-sh/spec";
+import { REACT_SPEC_HOST_SOURCE } from "./agent-quickstart";
 import sveltePackage from "../packages/svelte/package.json";
 import { GUIDE_CATALOG, type GuideSlug } from "../apps/docs/src/lib/catalog/guide";
 import { assertGuideCodeContract } from "./guide-code-contract";
 import {
+  AGENTS_MD,
   FACETS_COORDINATES_MD,
   GETTING_STARTED_MD,
   INTERACTIONS_MD,
@@ -35,6 +37,7 @@ import { buildLifecycleMd, type LifecycleDoc } from "./llms-lifecycle-docs";
 export { buildDiagnosticDocs } from "./diagnostic-docs";
 export { extractMarkdownHeadings, renderMarkdown, type MarkdownHeading } from "./llms-markdown";
 export {
+  AGENTS_MD,
   FACETS_COORDINATES_MD,
   GETTING_STARTED_MD,
   INTERACTIONS_MD,
@@ -63,6 +66,9 @@ export interface LlmsFullExample extends LlmsExampleEntry {
   specJSON: string;
   /** The Example.svelte source. */
   svelteSource: string;
+  /** Authored React host behavior when the example has a dedicated adapter version. */
+  reactSource?: string;
+  prunedRows?: number;
 }
 
 export interface GuidePage {
@@ -74,6 +80,7 @@ export interface GuidePage {
 
 export function guidePages(lifecycle: LifecycleDoc): GuidePage[] {
   const markdownBySlug: Record<GuideSlug, string> = {
+    agents: AGENTS_MD,
     "getting-started": GETTING_STARTED_MD,
     "statistics-positions": STATISTICS_POSITIONS_MD,
     "scales-guides": SCALES_GUIDES_MD,
@@ -147,12 +154,12 @@ function absoluteMarkdownLinks(markdown: string, canonicalBase: string): string 
 export function buildLlmsIndex(
   pages: readonly GuidePage[],
   examples: readonly LlmsExampleEntry[],
-  facts: DocsDiscoveryFacts = docsDiscoveryFacts("https://ggsvelte.sh"),
+  facts: DocsDiscoveryFacts = docsDiscoveryFacts("https://ggts.sh"),
 ): string {
   const lines = [
-    "# ggsvelte",
+    "# ggts",
     "",
-    "> A layered grammar of graphics for JavaScript: ggplot2 semantics (aes/geom/stat/scale/coord/facet/theme/position), a strictly-JSON PortableSpec that agents emit (published JSON Schema for constrained decoding), a fluent builder, Svelte 5 components, hybrid SVG/canvas rendering, and value-stable color scales. validate() returns { code, path, message, fix } errors whose fix.example is machine-applicable.",
+    "> A layered grammar of graphics for JavaScript: ggplot2 semantics (aes/geom/stat/scale/coord/facet/theme/position), a strictly-JSON PortableSpec that agents emit (published JSON Schema for constrained decoding), a TypeScript builder, React and Svelte 5 components, hybrid SVG/canvas rendering, and value-stable color scales. validate() returns { code, path, message, fix } errors whose fix.example is machine-applicable.",
     "",
     "## Current release facts",
     "",
@@ -177,7 +184,7 @@ export function buildLlmsIndex(
     "- [Labels](/reference/labels): plot chrome vs tick labels vs GeomText/GeomLabel/SF data labels",
     "- [Search interaction reference](/reference/interactions): filter interaction capabilities, events, diagnostics, and accessibility guidance",
     "- [JSON Schema v0](/schema/v0.json): the PortableSpec schema (unstable in v0.1)",
-    "- [llms-full.txt](/llms-full.txt): all docs prose plus every example (spec JSON + Svelte source)",
+    "- [llms-full.txt](/llms-full.txt): all docs prose plus every example (spec JSON, React host, and Svelte source)",
     "",
     "## Examples",
     "",
@@ -249,12 +256,12 @@ export function pruneSpecData(spec: unknown, maxRows = 20): { spec: unknown; pru
 export function buildLlmsFull(
   pages: readonly GuidePage[],
   examples: readonly LlmsFullExample[],
-  facts: DocsDiscoveryFacts = docsDiscoveryFacts("https://ggsvelte.sh"),
+  facts: DocsDiscoveryFacts = docsDiscoveryFacts("https://ggts.sh"),
 ): string {
   const parts = [
-    "# ggsvelte — full docs corpus for language models",
+    "# ggts — full docs corpus for language models",
     "",
-    "Generated from the docs guide sources and the examples manifest (one source, three uses). Each example shows its canonical PortableSpec JSON (what an agent should emit) and the equivalent Svelte component usage.",
+    "Generated from the shared guide sources and example manifest. Each example supplies PortableSpec JSON for every framework and authored Svelte usage. The React host below renders the same grammar; host-only interactions require adapter callbacks and components.",
     "",
     "## Current release facts",
     "",
@@ -268,12 +275,28 @@ export function buildLlmsFull(
   for (const page of pages) {
     parts.push(page.markdown.trim(), "", "---", "");
   }
-  parts.push("# Examples", "");
+  parts.push(
+    "# React gallery host",
+    "",
+    "Save an example's complete Spec JSON from its gallery page as chart.json beside this component. Corpus data may be shortened with an explicit note; use the gallery page for all rows.",
+    "",
+    "```tsx",
+    REACT_SPEC_HOST_SOURCE,
+    "```",
+    "",
+    "# Examples",
+    "",
+  );
   for (const ex of examples) {
     parts.push(`## ${ex.title} (${ex.id})`, "");
     if (ex.description.trim() !== "") {
       parts.push(ex.description, "");
     }
+    if ((ex.prunedRows ?? 0) > 0)
+      parts.push(
+        `Data sample: ${String(ex.prunedRows)} rows omitted. The gallery page contains the complete spec.`,
+        "",
+      );
     parts.push(
       `Tags: ${ex.tags.join(", ")}`,
       "",
@@ -290,6 +313,9 @@ export function buildLlmsFull(
       "```",
       "",
     );
+    if (ex.reactSource !== undefined) {
+      parts.push("React usage:", "", "```tsx", ex.reactSource.trim(), "```", "");
+    }
   }
   return absoluteMarkdownLinks(parts.join("\n"), facts.canonicalBase);
 }

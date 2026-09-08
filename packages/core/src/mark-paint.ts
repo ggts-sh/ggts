@@ -7,7 +7,7 @@
  * `subpathBounds` is pure path AABB geometry with no paint dependency; it stays
  * here because both callers are paint sites (canvas gradient mark-space mapping).
  */
-import type { GradientPaint, GlowSpec, PaintSpace } from "@ggsvelte/spec";
+import type { GradientPaint, GlowSpec, PaintSpace } from "@ggts-sh/spec";
 
 /** Resolved gradient ready for SVG/canvas paint. */
 export interface ResolvedGradientPaint {

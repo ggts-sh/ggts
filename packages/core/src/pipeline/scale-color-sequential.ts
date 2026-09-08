@@ -1,7 +1,7 @@
 /**
  * Sequential color/fill scale training and ramp legend input.
  */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions.js";
 import type { CellValue } from "../table.js";

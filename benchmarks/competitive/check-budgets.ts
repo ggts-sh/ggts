@@ -311,7 +311,9 @@ for (const gg of okGgsvelte) {
         totalPass,
         syncPass,
         pass,
-        gated: sameForm,
+        // Framework hosts have their own regression budgets; do not require
+        // React or Svelte to beat every unrelated Svelte peer.
+        gated: sameForm && (gg.lib === "ggsvelte-svg" || gg.lib === "ggsvelte-canvas"),
         gap,
       });
     }
@@ -370,7 +372,7 @@ console.log(
 );
 for (const c of comparisons) {
   const verdict = !c.gated
-    ? "info (cross-form)"
+    ? "info (ungated comparison)"
     : c.gap
       ? clearlyBeats(c.ggMs, c.peerMs)
         ? `STALE GAP — remove exemption (${c.gap.issue})`

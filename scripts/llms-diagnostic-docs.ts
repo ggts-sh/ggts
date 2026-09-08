@@ -2,8 +2,8 @@
  * Catalog-driven errors and advisories guide markdown for gen-llms.
  * Lifecycle guide markdown lives in llms-lifecycle-docs.ts.
  */
-import { ADVISORY_CATALOG } from "@ggsvelte/core";
-import { LINT_CATALOG } from "@ggsvelte/spec";
+import { ADVISORY_CATALOG } from "@ggts-sh/core";
+import { LINT_CATALOG } from "@ggts-sh/spec";
 import {
   buildDiagnosticDocs,
   type DiagnosticDocEntry,
@@ -26,11 +26,11 @@ function catalogSection(
 }
 
 const diagnosticSectionTitles: Record<DiagnosticDocSource, string> = {
-  validation: "Validation errors (@ggsvelte/spec)",
-  pipeline: "Render-time errors (@ggsvelte/core)",
+  validation: "Validation errors (@ggts-sh/spec)",
+  pipeline: "Render-time errors (@ggts-sh/core)",
   warning: "Render warnings",
-  interaction: "Interaction diagnostics (@ggsvelte/svelte)",
-  cli: "CLI diagnostics (ggsvelte-render)",
+  interaction: "Interaction diagnostics (@ggts-sh/svelte)",
+  cli: "CLI diagnostics (ggts)",
 };
 
 function diagnosticHeading(entry: DiagnosticDocEntry): string {
@@ -106,9 +106,9 @@ can intentionally exist in more than one source with a different consequence.
   not-ready on the server, then measures its real container after hydration.
 - **Unexpected height:** omitted height is 400px unless the spec supplies one.
 - **TypeScript or linked-package mismatch:** install one compatible
-  \`@ggsvelte/svelte\` version and let it resolve matching core/spec packages;
+  \`@ggts-sh/svelte\` version and let it resolve matching core/spec packages;
   remove stale lockfile overrides that mix versions.
-- **CLI input failure:** run \`ggsvelte-render --help\`; keep SVG stdout
+- **CLI input failure:** run \`ggts --help\`; keep SVG stdout
   separate from JSON Lines stderr while correcting the reported input.
 
 ${sections.join("\n\n")}
@@ -117,7 +117,7 @@ ${sections.join("\n\n")}
 
 export function buildAdvisoriesMd(): string {
   const lint = catalogSection(
-    "Spec-lint advisories (@ggsvelte/spec lintSpec)",
+    "Spec-lint advisories (@ggts-sh/spec lintSpec)",
     'Valid-but-questionable specs (Hadley: "we can produce many plots that don\'t make sense, yet are grammatically valid"). Run `lintSpec(spec, { profile? })` directly, pass `{ lint: true }` to `validate()`, or read the CLI\'s stderr advisories (source "spec-lint"). Data-dependent rules skip silently without evidence.',
     LINT_CATALOG,
     {
@@ -125,7 +125,7 @@ export function buildAdvisoriesMd(): string {
     },
   );
   const heuristics = catalogSection(
-    "Pipeline heuristic advisories (@ggsvelte/core)",
+    "Pipeline heuristic advisories (@ggts-sh/core)",
     "Every heuristic decision the pipeline takes is disclosed as `{ code, path, chosen, howToOverride }` on `RenderModel.advisories` — agents see the guess and can correct it.",
     ADVISORY_CATALOG,
   );

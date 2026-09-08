@@ -1,7 +1,7 @@
 {
-  "name": "@ggsvelte/cli",
-  "version": "0.42.0",
-  "description": "ggsvelte-render: validate and render ggsvelte plot specs (JSON) to SVG from the command line — the feedback loop for agents that author specs in sandboxes.",
+  "name": "@ggts-sh/cli",
+  "version": "0.43.0",
+  "description": "ggts: validate and render plot specs (JSON) to SVG from the command line — the feedback loop for agents that author charts in sandboxes.",
   "keywords": [
     "agents",
     "charts",
@@ -15,17 +15,17 @@
     "validation",
     "visualization"
   ],
-  "homepage": "https://ggsvelte.sh/",
-  "bugs": "https://github.com/ljodea/ggsvelte/issues",
+  "homepage": "https://ggts.sh/",
+  "bugs": "https://github.com/ggts-sh/ggts/issues",
   "license": "MIT",
   "author": "Liam O'Dea",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ljodea/ggsvelte.git",
+    "url": "git+https://github.com/ggts-sh/ggts.git",
     "directory": "packages/cli"
   },
   "bin": {
-    "ggsvelte-render": "bin/ggsvelte-render.js"
+    "ggts": "bin/ggts.js"
   },
   "files": [
     "dist",
@@ -45,7 +45,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@ggsvelte/core": "^0.42.0"
+    "@ggts-sh/core": "^0.43.0"
   },
   "engines": {
     "node": ">=22"

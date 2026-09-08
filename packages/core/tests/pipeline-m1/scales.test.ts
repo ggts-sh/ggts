@@ -2,7 +2,7 @@
  * M1 scales config surface and pin/suspend/restore stability.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import type { RectsBatch } from "../../src/scene.ts";
 import { salesRows, size } from "./fixtures.ts";
@@ -111,7 +111,7 @@ describe("scales config surface", () => {
 });
 
 describe("scale stability through the spec config (pinned/suspend/restore)", () => {
-  const spec = (colorConfig?: import("@ggsvelte/spec").ColorScaleSpec) => {
+  const spec = (colorConfig?: import("@ggts-sh/spec").ColorScaleSpec) => {
     let b = gg(salesRows, aes({ x: "city", y: "sales", fill: "kind" })).geomCol();
     if (colorConfig) b = b.scales({ fill: colorConfig });
     return b.spec();

@@ -9,7 +9,7 @@
  * Completeness helpers reconcile this ledger against SCALE_CAPABILITIES
  * (tests + CLI banner). Emission / FS generate stay in gen-scale-children.ts.
  */
-import { SCALE_CAPABILITIES, scaleCapabilityCamelHelpers } from "@ggsvelte/spec";
+import { SCALE_CAPABILITIES, scaleCapabilityCamelHelpers } from "@ggts-sh/spec";
 
 // ---------------------------------------------------------------------------
 // Manifest
@@ -24,7 +24,7 @@ export interface ShellSpec {
   family: string;
   /** Full type expression emitted into the shell's `$props()` annotation. */
   optionsType: string;
-  /** Named type imports needed from @ggsvelte/spec (verbatimModuleSyntax-safe). */
+  /** Named type imports needed from @ggts-sh/spec (verbatimModuleSyntax-safe). */
   typeImports: string[];
   /** Index-only re-exports (e.g. ScaleColourContinuous → ScaleColorContinuous.svelte). */
   aliases?: string[];

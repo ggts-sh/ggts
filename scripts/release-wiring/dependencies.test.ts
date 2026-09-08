@@ -35,7 +35,7 @@ describe("R0 release wiring — dependencies", () => {
     expect(dependabot).toContain('dependency-name: "playwright"');
     expect(dependabot).toContain('dependency-name: "@playwright/test"');
     expect(dependabot).toContain('dependency-name: "pnpm"');
-    expect(dependabot).toContain('dependency-name: "@ggsvelte/*"');
+    expect(dependabot).toContain('dependency-name: "@ggts-sh/*"');
     // Action bumps group by dependency name across workflows + composites.
     expect(dependabot).toContain("github-actions:");
     expect(dependabot).toContain('patterns: ["*"]');
@@ -52,7 +52,7 @@ describe("R0 release wiring — dependencies", () => {
     ]) {
       const manifest = JSON.parse(read(path)) as { dependencies?: Record<string, string> };
       for (const [name, range] of Object.entries(manifest.dependencies ?? {})) {
-        if (!name.startsWith("@ggsvelte/")) continue;
+        if (!name.startsWith("@ggts-sh/")) continue;
         expect(range, `${path}: ${name} must be a registry semver range`).not.toStartWith(
           "workspace:",
         );

@@ -2,7 +2,7 @@
  * Theme registry: named-theme resolution contracts and resolve mechanics
  * (split from sequential-and-theme).
  */
-import { THEME_NAMES } from "@ggsvelte/spec";
+import { THEME_NAMES } from "@ggts-sh/spec";
 import { fromAny } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "bun:test";
 

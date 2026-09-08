@@ -6,7 +6,7 @@ import {
   scaleAlphaIdentity,
   scaleLinetypeIdentity,
   scaleLinewidthIdentity,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { runPipeline } from "../../src/pipeline.ts";
 import { candidates, path, size } from "./fixtures.ts";

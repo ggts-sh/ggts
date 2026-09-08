@@ -1,7 +1,7 @@
 /**
  * Axis training shared types and bar-like geom classification.
  */
-import type { LayerSpec } from "@ggsvelte/spec";
+import type { LayerSpec } from "@ggts-sh/spec";
 
 import type { PositionScale } from "../scales/train.js";
 import type { CellValue } from "../table.js";

@@ -11,7 +11,7 @@
    * Emits NO markup; registers a live facet layer during component init and
    * unregisters on destroy. Inert without a <GGPlot> ancestor.
    */
-  import type { FacetInput } from "@ggsvelte/spec";
+  import type { FacetInput } from "@ggts-sh/spec";
 
   import {
     createPlotLayer,

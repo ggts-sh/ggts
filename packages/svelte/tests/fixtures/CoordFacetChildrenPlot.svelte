@@ -4,7 +4,7 @@
    * Mounts GeomPoint (or GeomCol for flip) + Coord and Facet children under GGPlot
    * and optionally captures the plot registry for registrationCount assertions.
    */
-  import type { CoordSpec, FacetInput } from "@ggsvelte/spec";
+  import type { CoordSpec, FacetInput } from "@ggts-sh/spec";
 
   import type { PlotDiagnostic } from "../../src/lib/diagnostics/deprecation.js";
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";

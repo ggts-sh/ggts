@@ -6,7 +6,7 @@
  *   ggsvelte-palette-tables codeSplitting group, so only the pure hex tables
  *   ship — not the core pipeline/render mega-chunk.
  * - SEQUENTIAL_SCHEME_NAMES is mirrored by hand instead of value-importing
- *   the @ggsvelte/spec barrel (which would drag the TypeBox schema
+ *   the @ggts-sh/spec barrel (which would drag the TypeBox schema
  *   mega-chunk). apps/docs/tests/sequential-ramps.test.ts checks the mirror
  *   against the registry, so drift fails CI.
  */
@@ -14,7 +14,7 @@ import { colorBrewerStops } from "../../../../../packages/core/src/scales/colorb
 import { crameriRampStops } from "../../../../../packages/core/src/scales/crameri-ramps.js";
 import { sequentialSchemeRamp } from "../../../../../packages/core/src/scales/sequential-schemes.js";
 
-/** Mirrors SEQUENTIAL_SCHEME_NAMES in @ggsvelte/spec (registry order). */
+/** Mirrors SEQUENTIAL_SCHEME_NAMES in @ggts-sh/spec (registry order). */
 const SEQUENTIAL_SCHEME_NAME_LIST = [
   "viridis",
   "magma",

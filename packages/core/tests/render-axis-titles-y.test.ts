@@ -4,7 +4,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import type { SpecInput } from "@ggsvelte/spec";
+import type { SpecInput } from "@ggts-sh/spec";
 
 import { renderAxisTitles } from "../src/render-svg-panel-chrome.ts";
 import { renderToSVGString } from "../src/render-svg-full.ts";

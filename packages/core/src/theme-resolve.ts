@@ -1,8 +1,8 @@
 /**
  * Theme resolution and CSS var helper. No named-theme catalog import.
  */
-import type { ThemeName, ThemeSpec } from "@ggsvelte/spec";
-import { THEME_NAMES } from "@ggsvelte/spec";
+import type { ThemeName, ThemeSpec } from "@ggts-sh/spec";
+import { THEME_NAMES } from "@ggts-sh/spec";
 
 import { themed, type ThemeTokens } from "./theme-construct.js";
 

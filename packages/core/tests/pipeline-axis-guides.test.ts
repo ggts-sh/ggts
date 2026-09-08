@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, guideAxis, guideNone } from "@ggsvelte/spec";
+import { aes, gg, guideAxis, guideNone } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.js";
 

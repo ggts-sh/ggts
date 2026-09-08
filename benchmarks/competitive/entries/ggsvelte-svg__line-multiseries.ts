@@ -1,4 +1,4 @@
-import { registerBasicLines, registerDefaultOrdinalColor } from "@ggsvelte/core/headless/register";
+import { registerBasicLines, registerDefaultOrdinalColor } from "@ggts-sh/core/headless/register";
 
 import { bundleLineSvg } from "../adapters/ggsvelte-svg";
 

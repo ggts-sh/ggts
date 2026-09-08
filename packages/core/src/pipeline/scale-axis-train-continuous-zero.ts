@@ -1,7 +1,7 @@
 /**
  * Bar/area zero-baseline advisory for continuous positional axes.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import { emitScaleBaselineTransformedOrigin } from "./diagnostics-emit.js";
 import { axisTransform } from "./position-program.js";

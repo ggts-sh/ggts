@@ -1,3 +1,4 @@
+import { measurementProvenance } from "./provenance";
 /**
  * Client bundle sizes across lib × scenario (default bundle cases, or COMPETITIVE_FULL=1).
  * Vite library mode, esbuild minify, gzip -9.
@@ -45,6 +46,8 @@ type BundleResult = {
   error?: string;
 };
 
+process.env.NODE_ENV = "production";
+const provenance = measurementProvenance();
 const results: BundleResult[] = [];
 
 const jobs: { lib: (typeof LIBS)[number]; scenario: ScenarioId; caseId: string }[] = [];
@@ -152,6 +155,7 @@ for (const r of results) {
 
 const payload = {
   generatedAt: new Date().toISOString(),
+  provenance,
   full,
   results,
 };

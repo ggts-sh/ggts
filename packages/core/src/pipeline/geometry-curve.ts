@@ -5,7 +5,7 @@
  * Tessellation is in **panel px** after independent axis scaling so curvature
  * is not aspect-skewed. Only the two true endpoints are semantic anchors.
  */
-import type { CurveParams } from "@ggsvelte/spec";
+import type { CurveParams } from "@ggts-sh/spec";
 
 import { layerPaintFromParams, resolveGlow, resolveGradientPaint } from "../mark-paint.js";
 import type { PathsBatch } from "../scene.js";

@@ -14,7 +14,7 @@ import { runCodemodCLI, type CodemodIO } from "../../src/lib/codemod/cli.js";
 
 const PLOT = [
   '<script lang="ts">',
-  '  import { GeomPoint, GGPlot } from "@ggsvelte/svelte";',
+  '  import { GeomPoint, GGPlot } from "@ggts-sh/svelte";',
   "</script>",
   "",
   '<GGPlot data={rows} theme="dark">',
@@ -104,7 +104,7 @@ describe("runCodemodCLI", () => {
     expect(warnings).toContain("src/Dyn.svelte:5");
     expect(warnings).toContain("theme");
     expect(warnings).toContain(
-      "https://ggsvelte.sh/guide/upgrading#compose-the-theme-as-a-child-layer",
+      "https://ggts.sh/guide/upgrading#compose-the-theme-as-a-child-layer",
     );
   });
 
@@ -145,7 +145,7 @@ describe("runCodemodCLI", () => {
     const h = harness({
       "src/Tail.svelte": [
         '<script lang="ts">',
-        '  import { GGPlot } from "@ggsvelte/svelte";',
+        '  import { GGPlot } from "@ggts-sh/svelte";',
         "</script>",
         "",
         '<GGPlot data={rows} theme="dark" />',

@@ -5,7 +5,7 @@
    * not lose the new registration.
    */
   import { untrack } from "svelte";
-  import type { ThemeName } from "@ggsvelte/spec";
+  import type { ThemeName } from "@ggts-sh/spec";
 
   import {
     provideRegistry,

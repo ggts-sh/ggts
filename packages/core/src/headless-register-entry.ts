@@ -1,5 +1,5 @@
 // @lifecycle-default experimental
-/** Tree-shakeable registration families for `@ggsvelte/core/headless`. */
+/** Tree-shakeable registration families for `@ggts-sh/core/headless`. */
 export { registerBasicAreas } from "./pipeline/register-basic-areas.js";
 export { registerBasicBars } from "./pipeline/register-basic-bars.js";
 export { registerBasicGlyphs } from "./pipeline/register-basic-glyphs.js";

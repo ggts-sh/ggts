@@ -16,23 +16,23 @@
     } else if (entry.name === "transform") {
       shell = `<${entry.component} x="log10" y={{ transform: "sqrt" }} />`;
     }
-    return `import { ${imports.join(", ")} } from "@ggsvelte/svelte";\n\n<GGPlot data={rows} aes={{ x: "x", y: "y" }}>\n  <GeomPoint />\n  ${shell}\n</GGPlot>`;
+    return `import { ${imports.join(", ")} } from "@ggts-sh/svelte";\n\n<GGPlot data={rows} aes={{ x: "x", y: "y" }}>\n  <GeomPoint />\n  ${shell}\n</GGPlot>`;
   });
 
   const helperSnippet = $derived.by(() => {
     if (entry.helper === "") {
       if (entry.name === "flip") {
-        return `// Builder\nimport { gg } from "@ggsvelte/spec";\n\ngg(rows, aes({ x: "category", y: "value" }))\n  .geomCol()\n  .coordFlip()\n  .build();\n// → { …, coord: { type: "flip" } }`;
+        return `// Builder\nimport { gg } from "@ggts-sh/spec";\n\ngg(rows, aes({ x: "category", y: "value" }))\n  .geomCol()\n  .coordFlip()\n  .build();\n// → { …, coord: { type: "flip" } }`;
       }
       return `// Default when coord is omitted. Explicit clear under REPLACE:\n// <CoordCartesian /> → { type: "cartesian" } (normalize() drops bare cartesian)`;
     }
     if (entry.name === "transform") {
-      return `import { ${entry.helper} } from "@ggsvelte/spec";\n\n${entry.helper}({ x: "log10", y: { transform: "sqrt", reverse: true }, clip: true })\n// → { type: "transform", x: { transform: "log10" }, y: { transform: "sqrt", reverse: true } }`;
+      return `import { ${entry.helper} } from "@ggts-sh/spec";\n\n${entry.helper}({ x: "log10", y: { transform: "sqrt", reverse: true }, clip: true })\n// → { type: "transform", x: { transform: "log10" }, y: { transform: "sqrt", reverse: true } }`;
     }
     if (entry.name === "fixed" || entry.name === "sf") {
-      return `import { ${entry.helper} } from "@ggsvelte/spec";\n\n${entry.helper}({ ratio: 1 })\n// → { type: "${entry.typeLiteral}" }  // ratio 1 is the default and normalize() may drop it`;
+      return `import { ${entry.helper} } from "@ggts-sh/spec";\n\n${entry.helper}({ ratio: 1 })\n// → { type: "${entry.typeLiteral}" }  // ratio 1 is the default and normalize() may drop it`;
     }
-    return `import { ${entry.helper} } from "@ggsvelte/spec";\n\n${entry.helper}()`;
+    return `import { ${entry.helper} } from "@ggts-sh/spec";\n\n${entry.helper}()`;
   });
 
   const jsonSnippet = $derived.by(() => {

@@ -8,7 +8,7 @@ import {
   parseTemporalInterval,
   temporalIntervalTicks,
   type TemporalInterval,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { neighbourOverlap } from "./axis-overlap.js";
 import { formatTemporalTickSequence, formatTime } from "./format.js";

@@ -1,8 +1,8 @@
 /**
  * Shared helpers for facet partition (field resolution, value order, row match).
  */
-import { didYouMean } from "@ggsvelte/spec";
-import type { FacetFieldRef } from "@ggsvelte/spec";
+import { didYouMean } from "@ggts-sh/spec";
+import type { FacetFieldRef } from "@ggts-sh/spec";
 
 import { encodeKey } from "../scales/state.js";
 import { bandKey } from "../scales/train.js";

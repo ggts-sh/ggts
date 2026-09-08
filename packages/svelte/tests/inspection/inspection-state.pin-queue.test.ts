@@ -4,7 +4,7 @@
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import type { CandidateFacts, CellValue } from "@ggsvelte/core";
+import type { CandidateFacts, CellValue } from "@ggts-sh/core";
 
 import type { PlotInspection } from "../../src/lib/interaction/interaction.js";
 import {

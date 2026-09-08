@@ -1,4 +1,4 @@
-import { aes, gg, scaleColorSteps } from "@ggsvelte/spec";
+import { aes, gg, scaleColorSteps } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { londonDistricts } from "./data.js";

@@ -2,7 +2,7 @@
  * M2 pipeline — stat summary_bin on point / line / errorbar (#817).
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import type { PathsBatch, PointsBatch, SegmentsBatch } from "../../src/scene.ts";
 import { size } from "./fixtures.ts";

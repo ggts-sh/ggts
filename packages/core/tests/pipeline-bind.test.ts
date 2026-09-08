@@ -4,7 +4,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { bindLayerTable, bindPlotData } from "../src/pipeline/bind-data.ts";
 import { bindLayer } from "../src/pipeline/bind-layer.ts";

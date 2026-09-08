@@ -45,6 +45,10 @@ inputs:
     description: Optional consumer matrix Svelte version
     required: false
     default: ""
+  matrix_react:
+    description: Optional consumer matrix React version
+    required: false
+    default: ""
   runtime_node_version:
     description: Optional resolved node -v (consumer; resolve in the job)
     required: false
@@ -83,6 +87,7 @@ runs:
         MATRIX_PM: ${{ inputs.matrix_pm }}
         MATRIX_PM_VERSION: ${{ inputs.matrix_pm_version }}
         MATRIX_SVELTE: ${{ inputs.matrix_svelte }}
+        MATRIX_REACT: ${{ inputs.matrix_react }}
         RUNTIME_NODE_VERSION: ${{ inputs.runtime_node_version }}
         RUNTIME_PM_VERSION: ${{ inputs.runtime_pm_version }}
       run: |
@@ -109,6 +114,7 @@ runs:
             --matrix-pm "${MATRIX_PM}"
             --matrix-pm-version "${MATRIX_PM_VERSION}"
             --matrix-svelte "${MATRIX_SVELTE}"
+            --matrix-react "${MATRIX_REACT}"
           )
         fi
         if [ -n "${RUNTIME_NODE_VERSION}" ]; then

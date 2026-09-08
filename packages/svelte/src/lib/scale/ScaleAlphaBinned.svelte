@@ -3,7 +3,7 @@
   import {
     scaleAlphaBinned,
     type SequentialStyleScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

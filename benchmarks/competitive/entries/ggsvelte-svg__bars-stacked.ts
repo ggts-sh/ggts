@@ -2,7 +2,7 @@ import {
   registerBandGuide,
   registerBasicBars,
   registerDefaultOrdinalColor,
-} from "@ggsvelte/core/headless/register";
+} from "@ggts-sh/core/headless/register";
 
 import { bundleBarsSvg } from "../adapters/ggsvelte-svg";
 

@@ -1,7 +1,7 @@
 /**
  * Finalize phase: two-pass panel layout only.
  */
-import type { CellValue, CoordRadialSpec, PortableSpec, TemporalScaleKind } from "@ggsvelte/spec";
+import type { CellValue, CoordRadialSpec, PortableSpec, TemporalScaleKind } from "@ggts-sh/spec";
 import { getTemporalRuntime } from "../temporal-runtime.js";
 
 import { buildPolarProjector } from "../coord-polar.js";
@@ -201,7 +201,7 @@ export function finalizePanelLayoutPass(input: {
   // (#1514). Polar-aware guide_axis_theta remains deferred v1 work.
   const panelScalesForLayout = scalesForLayout(normalized, panelScales);
 
-  perfMark("ggsvelte:layout:start");
+  perfMark("ggts:layout:start");
   const panelLayout = runLayoutPanels({
     flip,
     faceted,
@@ -248,7 +248,7 @@ export function finalizePanelLayoutPass(input: {
     options,
     warnings,
   });
-  perfMark("ggsvelte:layout:end");
-  perfMeasure("ggsvelte:layout", "ggsvelte:layout:start", "ggsvelte:layout:end");
+  perfMark("ggts:layout:end");
+  perfMeasure("ggts:layout", "ggts:layout:start", "ggts:layout:end");
   return panelLayout;
 }

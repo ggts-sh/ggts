@@ -4,7 +4,7 @@
  *
  * 0.11.0 deprecated the seven grammar props on `<GGPlot>` (facet, coord,
  * scales, guides, legend, theme, labs) in favour of declaration-only child
- * layers, and shipped `ggsvelte-codemod` to migrate them. Documentation that
+ * layers, and shipped `ggts-codemod` to migrate them. Documentation that
  * still passes them is the loudest possible counter-argument, so this asserts
  * two surfaces are on the child form: the docs app's own Svelte sources plus
  * the getting-started page the guide builds line by line (slice 8), and every
@@ -13,7 +13,7 @@
  * For the sources, the check IS the codemod: a file is migrated when running
  * it over that file rewrites nothing (`changes`) and refuses nothing
  * (`skipped`). Reusing the shipped transform rather than a bespoke regex means
- * the guard cannot drift from what `npx ggsvelte-codemod` would tell a reader
+ * the guard cannot drift from what `npx ggts-codemod` would tell a reader
  * to do. Guide fences are matched textually instead, because most of them are
  * deliberately incomplete and would not parse.
  */

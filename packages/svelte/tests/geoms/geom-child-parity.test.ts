@@ -12,7 +12,7 @@
 import type { Component } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import { GEOM_PARAM_KEYS, KNOWN_GEOMS, type GeomName } from "@ggsvelte/spec";
+import { GEOM_PARAM_KEYS, KNOWN_GEOMS, type GeomName } from "@ggts-sh/spec";
 
 import { toLayerInput } from "../../src/lib/assembly/assemble.js";
 import type { LayerRegistry } from "../../src/lib/geoms/registry.svelte.js";

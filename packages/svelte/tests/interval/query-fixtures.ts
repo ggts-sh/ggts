@@ -1,7 +1,7 @@
 /** Shared SemanticViewport-backed IntervalQueryScene test builder. */
 import { fromPartial } from "@total-typescript/shoehorn";
 
-import type { CandidateFacts, PlotRect, SemanticViewportPanel } from "@ggsvelte/core";
+import type { CandidateFacts, PlotRect, SemanticViewportPanel } from "@ggts-sh/core";
 
 import type { IntervalQueryScene } from "../../src/lib/interval/query.js";
 

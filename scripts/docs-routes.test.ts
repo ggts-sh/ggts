@@ -20,7 +20,7 @@ describe("runtime docs route projection helpers", () => {
   });
 
   it("projects guide sequence and sitemap policy from generated route facts", () => {
-    expect(guideSequence("/guide/getting-started").previous?.path).toBe("/docs");
+    expect(guideSequence("/guide/getting-started").previous?.path).toBe("/guide/agents");
     expect(guideSequence("/guide/getting-started").next?.path).toBe("/guide/statistics-positions");
     expect(guideSequence("/guide/temporal-scales").previous?.path).toBe("/guide/scales-guides");
     expect(guideSequence("/guide/temporal-scales").next?.path).toBe("/guide/facets-coordinates");

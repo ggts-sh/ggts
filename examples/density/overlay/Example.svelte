@@ -6,7 +6,7 @@
     Labs,
     ScaleFillDiscrete,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { galtonChildren } from "./data.js";
 </script>

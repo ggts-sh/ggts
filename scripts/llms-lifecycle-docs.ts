@@ -1,7 +1,7 @@
 /**
  * Lifecycle guide markdown builder for gen-llms (lifecycle.json → prose).
  */
-import { CURRENT_EDITION } from "@ggsvelte/spec";
+import { CURRENT_EDITION } from "@ggts-sh/spec";
 
 /** Shape of the generated lifecycle.json document (scripts/gen-lifecycle.ts). */
 export interface LifecycleDoc {

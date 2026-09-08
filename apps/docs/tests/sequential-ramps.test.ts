@@ -1,4 +1,4 @@
-import { SEQUENTIAL_SCHEME_NAMES } from "@ggsvelte/spec";
+import { SEQUENTIAL_SCHEME_NAMES } from "@ggts-sh/spec";
 import { describe, expect, it } from "vitest";
 
 import { SEQUENTIAL_RAMP_ROWS } from "../src/lib/catalog/sequential-ramps";

@@ -52,10 +52,10 @@ export function buildGeomSvelteSnippet(
   const aes = plotAesLiteral(geom, defaultStat);
   const open = plotOpenTag(aes);
   if (required.length === 0) {
-    return `import { GGPlot, ${component} } from "@ggsvelte/svelte";\n\n${open}\n  <${component} />\n</GGPlot>`;
+    return `import { GGPlot, ${component} } from "@ggts-sh/svelte";\n\n${open}\n  <${component} />\n</GGPlot>`;
   }
   const props = "\n" + required.map((p) => `  ${p}={/* … */}`).join("\n") + "\n";
-  return `import { GGPlot, ${component} } from "@ggsvelte/svelte";\n\n${open}\n  <${component}${props}/>\n</GGPlot>`;
+  return `import { GGPlot, ${component} } from "@ggts-sh/svelte";\n\n${open}\n  <${component}${props}/>\n</GGPlot>`;
 }
 
 /** JSON layer object for a geom detail page (required params only). */

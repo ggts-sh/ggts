@@ -7,7 +7,7 @@ export interface DocsTask {
 export const DOCS_TASKS = [
   {
     label: "Getting started",
-    description: "Install @ggsvelte/svelte and render one chart from a Svelte file.",
+    description: "Install @ggts-sh/svelte and render one chart from a Svelte file.",
     hrefs: ["/guide/getting-started"],
   },
   {

@@ -1,8 +1,11 @@
+# Migration: consumers remain on the old public image until this publisher runs
+# under the new repository and its image permits anonymous pulls. See
+# docs/ggts-migration.md for the transfer order.
 # Build and publish the CI runner image (Playwright + unzip) to GHCR.
 #
 # The image lets container jobs skip the per-job `apt-get install unzip` (slow
 # from GitHub's Azure runners against the public Ubuntu mirrors). Publishing is
-# free: ljodea/ggsvelte is public, so GHCR storage/bandwidth are not billed, and
+# free: ggts-sh/ggts is public, so GHCR storage/bandwidth are not billed, and
 # image pulls inside Actions never bill data transfer.
 #
 # Runs ONLY on pushes to main that touch the Dockerfile or this workflow. After

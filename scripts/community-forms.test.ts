@@ -82,12 +82,10 @@ describe("GitHub community forms", () => {
     expect(config["blank_issues_enabled"]).toBe(false);
     const links = config["contact_links"] as { name: string; url: string }[];
     const urls = links.map((link) => link.url);
-    expect(urls).toContain("https://github.com/ljodea/ggsvelte/discussions/categories/q-a");
-    expect(urls).toContain(
-      "https://github.com/ljodea/ggsvelte/discussions/categories/show-and-tell",
-    );
-    expect(urls).toContain("https://github.com/ljodea/ggsvelte/discussions/categories/ideas");
-    expect(urls).toContain("https://github.com/ljodea/ggsvelte/security/policy");
+    expect(urls).toContain("https://github.com/ggts-sh/ggts/discussions/categories/q-a");
+    expect(urls).toContain("https://github.com/ggts-sh/ggts/discussions/categories/show-and-tell");
+    expect(urls).toContain("https://github.com/ggts-sh/ggts/discussions/categories/ideas");
+    expect(urls).toContain("https://github.com/ggts-sh/ggts/security/policy");
   });
 
   test("collects the interaction and accessibility reproduction contract", () => {

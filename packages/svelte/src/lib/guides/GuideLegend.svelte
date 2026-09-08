@@ -16,7 +16,7 @@
    * entry-SORT enum (LegendSpec). Same word, unrelated concepts.
    * Emits NO markup.
    */
-  import { guideLegend, type LegendGuideOptions } from "@ggsvelte/spec";
+  import { guideLegend, type LegendGuideOptions } from "@ggts-sh/spec";
 
   import type { LegendFocusInput } from "../interaction/interaction.js";
   import type { LegendFilterInput } from "../legend/filter.js";

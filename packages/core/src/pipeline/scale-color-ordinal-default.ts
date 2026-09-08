@@ -1,4 +1,4 @@
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import { CATEGORICAL_PALETTE_10 } from "../scales/categorical-palette-default.js";
 import type { ScaleState } from "../scales/state.js";
@@ -29,7 +29,7 @@ export function resolveDefaultOrdinalColorScale(input: {
     throw new PipelineError(
       "unsupported-param",
       `/scales/${name}/scheme`,
-      `Named color scheme ${JSON.stringify(config.scheme)} is not registered in this build. Call registerOrdinalColor() from @ggsvelte/core/headless/register once at startup.`,
+      `Named color scheme ${JSON.stringify(config.scheme)} is not registered in this build. Call registerOrdinalColor() from @ggts-sh/core/headless/register once at startup.`,
     );
   }
   const editionRange =

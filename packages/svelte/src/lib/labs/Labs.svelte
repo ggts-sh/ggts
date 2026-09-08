@@ -17,7 +17,7 @@
   // Aliased deliberately: svelte-package emits `declare const Labs` for this
   // component into Labs.svelte.d.ts, so a bare `import type { Labs }` here
   // collides with it in every consumer's svelte-check.
-  import type { Labs as LabsSpec } from "@ggsvelte/spec";
+  import type { Labs as LabsSpec } from "@ggts-sh/spec";
 
   import {
     createPlotLayer,

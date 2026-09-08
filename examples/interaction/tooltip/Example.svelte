@@ -5,7 +5,7 @@
     Inspect,
     Labs,
     ThemeLight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { penguins } from "./data.js";
 

@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeDark,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { soporifics } from "./data.js";
 </script>

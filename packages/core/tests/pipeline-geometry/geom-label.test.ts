@@ -2,7 +2,7 @@
  * geom_label — text with background box (#792).
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, validate } from "@ggsvelte/spec";
+import { aes, gg, validate } from "@ggts-sh/spec";
 
 import { createHitGeometry } from "../../src/candidate-hit-geometry.ts";
 import { buildCandidateStoreIndexes } from "../../src/candidate-store-indexes.ts";

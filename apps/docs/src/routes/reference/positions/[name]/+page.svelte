@@ -23,7 +23,7 @@
 
   // Minimal: position name only. Optional positionParams live in the table below.
   const svelteSnippet = $derived(
-    `import { GGPlot, ${primaryComponent} } from "@ggsvelte/svelte";\n\n${plotOpen}\n  <${primaryComponent} position="${entry.name}" />\n</GGPlot>`,
+    `import { GGPlot, ${primaryComponent} } from "@ggts-sh/svelte";\n\n${plotOpen}\n  <${primaryComponent} position="${entry.name}" />\n</GGPlot>`,
   );
 
   const jsonSnippet = $derived(

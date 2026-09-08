@@ -1,0 +1,204 @@
+ggts — third-party attribution notices
+
+LOESS reference implementation
+------------------------------
+packages/core/src/stats/loess.ts adapts its structure (the sorted
+nearest-neighbor window walk and the tricube kernel) from SveltePlot's
+`src/regression/loess.ts` (ISC License, Copyright (c) Gregor Aisch and
+SveltePlot contributors), which is itself adapted from:
+
+  - d3-regression, Copyright (c) Harry Stevens (MIT License)
+    https://github.com/HarryStevens/d3-regression
+  - science.js, Copyright (c) Jason Davies (BSD-3-Clause License)
+    https://github.com/jasondavies/science.js
+  - vega-statistics, Copyright (c) University of Washington Interactive
+    Data Lab (BSD-3-Clause License)
+    https://github.com/vega/vega
+
+The ggts implementation is substantially rewritten for parity with R's
+stats::loess (span-based neighborhoods, configurable polynomial degree,
+prediction at arbitrary points, and exact operator statistics for the
+confidence band); no verbatim code from the above projects remains, but the
+algorithmic lineage is acknowledged here per their license terms and the
+project plan.
+
+Kyoto cherry-blossom full-bloom dates (bundled teaching dataset)
+----------------------------------------------------------------
+packages/core/src/data/kyoto-sakura.ts and the docs asset
+apps/docs/static/kyoto-sakura.json contain peak-bloom dates for Kyoto,
+Japan, 812–2026 CE.
+
+  Data copyright holder: Yasuyuki Aono (Osaka Prefecture University).
+  Original source: http://atmenv.envi.osakafu-u.ac.jp/aono/kyophenotemp4/
+  (closed 2025-03-31; Aono's file KyotoFullFlower7.xls, covering 801–2015,
+  is archived at https://www.ncei.noaa.gov/pub/data/paleo/historical/
+  phenology/japan/LatestVersion/)
+  - 9th–14th centuries acquired and analyzed by Aono and Saito (2010),
+    International Journal of Biometeorology 54, 211–219.
+  - 15th–21st centuries acquired and analyzed by Aono and Kazui (2008),
+    International Journal of Climatology 28, 905–914.
+  - Modern observations are made by a local newspaper in Arashiyama, Kyoto.
+  - The series is continued after Aono's death by Genki Katata (Canon
+    Institute for Global Studies), https://cigs.canon/katata_date/, which
+    is the source for the years following Aono's own file.
+
+The series was retrieved via the cleaned mirror published for the George
+Mason University peak-bloom-prediction competition
+(https://github.com/GMU-CherryBlossomCompetition/peak-bloom-prediction,
+data/kyoto.csv), whose repository content is CC BY-NC-SA 4.0, with the most
+recent years checked against Katata's table; the Kyoto observations
+themselves carry Aono's copyright notice above. ggts
+redistributes the observation dates — factual measurements, reproduced
+without the mirror's editorial content — with the attribution required by
+the source. Anyone publishing charts made from this data should cite Aono
+as above (see the KYOTO_SAKURA_CITATION export).
+
+Binning, boxplot, density, and summary algorithms are independent ports of
+the published ggplot2 (MIT) and R (GPL — algorithms only, no code copied)
+semantics, verified against R-generated fixtures; see
+docs/decisions/0010-m2-stats-notes.md.
+
+Example gallery datasets
+------------------------
+Several datasets under examples/*/*/data.ts are transcribed from HistData
+(https://github.com/friendly/HistData), an R package of historical datasets
+in the history of statistics and data visualization, maintained by Michael
+Friendly. The HistData package is distributed under the GPL; each dataset's
+`data.ts` header names the dataset and its original source.
+
+The underlying tables are digitizations of works published before 1930 —
+among them Halley (1693), Playfair (1821, 1824), Quetelet (1846), Farr
+(1852), Snow (1855), Nightingale (1858), Minard (1869), Guerry (1833),
+Darwin (1876), Michelson (1879), Galton (1886) and Herschel (1833) — whose
+originals are long out of copyright. ggts makes no public-domain claim
+about the HistData package itself; this notice credits HistData and its
+maintainer as the proximate source of the transcriptions.
+
+Individual datasets carrying additional provenance, credited where used:
+  - Snow.* — modern digitization of Snow's Broad Street map by Rusty Dodson
+    and Waldo Tobler
+  - Guerry — digitization by Stephane Dray and Michael Friendly
+  - Langren — reconstruction by Michael Friendly
+  - Cholera — transcription by Nicholas Verlander
+
+Three teaching tables under examples/*/*/data.ts are transcribed instead from
+the `datasets` package that ships with R (https://www.r-project.org/), which
+is distributed under the GPL. As with HistData, the credit owed is to the
+people who made the measurements:
+
+  - `faithful` (examples/bin2d/basic) — eruption and waiting times for the
+    Old Faithful geyser, sourced by R from W. Härdle, "Smoothing Techniques
+    with Implementation in S" (Springer, 1991). Azzalini and Bowman, Applied
+    Statistics 39 (1990), 357–365, published a fuller version of the record.
+  - `quakes` (examples/hex/basic) — 1,000 seismic events near Fiji, one of
+    the Harvard PRIM-H project data sets, obtained by that project from
+    Dr John Woodhouse of the Harvard Department of Geophysics.
+  - `volcano` (examples/contour/basic) — topography of Maunga Whau,
+    Auckland, digitized from a topographic map by Ross Ihaka. R's own note
+    that these heights should not be regarded as accurate is repeated in the
+    example's data.ts header.
+
+The Palmer Archipelago penguin measurements under examples/interaction/*/data.ts
+come from the palmerpenguins R package (https://allisonhorst.github.io/palmerpenguins/)
+by Allison Horst, Alison Hill and Kristen Gorman, released under CC0 1.0
+(public domain dedication). The underlying data were collected by Dr Kristen
+Gorman at Palmer Station, Antarctica, as part of the Palmer Long Term
+Ecological Research programme, and are published by the Environmental Data
+Initiative. The package authors ask that the LTER programme be acknowledged
+in any publication using the data, which this notice does.
+
+Palmer Archipelago penguins (bundled teaching dataset)
+------------------------------------------------------
+packages/core/src/data/palmer-penguins.ts and the docs asset
+apps/docs/static/palmer-penguins.json contain 333 complete penguin body
+measurements (Adelie, Chinstrap, Gentoo) from Palmer Station, Antarctica,
+2007–2009.
+
+  Collected by Dr Kristen Gorman at Palmer Station as part of the Palmer
+  Long Term Ecological Research programme; published by the Environmental
+  Data Initiative.
+  Package authors: Allison Horst, Alison Hill and Kristen Gorman.
+  Source package: https://allisonhorst.github.io/palmerpenguins/
+  License: CC0 1.0 Universal (public domain dedication).
+
+ggts redistributes the complete-cases rows (11 incomplete of 344 dropped)
+with the LTER acknowledgement the package authors request. Anyone publishing
+charts made from this data should cite the package authors and acknowledge
+Palmer LTER (see the PALMER_PENGUINS_CITATION export).
+
+EPA fuel economy — popular models (bundled teaching dataset)
+------------------------------------------------------------
+packages/core/src/data/mpg.ts and the docs asset apps/docs/static/mpg.json
+contain 234 vehicle configurations for 38 popular models in model years 1999
+and 2008.
+
+  Underlying measurements: U.S. Environmental Protection Agency fuel-economy
+  data published at https://fueleconomy.gov/. U.S. government works are not
+  subject to copyright in the United States.
+  Popular-model subset and column layout: ggplot2::mpg
+  (https://ggplot2.tidyverse.org/reference/mpg.html), MIT License.
+
+ggts redistributes the same popular-model subset used as ggplot2's classic
+teaching table. Cite the EPA source for the measurements and ggplot2 for the
+subset definition when publishing charts (see the MPG_CITATION export).
+
+TidyTuesday teaching tables (bundled)
+-------------------------------------
+Four additional teaching tables under packages/core/src/data/ and the
+matching apps/docs/static/*.json assets are curated subsets of TidyTuesday
+weekly datasets (https://github.com/rfordatascience/tidytuesday). The
+TidyTuesday project releases its curated tables under CC0 1.0 Universal.
+ggts redistributes the rows below with that dedication and with credit to
+each table's original measurement source. Cite the primary source when
+publishing charts (see each *_CITATION export).
+
+  chocolate-bars.ts / chocolate-bars.json — 2,530 Flavors of Cacao bar reviews
+    (cocoa percent, rating, company location, bean origin). Primary source:
+    http://flavorsofcacao.com/chocolate_database.html. Via TidyTuesday
+    2022-01-18.
+
+  coffee-ratings.ts / coffee-ratings.json — 1,338 Coffee Quality Institute
+    cupping lots (total cup points, aroma, flavor, acidity, body, origin,
+    processing). Compiled by James LeDoux from CQI review pages (January 2018):
+    https://github.com/jldbc/coffee-quality-database. Via TidyTuesday
+    2020-07-07. Altitude outliers outside 200–3000 m and zero sensory scores
+    are dropped.
+
+  beer-production.ts / beer-production.json — 36 national US beer-production
+    totals by package type (bottles and cans, kegs and barrels, on premises),
+    2008–2019, stored as millions of barrels. Primary source: US Alcohol and
+    Tobacco Tax and Trade Bureau (TTB). Via TidyTuesday 2020-03-31. US
+    government works are not subject to copyright in the United States.
+
+  fastfood-menu.ts / fastfood-menu.json — 515 US fast-food entrée nutrition
+    rows (calories, fat, protein, sodium) across eight chains. Primary source:
+    fastfoodnutrition.org entrée tables. Via TidyTuesday 2018-09-04.
+
+Google turbo colormap (bundled sequential scheme stops)
+-------------------------------------------------------
+packages/core/src/scales/sequential-schemes.ts includes a 10-stop sample of
+Google's turbo colormap used when authors select scheme/option "turbo".
+
+  Copyright 2019 Google LLC
+  License: Apache License 2.0
+  https://www.apache.org/licenses/LICENSE-2.0
+  https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html
+
+The stops are a clean-room hex sample of the published map for portable
+scheme lookup — not a copy of ggplot2 R sources.
+
+Crameri Scientific colour maps (bundled continuous scheme stops)
+----------------------------------------------------------------
+packages/core/src/scales/crameri-ramps.ts samples 11 evenly spaced #rrggbb
+stops from each continuous and cyclic (*O) map in Scientific Colour Maps
+v8.0.1. packages/core/src/scales/crameri-categorical.ts vendors the first 10
+colours of each official categorical (*S) table.
+
+  Copyright (c) 2023 Fabio Crameri
+  License: MIT
+  https://www.fabiocrameri.ch/colourmaps/
+  https://doi.org/10.5281/zenodo.1243862
+
+  Crameri, F. (2018). Scientific colour maps. Zenodo.
+  Crameri, F. (2018), Geodynamic diagnostics, scientific visualisation and
+  StagLab 3.0, Geosci. Model Dev., 11, 2541–2562.

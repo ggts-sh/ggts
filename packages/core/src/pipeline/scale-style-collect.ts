@@ -1,5 +1,5 @@
 /** Collect mapped style values across panel frames and source catalogs. */
-import type { StyleAesthetic } from "@ggsvelte/spec";
+import type { StyleAesthetic } from "@ggts-sh/spec";
 
 import { encodeKey } from "../scales/state.js";
 import type { CellValue, ColumnTable } from "../table.js";

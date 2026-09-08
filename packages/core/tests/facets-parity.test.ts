@@ -14,14 +14,14 @@
  *
  * Known representational difference (deliberate, decision 0005 lineage):
  * ggplot2 orders discrete domains by factor level (alphabetical for
- * characters); ggsvelte's band domains are first-seen. Assertions therefore
+ * characters); ggts's band domains are first-seen. Assertions therefore
  * match BY LABEL, never by band index.
  */
 import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { gg, aes } from "@ggsvelte/spec";
+import { gg, aes } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.ts";
 import type { RectsBatch, Scene } from "../src/scene.ts";
@@ -121,7 +121,7 @@ describe("facet_wrap + count — R parity (pipeline level)", () => {
       }
     }
     // Every R row with a nonzero count must have been matched (ggplot2 emits
-    // zero-count rows for categories absent from a panel; ggsvelte's count
+    // zero-count rows for categories absent from a panel; ggts's count
     // stat emits only present categories — the zero bars draw nothing).
     const nonzero = fixture.expected.count.filter((c) => c > 0).length;
     expect(asserted).toBe(nonzero);

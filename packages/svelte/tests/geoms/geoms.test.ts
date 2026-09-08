@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from "vitest";
 
-import type { AesInput, GeomName } from "@ggsvelte/spec";
+import type { AesInput, GeomName } from "@ggts-sh/spec";
 
 import type { PortableSpec } from "../../src/lib/index.js";
 import GeomArea from "../../src/lib/geoms/GeomArea.svelte";

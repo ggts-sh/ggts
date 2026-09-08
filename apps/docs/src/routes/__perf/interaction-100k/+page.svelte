@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { RenderModel } from "@ggsvelte/core";
-  import { GGPlot, Inspect } from "@ggsvelte/svelte";
+  import type { RenderModel } from "@ggts-sh/core";
+  import { GGPlot, Inspect } from "@ggts-sh/svelte";
 
   type Row = Readonly<{
     id: number;

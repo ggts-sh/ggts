@@ -3,7 +3,7 @@
 
   import CopyCode from "$lib/components/CopyCode.svelte";
 
-  const guideAxisExample = `import { GeomPoint, GGPlot, GuideAxis, Labs } from "@ggsvelte/svelte";
+  const guideAxisExample = `import { GeomPoint, GGPlot, GuideAxis, Labs } from "@ggts-sh/svelte";
 
 <GGPlot data={rows} aes={{ x: "hour", y: "pm25" }}>
   <GeomPoint />
@@ -39,7 +39,7 @@
   />
 </GGPlot>`;
 
-  const builderGuidesExample = `import { guideAxis, guideNone } from "@ggsvelte/spec";
+  const builderGuidesExample = `import { guideAxis, guideNone } from "@ggts-sh/spec";
 
 const guides = {
   x: guideAxis({ title: "Hour", showTicks: false }),
@@ -221,7 +221,7 @@ const guides = {
 
   <h2 id="builder-and-json">Builder and JSON</h2>
   <p>
-    Portable helpers from <code>@ggsvelte/spec</code> match the Svelte shells:
+    Portable helpers from <code>@ggts-sh/spec</code> match the Svelte shells:
   </p>
   <CopyCode
     language="ts"

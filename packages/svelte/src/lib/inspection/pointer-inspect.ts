@@ -14,7 +14,7 @@
  * queue fields — load-bearing for touch-tap override of a pending rAF.
  */
 
-import type { CandidateFacts, RenderModel } from "@ggsvelte/core";
+import type { CandidateFacts, RenderModel } from "@ggts-sh/core";
 
 import type { InteractionAction, InteractionFrameToken } from "../interaction/reducer.js";
 import type { InteractionSource } from "../interaction/interaction.js";

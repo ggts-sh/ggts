@@ -8,7 +8,7 @@
   ],
   "surfaces": [
     {
-      "package": "@ggsvelte/spec",
+      "package": "@ggts-sh/spec",
       "entry": ".",
       "source": "packages/spec/src/index.ts",
       "exports": {
@@ -3755,7 +3755,7 @@
       }
     },
     {
-      "package": "@ggsvelte/spec",
+      "package": "@ggts-sh/spec",
       "entry": "./portable",
       "source": "packages/spec/src/portable-entry.ts",
       "exports": {
@@ -3846,7 +3846,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": ".",
       "source": "packages/core/src/index.ts",
       "exports": {
@@ -5461,7 +5461,957 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
+      "entry": "./interaction",
+      "source": "packages/core/src/interaction-entry.ts",
+      "exports": {
+        "A11Y_TABLE_CAP": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "AreaInteractionTool": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "AreaMode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BRUSH_MIN_SPAN_PX": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "BoundsAction": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsAxis": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsCategoryValue": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsDraft": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsDraftErrors": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsDraftValidation": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsEditorInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsEditorInputForScaleOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsInputSource": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BoundsScale": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BrushZoomModel": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BuildIntervalSelectionFromSceneInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "BuildIntervalSelectionInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CROSSHAIR_BOX_GAP_PAD": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "CandidateAnchorKeys": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CandidateLookup": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ConsumeIntervalKeysInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ContinuousZoomDomains": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ControllerDatumIdentity": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CreatePlotInteractionOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CrosshairGapBox": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CrosshairSegment": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "DefaultTooltipRow": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "EMPHASIS_RING_DENSITY_LIMIT": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "FacetIntervalPreset": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "FormatTooltipCellOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "GlyphExtentBatch": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "GlyphHoverBox": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "GlyphObstacleBatch": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "GlyphObstaclePanel": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "HOVER_CROSSHAIR_GAP_RADIUS": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "HOVER_RING_RADIUS": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "INTERACTION_DIAGNOSTIC_CATALOG": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "InspectInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InspectMode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InspectOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InspectionSnapshotCompleteness": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionConfigInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionDiagnostic": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionDiagnosticCode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionSource": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionTool": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractiveLegendEntry": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "IntervalConsumptionCandidate": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "IntervalDomain": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "IntervalQueryModelPort": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "IntervalQueryScene": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "IntervalSelection": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "IntervalSelectionFromRowsInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendEntryAction": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendEntryIdentity": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFilterClause": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFilterEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFilterInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFilterOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusChange": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusClear": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendInteractionSource": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendKeyIndexAdapter": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendKeyIndexPlotModel": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LineageCandidate": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "MergePresentationFocusOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "NonEmptyReadonlyArray": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PanelBounds": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PanelIntervalLookupCandidate": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotDatum": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInspection": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInspectionChange": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInspectionClear": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionChange": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionController": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionInterval": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionMutationOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionScope": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionSnapshot": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionTransition": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionZoomOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotSelection": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PointSelection": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PreciseBoundsApplyEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PresentationAnchor": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PresentationChrome": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PresentationInspectionFocus": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PresentationSeedFacts": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ReadonlyIntervalDomains": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ReadonlyZoomDomains": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "RecomputePanelIntervalFromLookupInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "RecomputePanelIntervalProjectionInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ResolveInspectionInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ResolveIntervalQueryPartsInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ResolveSemanticKeysResult": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ResolvedInspectMode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ResolvedInteractionConfig": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ResolvedTarget": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ScopedInteractionDomain": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ScopedInteractionInterval": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ScopedInteractionKeys": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ScopedZoomChannel": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "SelectAreaMode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "SelectInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "SelectOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "SemanticIntervalAxis": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "TRANSIENT_MEMBER_LIMIT": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "TooltipAxisFormatters": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "TooltipField": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "TooltipFieldLabs": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "TooltipTotal": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "TooltipTotalPlacement": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomDomains": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomMode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "a11yMarkCount": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "a11yRows": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "anchorsFromCandidateKeys": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "applyEmphasisRingDensityGate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "applyZoomToSpec": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "boundsEditorInputForScale": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "buildInteractiveLegendEntries": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "buildIntervalSelection": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "buildIntervalSelectionFromScene": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "buildLegendEntryKeyIndex": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "buildLegendEntryKeyIndexForPlot": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "buildPointSelectionEvent": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "buildZoomEvent": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "candidateValueContribution": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "clamp": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "clampLegendRovingIndex": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "clearIntervalSelectionEvent": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "collapseIdenticalDisplayMembers": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "collectCandidates": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "collectCanvasRowIndexes": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "compositionGroupTotal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "consumeIntervalKeys": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "continuousZoomDomainsFromScopes": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "contributionIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "createPlotInteraction": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "crosshairGapForBox": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "crosshairGlyphObstacles": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "defaultTooltipRows": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "fieldsForDefaultTooltip": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "filterDomainBySelectMode": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "filterScopeChannelsByZoomMode": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "filterZoomDomainsByMode": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "formatBoundsDraft": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "formatTooltipCell": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "freezeIntervalDomain": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "frozenZoomDomains": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "gappedCrosshairSegments": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "gappedCrosshairSegmentsWithObstacles": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "glyphExtentsFromBatch": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "glyphHoverBox": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "groupHasAdditivePosition": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "groupMagnitudeTotal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "hoverChromeForKind": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "intervalQuerySceneFromModel": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "intervalSelectionFromRows": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isAreaTool": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isBrushTooSmall": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isLegendValueKeyVisible": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isLegendValueVisible": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "iterateCandidates": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "keysForLegendEntry": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "legendFilterValueKeys": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "legendIdentityKey": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "legendInteractionSource": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "lineageRowIndexesFromCandidates": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "materializeInspection": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "mergePresentationFocusKeys": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "moveLegendRovingIndex": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "nextLegendFilterValues": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "nextLocalIntervalRecords": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "nextPointSelectionKeys": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "normalizeInteractionConfig": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "normalizedRect": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "panelBoundsFrom": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "persistentSelectionOrNull": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "presentationChromeForKind": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "presentationFocusFromInspection": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "recomputePanelIntervalFromLookup": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "recomputePanelIntervalProjection": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "reconcileLegendFilterValues": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "resolveBrushZoomDomains": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "resolveBrushZoomFromModel": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "resolveInspection": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "resolveIntervalQueryParts": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "resolveSemanticKeys": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "resolveSemanticKeysForPlot": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "resolvedTarget": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "sameIntervalRecord": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "sameOrderedPropertyKeys": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "samePropertyKeySet": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "sameZoomDomains": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "sanitizePartialZoomDomains": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "selectHoverDisplayMembers": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "selectTransientMembers": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "semanticAxisFromBounds": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "stableZoomDomains": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "tooltipDisplayPayloadToken": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "tooltipFieldLabel": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "tooltipTotalPlacement": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "uniqueKeysFromRowIndexes": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "validateBoundsDraft": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "valueFieldName": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        }
+      }
+    },
+    {
+      "package": "@ggts-sh/core",
+      "entry": "./data",
+      "source": "packages/core/src/data/index.ts",
+      "exports": {
+        "BEER_PRODUCTION_CITATION": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "BeerProductionRow": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CHOCOLATE_BARS_CITATION": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "COFFEE_RATINGS_CITATION": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ChocolateBarRow": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CoffeeRatingRow": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "FASTFOOD_MENU_CITATION": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "FastfoodMenuRow": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "KYOTO_SAKURA_CITATION": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "KyotoSakuraRow": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "MPG_CITATION": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "MpgRow": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PALMER_PENGUINS_CITATION": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "PalmerPenguinRow": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "beerProduction": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "chocolateBars": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "coffeeRatings": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "fastfoodMenu": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "kyotoSakura": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "mpg": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "palmerPenguins": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        }
+      }
+    },
+    {
+      "package": "@ggts-sh/core",
       "entry": "./render",
       "source": "packages/core/src/render-entry.ts",
       "exports": {
@@ -5640,7 +6590,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./headless",
       "source": "packages/core/src/headless-entry.ts",
       "exports": {
@@ -5815,7 +6765,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./headless/register",
       "source": "packages/core/src/headless-register-entry.ts",
       "exports": {
@@ -5902,7 +6852,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./temporal",
       "source": "packages/core/src/temporal-entry.ts",
       "exports": {
@@ -5953,7 +6903,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./dom",
       "source": "packages/core/src/dom/index.ts",
       "exports": {
@@ -5996,7 +6946,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./svg-live",
       "source": "packages/core/src/svg-live/index.ts",
       "exports": {
@@ -6019,7 +6969,7 @@
       }
     },
     {
-      "package": "@ggsvelte/compose",
+      "package": "@ggts-sh/compose",
       "entry": ".",
       "source": "packages/compose/src/index.ts",
       "exports": {
@@ -6028,6 +6978,34 @@
           "lifecycle": "experimental"
         },
         "AssemblePortableSpecInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CompositionDiagnostic": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "CompositionDiagnosticCode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "DuplicateMergeKeyDiagnostic": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "DuplicateMergeKeyKind": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "DuplicatePlotLayerDiagnostic": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "DuplicatePlotLayerKind": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "DuplicateScaleChannelDiagnostic": {
           "kind": "type",
           "lifecycle": "experimental"
         },
@@ -6123,7 +7101,27 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "collectCompositionDiagnostics": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "compositionAdvisoryDedupKey": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "deprecatedGrammarPropPattern": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "duplicateMergeKeyDiagnostic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "duplicatePlotLayerDiagnostic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "duplicateScaleChannelDiagnostic": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -6136,6 +7134,22 @@
           "lifecycle": "experimental"
         },
         "grammarDocUrl": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isCompositionDiagnostic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isDuplicateMergeKeyDiagnostic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isDuplicatePlotLayerDiagnostic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isDuplicateScaleChannelDiagnostic": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -6162,7 +7176,7 @@
       }
     },
     {
-      "package": "@ggsvelte/svelte",
+      "package": "@ggts-sh/svelte",
       "entry": ".",
       "source": "packages/svelte/src/lib/index.ts",
       "exports": {
@@ -9233,7 +10247,1430 @@
       }
     },
     {
-      "package": "@ggsvelte/cli",
+      "package": "@ggts-sh/react",
+      "entry": ".",
+      "source": "packages/react/src/index.ts",
+      "exports": {
+        "AesInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "AreaMode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ControllerDatumIdentity": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "Coord": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "CoordFixed": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "CoordFlip": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "CoordPolar": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "CoordRadial": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "CoordSf": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "CreatePlotInteractionOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "Facet": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "FacetGrid": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "FacetIntervalPreset": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "FacetWrap": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GGPlot": {
+          "kind": "value",
+          "lifecycle": "stable-intent"
+        },
+        "GGPlotHandle": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "GGPlotProps": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "GeomAbline": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomArea": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomBar": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomBin2d": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomBlank": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomBoxplot": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomCol": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomContour": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomCount": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomCrossbar": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomCurve": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomDensity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomDensity2d": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomDensity2dFilled": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomDotplot": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomErrorbar": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomFreqpoly": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomFunction": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomHex": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomHistogram": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomHline": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomJitter": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomLabel": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomLine": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomLinerange": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomMap": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomPath": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomPoint": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomPointrange": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomPolygon": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomQq": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomQqLine": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomQuantile": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomRaster": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomRect": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomRibbon": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomRug": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomRule": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomSegment": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomSf": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomSfLabel": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomSfText": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomSmooth": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomSpoke": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomStep": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomText": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomTile": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomViolin": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GeomVline": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GuideAxis": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GuideColorbar": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GuideColorsteps": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GuideLegend": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "GuideNone": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "Guides": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "INTERACTION_DIAGNOSTIC_CATALOG": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "Inspect": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "InspectInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InspectMode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InspectOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionDiagnostic": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionDiagnosticCode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionSource": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "InteractionTool": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "IntervalSelection": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "Labs": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "LayerInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "Legend": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "LegendFilterClause": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFilterEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFilterInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFilterOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusChange": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusClear": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "LegendFocusOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "NonEmptyReadonlyArray": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotDatum": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInspection": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInspectionChange": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInspectionClear": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionChange": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionController": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionInterval": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionMutationOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionScope": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionSnapshot": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionTransition": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotInteractionZoomOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PlotSelection": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PointSelection": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "PortableSpec": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ReadonlyIntervalDomains": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ReadonlyZoomDomains": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "RenderModel": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ResolvedInspectMode": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ResolvedInteractionConfig": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "RunOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "Scale": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleAlphaBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleAlphaContinuous": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleAlphaDate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleAlphaDatetime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleAlphaDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleAlphaIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleAlphaManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleAlphaOrdinal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorBrewer": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorContinuous": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorDate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorDatetime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorDistiller": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorFermenter": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorGradient": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorGradient2": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorGradientn": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorGrey": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorHue": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorLog10": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorOrdinal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorSqrt": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorSteps": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorSteps2": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorStepsn": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorViridisB": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorViridisC": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColorViridisD": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourBrewer": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourContinuous": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourDate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourDatetime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourDistiller": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourFermenter": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourGradient": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourGradient2": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourGradientn": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourGrey": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourHue": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourLog10": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourOrdinal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourSqrt": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourSteps": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourSteps2": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourStepsn": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourViridisB": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourViridisC": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleColourViridisD": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillBrewer": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillContinuous": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillDate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillDatetime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillDistiller": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillFermenter": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillGradient": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillGradient2": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillGradientn": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillGrey": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillHue": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillLog10": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillOrdinal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillSqrt": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillSteps": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillSteps2": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillStepsn": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillViridisB": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillViridisC": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleFillViridisD": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinetypeBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinetypeDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinetypeIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinetypeManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinewidthBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinewidthContinuous": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinewidthDate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinewidthDatetime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinewidthDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinewidthIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinewidthManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleLinewidthOrdinal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleRadius": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleShapeBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleShapeDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleShapeIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleShapeManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleShapeOrdinal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeArea": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeBinnedArea": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeContinuous": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeDate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeDatetime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeIdentity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleSizeOrdinal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleState": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ScaleXBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXContinuous": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXDate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXDatetime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXLog10": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXMonthDay": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXReverse": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXSqrt": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleXTime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYBinned": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYContinuous": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYDate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYDatetime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYDiscrete": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYLog10": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYMonthDay": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYReverse": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYSqrt": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ScaleYTime": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "Scene": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ScopedInteractionDomain": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ScopedInteractionInterval": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ScopedInteractionKeys": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "SelectInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "SelectOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "SemanticIntervalAxis": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "SpecInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "Stratum": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "Theme": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeBase": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeBw": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeClassic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeClean": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeDark": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeDefault": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeEconomist": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeEconomistwhite": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeFew": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeFivethirtyeight": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeGgplot2": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeGray": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeGrey": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeHc": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeHcdark": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeHrbr": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeIgray": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeLight": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeLinedraw": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeMap": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeMinimal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemePander": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeSolarized": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeSolarized2": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeSolarized2dark": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeSolarizeddark": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeSolid": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeStata": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeStatas1color": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeTest": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeTufte": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeVoid": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "ThemeWsj": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "TooltipField": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "TooltipTotal": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomDomains": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomEvent": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ZoomOptions": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "aes": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "assemblePortableSpec": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "createPlotInteraction": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "gg": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "installTemporal": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isFacetedPlotIntent": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "isPortable": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "lintSpec": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "normalize": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "normalizeInteractionConfig": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "planStrata": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerAbline": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerAlign": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerAll": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBin": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBin2d": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBoxplot": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerConnect": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerContour": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerCrossbar": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerCurve": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerDensity": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerDensity2d": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerDensity2dFilled": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerDotplot": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerEcdf": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerEllipse": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerErrorbar": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerFunction": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerHex": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerLinerange": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerManual": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerMap": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerPointrange": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerPolygon": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerQq": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerQqLine": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerQuantile": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerRaster": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerRug": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSf": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSfLabel": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSfText": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSmooth": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSpoke": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSummary": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSummaryBin": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSummaryRolling": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerTile": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerUnique": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerViolin": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "renderToSVGString": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "resolveInteractionScope": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "runPipeline": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "toLayerInput": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "toPortable": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "validate": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        }
+      }
+    },
+    {
+      "package": "@ggts-sh/cli",
       "entry": ".",
       "source": "packages/cli/src/index.ts",
       "exports": {
@@ -9242,6 +11679,10 @@
           "lifecycle": "experimental"
         },
         "runCLI": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "runCommand": {
           "kind": "value",
           "lifecycle": "experimental"
         }

@@ -2,7 +2,7 @@
  * M2 pipeline — geom_sf_text + stat_sf_coordinates (#809 phase 2).
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import type { GlyphsBatch } from "../../src/scene.ts";
 

@@ -3,7 +3,7 @@
  *
  * Heavy stats (loess/smooth, density, contour, sf, …) live in separate modules
  * and register here. The full package entry registers everything; the lean
- * `@ggsvelte/core/render` entry registers nothing extra so identity charts
+ * `@ggts-sh/core/render` entry registers nothing extra so identity charts
  * (scatter, plain line) do not pull those modules into the client graph.
  */
 import type { ColumnTable } from "../table.js";

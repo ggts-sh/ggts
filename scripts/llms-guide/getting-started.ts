@@ -1,3 +1,9 @@
+import {
+  REACT_QUICKSTART_SOURCE,
+  SVELTE_QUICKSTART_SOURCE,
+  TYPESCRIPT_QUICKSTART_SOURCE,
+} from "../agent-quickstart";
+
 /**
  * Getting-started guide section (docs pages + llms surfaces).
  */
@@ -12,30 +18,75 @@ import {
 
 export const GETTING_STARTED_MD = `# Getting started
 
-ggsvelte is ggplot2's layered grammar for Svelte 5. A plot is data + an
+ggts is ggplot2's layered grammar for TypeScript, React, and Svelte 5. A plot is data + an
 aesthetic mapping + one or more layers, and every plot normalizes to a
 PortableSpec: strict JSON, no functions, no closures. That JSON is the surface
 to generate, validate, and correct against.
 
-## Install
+## Choose your surface
+
+For an agent sandbox, start with the [CLI and skill setup](/guide/agents).
+For a browser application, install its adapter. React and Svelte use the
+same PortableSpec and grammar; the rest of your application chooses the framework.
+
+## React
 
 \`\`\`sh complete
-bun add @ggsvelte/svelte
-# or: npm install @ggsvelte/svelte
-# or: pnpm add @ggsvelte/svelte
+npm install @ggts-sh/react
 \`\`\`
 
-\`@ggsvelte/spec\` (schema, validate, builder) and \`@ggsvelte/core\`
+React DOM 18.2 and 19 are supported. In a server-component application, keep
+interactive charts behind a client component boundary. Save SalesChart.tsx:
+
+\`\`\`tsx complete
+${REACT_QUICKSTART_SOURCE}
+\`\`\`
+
+## Svelte
+
+\`\`\`svelte complete
+${SVELTE_QUICKSTART_SOURCE}
+\`\`\`
+
+## TypeScript
+
+For a script without a browser or framework, install the core and spec packages:
+
+\`\`\`sh complete
+npm install @ggts-sh/core @ggts-sh/spec
+\`\`\`
+
+Save this complete program as \`chart.ts\`:
+
+\`\`\`ts complete
+${TYPESCRIPT_QUICKSTART_SOURCE}
+\`\`\`
+
+Run it with Bun to write the SVG:
+
+\`\`\`sh complete
+bun chart.ts > chart.svg
+\`\`\`
+
+## Svelte install and composition
+
+\`\`\`sh complete
+bun add @ggts-sh/svelte @ggts-sh/core
+# or: npm install @ggts-sh/svelte @ggts-sh/core
+# or: pnpm add @ggts-sh/svelte @ggts-sh/core
+\`\`\`
+
+\`@ggts-sh/spec\` (schema, validate, builder) and \`@ggts-sh/core\`
 (pipeline, headless render) are dependencies of the Svelte package. Install
-them directly for spec-only or headless work. The \`ggsvelte-render\` CLI is
-its own package — install \`@ggsvelte/cli\` in every sandbox where an agent
+them directly when importing their APIs or bundled data. The \`ggts\` CLI is
+its own package — install \`@ggts-sh/cli\` in every sandbox where an agent
 authors specs, so validation errors and chart-quality warnings surface
 before a chart ships. The agent skill is also its own package:
-\`@ggsvelte/skill\` (\`SKILL.md\` + \`references/\` at the package root) —
-install it and copy/symlink \`node_modules/@ggsvelte/skill\` into the agent's
-skills directory as \`ggsvelte/\` (or point the agent at
-\`node_modules/@ggsvelte/skill/SKILL.md\` directly). Bundled teaching data
-lives at \`@ggsvelte/svelte/data\`.
+\`@ggts-sh/skill\` (\`SKILL.md\` + \`references/\` at the package root) —
+install it and copy/symlink \`node_modules/@ggts-sh/skill\` into the agent's
+skills directory as \`ggts/\` (or point the agent at
+\`node_modules/@ggts-sh/skill/SKILL.md\` directly). Bundled teaching data
+lives at \`@ggts-sh/core/data\`.
 
 ## A complete Svelte file
 
@@ -90,7 +141,7 @@ loop: emit, validate, apply the fix at the path, re-emit. Do not guess, and do
 not fall back to a different chart — the fix says what is wrong.
 
 \`\`\`ts fragment
-import { validate } from "@ggsvelte/spec";
+import { validate } from "@ggts-sh/spec";
 
 const result = validate(spec);
 if (!result.ok) {
@@ -128,7 +179,7 @@ ${QUICKSTART_BUILDER_FRAGMENT}
 
 ## Bundled data
 
-\`@ggsvelte/svelte/data\` exports seven cited teaching tables (each also served
+\`@ggts-sh/core/data\` exports seven cited teaching tables (each also served
 as JSON under the same name on the docs site):
 
 - \`kyotoSakura\` — 838 peak cherry-blossom dates for Kyoto, 812-2026 CE

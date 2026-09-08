@@ -1,7 +1,7 @@
 /**
  * Bind data (plot + per-layer), facet-partition, and build per-panel LayerFrames.
  */
-import type { NormalizedSpec, PortableSpec } from "@ggsvelte/spec";
+import type { NormalizedSpec, PortableSpec } from "@ggts-sh/spec";
 
 import { ColumnTable, type CellValue } from "../table.js";
 

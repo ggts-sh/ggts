@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 
-import { GUIDE_REFERENCE, KNOWN_GUIDE_TYPES, type GuideTypeName } from "@ggsvelte/spec";
+import { GUIDE_REFERENCE, KNOWN_GUIDE_TYPES, type GuideTypeName } from "@ggts-sh/spec";
 
 import type { EntryGenerator, PageServerLoad } from "./$types";
 

@@ -35,19 +35,25 @@ for (const route of [
 test("getting started presents install, a complete file, then PortableSpec", async ({ page }) => {
   await page.goto(GUIDE_ROUTE);
   const article = page.locator("article.guide");
-  const text = (await article.textContent()) ?? "";
+  const headings = await article.locator("h2").allTextContents();
 
-  const order = ["Install", "A complete Svelte file", "The PortableSpec contract"];
+  const order = [
+    "Choose your surface",
+    "React",
+    "Svelte",
+    "A complete Svelte file",
+    "The PortableSpec contract",
+  ];
   let previous = -1;
   for (const heading of order) {
-    const at = text.indexOf(heading);
+    const at = headings.indexOf(heading);
     expect(at, `missing "${heading}"`).toBeGreaterThan(previous);
     previous = at;
   }
 
   const completeFile = article.locator("pre code").filter({ hasText: "GeomPoint" }).first();
   await expect(completeFile).toContainText("GGPlot");
-  await expect(completeFile).toContainText('from "@ggsvelte/svelte/data"');
+  await expect(completeFile).toContainText('from "@ggts-sh/core/data"');
   // Width follows the container and height defaults; neither belongs in the
   // file a reader copies.
   await expect(completeFile).not.toContainText("width=");
@@ -79,9 +85,7 @@ test("errors deep links expose source-qualified recovery and copy safe recipes",
 
   await page.goto("/guide/errors#invalid-json");
   await expect(page.locator("#invalid-json")).toBeVisible();
-  await expect(page.locator("#invalid-json ~ .guide-code-copy").first()).toContainText(
-    "ggsvelte-render",
-  );
+  await expect(page.locator("#invalid-json ~ .guide-code-copy").first()).toContainText("ggts");
 });
 
 test("guide code copy falls back to selecting text when clipboard access is denied", async ({
@@ -115,7 +119,7 @@ test("desktop docs shell exposes chapter, breadcrumb, contents, and sequence nav
   const chapters = page.getByRole("navigation", { name: "Guide chapters" });
   await expect(chapters).toBeVisible();
   // Overview + consolidated guide/reference chapters (Scales + Coords + Labs/Axes/Labels + Themes/Palettes).
-  await expect(chapters.getByRole("link")).toHaveCount(26);
+  await expect(chapters.getByRole("link")).toHaveCount(27);
   await expect(chapters.getByRole("link", { name: "Dates without preprocessing" })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toContainText(
     "Getting started",
@@ -211,9 +215,9 @@ test("appearance control remains usable when browser storage is unavailable", as
 test("route metadata is canonical, singular, and aliases are noindex", async ({ page }) => {
   // Search index is lazy-loaded (#948); journeys project budget is 60s (#944).
   await page.goto(GUIDE_ROUTE);
-  await expect(page).toHaveTitle("Getting started — ggsvelte");
+  await expect(page).toHaveTitle("Getting started — ggts");
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
-  const canonicalBase = "https://ggsvelte.sh";
+  const canonicalBase = "https://ggts.sh";
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
     `${canonicalBase}/guide/getting-started`,
@@ -236,7 +240,7 @@ test("public metadata exposes social cards and truthful route-local structured d
   page,
 }) => {
   await page.goto("/");
-  const canonicalBase = "https://ggsvelte.sh";
+  const canonicalBase = "https://ggts.sh";
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
     "content",
     `${canonicalBase}/`,

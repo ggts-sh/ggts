@@ -1,5 +1,5 @@
 /** Temporal preflight for rowless annotation intercepts. */
-import type { TemporalDecision } from "@ggsvelte/spec";
+import type { TemporalDecision } from "@ggts-sh/spec";
 
 import { getTemporalRuntime } from "../temporal-runtime.js";
 

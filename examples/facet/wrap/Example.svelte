@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeGgplot2,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { familyHeights } from "./data.js";
 </script>

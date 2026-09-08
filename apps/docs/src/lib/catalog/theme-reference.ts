@@ -5,7 +5,7 @@
  * CSS custom properties match themeVar() (`--gg-*`) and interaction chrome
  * tokens from themeTokensToCss() (`--gg-theme-*`).
  */
-import { THEME_NAME_ALIASES, THEME_NAMES, type ThemeName } from "@ggsvelte/spec";
+import { THEME_NAME_ALIASES, THEME_NAMES, type ThemeName } from "@ggts-sh/spec";
 
 export type ThemeRoleKind = "color" | "opacity" | "type" | "length" | "boolean" | "dash";
 

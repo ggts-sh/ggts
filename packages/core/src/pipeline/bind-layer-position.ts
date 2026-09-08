@@ -1,7 +1,7 @@
 /**
  * Resolve positional channels (x/y/ymin/ymax/xmin/xmax) and validate geom/stat contracts.
  */
-import type { Aes, LayerSpec, NormalizedLayerSpec } from "@ggsvelte/spec";
+import type { Aes, LayerSpec, NormalizedLayerSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

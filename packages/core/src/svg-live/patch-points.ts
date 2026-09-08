@@ -13,7 +13,7 @@ import {
 import type { PointsBatch } from "../scene.js";
 import type { PointShape } from "../scales/style.js";
 import { themeVar } from "../theme.js";
-import { POINT_SHAPE_NAMES } from "@ggsvelte/spec";
+import { POINT_SHAPE_NAMES } from "@ggts-sh/spec";
 import { px } from "../render-svg-format.js";
 import { writeAttrs, writeAlpha } from "./patch-attrs.js";
 import type { BatchPatchContext } from "./patch-attrs.js";

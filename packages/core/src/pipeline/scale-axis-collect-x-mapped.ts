@@ -1,7 +1,7 @@
 /**
  * Collect x evidence from mapped xValues/xNumeric (including bar discretization).
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import type { AxisCollectAcc } from "./scale-axis-collect-acc.js";
 import { positionFieldType, xConversionOf } from "./temporal-position.js";

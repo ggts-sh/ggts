@@ -6,7 +6,7 @@ import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { KNOWN_GEOMS } from "@ggsvelte/spec";
+import { KNOWN_GEOMS } from "@ggts-sh/spec";
 
 import {
   BUILDER_GEOMS_PATH,

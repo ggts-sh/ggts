@@ -11,8 +11,8 @@
     ScaleLinewidthContinuous,
     ScaleXContinuous,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
-  import type { PlotInspectionChange } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
+  import type { PlotInspectionChange } from "@ggts-sh/svelte";
 
   import {
     campaignRivers,

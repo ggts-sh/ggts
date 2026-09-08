@@ -24,7 +24,7 @@
  * participate in grouping (grouping is pre-stat by construction; normalize
  * resolves null-unset before the pipeline runs).
  */
-import type { ChannelValue } from "@ggsvelte/spec";
+import type { ChannelValue } from "@ggts-sh/spec";
 
 import type { CellValue, Columns, Discreteness } from "./table.js";
 

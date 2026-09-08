@@ -14,3 +14,4 @@ export { INTERACTION_REFERENCE_MD } from "./llms-guide/interaction-reference";
 export type { InteractionReferenceEntry } from "./llms-guide/interactions";
 export { INTERACTION_REFERENCE_INDEX } from "./llms-guide/interactions";
 export { UPGRADING_MD } from "./llms-guide/upgrading";
+export { AGENTS_MD } from "./llms-guide/agents";

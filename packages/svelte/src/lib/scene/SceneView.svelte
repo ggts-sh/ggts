@@ -1,7 +1,7 @@
 <script lang="ts">
   /**
    * Renders a computed Scene as real SVG markup. Mirrors the structure of
-   * @ggsvelte/core's renderToSVGString (same element tree, same class names)
+   * @ggts-sh/core's renderToSVGString (same element tree, same class names)
    * — keep the two in sync. All theme colors ride --gg-* custom properties
    * with the resolved role tokens as fallbacks.
    *
@@ -18,14 +18,14 @@
     GeometryBatch,
     Scene,
     ScenePanel,
-  } from "@ggsvelte/core";
+  } from "@ggts-sh/core";
   import {
     groupBatchesByPanel,
     letterboxGutterRects,
     sceneLabel,
     STRIP_BAND,
     themeVar,
-  } from "@ggsvelte/core";
+  } from "@ggts-sh/core";
 
   import Axis from "./Axis.svelte";
   import Batch from "./Batch.svelte";

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ColorScaleSpec } from "@ggsvelte/spec";
+  import type { ColorScaleSpec } from "@ggts-sh/spec";
 
   import CopyCode from "$lib/components/CopyCode.svelte";
   import SequentialDeferredPlot from "$lib/components/SequentialDeferredPlot.svelte";

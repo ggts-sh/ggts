@@ -1,8 +1,8 @@
 import { fromAny, fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 
-import type { PortableSpec } from "@ggsvelte/spec";
-import type { CellValue, PlotRect, SemanticViewport, SemanticViewportPanel } from "@ggsvelte/core";
+import type { PortableSpec } from "@ggts-sh/spec";
+import type { CellValue, PlotRect, SemanticViewport, SemanticViewportPanel } from "@ggts-sh/core";
 
 import {
   applyZoomToSpec,

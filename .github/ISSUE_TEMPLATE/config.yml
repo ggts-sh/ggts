@@ -1,14 +1,14 @@
 blank_issues_enabled: false
 contact_links:
   - name: Ask a usage question
-    url: https://github.com/ljodea/ggsvelte/discussions/categories/q-a
+    url: https://github.com/ggts-sh/ggts/discussions/categories/q-a
     about: Get help with chart grammar, Svelte integration, or an unexpected result.
   - name: Share a chart or example
-    url: https://github.com/ljodea/ggsvelte/discussions/categories/show-and-tell
+    url: https://github.com/ggts-sh/ggts/discussions/categories/show-and-tell
     about: Show what you made and help the community learn from it.
   - name: Explore a design proposal
-    url: https://github.com/ljodea/ggsvelte/discussions/categories/ideas
+    url: https://github.com/ggts-sh/ggts/discussions/categories/ideas
     about: Discuss an API, grammar, interaction, or presentation idea before scoping work.
   - name: Report a security vulnerability privately
-    url: https://github.com/ljodea/ggsvelte/security/policy
+    url: https://github.com/ggts-sh/ggts/security/policy
     about: Do not disclose vulnerabilities, credentials, private data, or exploit details publicly.

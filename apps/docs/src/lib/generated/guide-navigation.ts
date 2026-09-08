@@ -10,6 +10,10 @@ export const GUIDE_NAVIGATION = [
         label: "Overview",
       },
       {
+        path: "/guide/agents",
+        label: "Agent sandboxes",
+      },
+      {
         path: "/guide/getting-started",
         label: "Getting started",
       },

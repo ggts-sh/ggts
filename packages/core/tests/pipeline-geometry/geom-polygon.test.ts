@@ -2,7 +2,7 @@
  * Pipeline geometry — geom_polygon closed filled paths in data order.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import type { PathsBatch } from "../../src/scene.ts";
 

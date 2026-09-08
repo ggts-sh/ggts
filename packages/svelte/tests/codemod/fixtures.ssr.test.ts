@@ -3,7 +3,7 @@
  *
  * ADR 0013 locks the convention: `<from>-<to>/<case>/{input,expected}.svelte`,
  * with the acceptance criteria asserted per case rather than described in
- * prose. Fixtures import "@ggsvelte/svelte" — the specifier real consumers
+ * prose. Fixtures import "@ggts-sh/svelte" — the specifier real consumers
  * write, and the one the codemod targets by default.
  */
 import { readdirSync, readFileSync } from "node:fs";

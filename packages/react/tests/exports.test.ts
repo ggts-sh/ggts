@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { KNOWN_GEOMS } from "@ggsvelte/spec";
+import { KNOWN_GEOMS } from "@ggts-sh/spec";
 
 import * as react from "../src/index.js";
 
@@ -10,7 +10,7 @@ function geomComponentName(geom: string): string {
     .join("")}`;
 }
 
-describe("@ggsvelte/react public surface", () => {
+describe("@ggts-sh/react public surface", () => {
   it("exports GGPlot and every KNOWN_GEOMS child", () => {
     expect(react.GGPlot).toBeTruthy();
     for (const geom of KNOWN_GEOMS) {

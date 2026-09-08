@@ -10,8 +10,8 @@
  */
 import { describe, expect, test } from "bun:test";
 
-import type { PortableSpec, SpecInput } from "@ggsvelte/spec";
-import { KNOWN_GEOMS, normalize, validate } from "@ggsvelte/spec";
+import type { PortableSpec, SpecInput } from "@ggts-sh/spec";
+import { KNOWN_GEOMS, normalize, validate } from "@ggts-sh/spec";
 
 import { collectCoverage } from "./coverage.ts";
 import { MockResponder } from "./model.ts";

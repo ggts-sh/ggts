@@ -1,15 +1,7 @@
-/**
- * Benchmark results access — the gitignored JSON source of truth under
- * benchmarks/competitive/results, plus resolved peer package versions.
- *
- * Data source of truth: benchmarks/competitive/results/*.json (run
- * `bun run measure:browser && bun run measure:bundles` there first; for the
- * Line 100k form-factor card also `bun run measure-100k-peers.ts`). Charts are
- * drawn with ggsvelte itself (headless renderToSVGString) — see
- * apps/docs/src/lib/benchmarks/charts.ts for the claim discipline.
- */
+import { CASES, LIBS, libSupports } from "../../benchmarks/competitive/scenarios";
+/** Published benchmark snapshot plus machine-local inputs for --publish. */
 
-import { existsSync, readFileSync, realpathSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 export const ROOT = resolve(import.meta.dir, "..", "..");
@@ -25,17 +17,29 @@ export const PROJECTION = join(
   "benchmark-charts.ts",
 );
 
+interface MeasurementProvenance {
+  readonly commit: string;
+  readonly dirty: boolean;
+  readonly mode: "production";
+  readonly versions: Readonly<Record<string, string>>;
+}
+
 export interface BrowserResults {
+  readonly libs: readonly { id: string; label: string; form: "svg" | "canvas"; note: string }[];
+  readonly provenance: MeasurementProvenance;
   readonly generatedAt: string;
   readonly results: readonly {
     readonly lib: string;
     readonly caseId: string;
     readonly ok: boolean;
     readonly mountMedianMs?: number;
+    readonly updateMedianMs?: number;
   }[];
 }
 
 export interface BundleResults {
+  readonly generatedAt: string;
+  readonly provenance: MeasurementProvenance;
   readonly results: readonly {
     readonly lib: string;
     readonly scenario: string;
@@ -56,48 +60,103 @@ export function readJson(name: string): unknown {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
-/** True when the source benchmark results exist (local after measure:*, never in CI). */
-export function resultsAvailable(): boolean {
-  return (
-    existsSync(join(COMPETITIVE, "results", "browser.json")) &&
-    existsSync(join(COMPETITIVE, "results", "bundles.json")) &&
-    existsSync(join(COMPETITIVE, "results", "browser-100k-peers.json"))
-  );
+export interface SsrResults {
+  readonly generatedAt: string;
+  readonly provenance: MeasurementProvenance;
+  readonly method: string;
+  readonly results: readonly {
+    readonly lib: string;
+    readonly label: string;
+    readonly caseId: string;
+    readonly ok: boolean;
+    readonly ssrCapable?: boolean;
+    readonly medianMs?: number | null;
+    readonly rendersPerSec?: number | null;
+  }[];
 }
 
-/** Cold-mount median for a lib×case cell; fails loudly when absent. */
-export function mountMs(browser: BrowserResults, lib: string, caseId: string): number {
-  const cell = browser.results.find((r) => r.lib === lib && r.caseId === caseId && r.ok);
-  if (cell?.mountMedianMs === undefined) {
+export interface HistoricalBrowserResults {
+  readonly generatedAt: string;
+  readonly host: Readonly<Record<string, string>>;
+  readonly protocol: Readonly<Record<string, string | number>>;
+  readonly results: BrowserResults["results"];
+}
+
+export const SNAPSHOT = join(COMPETITIVE, "published.json");
+
+export type PublishedSnapshot = {
+  browser: BrowserResults;
+  bundles: BundleResults;
+  ssr: SsrResults;
+  highN: HistoricalBrowserResults;
+};
+
+export function validateSnapshot(snapshot: PublishedSnapshot): PublishedSnapshot {
+  for (const measurement of [snapshot.browser, snapshot.bundles, snapshot.ssr]) {
+    if (
+      measurement.provenance?.mode !== "production" ||
+      !measurement.provenance.commit ||
+      !measurement.generatedAt
+    ) {
+      throw new Error(
+        "Published benchmarks require production measurements with commit, date and package versions.",
+      );
+    }
+  }
+  const runs = [snapshot.browser, snapshot.bundles, snapshot.ssr];
+  if (
+    runs.some((run) => run.provenance.dirty) ||
+    new Set(runs.map((run) => run.provenance.commit)).size !== 1
+  ) {
     throw new Error(
-      `browser results missing ${lib}/${caseId}. Re-run the competitive browser measure for this case.`,
+      "Publish browser, bundle and SSR measurements from the same clean source commit.",
     );
   }
-  return cell.mountMedianMs;
+  if (!snapshot.highN.generatedAt || !Array.isArray(snapshot.highN.results)) {
+    throw new Error("Historical high-N results must retain their recorded date and rows.");
+  }
+  for (const lib of LIBS.filter((entry) => entry.browser)) {
+    for (const scenario of CASES.filter(
+      (entry) => entry.defaultBrowser && libSupports(lib, entry.scenario),
+    )) {
+      if (
+        !snapshot.browser.results.some(
+          (entry) => entry.lib === lib.id && entry.caseId === scenario.id,
+        )
+      ) {
+        throw new Error(`Published benchmark matrix is incomplete: ${lib.id}/${scenario.id}`);
+      }
+    }
+  }
+  return snapshot;
+}
+
+export function readSnapshot(): PublishedSnapshot {
+  return validateSnapshot(JSON.parse(readFileSync(SNAPSHOT, "utf8")) as PublishedSnapshot);
+}
+
+export function timingMs(
+  browser: BrowserResults,
+  lib: string,
+  caseId: string,
+  metric: "mount" | "update",
+): number {
+  const cell = browser.results.find((r) => r.lib === lib && r.caseId === caseId && r.ok);
+  const value = metric === "mount" ? cell?.mountMedianMs : cell?.updateMedianMs;
+  if (value === undefined || !Number.isFinite(value) || value <= 0) {
+    throw new Error(
+      `browser results missing valid ${lib}/${caseId}/${metric}. Re-run the competitive browser measure.`,
+    );
+  }
+  return value;
 }
 
 export function bundleGzipKb(bundles: BundleResults, lib: string, scenario: string): number {
   const cell = bundles.results.find((r) => r.lib === lib && r.scenario === scenario && r.ok);
-  if (cell?.gzipKB === undefined) {
+  if (cell?.gzipKB === undefined || !Number.isFinite(cell.gzipKB) || cell.gzipKB <= 0) {
     throw new Error(
       `bundle results missing ${lib}/${scenario}. Re-run: cd benchmarks/competitive && bun run measure:bundles`,
     );
   }
   return cell.gzipKB;
-}
-
-/** Resolved peer versions (displayed under the chart grid and in the README). */
-export function installedVersion(pkg: string): string {
-  for (const base of [join(COMPETITIVE, "node_modules", pkg), join(ROOT, "node_modules", pkg)]) {
-    try {
-      const real = realpathSync(base);
-      const manifest = JSON.parse(readFileSync(join(real, "package.json"), "utf8")) as {
-        version?: string;
-      };
-      if (manifest.version !== undefined) return manifest.version;
-    } catch {
-      // try the next layout
-    }
-  }
-  throw new Error(`could not resolve installed version of ${pkg}`);
 }

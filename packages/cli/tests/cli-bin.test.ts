@@ -1,6 +1,6 @@
 /**
- * ggsvelte-render bin smoke tests: spawn the workspace bin
- * (packages/cli/bin/ggsvelte-render.js) directly — never network bunx.
+ * ggts render bin smoke tests: spawn the workspace bin
+ * (packages/cli/bin/ggts.js) directly — never network bunx.
  * Pure runCLI unit tests live in packages/core/tests/cli.test.ts.
  */
 import { describe, expect, it } from "bun:test";
@@ -25,10 +25,10 @@ describe("workspace bin smoke test", () => {
     const manifest = JSON.parse(readFileSync(join(packageDirectory, "package.json"), "utf8")) as {
       version: string;
     };
-    const proc = Bun.spawn(
-      ["bun", join(packageDirectory, "bin", "ggsvelte-render.js"), "--version"],
-      { stdout: "pipe", stderr: "pipe" },
-    );
+    const proc = Bun.spawn(["bun", join(packageDirectory, "bin", "ggts.js"), "--version"], {
+      stdout: "pipe",
+      stderr: "pipe",
+    });
     const [stdout, stderr, exitCode] = await Promise.all([
       new Response(proc.stdout).text(),
       new Response(proc.stderr).text(),
@@ -49,12 +49,12 @@ describe("workspace bin smoke test", () => {
     expect(cliStderr).toBe("");
   });
 
-  it("bun packages/cli/bin/ggsvelte-render.js spec.json > out.svg", async () => {
-    const binPath = join(import.meta.dir, "..", "bin", "ggsvelte-render.js");
+  it("bun packages/cli/bin/ggts.js render spec.json > out.svg", async () => {
+    const binPath = join(import.meta.dir, "..", "bin", "ggts.js");
     const dir = mkdtempSync(join(tmpdir(), "ggsvelte-cli-"));
     const specPath = join(dir, "spec.json");
     writeFileSync(specPath, JSON.stringify(SPEC));
-    const proc = Bun.spawn(["bun", binPath, specPath, "--width", "320"], {
+    const proc = Bun.spawn(["bun", binPath, "render", specPath, "--width", "320"], {
       stdout: "pipe",
       stderr: "pipe",
     });

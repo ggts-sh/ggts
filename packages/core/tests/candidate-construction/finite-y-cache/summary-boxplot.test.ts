@@ -16,7 +16,7 @@ describe("finite-y cache: summary and boxplot", () => {
     const { filterRepresentedSourceRows } =
       await import("../../../src/pipeline/candidate-construction/represented-rows.ts");
     const { LineageStore } = await import("../../../src/identity.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize({
@@ -85,7 +85,7 @@ describe("finite-y cache: summary and boxplot", () => {
       await import("../../../src/pipeline/candidate-construction/datum.ts");
     const { bandKey } = await import("../../../src/scales/train.ts");
     const { LineageStore } = await import("../../../src/identity.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize({
@@ -199,7 +199,7 @@ describe("finite-y cache: summary and boxplot", () => {
     const { filterRepresentedSourceRows } =
       await import("../../../src/pipeline/candidate-construction/represented-rows.ts");
     const { bandKey } = await import("../../../src/scales/train.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize({

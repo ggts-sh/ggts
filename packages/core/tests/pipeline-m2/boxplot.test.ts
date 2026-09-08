@@ -2,7 +2,7 @@
  * M2 pipeline — boxplot geom.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import { mulberry32 } from "../../src/stats/numeric.ts";
 import type { PointsBatch, RectsBatch, SegmentsBatch } from "../../src/scene.ts";

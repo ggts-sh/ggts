@@ -3,7 +3,7 @@
  */
 import { fromAny } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "bun:test";
-import { aes, gg, normalize, validate } from "@ggsvelte/spec";
+import { aes, gg, normalize, validate } from "@ggts-sh/spec";
 
 import { runPipeline } from "../../src/pipeline.ts";
 import { hexBatch } from "../../src/pipeline/geometry-hex.ts";

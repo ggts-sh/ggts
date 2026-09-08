@@ -1,11 +1,11 @@
-// @ggsvelte/core — PURE entrypoint: pipeline + SVG-string renderer +
+// @ggts-sh/core — PURE entrypoint: pipeline + SVG-string renderer +
 // metrics-table measurer. Importable in Node/edge/workers with no DOM
 // globals (enforced by the Node smoke test). Dependency direction (plan):
 // spec <- core <- svelte. The DOM half (canvas renderer, browser measurer)
-// lives behind "@ggsvelte/core/dom".
+// lives behind "@ggts-sh/core/dom".
 //
 // Lean identity-chart surface (no heavy stats / specialty geoms):
-// `@ggsvelte/core/render`.
+// `@ggts-sh/core/render`.
 //
 // Lifecycle (Hadley lesson 13; meanings in CONTRIBUTING.md): tags collected
 // into lifecycle.json by scripts/gen-lifecycle.ts.
@@ -17,7 +17,7 @@ export { groupBatchesByPanel } from "./group-batches-by-panel.js";
 // Registration is explicit (#1420): this barrel has NO module-scope side
 // effects. Call `registerAll()` for the full grammar (the pre-#1420 barrel
 // behavior), `registerBasic()` for identity charts, or per-family
-// `register<Family>()` functions. `@ggsvelte/core/render` keeps basic
+// `register<Family>()` functions. `@ggts-sh/core/render` keeps basic
 // auto-registration on import for lean identity-chart graphs. Interaction
 // candidates install explicitly too (#1421): `installCandidates()` — GGPlot
 // calls it; headless renderers never need it.
@@ -464,7 +464,7 @@ export type {
 export { paintResourceId } from "./mark-paint.js";
 export type { ResolvedGlow, ResolvedGradientPaint } from "./mark-paint.js";
 
-// CLI implementation (the `ggsvelte-render` bin on @ggsvelte/cli wraps this)
+// CLI implementation (the `ggts render` bin on @ggts-sh/cli wraps this)
 export { runCLI } from "./cli.js";
 export type { CLIIO } from "./cli.js";
 

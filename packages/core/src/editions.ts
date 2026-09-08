@@ -2,7 +2,7 @@
  * Defaults editions (Hadley lesson 13: fix accumulated bad defaults "without
  * breaking existing code").
  *
- * `normalize()` (in @ggsvelte/spec) stamps `edition: CURRENT_EDITION` onto
+ * `normalize()` (in @ggts-sh/spec) stamps `edition: CURRENT_EDITION` onto
  * every spec that does not already carry one, freezing which generation of
  * DEFAULT aesthetics the spec was authored against. This module is the other
  * half of the mechanism: the pipeline resolves its default theme table,
@@ -16,7 +16,7 @@
  * future edition-2 rollout) pass a table via `RunOptions.editions`, scoped to
  * the run.
  *
- * Unknown editions (a spec stamped by a NEWER ggsvelte than the one rendering
+ * Unknown editions (a spec stamped by a NEWER ggts than the one rendering
  * it) fall back to the latest edition this build knows, and the pipeline emits
  * an `unknown-edition` warning — old renderers degrade to their best defaults
  * instead of failing.

@@ -6,7 +6,7 @@
     Labs,
     ScaleFillContinuous,
     ThemeFew,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { chocolateRatingGrid } from "./data.js";
 </script>

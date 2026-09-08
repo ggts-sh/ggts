@@ -1,5 +1,5 @@
 /** Semantic color/fill guide label format resolution. */
-import type { ColorScaleSpec, TemporalKind } from "@ggsvelte/spec";
+import type { ColorScaleSpec, TemporalKind } from "@ggts-sh/spec";
 
 import { numberFormatter } from "../layout/format-number.js";
 import { defaultTimeTickFormat } from "../layout/time.js";
@@ -109,7 +109,7 @@ function resolveTemporalFormat(
   } else if (labelFormat !== undefined) {
     warnings.push({
       code: "invalid-label-format",
-      message: `Temporal labels format on scales.${name} requires @ggsvelte/core/temporal (or the full package); using the default.`,
+      message: `Temporal labels format on scales.${name} requires @ggts-sh/core/temporal (or the full package); using the default.`,
     });
   }
   const label =

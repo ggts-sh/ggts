@@ -1,4 +1,4 @@
-import { aes, gg, scaleXDiscrete, scaleYContinuous } from "@ggsvelte/spec";
+import { aes, gg, scaleXDiscrete, scaleYContinuous } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { sparseGroups } from "./data.js";

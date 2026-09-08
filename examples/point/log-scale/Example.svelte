@@ -8,7 +8,7 @@
     ScaleColorDiscrete,
     ScaleXLog10,
     ThemeEconomist,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { londonCholera } from "./data.js";
 </script>

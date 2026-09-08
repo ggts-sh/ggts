@@ -6,7 +6,7 @@
     Labs,
     ScaleFillContinuous,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { oldFaithful } from "./data.js";
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
   /**
    * One GeometryBatch (points / paths / areas / rects / segments / glyphs),
-   * panel-local coordinates. Paint/shape/dash resolve through @ggsvelte/core
+   * panel-local coordinates. Paint/shape/dash resolve through @ggts-sh/core
    * mark-paint (shared with the SVG-string and canvas serializers). Theme
    * defaults ride --gg-* custom properties (ink for strokes/points/text,
    * accent for fills). The per-mark presentation model (geometry/style
@@ -12,8 +12,8 @@
     BatchInteractionMask,
     GeometryBatch,
     ThemeTokens,
-  } from "@ggsvelte/core";
-  import { pointShapePathD } from "@ggsvelte/core";
+  } from "@ggts-sh/core";
+  import { pointShapePathD } from "@ggts-sh/core";
 
   import { createBatchPresentation } from "./batch-presentation.svelte.js";
 

@@ -7,7 +7,7 @@
  * empty arms with comments — other channels are enforced elsewhere
  * (sample / map_id / label in bind-layer-extras, geometry in frame-stats-sf).
  */
-import type { NormalizedGeomName, StatName } from "@ggsvelte/spec";
+import type { NormalizedGeomName, StatName } from "@ggts-sh/spec";
 
 import { requireField } from "./bind-layer-check-field.js";
 import type { RuleForm } from "./types.js";

@@ -3,10 +3,21 @@ import type { DocsRouteMetadata } from "../route-types.js";
 
 export const DOCS_ROUTES = [
   {
-    path: "/",
-    title: "ggsvelte — layered grammar of graphics for Svelte",
+    path: "/benchmarks",
+    title: "Benchmarks — ggts",
     description:
-      "Layered grammar of graphics for Svelte: ggplot2-style aes, geoms, stats, and themes, with PortableSpec JSON and hybrid SVG/canvas rendering.",
+      "Production measurements for the core, React, Svelte, and existing charting comparators.",
+    canonicalPath: "/benchmarks",
+    kind: "page",
+    index: true,
+    sitemap: true,
+    shell: "site",
+  },
+  {
+    path: "/",
+    title: "ggts — ggplot2’s grammar for TypeScript",
+    description:
+      "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
     canonicalPath: "/",
     kind: "page",
     index: true,
@@ -15,7 +26,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/docs",
-    title: "Documentation — ggsvelte",
+    title: "Documentation — ggts",
     description: "Install, compose the grammar, add interaction, ship, and read public contracts.",
     canonicalPath: "/docs",
     kind: "page",
@@ -30,8 +41,8 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples",
-    title: "Gallery — ggsvelte",
-    description: "Runnable ggsvelte examples across marks, stats, scales, and interaction.",
+    title: "Gallery — ggts",
+    description: "Runnable ggts examples across marks, stats, scales, and interaction.",
     canonicalPath: "/examples",
     kind: "page",
     index: true,
@@ -40,7 +51,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/themes",
-    title: "Chart themes — ggsvelte",
+    title: "Chart themes — ggts",
     description: "Built-in chart themes for paper, grids, axes, and type.",
     canonicalPath: "/themes",
     kind: "page",
@@ -50,7 +61,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/palettes",
-    title: "Color palettes — ggsvelte",
+    title: "Color palettes — ggts",
     description:
       "Categorical palettes for discrete series: browse, compare, and preview every scheme.",
     canonicalPath: "/palettes",
@@ -61,7 +72,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/palettes/ramps",
-    title: "Sequential color ramps — ggsvelte",
+    title: "Sequential color ramps — ggts",
     description:
       "Sequential color ramps for continuous fill, and how reverse, range, and domain read on a chart.",
     canonicalPath: "/palettes/ramps",
@@ -72,7 +83,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference",
-    title: "Reference — ggsvelte",
+    title: "Reference — ggts",
     description:
       "Geom, guide, labs, axes, labels, interaction, CLI, diagnostic, lifecycle, and PortableSpec contracts.",
     canonicalPath: "/reference",
@@ -88,7 +99,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms",
-    title: "Geoms — ggsvelte",
+    title: "Geoms — ggts",
     description:
       "Schema-derived API reference for every Geom* component: defaults, allowed stats and positions, and params.",
     canonicalPath: "/reference/geoms",
@@ -116,7 +127,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats",
-    title: "Stats — ggsvelte",
+    title: "Stats — ggts",
     description:
       "Schema-derived API reference for every statistical transform: after_stat columns and compatible geoms.",
     canonicalPath: "/reference/stats",
@@ -144,7 +155,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/positions",
-    title: "Positions — ggsvelte",
+    title: "Positions — ggts",
     description:
       "Schema-derived API reference for every position adjustment: positionParams and compatible geoms.",
     canonicalPath: "/reference/positions",
@@ -172,7 +183,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales",
-    title: "Scales — ggsvelte",
+    title: "Scales — ggts",
     description:
       "API reference for every Scale* component: position, color/fill, and style channels with params and guide interaction.",
     canonicalPath: "/reference/scales",
@@ -230,7 +241,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/coords",
-    title: "Coords — ggsvelte",
+    title: "Coords — ggts",
     description:
       "Schema-derived API reference for every Coord* shell: cartesian, flip, transform, fixed, and sf with helpers and props.",
     canonicalPath: "/reference/coords",
@@ -263,7 +274,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/guides",
-    title: "Guides and legends — ggsvelte",
+    title: "Guides and legends — ggts",
     description:
       "Schema-derived API reference for GuideLegend, GuideColorbar, GuideColorsteps, GuideAxis, and GuideNone: channels, props, and helpers.",
     canonicalPath: "/reference/guides",
@@ -296,7 +307,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/labs",
-    title: "Labs — ggsvelte",
+    title: "Labs — ggts",
     description:
       "Plot title, subtitle, caption, and per-aesthetic axis/legend titles via the Labs child layer.",
     canonicalPath: "/reference/labs",
@@ -339,7 +350,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/axes",
-    title: "Axes and ticks — ggsvelte",
+    title: "Axes and ticks — ggts",
     description:
       "Axis titles, GuideAxis presentation, scale breaks/labels, band layout, and theme grids.",
     canonicalPath: "/reference/axes",
@@ -392,7 +403,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/labels",
-    title: "Labels — ggsvelte",
+    title: "Labels — ggts",
     description:
       "Plot chrome vs tick labels vs data labels (GeomText, GeomLabel, SF text/label geoms).",
     canonicalPath: "/reference/labels",
@@ -440,9 +451,9 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/interactions",
-    title: "Search interactions — ggsvelte",
+    title: "Search interactions — ggts",
     description:
-      "Filter ggsvelte interaction capabilities, events, diagnostics, and accessibility defaults.",
+      "Filter ggts interaction capabilities, events, diagnostics, and accessibility defaults.",
     canonicalPath: "/reference/interactions",
     kind: "page",
     index: true,
@@ -456,7 +467,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/themes",
-    title: "Themes — ggsvelte",
+    title: "Themes — ggts",
     description:
       "Theme components, role tokens, CSS variables, and safe overrides for paper, ink, and interaction chrome.",
     canonicalPath: "/reference/themes",
@@ -504,7 +515,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/palettes",
-    title: "Palettes — ggsvelte",
+    title: "Palettes — ggts",
     description:
       "Named color schemes as scale inputs: categorical and sequential scheme catalogs mapped to ScaleColor* / ScaleFill* helpers.",
     canonicalPath: "/reference/palettes",
@@ -557,7 +568,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/cli",
-    title: "Command-line reference — ggsvelte",
+    title: "Command-line reference — ggts",
     description:
       "Render PortableSpec JSON to SVG with implementation-derived flags, streams, diagnostics, and exit classes.",
     canonicalPath: "/reference/cli",
@@ -635,7 +646,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/point",
-    title: "GeomPoint — ggsvelte",
+    title: "GeomPoint — ggts",
     description:
       "GeomPoint: Point geometry: one mark per data row. Use for scatter plots, dot plots, bubbles, and correlation views.",
     canonicalPath: "/reference/geoms/point",
@@ -683,7 +694,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/line",
-    title: "GeomLine — ggsvelte",
+    title: "GeomLine — ggts",
     description:
       "GeomLine: Line geometry: connects points in x order, one line per group (groups derive from discrete aesthetics such as color, or from aes.group). Use for time series, trends, and line charts. With stat ecdf, pair with step curves; with stat bin (freqpoly alias), y is computed from counts/density; with stat connect, successive points expand into connection vertices.",
     canonicalPath: "/reference/geoms/line",
@@ -731,7 +742,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/path",
-    title: "GeomPath — ggsvelte",
+    title: "GeomPath — ggts",
     description:
       "GeomPath: Path geometry: connects points in data (row) order within each group — unlike line, which sorts by x. Use for trajectories, loops, connected scatterplots, and ellipse rings (stat ellipse). With stat connect, successive points expand into connection vertices.",
     canonicalPath: "/reference/geoms/path",
@@ -779,7 +790,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/col",
-    title: "GeomCol — ggsvelte",
+    title: "GeomCol — ggts",
     description:
       "GeomCol: Column geometry: one rectangle per data row, from the y baseline (zero) to the row's y value. Use when the data already contains the bar heights — prefer over GeomBar, which counts or bins.",
     canonicalPath: "/reference/geoms/col",
@@ -827,7 +838,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/bar",
-    title: "GeomBar — ggsvelte",
+    title: "GeomBar — ggts",
     description:
       "GeomBar: Bar geometry with counting or binning: one rectangle per distinct x value (stat count, discrete x) or per bin (stat bin, continuous x). Do not map aes.y — the stat computes it. Prefer GeomCol when bar heights are already in the data.",
     canonicalPath: "/reference/geoms/bar",
@@ -875,7 +886,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/histogram",
-    title: "GeomHistogram — ggsvelte",
+    title: "GeomHistogram — ggts",
     description:
       "GeomHistogram: Histogram geometry: a continuous x variable divided into bins, one bar per bin whose height is the count of rows (or the sum of aes.weight). Do not map aes.y — the bin stat computes it. Canonicalized by normalize() to a bar layer with stat bin.",
     canonicalPath: "/reference/geoms/histogram",
@@ -928,7 +939,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/freqpoly",
-    title: "GeomFreqpoly — ggsvelte",
+    title: "GeomFreqpoly — ggts",
     description:
       "GeomFreqpoly: Frequency polygon: continuous x binned like a histogram, drawn as a line through bin centers. Do not map aes.y — the bin stat computes it. Canonicalized by normalize() to a line layer with stat bin.",
     canonicalPath: "/reference/geoms/freqpoly",
@@ -981,7 +992,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/area",
-    title: "GeomArea — ggsvelte",
+    title: "GeomArea — ggts",
     description:
       "GeomArea: Area geometry: a filled region from the y baseline (zero) to the y value, connected in x order per group. Use for stacked composition-over-time charts. With stat align, series with different x samples share a common grid for stack/fill.",
     canonicalPath: "/reference/geoms/area",
@@ -1029,7 +1040,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/rule",
-    title: "GeomRule — ggsvelte",
+    title: "GeomRule — ggts",
     description:
       "GeomRule: Rule geometry: reference lines spanning the panel. Two forms: (1) annotation — set params.xintercept and/or params.yintercept to fixed data values and map neither aes.x nor aes.y; (2) data-driven — map exactly one of aes.x (vertical rules) or aes.y (horizontal rules) to a field. Never mix the forms in one layer.",
     canonicalPath: "/reference/geoms/rule",
@@ -1077,7 +1088,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/hline",
-    title: "GeomHline — ggsvelte",
+    title: "GeomHline — ggts",
     description:
       "GeomHline: Horizontal reference-line alias. Canonicalized by normalize() to a rule layer. Annotation form: set params.yintercept. Data-driven form: map aes.y (inherited plot x is dropped so the one-axis rule contract holds).",
     canonicalPath: "/reference/geoms/hline",
@@ -1130,7 +1141,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/vline",
-    title: "GeomVline — ggsvelte",
+    title: "GeomVline — ggts",
     description:
       "GeomVline: Vertical reference-line alias. Canonicalized by normalize() to a rule layer. Annotation form: set params.xintercept. Data-driven form: map aes.x (inherited plot y is dropped so the one-axis rule contract holds).",
     canonicalPath: "/reference/geoms/vline",
@@ -1183,7 +1194,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/text",
-    title: "GeomText — ggsvelte",
+    title: "GeomText — ggts",
     description:
       "GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
     canonicalPath: "/reference/geoms/text",
@@ -1231,7 +1242,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/label",
-    title: "GeomLabel — ggsvelte",
+    title: "GeomLabel — ggts",
     description:
       "GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
     canonicalPath: "/reference/geoms/label",
@@ -1279,7 +1290,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/smooth",
-    title: "GeomSmooth — ggsvelte",
+    title: "GeomSmooth — ggts",
     description:
       "GeomSmooth: Smooth geometry: a fitted trend line (with an optional confidence ribbon) over an x/y scatter, one fit per group. Use to reveal trends.",
     canonicalPath: "/reference/geoms/smooth",
@@ -1327,7 +1338,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/quantile",
-    title: "GeomQuantile — ggsvelte",
+    title: "GeomQuantile — ggts",
     description:
       "GeomQuantile: Quantile geometry: linear quantile regression lines (y ~ x) at one or more conditional quantiles of y, one line per quantile per group.",
     canonicalPath: "/reference/geoms/quantile",
@@ -1375,7 +1386,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/boxplot",
-    title: "GeomBoxplot — ggsvelte",
+    title: "GeomBoxplot — ggts",
     description:
       "GeomBoxplot: Box-and-whisker geometry: one box per x category (per group) summarizing the y distribution — hinges at the quartiles, whiskers to the furthest points within coef × IQR, outliers drawn individually.",
     canonicalPath: "/reference/geoms/boxplot",
@@ -1423,7 +1434,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/density",
-    title: "GeomDensity — ggsvelte",
+    title: "GeomDensity — ggts",
     description:
       "GeomDensity: Density geometry: a smooth kernel density estimate of a continuous x variable, drawn as a filled area — a smoothed histogram alternative. One curve per group. Do NOT map aes.y — the density stat computes it.",
     canonicalPath: "/reference/geoms/density",
@@ -1471,7 +1482,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/errorbar",
-    title: "GeomErrorbar — ggsvelte",
+    title: "GeomErrorbar — ggts",
     description:
       "GeomErrorbar: Errorbar geometry: a vertical range with caps at ymin and ymax, one per data row (identity stat) or per x group (summary stat).",
     canonicalPath: "/reference/geoms/errorbar",
@@ -1519,7 +1530,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/linerange",
-    title: "GeomLinerange — ggsvelte",
+    title: "GeomLinerange — ggts",
     description:
       "GeomLinerange: Linerange geometry: a vertical stem from ymin to ymax without end caps.",
     canonicalPath: "/reference/geoms/linerange",
@@ -1567,7 +1578,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/pointrange",
-    title: "GeomPointrange — ggsvelte",
+    title: "GeomPointrange — ggts",
     description:
       "GeomPointrange: Pointrange geometry: vertical stem from ymin to ymax plus a point at (x, y).",
     canonicalPath: "/reference/geoms/pointrange",
@@ -1615,7 +1626,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/crossbar",
-    title: "GeomCrossbar — ggsvelte",
+    title: "GeomCrossbar — ggts",
     description:
       "GeomCrossbar: Crossbar geometry: a vertical interval box from ymin to ymax with a mid horizontal line at y.",
     canonicalPath: "/reference/geoms/crossbar",
@@ -1663,7 +1674,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/rect",
-    title: "GeomRect — ggsvelte",
+    title: "GeomRect — ggts",
     description:
       "GeomRect: Rectangle geometry: one rectangle per data row from mapped xmin/xmax/ymin/ymax edges. Use for arbitrary shaded regions and time bands.",
     canonicalPath: "/reference/geoms/rect",
@@ -1711,7 +1722,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/tile",
-    title: "GeomTile — ggsvelte",
+    title: "GeomTile — ggts",
     description:
       "GeomTile: Tile geometry: center-sized cells at (x, y) with optional width/height. Use for heatmaps and gridded categorical cells; supports stroke outlines.",
     canonicalPath: "/reference/geoms/tile",
@@ -1759,7 +1770,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/raster",
-    title: "GeomRaster — ggsvelte",
+    title: "GeomRaster — ggts",
     description:
       "GeomRaster: Raster geometry: equal-cell grid at (x, y) with fill; optimized dense heatmaps without per-cell strokes. Irregular spacing warns and suggests geom tile.",
     canonicalPath: "/reference/geoms/raster",
@@ -1807,7 +1818,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/ribbon",
-    title: "GeomRibbon — ggsvelte",
+    title: "GeomRibbon — ggts",
     description:
       "GeomRibbon: Ribbon geometry: a filled interval between two varying boundaries along a running coordinate. Map x+ymin+ymax (x orientation) or y+xmin+xmax (y orientation). Not a zero-baseline area.",
     canonicalPath: "/reference/geoms/ribbon",
@@ -1855,7 +1866,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/segment",
-    title: "GeomSegment — ggsvelte",
+    title: "GeomSegment — ggts",
     description:
       "GeomSegment: Segment geometry: one finite line per data row from (x, y) to (xend, yend). Unlike rule, endpoints are data-mapped and do not span the panel.",
     canonicalPath: "/reference/geoms/segment",
@@ -1903,7 +1914,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/count",
-    title: "GeomCount — ggsvelte",
+    title: "GeomCount — ggts",
     description:
       "GeomCount: Count geometry: point marks at unique (x, y) with size scaled by after_stat n (stat sum). Use for overplotting density on discrete or rounded coordinates.",
     canonicalPath: "/reference/geoms/count",
@@ -1951,7 +1962,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/violin",
-    title: "GeomViolin — ggsvelte",
+    title: "GeomViolin — ggts",
     description:
       "GeomViolin: Violin geometry: mirrored kernel density of continuous y at each discrete x (stat ydensity). One polygon per x×group. Default position dodge.",
     canonicalPath: "/reference/geoms/violin",
@@ -1999,7 +2010,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/function",
-    title: "GeomFunction — ggsvelte",
+    title: "GeomFunction — ggts",
     description:
       "GeomFunction: Function geometry: evaluate a named portable function y = f(x) on a grid and draw a path. Requires params.fun; domain from params.xlim, mapped x, or peer layers.",
     canonicalPath: "/reference/geoms/function",
@@ -2047,7 +2058,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/polygon",
-    title: "GeomPolygon — ggsvelte",
+    title: "GeomPolygon — ggts",
     description:
       "GeomPolygon: Polygon geometry: closed filled paths from (x, y) vertices in data/row order within each group. Groups form separate polygons. No x-sort (unlike line/area). Holes/subgroup omitted in v1.",
     canonicalPath: "/reference/geoms/polygon",
@@ -2095,7 +2106,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/hex",
-    title: "GeomHex — ggsvelte",
+    title: "GeomHex — ggts",
     description:
       "GeomHex: Hexagonal bin heatmap: partitions continuous x×y into a hexagonal lattice and maps fill to bin count by default.",
     canonicalPath: "/reference/geoms/hex",
@@ -2143,7 +2154,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/bin_2d",
-    title: "GeomBin2d — ggsvelte",
+    title: "GeomBin2d — ggts",
     description:
       "GeomBin2d: 2D rectangular bin heatmap: partitions continuous x×y into a grid and maps fill to bin count by default. Empty bins are dropped unless params.drop is false.",
     canonicalPath: "/reference/geoms/bin_2d",
@@ -2191,7 +2202,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/abline",
-    title: "GeomAbline — ggsvelte",
+    title: "GeomAbline — ggts",
     description:
       "GeomAbline: Abline geometry: one infinite reference line y = intercept + slope · x, clipped to the panel. Annotation form: fixed slope/intercept in params; does not inherit plot aes.",
     canonicalPath: "/reference/geoms/abline",
@@ -2239,7 +2250,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/curve",
-    title: "GeomCurve — ggsvelte",
+    title: "GeomCurve — ggts",
     description:
       "GeomCurve: Curve geometry: one curved connector per row from (x, y) to (xend, yend). Tessellated as a quadratic Bezier (curvature/angle/ncp). Requires field-mapped x, y, xend, and yend.",
     canonicalPath: "/reference/geoms/curve",
@@ -2287,7 +2298,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/contour",
-    title: "GeomContour — ggsvelte",
+    title: "GeomContour — ggts",
     description:
       "GeomContour: Contour geometry: isolines of a continuous z surface over a regular x×y grid. v1 draws open path polylines only (not filled bands).",
     canonicalPath: "/reference/geoms/contour",
@@ -2335,7 +2346,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/density_2d",
-    title: "GeomDensity2d — ggsvelte",
+    title: "GeomDensity2d — ggts",
     description:
       "GeomDensity2d: 2D density geometry: bivariate KDE isolines over continuous x and y. Open path contours.",
     canonicalPath: "/reference/geoms/density_2d",
@@ -2383,7 +2394,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/density_2d_filled",
-    title: "GeomDensity2dFilled — ggsvelte",
+    title: "GeomDensity2dFilled — ggts",
     description:
       "GeomDensity2dFilled: 2D density filled bands: bivariate KDE closed isoline rings filled by density level. Open rings dropped. Defaults fill to after_stat(level).",
     canonicalPath: "/reference/geoms/density_2d_filled",
@@ -2431,7 +2442,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/dotplot",
-    title: "GeomDotplot — ggsvelte",
+    title: "GeomDotplot — ggts",
     description:
       "GeomDotplot: Dotplot geometry: stacked dots along a continuous x axis (histodot subset). Do not map aes.y — the bindot stat computes stack positions.",
     canonicalPath: "/reference/geoms/dotplot",
@@ -2479,7 +2490,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/map",
-    title: "GeomMap — ggsvelte",
+    title: "GeomMap — ggts",
     description:
       "GeomMap: Map geometry: join fortified region borders to value rows via aes.map_id and params.map. Renders closed filled paths per region.",
     canonicalPath: "/reference/geoms/map",
@@ -2527,7 +2538,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/sf",
-    title: "GeomSf — ggsvelte",
+    title: "GeomSf — ggts",
     description:
       "GeomSf: Simple-features geometry: already-projected GeoJSON Geometry JSON strings in a data column. Point/line/polygon families (incl. GeometryCollection of one family) with even-odd holes; use coord_sf for fixed-aspect (CRS reproject deferred).",
     canonicalPath: "/reference/geoms/sf",
@@ -2575,7 +2586,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/sf_text",
-    title: "GeomSfText — ggsvelte",
+    title: "GeomSfText — ggts",
     description:
       "GeomSfText: Simple-features text labels: places aes.label at representative geometry points (Multi* → one label per part; stat_sf_coordinates).",
     canonicalPath: "/reference/geoms/sf_text",
@@ -2623,7 +2634,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/sf_label",
-    title: "GeomSfLabel — ggsvelte",
+    title: "GeomSfLabel — ggts",
     description:
       "GeomSfLabel: Simple-features labels with background boxes: places aes.label at representative geometry points with a measured rounded rect (Multi* → one label per part). color=ink+box stroke; fill=box background.",
     canonicalPath: "/reference/geoms/sf_label",
@@ -2671,7 +2682,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/blank",
-    title: "GeomBlank — ggsvelte",
+    title: "GeomBlank — ggts",
     description:
       "GeomBlank: Blank geometry: contributes mapped aesthetics to scale training and layout without drawing marks or hit targets. No channels are required; whatever is mapped trains its scale.",
     canonicalPath: "/reference/geoms/blank",
@@ -2719,7 +2730,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/jitter",
-    title: "GeomJitter — ggsvelte",
+    title: "GeomJitter — ggts",
     description:
       "GeomJitter: Jittered point alias. Canonicalized by normalize() to a point layer with position jitter. Configure jitter amount via positionParams.width/height/seed.",
     canonicalPath: "/reference/geoms/jitter",
@@ -2772,7 +2783,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/spoke",
-    title: "GeomSpoke — ggsvelte",
+    title: "GeomSpoke — ggts",
     description:
       "GeomSpoke: Spoke geometry: one finite segment per row from (x, y) in direction angle (radians) with length radius. Endpoints are derived as xend = x + radius·cos(angle), yend = y + radius·sin(angle) in data space, then transformed like x/y. Requires continuous x and y.",
     canonicalPath: "/reference/geoms/spoke",
@@ -2820,7 +2831,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/rug",
-    title: "GeomRug — ggsvelte",
+    title: "GeomRug — ggts",
     description:
       "GeomRug: Rug geometry: short ticks along panel edges for each observation. Map aes.x for bottom/top sides and/or aes.y for left/right sides.",
     canonicalPath: "/reference/geoms/rug",
@@ -2868,7 +2879,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/step",
-    title: "GeomStep — ggsvelte",
+    title: "GeomStep — ggts",
     description:
       "GeomStep: Step-line geometry: connect points with hv/vh/mid stairs. Same channels as line; ordered by x within groups.",
     canonicalPath: "/reference/geoms/step",
@@ -2916,7 +2927,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/qq",
-    title: "GeomQq — ggsvelte",
+    title: "GeomQq — ggts",
     description:
       "GeomQq: Q–Q scatter: sample quantiles vs theoretical normal quantiles. Requires aes.sample.",
     canonicalPath: "/reference/geoms/qq",
@@ -2964,7 +2975,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/geoms/qq_line",
-    title: "GeomQqLine — ggsvelte",
+    title: "GeomQqLine — ggts",
     description:
       "GeomQqLine: Q–Q reference line: line through sample/theoretical quartile match, spanning the theoretical range of the Q–Q cloud. Requires aes.sample.",
     canonicalPath: "/reference/geoms/qq_line",
@@ -3012,7 +3023,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/identity",
-    title: "stat identity — ggsvelte",
+    title: "stat identity — ggts",
     description:
       'stat "identity": Pass rows through unchanged. Default for most geoms: each mapped row becomes one mark with no aggregation.',
     canonicalPath: "/reference/stats/identity",
@@ -3050,7 +3061,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/unique",
-    title: "stat unique — ggsvelte",
+    title: "stat unique — ggts",
     description:
       'stat "unique": Keep one row per distinct mapped (x, y) pair (and group). Use when duplicate coordinates would overplot; default for none.',
     canonicalPath: "/reference/stats/unique",
@@ -3088,7 +3099,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/manual",
-    title: "stat manual — ggsvelte",
+    title: "stat manual — ggts",
     description:
       'stat "manual": Author-supplied after_stat values via params — skip automatic transforms when you already computed summaries.',
     canonicalPath: "/reference/stats/manual",
@@ -3126,7 +3137,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/connect",
-    title: "stat connect — ggsvelte",
+    title: "stat connect — ggts",
     description:
       'stat "connect": Expand successive points into connection vertices (linear, hv, vh, mid) for stepped or path-style joins between observations.',
     canonicalPath: "/reference/stats/connect",
@@ -3164,7 +3175,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/count",
-    title: "stat count — ggsvelte",
+    title: "stat count — ggts",
     description:
       'stat "count": Count rows (or sum weights) per distinct x within each group. Default for geom_bar; publishes after_stat count.',
     canonicalPath: "/reference/stats/count",
@@ -3202,7 +3213,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/bin",
-    title: "stat bin — ggsvelte",
+    title: "stat bin — ggts",
     description:
       'stat "bin": Bin continuous x into histogram breaks. Publishes count, density, ncount, and ndensity; default for histogram and freqpoly.',
     canonicalPath: "/reference/stats/bin",
@@ -3240,7 +3251,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/bin_hex",
-    title: "stat bin_hex — ggsvelte",
+    title: "stat bin_hex — ggts",
     description:
       'stat "bin_hex": Hexagonal 2D binning over continuous x and y. Publishes count/density columns for geom_hex heatmaps.',
     canonicalPath: "/reference/stats/bin_hex",
@@ -3273,7 +3284,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/bin_2d",
-    title: "stat bin_2d — ggsvelte",
+    title: "stat bin_2d — ggts",
     description:
       'stat "bin_2d": Rectangular 2D binning over continuous x and y. Publishes count/density and bin edges for geom_bin_2d tiles.',
     canonicalPath: "/reference/stats/bin_2d",
@@ -3311,7 +3322,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/smooth",
-    title: "stat smooth — ggsvelte",
+    title: "stat smooth — ggts",
     description:
       'stat "smooth": Fit a smoother (lm or loess) and evaluate along x. Publishes y, ymin, ymax, and se; default for geom_smooth.',
     canonicalPath: "/reference/stats/smooth",
@@ -3349,7 +3360,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/quantile",
-    title: "stat quantile — ggsvelte",
+    title: "stat quantile — ggts",
     description:
       'stat "quantile": Estimate conditional quantiles of y given x. Publishes y at each requested probability; default for geom_quantile.',
     canonicalPath: "/reference/stats/quantile",
@@ -3387,7 +3398,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/boxplot",
-    title: "stat boxplot — ggsvelte",
+    title: "stat boxplot — ggts",
     description:
       'stat "boxplot": Five-number summary per group (hinges and whiskers). Publishes ymin, lower, middle, upper, ymax; default for geom_boxplot.',
     canonicalPath: "/reference/stats/boxplot",
@@ -3425,7 +3436,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/density",
-    title: "stat density — ggsvelte",
+    title: "stat density — ggts",
     description:
       'stat "density": 1D Gaussian kernel density estimate along x. Publishes density, count, scaled, and ndensity; default for geom_density.',
     canonicalPath: "/reference/stats/density",
@@ -3463,7 +3474,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/summary",
-    title: "stat summary — ggsvelte",
+    title: "stat summary — ggts",
     description:
       'stat "summary": Collapse each discrete-x group to one summary (default mean ± se). Publishes y, ymin, ymax for error-style geoms.',
     canonicalPath: "/reference/stats/summary",
@@ -3501,7 +3512,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/sum",
-    title: "stat sum — ggsvelte",
+    title: "stat sum — ggts",
     description:
       'stat "sum": Count overlapping points at each (x, y) cell for geom_count. Publishes n and prop (not y).',
     canonicalPath: "/reference/stats/sum",
@@ -3534,7 +3545,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/ydensity",
-    title: "stat ydensity — ggsvelte",
+    title: "stat ydensity — ggts",
     description:
       'stat "ydensity": Kernel density along y for violin shapes. Publishes density, count, scaled, violinwidth, and y; default for geom_violin.',
     canonicalPath: "/reference/stats/ydensity",
@@ -3567,7 +3578,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/function",
-    title: "stat function — ggsvelte",
+    title: "stat function — ggts",
     description:
       'stat "function": Evaluate a pure function on an x grid. Publishes y; default for geom_function when no data rows drive the mark.',
     canonicalPath: "/reference/stats/function",
@@ -3605,7 +3616,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/ecdf",
-    title: "stat ecdf — ggsvelte",
+    title: "stat ecdf — ggts",
     description:
       'stat "ecdf": Empirical cumulative distribution F̂(x). Publishes ecdf; pair with step or path geoms for CDF plots.',
     canonicalPath: "/reference/stats/ecdf",
@@ -3643,7 +3654,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/summary_bin",
-    title: "stat summary_bin — ggsvelte",
+    title: "stat summary_bin — ggts",
     description:
       'stat "summary_bin": Bin continuous x, then summarize y in each bin (mean ± se by default). Publishes y, ymin, ymax for binned summaries.',
     canonicalPath: "/reference/stats/summary_bin",
@@ -3681,7 +3692,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/summary_rolling",
-    title: "stat summary_rolling — ggsvelte",
+    title: "stat summary_rolling — ggts",
     description:
       'stat "summary_rolling": Centered rolling window over continuous x (params.window, in x units): summarize y per (group, unique x). Partial windows at the ends are kept. Publishes y.',
     canonicalPath: "/reference/stats/summary_rolling",
@@ -3714,7 +3725,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/contour",
-    title: "stat contour — ggsvelte",
+    title: "stat contour — ggts",
     description:
       'stat "contour": Marching-squares isolines over a regular x×y×z grid. Publishes level; default for geom_contour.',
     canonicalPath: "/reference/stats/contour",
@@ -3752,7 +3763,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/align",
-    title: "stat align — ggsvelte",
+    title: "stat align — ggts",
     description:
       'stat "align": Interpolate series onto a shared x grid so continuous-x stacks and overlays line up (stack-friendly zeros outside range).',
     canonicalPath: "/reference/stats/align",
@@ -3785,7 +3796,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/density_2d",
-    title: "stat density_2d — ggsvelte",
+    title: "stat density_2d — ggts",
     description:
       'stat "density_2d": Bivariate KDE with isolines. Publishes level and density; default for geom_density_2d.',
     canonicalPath: "/reference/stats/density_2d",
@@ -3823,7 +3834,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/density_2d_filled",
-    title: "stat density_2d_filled — ggsvelte",
+    title: "stat density_2d_filled — ggts",
     description:
       'stat "density_2d_filled": Bivariate KDE with closed density rings for filled contours. Publishes level and density; default for geom_density_2d_filled.',
     canonicalPath: "/reference/stats/density_2d_filled",
@@ -3861,7 +3872,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/bindot",
-    title: "stat bindot — ggsvelte",
+    title: "stat bindot — ggts",
     description:
       'stat "bindot": Histodot binning for geom_dotplot: one stack position per observation. Publishes stackpos (and bin occupancy).',
     canonicalPath: "/reference/stats/bindot",
@@ -3899,7 +3910,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/ellipse",
-    title: "stat ellipse — ggsvelte",
+    title: "stat ellipse — ggts",
     description:
       'stat "ellipse": Confidence ellipse over bivariate points (level and type from params). Passes geometry suited to path/polygon-style marks.',
     canonicalPath: "/reference/stats/ellipse",
@@ -3937,7 +3948,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/sf",
-    title: "stat sf — ggsvelte",
+    title: "stat sf — ggts",
     description:
       'stat "sf": Simple-features geometry expansion for geom_sf: multiparts and holes become drawable rings without after_stat columns.',
     canonicalPath: "/reference/stats/sf",
@@ -3975,7 +3986,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/sf_coordinates",
-    title: "stat sf_coordinates — ggsvelte",
+    title: "stat sf_coordinates — ggts",
     description:
       'stat "sf_coordinates": Label anchors from SF geometries for geom_sf_text and geom_sf_label (one point per feature or part).',
     canonicalPath: "/reference/stats/sf_coordinates",
@@ -4008,7 +4019,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/qq",
-    title: "stat qq — ggsvelte",
+    title: "stat qq — ggts",
     description:
       'stat "qq": Sample vs theoretical quantiles for Q–Q plots. Publishes sample and theoretical; default for geom_qq.',
     canonicalPath: "/reference/stats/qq",
@@ -4046,7 +4057,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/stats/qq_line",
-    title: "stat qq_line — ggsvelte",
+    title: "stat qq_line — ggts",
     description:
       'stat "qq_line": Reference line through Q–Q sample/theoretical quantiles. Publishes sample and theoretical; default for geom_qq_line.',
     canonicalPath: "/reference/stats/qq_line",
@@ -4084,7 +4095,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/positions/identity",
-    title: "position identity — ggsvelte",
+    title: "position identity — ggts",
     description:
       'position "identity": Leave mark coordinates unchanged. Default for most geoms: each mark keeps its post-stat (x, y).',
     canonicalPath: "/reference/positions/identity",
@@ -4122,7 +4133,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/positions/stack",
-    title: "position stack — ggsvelte",
+    title: "position stack — ggts",
     description:
       'position "stack": Stack groups at each x slot so heights accumulate (positive up, negative down). Default for bar, col, histogram, and area; trains the scale on stacked totals.',
     canonicalPath: "/reference/positions/stack",
@@ -4160,7 +4171,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/positions/fill",
-    title: "position fill — ggsvelte",
+    title: "position fill — ggts",
     description:
       'position "fill": Stack groups then rescale each x slot to proportions (positive and negative runs separately). Same geom set as stack; y domain becomes proportions.',
     canonicalPath: "/reference/positions/fill",
@@ -4198,7 +4209,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/positions/dodge",
-    title: "position dodge — ggsvelte",
+    title: "position dodge — ggts",
     description:
       'position "dodge": Place groups side by side within each x band instead of overlapping. Default for boxplot and violin; used when comparing categories at the same x.',
     canonicalPath: "/reference/positions/dodge",
@@ -4236,7 +4247,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/positions/jitter",
-    title: "position jitter — ggsvelte",
+    title: "position jitter — ggts",
     description:
       'position "jitter": Add seeded random offsets so overplotted points separate. Configure with positionParams width/height/seed (always seeded for reproducibility).',
     canonicalPath: "/reference/positions/jitter",
@@ -4274,7 +4285,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/positions/nudge",
-    title: "position nudge — ggsvelte",
+    title: "position nudge — ggts",
     description:
       'position "nudge": Apply a fixed offset (positionParams.x / y) per mark — useful for labels beside points. Offsets are data units or band-step fractions.',
     canonicalPath: "/reference/positions/nudge",
@@ -4307,7 +4318,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/alpha_binned",
-    title: "ScaleAlphaBinned — ggsvelte",
+    title: "ScaleAlphaBinned — ggts",
     description: "ScaleAlphaBinned: Binned alpha scale: continuous values → stepped numeric style.",
     canonicalPath: "/reference/scales/alpha_binned",
     kind: "page",
@@ -4349,7 +4360,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/alpha_continuous",
-    title: "ScaleAlphaContinuous — ggsvelte",
+    title: "ScaleAlphaContinuous — ggts",
     description: "ScaleAlphaContinuous: Continuous sequential alpha scale.",
     canonicalPath: "/reference/scales/alpha_continuous",
     kind: "page",
@@ -4391,7 +4402,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/alpha_date",
-    title: "ScaleAlphaDate — ggsvelte",
+    title: "ScaleAlphaDate — ggts",
     description: "ScaleAlphaDate: Sequential alpha scale trained on calendar dates.",
     canonicalPath: "/reference/scales/alpha_date",
     kind: "page",
@@ -4433,7 +4444,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/alpha_datetime",
-    title: "ScaleAlphaDatetime — ggsvelte",
+    title: "ScaleAlphaDatetime — ggts",
     description: "ScaleAlphaDatetime: Sequential alpha scale trained on datetime values.",
     canonicalPath: "/reference/scales/alpha_datetime",
     kind: "page",
@@ -4475,7 +4486,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/alpha_discrete",
-    title: "ScaleAlphaDiscrete — ggsvelte",
+    title: "ScaleAlphaDiscrete — ggts",
     description: "ScaleAlphaDiscrete: Discrete alpha scale for categories (ordinal).",
     canonicalPath: "/reference/scales/alpha_discrete",
     kind: "page",
@@ -4522,7 +4533,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/alpha_identity",
-    title: "ScaleAlphaIdentity — ggsvelte",
+    title: "ScaleAlphaIdentity — ggts",
     description:
       "ScaleAlphaIdentity: Identity alpha scale: source numbers used as mapped style values.",
     canonicalPath: "/reference/scales/alpha_identity",
@@ -4565,7 +4576,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/alpha_manual",
-    title: "ScaleAlphaManual — ggsvelte",
+    title: "ScaleAlphaManual — ggts",
     description:
       "ScaleAlphaManual: Manual alpha mapping: domain values paired with explicit numbers.",
     canonicalPath: "/reference/scales/alpha_manual",
@@ -4608,7 +4619,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/alpha_ordinal",
-    title: "ScaleAlphaOrdinal — ggsvelte",
+    title: "ScaleAlphaOrdinal — ggts",
     description:
       "ScaleAlphaOrdinal: Discrete alpha scale for categories (ordinal). ggplot2 *Ordinal alias — same binding as ScaleAlphaDiscrete.",
     canonicalPath: "/reference/scales/alpha_ordinal",
@@ -4656,7 +4667,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_binned",
-    title: "ScaleColorBinned — ggsvelte",
+    title: "ScaleColorBinned — ggts",
     description: "ScaleColorBinned: Binned color scale: continuous values → ordered color steps.",
     canonicalPath: "/reference/scales/color_binned",
     kind: "page",
@@ -4703,7 +4714,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_brewer",
-    title: "ScaleColorBrewer — ggsvelte",
+    title: "ScaleColorBrewer — ggts",
     description: "ScaleColorBrewer: ColorBrewer qualitative color scale (discrete categories).",
     canonicalPath: "/reference/scales/color_brewer",
     kind: "page",
@@ -4750,7 +4761,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_continuous",
-    title: "ScaleColorContinuous — ggsvelte",
+    title: "ScaleColorContinuous — ggts",
     description:
       "ScaleColorContinuous: Continuous sequential color scale (default continuous color family).",
     canonicalPath: "/reference/scales/color_continuous",
@@ -4798,7 +4809,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_date",
-    title: "ScaleColorDate — ggsvelte",
+    title: "ScaleColorDate — ggts",
     description: "ScaleColorDate: Sequential color scale trained on calendar dates.",
     canonicalPath: "/reference/scales/color_date",
     kind: "page",
@@ -4845,7 +4856,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_datetime",
-    title: "ScaleColorDatetime — ggsvelte",
+    title: "ScaleColorDatetime — ggts",
     description: "ScaleColorDatetime: Sequential color scale trained on datetime values.",
     canonicalPath: "/reference/scales/color_datetime",
     kind: "page",
@@ -4892,7 +4903,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_discrete",
-    title: "ScaleColorDiscrete — ggsvelte",
+    title: "ScaleColorDiscrete — ggts",
     description:
       "ScaleColorDiscrete: Discrete color scale for categorical data (default ordinal family).",
     canonicalPath: "/reference/scales/color_discrete",
@@ -4940,7 +4951,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_distiller",
-    title: "ScaleColorDistiller — ggsvelte",
+    title: "ScaleColorDistiller — ggts",
     description: "ScaleColorDistiller: ColorBrewer sequential/diverging color ramp (distiller).",
     canonicalPath: "/reference/scales/color_distiller",
     kind: "page",
@@ -4987,7 +4998,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_fermenter",
-    title: "ScaleColorFermenter — ggsvelte",
+    title: "ScaleColorFermenter — ggts",
     description: "ScaleColorFermenter: ColorBrewer binned color steps (fermenter).",
     canonicalPath: "/reference/scales/color_fermenter",
     kind: "page",
@@ -5034,7 +5045,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_gradient",
-    title: "ScaleColorGradient — ggsvelte",
+    title: "ScaleColorGradient — ggts",
     description: "ScaleColorGradient: Two-stop continuous color gradient (low/high).",
     canonicalPath: "/reference/scales/color_gradient",
     kind: "page",
@@ -5081,7 +5092,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_gradient2",
-    title: "ScaleColorGradient2 — ggsvelte",
+    title: "ScaleColorGradient2 — ggts",
     description:
       "ScaleColorGradient2: Three-stop diverging continuous color gradient (low/mid/high).",
     canonicalPath: "/reference/scales/color_gradient2",
@@ -5129,7 +5140,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_gradientn",
-    title: "ScaleColorGradientn — ggsvelte",
+    title: "ScaleColorGradientn — ggts",
     description:
       "ScaleColorGradientn: N-stop continuous color gradient from an ordered color list.",
     canonicalPath: "/reference/scales/color_gradientn",
@@ -5177,7 +5188,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_grey",
-    title: "ScaleColorGrey — ggsvelte",
+    title: "ScaleColorGrey — ggts",
     description: "ScaleColorGrey: Grey ramp color palette for discrete categories.",
     canonicalPath: "/reference/scales/color_grey",
     kind: "page",
@@ -5224,7 +5235,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_hue",
-    title: "ScaleColorHue — ggsvelte",
+    title: "ScaleColorHue — ggts",
     description: "ScaleColorHue: Evenly spaced hue color palette for discrete categories.",
     canonicalPath: "/reference/scales/color_hue",
     kind: "page",
@@ -5271,7 +5282,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_identity",
-    title: "ScaleColorIdentity — ggsvelte",
+    title: "ScaleColorIdentity — ggts",
     description:
       "ScaleColorIdentity: Identity color scale: source values are validated #rgb/#rrggbb colors used as-is.",
     canonicalPath: "/reference/scales/color_identity",
@@ -5319,7 +5330,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_log10",
-    title: "ScaleColorLog10 — ggsvelte",
+    title: "ScaleColorLog10 — ggts",
     description: "ScaleColorLog10: Sequential color scale with log10 pre-training transform.",
     canonicalPath: "/reference/scales/color_log10",
     kind: "page",
@@ -5366,7 +5377,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_manual",
-    title: "ScaleColorManual — ggsvelte",
+    title: "ScaleColorManual — ggts",
     description:
       "ScaleColorManual: Manual color mapping: domain values paired with explicit colors.",
     canonicalPath: "/reference/scales/color_manual",
@@ -5414,7 +5425,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_ordinal",
-    title: "ScaleColorOrdinal — ggsvelte",
+    title: "ScaleColorOrdinal — ggts",
     description: "ScaleColorOrdinal: Explicit ordinal color scale (categories → colors).",
     canonicalPath: "/reference/scales/color_ordinal",
     kind: "page",
@@ -5461,7 +5472,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_sqrt",
-    title: "ScaleColorSqrt — ggsvelte",
+    title: "ScaleColorSqrt — ggts",
     description: "ScaleColorSqrt: Sequential color scale with sqrt pre-training transform.",
     canonicalPath: "/reference/scales/color_sqrt",
     kind: "page",
@@ -5508,7 +5519,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_steps",
-    title: "ScaleColorSteps — ggsvelte",
+    title: "ScaleColorSteps — ggts",
     description: "ScaleColorSteps: Two-stop binned color steps (low/high).",
     canonicalPath: "/reference/scales/color_steps",
     kind: "page",
@@ -5555,7 +5566,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_steps2",
-    title: "ScaleColorSteps2 — ggsvelte",
+    title: "ScaleColorSteps2 — ggts",
     description: "ScaleColorSteps2: Three-stop diverging binned color steps (low/mid/high).",
     canonicalPath: "/reference/scales/color_steps2",
     kind: "page",
@@ -5602,7 +5613,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_stepsn",
-    title: "ScaleColorStepsn — ggsvelte",
+    title: "ScaleColorStepsn — ggts",
     description: "ScaleColorStepsn: N-stop binned color steps from an ordered color list.",
     canonicalPath: "/reference/scales/color_stepsn",
     kind: "page",
@@ -5649,7 +5660,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_viridis_b",
-    title: "ScaleColorViridisB — ggsvelte",
+    title: "ScaleColorViridisB — ggts",
     description: "ScaleColorViridisB: Viridis-family color scale — binned (viridis_b).",
     canonicalPath: "/reference/scales/color_viridis_b",
     kind: "page",
@@ -5696,7 +5707,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_viridis_c",
-    title: "ScaleColorViridisC — ggsvelte",
+    title: "ScaleColorViridisC — ggts",
     description: "ScaleColorViridisC: Viridis-family color scale — continuous (viridis_c).",
     canonicalPath: "/reference/scales/color_viridis_c",
     kind: "page",
@@ -5743,7 +5754,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/color_viridis_d",
-    title: "ScaleColorViridisD — ggsvelte",
+    title: "ScaleColorViridisD — ggts",
     description: "ScaleColorViridisD: Viridis-family color scale — discrete (viridis_d).",
     canonicalPath: "/reference/scales/color_viridis_d",
     kind: "page",
@@ -5790,7 +5801,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_binned",
-    title: "ScaleColourBinned — ggsvelte",
+    title: "ScaleColourBinned — ggts",
     description:
       "ScaleColourBinned: Binned color scale: continuous values → ordered color steps. British Colour spelling — same binding as ScaleColorBinned.",
     canonicalPath: "/reference/scales/colour_binned",
@@ -5838,7 +5849,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_brewer",
-    title: "ScaleColourBrewer — ggsvelte",
+    title: "ScaleColourBrewer — ggts",
     description:
       "ScaleColourBrewer: ColorBrewer qualitative color scale (discrete categories). British Colour spelling — same binding as ScaleColorBrewer.",
     canonicalPath: "/reference/scales/colour_brewer",
@@ -5886,7 +5897,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_continuous",
-    title: "ScaleColourContinuous — ggsvelte",
+    title: "ScaleColourContinuous — ggts",
     description:
       "ScaleColourContinuous: Continuous sequential color scale (default continuous color family). British Colour spelling — same binding as ScaleColorContinuous.",
     canonicalPath: "/reference/scales/colour_continuous",
@@ -5934,7 +5945,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_date",
-    title: "ScaleColourDate — ggsvelte",
+    title: "ScaleColourDate — ggts",
     description:
       "ScaleColourDate: Sequential color scale trained on calendar dates. British Colour spelling — same binding as ScaleColorDate.",
     canonicalPath: "/reference/scales/colour_date",
@@ -5982,7 +5993,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_datetime",
-    title: "ScaleColourDatetime — ggsvelte",
+    title: "ScaleColourDatetime — ggts",
     description:
       "ScaleColourDatetime: Sequential color scale trained on datetime values. British Colour spelling — same binding as ScaleColorDatetime.",
     canonicalPath: "/reference/scales/colour_datetime",
@@ -6030,7 +6041,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_discrete",
-    title: "ScaleColourDiscrete — ggsvelte",
+    title: "ScaleColourDiscrete — ggts",
     description:
       "ScaleColourDiscrete: Discrete color scale for categorical data (default ordinal family). British Colour spelling — same binding as ScaleColorDiscrete.",
     canonicalPath: "/reference/scales/colour_discrete",
@@ -6078,7 +6089,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_distiller",
-    title: "ScaleColourDistiller — ggsvelte",
+    title: "ScaleColourDistiller — ggts",
     description:
       "ScaleColourDistiller: ColorBrewer sequential/diverging color ramp (distiller). British Colour spelling — same binding as ScaleColorDistiller.",
     canonicalPath: "/reference/scales/colour_distiller",
@@ -6126,7 +6137,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_fermenter",
-    title: "ScaleColourFermenter — ggsvelte",
+    title: "ScaleColourFermenter — ggts",
     description:
       "ScaleColourFermenter: ColorBrewer binned color steps (fermenter). British Colour spelling — same binding as ScaleColorFermenter.",
     canonicalPath: "/reference/scales/colour_fermenter",
@@ -6174,7 +6185,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_gradient",
-    title: "ScaleColourGradient — ggsvelte",
+    title: "ScaleColourGradient — ggts",
     description:
       "ScaleColourGradient: Two-stop continuous color gradient (low/high). British Colour spelling — same binding as ScaleColorGradient.",
     canonicalPath: "/reference/scales/colour_gradient",
@@ -6222,7 +6233,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_gradient2",
-    title: "ScaleColourGradient2 — ggsvelte",
+    title: "ScaleColourGradient2 — ggts",
     description:
       "ScaleColourGradient2: Three-stop diverging continuous color gradient (low/mid/high). British Colour spelling — same binding as ScaleColorGradient2.",
     canonicalPath: "/reference/scales/colour_gradient2",
@@ -6270,7 +6281,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_gradientn",
-    title: "ScaleColourGradientn — ggsvelte",
+    title: "ScaleColourGradientn — ggts",
     description:
       "ScaleColourGradientn: N-stop continuous color gradient from an ordered color list. British Colour spelling — same binding as ScaleColorGradientn.",
     canonicalPath: "/reference/scales/colour_gradientn",
@@ -6318,7 +6329,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_grey",
-    title: "ScaleColourGrey — ggsvelte",
+    title: "ScaleColourGrey — ggts",
     description:
       "ScaleColourGrey: Grey ramp color palette for discrete categories. British Colour spelling — same binding as ScaleColorGrey.",
     canonicalPath: "/reference/scales/colour_grey",
@@ -6366,7 +6377,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_hue",
-    title: "ScaleColourHue — ggsvelte",
+    title: "ScaleColourHue — ggts",
     description:
       "ScaleColourHue: Evenly spaced hue color palette for discrete categories. British Colour spelling — same binding as ScaleColorHue.",
     canonicalPath: "/reference/scales/colour_hue",
@@ -6414,7 +6425,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_identity",
-    title: "ScaleColourIdentity — ggsvelte",
+    title: "ScaleColourIdentity — ggts",
     description:
       "ScaleColourIdentity: Identity color scale: source values are validated #rgb/#rrggbb colors used as-is. British Colour spelling — same binding as ScaleColorIdentity.",
     canonicalPath: "/reference/scales/colour_identity",
@@ -6462,7 +6473,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_log10",
-    title: "ScaleColourLog10 — ggsvelte",
+    title: "ScaleColourLog10 — ggts",
     description:
       "ScaleColourLog10: Sequential color scale with log10 pre-training transform. British Colour spelling — same binding as ScaleColorLog10.",
     canonicalPath: "/reference/scales/colour_log10",
@@ -6510,7 +6521,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_manual",
-    title: "ScaleColourManual — ggsvelte",
+    title: "ScaleColourManual — ggts",
     description:
       "ScaleColourManual: Manual color mapping: domain values paired with explicit colors. British Colour spelling — same binding as ScaleColorManual.",
     canonicalPath: "/reference/scales/colour_manual",
@@ -6558,7 +6569,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_ordinal",
-    title: "ScaleColourOrdinal — ggsvelte",
+    title: "ScaleColourOrdinal — ggts",
     description:
       "ScaleColourOrdinal: Explicit ordinal color scale (categories → colors). British Colour spelling — same binding as ScaleColorOrdinal.",
     canonicalPath: "/reference/scales/colour_ordinal",
@@ -6606,7 +6617,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_sqrt",
-    title: "ScaleColourSqrt — ggsvelte",
+    title: "ScaleColourSqrt — ggts",
     description:
       "ScaleColourSqrt: Sequential color scale with sqrt pre-training transform. British Colour spelling — same binding as ScaleColorSqrt.",
     canonicalPath: "/reference/scales/colour_sqrt",
@@ -6654,7 +6665,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_steps",
-    title: "ScaleColourSteps — ggsvelte",
+    title: "ScaleColourSteps — ggts",
     description:
       "ScaleColourSteps: Two-stop binned color steps (low/high). British Colour spelling — same binding as ScaleColorSteps.",
     canonicalPath: "/reference/scales/colour_steps",
@@ -6702,7 +6713,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_steps2",
-    title: "ScaleColourSteps2 — ggsvelte",
+    title: "ScaleColourSteps2 — ggts",
     description:
       "ScaleColourSteps2: Three-stop diverging binned color steps (low/mid/high). British Colour spelling — same binding as ScaleColorSteps2.",
     canonicalPath: "/reference/scales/colour_steps2",
@@ -6750,7 +6761,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_stepsn",
-    title: "ScaleColourStepsn — ggsvelte",
+    title: "ScaleColourStepsn — ggts",
     description:
       "ScaleColourStepsn: N-stop binned color steps from an ordered color list. British Colour spelling — same binding as ScaleColorStepsn.",
     canonicalPath: "/reference/scales/colour_stepsn",
@@ -6798,7 +6809,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_viridis_b",
-    title: "ScaleColourViridisB — ggsvelte",
+    title: "ScaleColourViridisB — ggts",
     description:
       "ScaleColourViridisB: Viridis-family color scale — binned (viridis_b). British Colour spelling — same binding as ScaleColorViridisB.",
     canonicalPath: "/reference/scales/colour_viridis_b",
@@ -6846,7 +6857,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_viridis_c",
-    title: "ScaleColourViridisC — ggsvelte",
+    title: "ScaleColourViridisC — ggts",
     description:
       "ScaleColourViridisC: Viridis-family color scale — continuous (viridis_c). British Colour spelling — same binding as ScaleColorViridisC.",
     canonicalPath: "/reference/scales/colour_viridis_c",
@@ -6894,7 +6905,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/colour_viridis_d",
-    title: "ScaleColourViridisD — ggsvelte",
+    title: "ScaleColourViridisD — ggts",
     description:
       "ScaleColourViridisD: Viridis-family color scale — discrete (viridis_d). British Colour spelling — same binding as ScaleColorViridisD.",
     canonicalPath: "/reference/scales/colour_viridis_d",
@@ -6942,7 +6953,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_binned",
-    title: "ScaleFillBinned — ggsvelte",
+    title: "ScaleFillBinned — ggts",
     description: "ScaleFillBinned: Binned fill scale: continuous values → ordered color steps.",
     canonicalPath: "/reference/scales/fill_binned",
     kind: "page",
@@ -6984,7 +6995,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_brewer",
-    title: "ScaleFillBrewer — ggsvelte",
+    title: "ScaleFillBrewer — ggts",
     description: "ScaleFillBrewer: ColorBrewer qualitative fill scale (discrete categories).",
     canonicalPath: "/reference/scales/fill_brewer",
     kind: "page",
@@ -7026,7 +7037,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_continuous",
-    title: "ScaleFillContinuous — ggsvelte",
+    title: "ScaleFillContinuous — ggts",
     description:
       "ScaleFillContinuous: Continuous sequential fill scale (default continuous color family).",
     canonicalPath: "/reference/scales/fill_continuous",
@@ -7069,7 +7080,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_date",
-    title: "ScaleFillDate — ggsvelte",
+    title: "ScaleFillDate — ggts",
     description: "ScaleFillDate: Sequential fill scale trained on calendar dates.",
     canonicalPath: "/reference/scales/fill_date",
     kind: "page",
@@ -7111,7 +7122,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_datetime",
-    title: "ScaleFillDatetime — ggsvelte",
+    title: "ScaleFillDatetime — ggts",
     description: "ScaleFillDatetime: Sequential fill scale trained on datetime values.",
     canonicalPath: "/reference/scales/fill_datetime",
     kind: "page",
@@ -7153,7 +7164,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_discrete",
-    title: "ScaleFillDiscrete — ggsvelte",
+    title: "ScaleFillDiscrete — ggts",
     description:
       "ScaleFillDiscrete: Discrete fill scale for categorical data (default ordinal family).",
     canonicalPath: "/reference/scales/fill_discrete",
@@ -7196,7 +7207,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_distiller",
-    title: "ScaleFillDistiller — ggsvelte",
+    title: "ScaleFillDistiller — ggts",
     description: "ScaleFillDistiller: ColorBrewer sequential/diverging fill ramp (distiller).",
     canonicalPath: "/reference/scales/fill_distiller",
     kind: "page",
@@ -7238,7 +7249,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_fermenter",
-    title: "ScaleFillFermenter — ggsvelte",
+    title: "ScaleFillFermenter — ggts",
     description: "ScaleFillFermenter: ColorBrewer binned fill steps (fermenter).",
     canonicalPath: "/reference/scales/fill_fermenter",
     kind: "page",
@@ -7280,7 +7291,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_gradient",
-    title: "ScaleFillGradient — ggsvelte",
+    title: "ScaleFillGradient — ggts",
     description: "ScaleFillGradient: Two-stop continuous fill gradient (low/high).",
     canonicalPath: "/reference/scales/fill_gradient",
     kind: "page",
@@ -7322,7 +7333,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_gradient2",
-    title: "ScaleFillGradient2 — ggsvelte",
+    title: "ScaleFillGradient2 — ggts",
     description:
       "ScaleFillGradient2: Three-stop diverging continuous fill gradient (low/mid/high).",
     canonicalPath: "/reference/scales/fill_gradient2",
@@ -7365,7 +7376,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_gradientn",
-    title: "ScaleFillGradientn — ggsvelte",
+    title: "ScaleFillGradientn — ggts",
     description: "ScaleFillGradientn: N-stop continuous fill gradient from an ordered color list.",
     canonicalPath: "/reference/scales/fill_gradientn",
     kind: "page",
@@ -7407,7 +7418,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_grey",
-    title: "ScaleFillGrey — ggsvelte",
+    title: "ScaleFillGrey — ggts",
     description: "ScaleFillGrey: Grey ramp fill palette for discrete categories.",
     canonicalPath: "/reference/scales/fill_grey",
     kind: "page",
@@ -7449,7 +7460,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_hue",
-    title: "ScaleFillHue — ggsvelte",
+    title: "ScaleFillHue — ggts",
     description: "ScaleFillHue: Evenly spaced hue fill palette for discrete categories.",
     canonicalPath: "/reference/scales/fill_hue",
     kind: "page",
@@ -7491,7 +7502,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_identity",
-    title: "ScaleFillIdentity — ggsvelte",
+    title: "ScaleFillIdentity — ggts",
     description:
       "ScaleFillIdentity: Identity fill scale: source values are validated #rgb/#rrggbb colors used as-is.",
     canonicalPath: "/reference/scales/fill_identity",
@@ -7534,7 +7545,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_log10",
-    title: "ScaleFillLog10 — ggsvelte",
+    title: "ScaleFillLog10 — ggts",
     description: "ScaleFillLog10: Sequential fill scale with log10 pre-training transform.",
     canonicalPath: "/reference/scales/fill_log10",
     kind: "page",
@@ -7576,7 +7587,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_manual",
-    title: "ScaleFillManual — ggsvelte",
+    title: "ScaleFillManual — ggts",
     description: "ScaleFillManual: Manual fill mapping: domain values paired with explicit colors.",
     canonicalPath: "/reference/scales/fill_manual",
     kind: "page",
@@ -7618,7 +7629,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_ordinal",
-    title: "ScaleFillOrdinal — ggsvelte",
+    title: "ScaleFillOrdinal — ggts",
     description: "ScaleFillOrdinal: Explicit ordinal fill scale (categories → colors).",
     canonicalPath: "/reference/scales/fill_ordinal",
     kind: "page",
@@ -7660,7 +7671,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_sqrt",
-    title: "ScaleFillSqrt — ggsvelte",
+    title: "ScaleFillSqrt — ggts",
     description: "ScaleFillSqrt: Sequential fill scale with sqrt pre-training transform.",
     canonicalPath: "/reference/scales/fill_sqrt",
     kind: "page",
@@ -7702,7 +7713,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_steps",
-    title: "ScaleFillSteps — ggsvelte",
+    title: "ScaleFillSteps — ggts",
     description: "ScaleFillSteps: Two-stop binned fill steps (low/high).",
     canonicalPath: "/reference/scales/fill_steps",
     kind: "page",
@@ -7744,7 +7755,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_steps2",
-    title: "ScaleFillSteps2 — ggsvelte",
+    title: "ScaleFillSteps2 — ggts",
     description: "ScaleFillSteps2: Three-stop diverging binned fill steps (low/mid/high).",
     canonicalPath: "/reference/scales/fill_steps2",
     kind: "page",
@@ -7786,7 +7797,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_stepsn",
-    title: "ScaleFillStepsn — ggsvelte",
+    title: "ScaleFillStepsn — ggts",
     description: "ScaleFillStepsn: N-stop binned fill steps from an ordered color list.",
     canonicalPath: "/reference/scales/fill_stepsn",
     kind: "page",
@@ -7828,7 +7839,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_viridis_b",
-    title: "ScaleFillViridisB — ggsvelte",
+    title: "ScaleFillViridisB — ggts",
     description: "ScaleFillViridisB: Viridis-family fill scale — binned (viridis_b).",
     canonicalPath: "/reference/scales/fill_viridis_b",
     kind: "page",
@@ -7870,7 +7881,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_viridis_c",
-    title: "ScaleFillViridisC — ggsvelte",
+    title: "ScaleFillViridisC — ggts",
     description: "ScaleFillViridisC: Viridis-family fill scale — continuous (viridis_c).",
     canonicalPath: "/reference/scales/fill_viridis_c",
     kind: "page",
@@ -7912,7 +7923,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/fill_viridis_d",
-    title: "ScaleFillViridisD — ggsvelte",
+    title: "ScaleFillViridisD — ggts",
     description: "ScaleFillViridisD: Viridis-family fill scale — discrete (viridis_d).",
     canonicalPath: "/reference/scales/fill_viridis_d",
     kind: "page",
@@ -7954,7 +7965,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linetype_binned",
-    title: "ScaleLinetypeBinned — ggsvelte",
+    title: "ScaleLinetypeBinned — ggts",
     description:
       "ScaleLinetypeBinned: Binned linetype scale: continuous values → finite named symbols.",
     canonicalPath: "/reference/scales/linetype_binned",
@@ -7997,7 +8008,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linetype_discrete",
-    title: "ScaleLinetypeDiscrete — ggsvelte",
+    title: "ScaleLinetypeDiscrete — ggts",
     description: "ScaleLinetypeDiscrete: Discrete linetype scale for categories (named symbols).",
     canonicalPath: "/reference/scales/linetype_discrete",
     kind: "page",
@@ -8034,7 +8045,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linetype_identity",
-    title: "ScaleLinetypeIdentity — ggsvelte",
+    title: "ScaleLinetypeIdentity — ggts",
     description:
       "ScaleLinetypeIdentity: Identity linetype scale: source names used as mapped symbols.",
     canonicalPath: "/reference/scales/linetype_identity",
@@ -8077,7 +8088,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linetype_manual",
-    title: "ScaleLinetypeManual — ggsvelte",
+    title: "ScaleLinetypeManual — ggts",
     description:
       "ScaleLinetypeManual: Manual linetype mapping: domain values paired with named symbols.",
     canonicalPath: "/reference/scales/linetype_manual",
@@ -8120,7 +8131,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linewidth_binned",
-    title: "ScaleLinewidthBinned — ggsvelte",
+    title: "ScaleLinewidthBinned — ggts",
     description:
       "ScaleLinewidthBinned: Binned linewidth scale: continuous values → stepped numeric style.",
     canonicalPath: "/reference/scales/linewidth_binned",
@@ -8163,7 +8174,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linewidth_continuous",
-    title: "ScaleLinewidthContinuous — ggsvelte",
+    title: "ScaleLinewidthContinuous — ggts",
     description: "ScaleLinewidthContinuous: Continuous sequential linewidth scale.",
     canonicalPath: "/reference/scales/linewidth_continuous",
     kind: "page",
@@ -8205,7 +8216,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linewidth_date",
-    title: "ScaleLinewidthDate — ggsvelte",
+    title: "ScaleLinewidthDate — ggts",
     description: "ScaleLinewidthDate: Sequential linewidth scale trained on calendar dates.",
     canonicalPath: "/reference/scales/linewidth_date",
     kind: "page",
@@ -8247,7 +8258,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linewidth_datetime",
-    title: "ScaleLinewidthDatetime — ggsvelte",
+    title: "ScaleLinewidthDatetime — ggts",
     description: "ScaleLinewidthDatetime: Sequential linewidth scale trained on datetime values.",
     canonicalPath: "/reference/scales/linewidth_datetime",
     kind: "page",
@@ -8289,7 +8300,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linewidth_discrete",
-    title: "ScaleLinewidthDiscrete — ggsvelte",
+    title: "ScaleLinewidthDiscrete — ggts",
     description: "ScaleLinewidthDiscrete: Discrete linewidth scale for categories (ordinal).",
     canonicalPath: "/reference/scales/linewidth_discrete",
     kind: "page",
@@ -8336,7 +8347,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linewidth_identity",
-    title: "ScaleLinewidthIdentity — ggsvelte",
+    title: "ScaleLinewidthIdentity — ggts",
     description:
       "ScaleLinewidthIdentity: Identity linewidth scale: source numbers used as mapped style values.",
     canonicalPath: "/reference/scales/linewidth_identity",
@@ -8379,7 +8390,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linewidth_manual",
-    title: "ScaleLinewidthManual — ggsvelte",
+    title: "ScaleLinewidthManual — ggts",
     description:
       "ScaleLinewidthManual: Manual linewidth mapping: domain values paired with explicit numbers.",
     canonicalPath: "/reference/scales/linewidth_manual",
@@ -8422,7 +8433,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/linewidth_ordinal",
-    title: "ScaleLinewidthOrdinal — ggsvelte",
+    title: "ScaleLinewidthOrdinal — ggts",
     description:
       "ScaleLinewidthOrdinal: Discrete linewidth scale for categories (ordinal). ggplot2 *Ordinal alias — same binding as ScaleLinewidthDiscrete.",
     canonicalPath: "/reference/scales/linewidth_ordinal",
@@ -8470,7 +8481,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/radius",
-    title: "ScaleRadius — ggsvelte",
+    title: "ScaleRadius — ggts",
     description: "ScaleRadius: Continuous size scale with radius (linear) mapping instead of area.",
     canonicalPath: "/reference/scales/radius",
     kind: "page",
@@ -8512,7 +8523,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/shape_binned",
-    title: "ScaleShapeBinned — ggsvelte",
+    title: "ScaleShapeBinned — ggts",
     description: "ScaleShapeBinned: Binned shape scale: continuous values → finite named symbols.",
     canonicalPath: "/reference/scales/shape_binned",
     kind: "page",
@@ -8554,7 +8565,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/shape_discrete",
-    title: "ScaleShapeDiscrete — ggsvelte",
+    title: "ScaleShapeDiscrete — ggts",
     description: "ScaleShapeDiscrete: Discrete shape scale for categories (named symbols).",
     canonicalPath: "/reference/scales/shape_discrete",
     kind: "page",
@@ -8596,7 +8607,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/shape_identity",
-    title: "ScaleShapeIdentity — ggsvelte",
+    title: "ScaleShapeIdentity — ggts",
     description: "ScaleShapeIdentity: Identity shape scale: source names used as mapped symbols.",
     canonicalPath: "/reference/scales/shape_identity",
     kind: "page",
@@ -8638,7 +8649,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/shape_manual",
-    title: "ScaleShapeManual — ggsvelte",
+    title: "ScaleShapeManual — ggts",
     description: "ScaleShapeManual: Manual shape mapping: domain values paired with named symbols.",
     canonicalPath: "/reference/scales/shape_manual",
     kind: "page",
@@ -8680,7 +8691,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/shape_ordinal",
-    title: "ScaleShapeOrdinal — ggsvelte",
+    title: "ScaleShapeOrdinal — ggts",
     description:
       "ScaleShapeOrdinal: Discrete shape scale for categories (named symbols). ggplot2 *Ordinal alias — same binding as ScaleShapeDiscrete.",
     canonicalPath: "/reference/scales/shape_ordinal",
@@ -8723,7 +8734,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_area",
-    title: "ScaleSizeArea — ggsvelte",
+    title: "ScaleSizeArea — ggts",
     description: "ScaleSizeArea: Continuous size scale with area mapping (zero maps to zero area).",
     canonicalPath: "/reference/scales/size_area",
     kind: "page",
@@ -8765,7 +8776,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_binned",
-    title: "ScaleSizeBinned — ggsvelte",
+    title: "ScaleSizeBinned — ggts",
     description: "ScaleSizeBinned: Binned size scale: continuous values → stepped numeric style.",
     canonicalPath: "/reference/scales/size_binned",
     kind: "page",
@@ -8807,7 +8818,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_binned_area",
-    title: "ScaleSizeBinnedArea — ggsvelte",
+    title: "ScaleSizeBinnedArea — ggts",
     description:
       "ScaleSizeBinnedArea: Binned size scale with area mapping (zero maps to zero area).",
     canonicalPath: "/reference/scales/size_binned_area",
@@ -8850,7 +8861,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_continuous",
-    title: "ScaleSizeContinuous — ggsvelte",
+    title: "ScaleSizeContinuous — ggts",
     description: "ScaleSizeContinuous: Continuous sequential size scale.",
     canonicalPath: "/reference/scales/size_continuous",
     kind: "page",
@@ -8892,7 +8903,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_date",
-    title: "ScaleSizeDate — ggsvelte",
+    title: "ScaleSizeDate — ggts",
     description: "ScaleSizeDate: Sequential size scale trained on calendar dates.",
     canonicalPath: "/reference/scales/size_date",
     kind: "page",
@@ -8934,7 +8945,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_datetime",
-    title: "ScaleSizeDatetime — ggsvelte",
+    title: "ScaleSizeDatetime — ggts",
     description: "ScaleSizeDatetime: Sequential size scale trained on datetime values.",
     canonicalPath: "/reference/scales/size_datetime",
     kind: "page",
@@ -8976,7 +8987,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_discrete",
-    title: "ScaleSizeDiscrete — ggsvelte",
+    title: "ScaleSizeDiscrete — ggts",
     description: "ScaleSizeDiscrete: Discrete size scale for categories (ordinal).",
     canonicalPath: "/reference/scales/size_discrete",
     kind: "page",
@@ -9023,7 +9034,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_identity",
-    title: "ScaleSizeIdentity — ggsvelte",
+    title: "ScaleSizeIdentity — ggts",
     description:
       "ScaleSizeIdentity: Identity size scale: source numbers used as mapped style values.",
     canonicalPath: "/reference/scales/size_identity",
@@ -9066,7 +9077,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_manual",
-    title: "ScaleSizeManual — ggsvelte",
+    title: "ScaleSizeManual — ggts",
     description:
       "ScaleSizeManual: Manual size mapping: domain values paired with explicit numbers.",
     canonicalPath: "/reference/scales/size_manual",
@@ -9109,7 +9120,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/size_ordinal",
-    title: "ScaleSizeOrdinal — ggsvelte",
+    title: "ScaleSizeOrdinal — ggts",
     description:
       "ScaleSizeOrdinal: Discrete size scale for categories (ordinal). ggplot2 *Ordinal alias — same binding as ScaleSizeDiscrete.",
     canonicalPath: "/reference/scales/size_ordinal",
@@ -9157,7 +9168,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_binned",
-    title: "ScaleXBinned — ggsvelte",
+    title: "ScaleXBinned — ggts",
     description:
       "ScaleXBinned: Binned x position scale: quantitative values map to ordered bins (breaks are bin boundaries).",
     canonicalPath: "/reference/scales/x_binned",
@@ -9200,7 +9211,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_continuous",
-    title: "ScaleXContinuous — ggsvelte",
+    title: "ScaleXContinuous — ggts",
     description: "ScaleXContinuous: Continuous linear x position scale (default numeric family).",
     canonicalPath: "/reference/scales/x_continuous",
     kind: "page",
@@ -9242,7 +9253,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_date",
-    title: "ScaleXDate — ggsvelte",
+    title: "ScaleXDate — ggts",
     description: "ScaleXDate: Temporal x position scale (date).",
     canonicalPath: "/reference/scales/x_date",
     kind: "page",
@@ -9284,7 +9295,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_datetime",
-    title: "ScaleXDatetime — ggsvelte",
+    title: "ScaleXDatetime — ggts",
     description: "ScaleXDatetime: Temporal x position scale (datetime).",
     canonicalPath: "/reference/scales/x_datetime",
     kind: "page",
@@ -9326,7 +9337,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_discrete",
-    title: "ScaleXDiscrete — ggsvelte",
+    title: "ScaleXDiscrete — ggts",
     description: "ScaleXDiscrete: Discrete (band) x position scale for categories.",
     canonicalPath: "/reference/scales/x_discrete",
     kind: "page",
@@ -9368,7 +9379,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_log10",
-    title: "ScaleXLog10 — ggsvelte",
+    title: "ScaleXLog10 — ggts",
     description:
       "ScaleXLog10: Base-10 log x position scale (pre-stat log10 transform on a linear scale).",
     canonicalPath: "/reference/scales/x_log10",
@@ -9411,7 +9422,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_month_day",
-    title: "ScaleXMonthDay — ggsvelte",
+    title: "ScaleXMonthDay — ggts",
     description: "ScaleXMonthDay: Temporal x position scale (month-day (year collapsed)).",
     canonicalPath: "/reference/scales/x_month_day",
     kind: "page",
@@ -9453,7 +9464,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_reverse",
-    title: "ScaleXReverse — ggsvelte",
+    title: "ScaleXReverse — ggts",
     description:
       "ScaleXReverse: Continuous x position scale with reverse: true (output direction flipped).",
     canonicalPath: "/reference/scales/x_reverse",
@@ -9496,7 +9507,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_sqrt",
-    title: "ScaleXSqrt — ggsvelte",
+    title: "ScaleXSqrt — ggts",
     description:
       "ScaleXSqrt: Square-root x position scale (pre-stat sqrt transform on a linear scale).",
     canonicalPath: "/reference/scales/x_sqrt",
@@ -9539,7 +9550,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/x_time",
-    title: "ScaleXTime — ggsvelte",
+    title: "ScaleXTime — ggts",
     description: "ScaleXTime: Temporal x position scale (time-of-day).",
     canonicalPath: "/reference/scales/x_time",
     kind: "page",
@@ -9581,7 +9592,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_binned",
-    title: "ScaleYBinned — ggsvelte",
+    title: "ScaleYBinned — ggts",
     description:
       "ScaleYBinned: Binned y position scale: quantitative values map to ordered bins (breaks are bin boundaries).",
     canonicalPath: "/reference/scales/y_binned",
@@ -9624,7 +9635,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_continuous",
-    title: "ScaleYContinuous — ggsvelte",
+    title: "ScaleYContinuous — ggts",
     description: "ScaleYContinuous: Continuous linear y position scale (default numeric family).",
     canonicalPath: "/reference/scales/y_continuous",
     kind: "page",
@@ -9666,7 +9677,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_date",
-    title: "ScaleYDate — ggsvelte",
+    title: "ScaleYDate — ggts",
     description: "ScaleYDate: Temporal y position scale (date).",
     canonicalPath: "/reference/scales/y_date",
     kind: "page",
@@ -9708,7 +9719,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_datetime",
-    title: "ScaleYDatetime — ggsvelte",
+    title: "ScaleYDatetime — ggts",
     description: "ScaleYDatetime: Temporal y position scale (datetime).",
     canonicalPath: "/reference/scales/y_datetime",
     kind: "page",
@@ -9750,7 +9761,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_discrete",
-    title: "ScaleYDiscrete — ggsvelte",
+    title: "ScaleYDiscrete — ggts",
     description: "ScaleYDiscrete: Discrete (band) y position scale for categories.",
     canonicalPath: "/reference/scales/y_discrete",
     kind: "page",
@@ -9792,7 +9803,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_log10",
-    title: "ScaleYLog10 — ggsvelte",
+    title: "ScaleYLog10 — ggts",
     description:
       "ScaleYLog10: Base-10 log y position scale (pre-stat log10 transform on a linear scale).",
     canonicalPath: "/reference/scales/y_log10",
@@ -9835,7 +9846,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_month_day",
-    title: "ScaleYMonthDay — ggsvelte",
+    title: "ScaleYMonthDay — ggts",
     description: "ScaleYMonthDay: Temporal y position scale (month-day (year collapsed)).",
     canonicalPath: "/reference/scales/y_month_day",
     kind: "page",
@@ -9877,7 +9888,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_reverse",
-    title: "ScaleYReverse — ggsvelte",
+    title: "ScaleYReverse — ggts",
     description:
       "ScaleYReverse: Continuous y position scale with reverse: true (output direction flipped).",
     canonicalPath: "/reference/scales/y_reverse",
@@ -9920,7 +9931,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_sqrt",
-    title: "ScaleYSqrt — ggsvelte",
+    title: "ScaleYSqrt — ggts",
     description:
       "ScaleYSqrt: Square-root y position scale (pre-stat sqrt transform on a linear scale).",
     canonicalPath: "/reference/scales/y_sqrt",
@@ -9963,7 +9974,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/scales/y_time",
-    title: "ScaleYTime — ggsvelte",
+    title: "ScaleYTime — ggts",
     description: "ScaleYTime: Temporal y position scale (time-of-day).",
     canonicalPath: "/reference/scales/y_time",
     kind: "page",
@@ -10005,7 +10016,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/coords/cartesian",
-    title: "CoordCartesian — ggsvelte",
+    title: "CoordCartesian — ggts",
     description:
       'CoordCartesian: Default Cartesian coordinates. Omit coord or use CoordCartesian to clear a prior REPLACE-family coord; normalize() drops bare { type: "cartesian" }.',
     canonicalPath: "/reference/coords/cartesian",
@@ -10038,7 +10049,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/coords/flip",
-    title: "CoordFlip — ggsvelte",
+    title: "CoordFlip — ggts",
     description:
       "CoordFlip: Swap display axes so semantic x paints vertically and y horizontally. The mechanism for horizontal bar charts; stack, dodge, and hit-testing follow the flip.",
     canonicalPath: "/reference/coords/flip",
@@ -10071,7 +10082,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/coords/transform",
-    title: "CoordTransform — ggsvelte",
+    title: "CoordTransform — ggts",
     description:
       "CoordTransform: Post-stat coordinate projection with independent x/y transforms (identity, log10, sqrt), semantic viewport limits, reverse, and panel clipping. Distinct from pre-stat scale transforms.",
     canonicalPath: "/reference/coords/transform",
@@ -10109,7 +10120,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/coords/fixed",
-    title: "CoordFixed — ggsvelte",
+    title: "CoordFixed — ggts",
     description:
       "CoordFixed: Fixed physical data-unit aspect ratio (y-unit length / x-unit length). Layout fits the largest centered data rectangle after chart chrome; rejects free positional facet scales.",
     canonicalPath: "/reference/coords/fixed",
@@ -10147,7 +10158,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/coords/sf",
-    title: "CoordSf — ggsvelte",
+    title: "CoordSf — ggts",
     description:
       "CoordSf: Fixed-aspect coordinates for already-projected geom_sf maps. Same layout as fixed; no CRS reproject or graticules in v1 — data must already be in plot space.",
     canonicalPath: "/reference/coords/sf",
@@ -10180,7 +10191,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/coords/radial",
-    title: "CoordRadial — ggsvelte",
+    title: "CoordRadial — ggts",
     description:
       "CoordRadial: Polar/radial coordinates (ggplot2 coord_radial). Maps one aesthetic to angle and the other to radius for pie charts, coxcombs, and polar scatter. coord_polar is a helper alias with clip on.",
     canonicalPath: "/reference/coords/radial",
@@ -10213,7 +10224,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/guides/legend",
-    title: "GuideLegend — ggsvelte",
+    title: "GuideLegend — ggts",
     description:
       "GuideLegend: Discrete legend for one non-position aesthetic: title, placement rank, position, direction, key size, and collision. Default guide for categorical color, fill, size, shape, and other style channels.",
     canonicalPath: "/reference/guides/legend",
@@ -10251,7 +10262,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/guides/colorbar",
-    title: "GuideColorbar — ggsvelte",
+    title: "GuideColorbar — ggts",
     description:
       "GuideColorbar: Continuous color ramp for sequential color or fill scales. Shows ticks and labels along a vertical or horizontal bar; incompatible with discrete legends and binned colorsteps.",
     canonicalPath: "/reference/guides/colorbar",
@@ -10284,7 +10295,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/guides/colorsteps",
-    title: "GuideColorsteps — ggsvelte",
+    title: "GuideColorsteps — ggts",
     description:
       "GuideColorsteps: Binned color legend for binned color or fill scales. Step blocks with optional labels; use instead of legend or colorbar when the scale type is binned.",
     canonicalPath: "/reference/guides/colorsteps",
@@ -10317,7 +10328,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/guides/axis",
-    title: "GuideAxis — ggsvelte",
+    title: "GuideAxis — ggts",
     description:
       "GuideAxis: Axis guide for positional aesthetics x and y: title, tick marks, labels, and collision. Not valid on color, fill, or other style channels.",
     canonicalPath: "/reference/guides/axis",
@@ -10350,7 +10361,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/reference/guides/none",
-    title: "GuideNone — ggsvelte",
+    title: "GuideNone — ggts",
     description:
       "GuideNone: Suppress the guide for one aesthetic entirely. Valid on every channel; useful to hide size or shape legends while keeping the mapping.",
     canonicalPath: "/reference/guides/none",
@@ -10382,9 +10393,46 @@ export const DOCS_ROUTES = [
     ],
   },
   {
+    path: "/guide/agents",
+    title: "Agent sandboxes — ggts",
+    description: "Install the skill and CLI, check chart specs, and render SVG in a sandbox.",
+    canonicalPath: "/guide/agents",
+    kind: "page",
+    index: true,
+    sitemap: true,
+    shell: "docs",
+    navigation: {
+      section: "Start",
+      label: "Agent sandboxes",
+      order: 0.5,
+    },
+    headings: [
+      {
+        id: "install-the-feedback-loop",
+        title: "Install the feedback loop",
+        level: 2,
+      },
+      {
+        id: "give-the-agent-a-complete-task",
+        title: "Give the agent a complete task",
+        level: 2,
+      },
+      {
+        id: "repair-then-inspect",
+        title: "Repair, then inspect",
+        level: 2,
+      },
+      {
+        id: "bring-the-chart-into-an-application",
+        title: "Bring the chart into an application",
+        level: 2,
+      },
+    ],
+  },
+  {
     path: "/guide/getting-started",
-    title: "Getting started — ggsvelte",
-    description: "Install @ggsvelte/svelte and render one chart from a Svelte file.",
+    title: "Getting started — ggts",
+    description: "Render the same chart in an agent sandbox, React, or Svelte.",
     canonicalPath: "/guide/getting-started",
     kind: "page",
     index: true,
@@ -10397,8 +10445,28 @@ export const DOCS_ROUTES = [
     },
     headings: [
       {
-        id: "install",
-        title: "Install",
+        id: "choose-your-surface",
+        title: "Choose your surface",
+        level: 2,
+      },
+      {
+        id: "react",
+        title: "React",
+        level: 2,
+      },
+      {
+        id: "svelte",
+        title: "Svelte",
+        level: 2,
+      },
+      {
+        id: "typescript",
+        title: "TypeScript",
+        level: 2,
+      },
+      {
+        id: "svelte-install-and-composition",
+        title: "Svelte install and composition",
         level: 2,
       },
       {
@@ -10440,7 +10508,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/statistics-positions",
-    title: "Statistics and positions — ggsvelte",
+    title: "Statistics and positions — ggts",
     description:
       "Compute summaries and control how derived marks occupy the same coordinate space.",
     canonicalPath: "/guide/statistics-positions",
@@ -10568,7 +10636,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/scales-guides",
-    title: "Scales and guides — ggsvelte",
+    title: "Scales and guides — ggts",
     description: "Translate data domains into position, color, labels, axes, and legends.",
     canonicalPath: "/guide/scales-guides",
     kind: "page",
@@ -10630,7 +10698,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/facets-coordinates",
-    title: "Facets and coordinates — ggsvelte",
+    title: "Facets and coordinates — ggts",
     description: "Repeat one grammar across panels and choose how axes compose the view.",
     canonicalPath: "/guide/facets-coordinates",
     kind: "page",
@@ -10667,7 +10735,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/temporal-scales",
-    title: "Dates without preprocessing — ggsvelte",
+    title: "Dates without preprocessing — ggts",
     description: "Value-driven date inference, strict parsers, overrides, and diagnostics.",
     canonicalPath: "/guide/temporal-scales",
     kind: "page",
@@ -10709,7 +10777,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/interactions",
-    title: "Interactions — ggsvelte",
+    title: "Interactions — ggts",
     description: "Inspection, selection, zoom, keyboard behavior, identity, and event contracts.",
     canonicalPath: "/guide/interactions",
     kind: "page",
@@ -10801,7 +10869,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/production",
-    title: "Production — ggsvelte",
+    title: "Production — ggts",
     description:
       "Responsive sizing, SVG/canvas rendering, SSR and export, and tested runtime support.",
     canonicalPath: "/guide/production",
@@ -10839,7 +10907,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/interaction-reference",
-    title: "Interaction reference — ggsvelte",
+    title: "Interaction reference — ggts",
     description: "Search interaction props, callbacks, event phases, and diagnostic codes.",
     canonicalPath: "/guide/interaction-reference",
     kind: "page",
@@ -11092,7 +11160,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/errors",
-    title: "Errors reference — ggsvelte",
+    title: "Errors reference — ggts",
     description:
       "Understand validation, render, interaction, and CLI diagnostics and recover safely.",
     canonicalPath: "/guide/errors",
@@ -11112,8 +11180,8 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
-        id: "validation-errors-ggsvelte-spec",
-        title: "Validation errors (@ggsvelte/spec)",
+        id: "validation-errors-ggts-sh-spec",
+        title: "Validation errors (@ggts-sh/spec)",
         level: 2,
       },
       {
@@ -11347,8 +11415,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "render-time-errors-ggsvelte-core",
-        title: "Render-time errors (@ggsvelte/core)",
+        id: "render-time-errors-ggts-sh-core",
+        title: "Render-time errors (@ggts-sh/core)",
         level: 2,
       },
       {
@@ -12047,8 +12115,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "interaction-diagnostics-ggsvelte-svelte",
-        title: "Interaction diagnostics (@ggsvelte/svelte)",
+        id: "interaction-diagnostics-ggts-sh-svelte",
+        title: "Interaction diagnostics (@ggts-sh/svelte)",
         level: 2,
       },
       {
@@ -12187,8 +12255,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "cli-diagnostics-ggsvelte-render",
-        title: "CLI diagnostics (ggsvelte-render)",
+        id: "cli-diagnostics-ggts",
+        title: "CLI diagnostics (ggts)",
         level: 2,
       },
       {
@@ -12225,7 +12293,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/advisories",
-    title: "Advisories — ggsvelte",
+    title: "Advisories — ggts",
     description: "Spec-lint advisories and the pipeline's disclosed heuristics.",
     canonicalPath: "/guide/advisories",
     kind: "page",
@@ -12239,8 +12307,8 @@ export const DOCS_ROUTES = [
     },
     headings: [
       {
-        id: "spec-lint-advisories-ggsvelte-spec-lintspec",
-        title: "Spec-lint advisories (@ggsvelte/spec lintSpec)",
+        id: "spec-lint-advisories-ggts-sh-spec-lintspec",
+        title: "Spec-lint advisories (@ggts-sh/spec lintSpec)",
         level: 2,
       },
       {
@@ -12274,8 +12342,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "pipeline-heuristic-advisories-ggsvelte-core",
-        title: "Pipeline heuristic advisories (@ggsvelte/core)",
+        id: "pipeline-heuristic-advisories-ggts-sh-core",
+        title: "Pipeline heuristic advisories (@ggts-sh/core)",
         level: 2,
       },
       {
@@ -12362,7 +12430,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/guide/lifecycle",
-    title: "Lifecycle & editions — ggsvelte",
+    title: "Lifecycle & editions — ggts",
     description: "API stability tags per export, and the defaults-edition mechanism.",
     canonicalPath: "/guide/lifecycle",
     kind: "page",
@@ -12386,8 +12454,8 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
-        id: "ggsvelte-spec",
-        title: "@ggsvelte/spec",
+        id: "ggts-sh-spec",
+        title: "@ggts-sh/spec",
         level: 2,
       },
       {
@@ -12401,8 +12469,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-spec-portable",
-        title: "@ggsvelte/spec (./portable)",
+        id: "ggts-sh-spec-portable",
+        title: "@ggts-sh/spec (./portable)",
         level: 2,
       },
       {
@@ -12411,8 +12479,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-core",
-        title: "@ggsvelte/core",
+        id: "ggts-sh-core",
+        title: "@ggts-sh/core",
         level: 2,
       },
       {
@@ -12426,8 +12494,28 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-core-render",
-        title: "@ggsvelte/core (./render)",
+        id: "ggts-sh-core-interaction",
+        title: "@ggts-sh/core (./interaction)",
+        level: 2,
+      },
+      {
+        id: "experimental-213",
+        title: "experimental (213)",
+        level: 3,
+      },
+      {
+        id: "ggts-sh-core-data",
+        title: "@ggts-sh/core (./data)",
+        level: 2,
+      },
+      {
+        id: "experimental-21-2",
+        title: "experimental (21)",
+        level: 3,
+      },
+      {
+        id: "ggts-sh-core-render",
+        title: "@ggts-sh/core (./render)",
         level: 2,
       },
       {
@@ -12436,8 +12524,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-core-headless",
-        title: "@ggsvelte/core (./headless)",
+        id: "ggts-sh-core-headless",
+        title: "@ggts-sh/core (./headless)",
         level: 2,
       },
       {
@@ -12446,8 +12534,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-core-headless-register",
-        title: "@ggsvelte/core (./headless/register)",
+        id: "ggts-sh-core-headless-register",
+        title: "@ggts-sh/core (./headless/register)",
         level: 2,
       },
       {
@@ -12456,8 +12544,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-core-temporal",
-        title: "@ggsvelte/core (./temporal)",
+        id: "ggts-sh-core-temporal",
+        title: "@ggts-sh/core (./temporal)",
         level: 2,
       },
       {
@@ -12466,8 +12554,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-core-dom",
-        title: "@ggsvelte/core (./dom)",
+        id: "ggts-sh-core-dom",
+        title: "@ggts-sh/core (./dom)",
         level: 2,
       },
       {
@@ -12476,8 +12564,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-core-svg-live",
-        title: "@ggsvelte/core (./svg-live)",
+        id: "ggts-sh-core-svg-live",
+        title: "@ggts-sh/core (./svg-live)",
         level: 2,
       },
       {
@@ -12486,18 +12574,18 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-compose",
-        title: "@ggsvelte/compose",
+        id: "ggts-sh-compose",
+        title: "@ggts-sh/compose",
         level: 2,
       },
       {
-        id: "experimental-34",
-        title: "experimental (34)",
+        id: "experimental-50",
+        title: "experimental (50)",
         level: 3,
       },
       {
-        id: "ggsvelte-svelte",
-        title: "@ggsvelte/svelte",
+        id: "ggts-sh-svelte",
+        title: "@ggts-sh/svelte",
         level: 2,
       },
       {
@@ -12511,20 +12599,35 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "ggsvelte-cli",
-        title: "@ggsvelte/cli",
+        id: "ggts-sh-react",
+        title: "@ggts-sh/react",
         level: 2,
       },
       {
-        id: "experimental-2",
-        title: "experimental (2)",
+        id: "experimental-353",
+        title: "experimental (353)",
+        level: 3,
+      },
+      {
+        id: "stable-intent-1",
+        title: "stable-intent (1)",
+        level: 3,
+      },
+      {
+        id: "ggts-sh-cli",
+        title: "@ggts-sh/cli",
+        level: 2,
+      },
+      {
+        id: "experimental-3",
+        title: "experimental (3)",
         level: 3,
       },
     ],
   },
   {
     path: "/guide/upgrading",
-    title: "Upgrade guide — ggsvelte",
+    title: "Upgrade guide — ggts",
     description: "Check versions, apply fixture-backed changes, and verify each 0.x transition.",
     canonicalPath: "/guide/upgrading",
     kind: "page",
@@ -12541,6 +12644,16 @@ export const DOCS_ROUTES = [
         id: "five-minute-path",
         title: "Five-minute path",
         level: 2,
+      },
+      {
+        id: "0-42-to-0-43",
+        title: "0.42 to 0.43",
+        level: 2,
+      },
+      {
+        id: "ggsvelte-is-now-ggts",
+        title: "ggsvelte is now ggts",
+        level: 3,
       },
       {
         id: "0-38-to-0-39",
@@ -12786,7 +12899,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/area/basic",
-    title: "Survivors from a cohort of one thousand — ggsvelte gallery",
+    title: "Survivors from a cohort of one thousand — ggts gallery",
     description:
       "A single series drawn as a filled area under the curve. Use this when the area itself carries the quantity.",
     canonicalPath: "/examples/area/basic",
@@ -12797,7 +12910,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/area/stacked",
-    title: "Stacked deaths by cause over time — ggsvelte gallery",
+    title: "Stacked deaths by cause over time — ggts gallery",
     description: "Stacked areas for parts of a whole that change over time.",
     canonicalPath: "/examples/area/stacked",
     kind: "page",
@@ -12807,7 +12920,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/bar/dodged",
-    title: "US beer production by package type — ggsvelte gallery",
+    title: "US beer production by package type — ggts gallery",
     description: "Dodged bars of national production by year and package.",
     canonicalPath: "/examples/bar/dodged",
     kind: "page",
@@ -12817,7 +12930,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/bar/horizontal",
-    title: "Category totals, flipped so labels read across — ggsvelte gallery",
+    title: "Category totals, flipped so labels read across — ggts gallery",
     description: "Horizontal bars when category labels are long and the ranking matters.",
     canonicalPath: "/examples/bar/horizontal",
     kind: "page",
@@ -12827,7 +12940,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/bar/proportions",
-    title: "Parts of a whole within each group — ggsvelte gallery",
+    title: "Parts of a whole within each group — ggts gallery",
     description: "Bars stacked to a full height so each segment reads as a share of its group.",
     canonicalPath: "/examples/bar/proportions",
     kind: "page",
@@ -12837,7 +12950,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/bar/stacked",
-    title: "Stacked counts inside each bag — ggsvelte gallery",
+    title: "Stacked counts inside each bag — ggts gallery",
     description: "Stacked bars when you need counts and composition in the same mark.",
     canonicalPath: "/examples/bar/stacked",
     kind: "page",
@@ -12847,7 +12960,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/bin2d/basic",
-    title: "Two-dimensional bins for a dense cloud — ggsvelte gallery",
+    title: "Two-dimensional bins for a dense cloud — ggts gallery",
     description: "2D bins when a scatter is too dense for individual points.",
     canonicalPath: "/examples/bin2d/basic",
     kind: "page",
@@ -12857,7 +12970,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/blank/axes-only",
-    title: "Axes without marks — ggsvelte gallery",
+    title: "Axes without marks — ggts gallery",
     description: "Blank axes when you need the trained domain without a geom.",
     canonicalPath: "/examples/blank/axes-only",
     kind: "page",
@@ -12867,7 +12980,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/blank/domain-expand",
-    title: "Expanded domain with no marks — ggsvelte gallery",
+    title: "Expanded domain with no marks — ggts gallery",
     description: "Domain expansion when a reference value must stay inside the plot area.",
     canonicalPath: "/examples/blank/domain-expand",
     kind: "page",
@@ -12877,7 +12990,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/boxplot/by-category",
-    title: "Boxplots for five runs of the same experiment — ggsvelte gallery",
+    title: "Boxplots for five runs of the same experiment — ggts gallery",
     description: "Category boxplots for comparing distributions side by side.",
     canonicalPath: "/examples/boxplot/by-category",
     kind: "page",
@@ -12887,7 +13000,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/boxplot/violin",
-    title: "Violin plots for the same five runs — ggsvelte gallery",
+    title: "Violin plots for the same five runs — ggts gallery",
     description:
       "Violins when the full shape of each group matters more than the five-number summary alone.",
     canonicalPath: "/examples/boxplot/violin",
@@ -12898,7 +13011,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/col/basic",
-    title: "Counts across ordered chest sizes — ggsvelte gallery",
+    title: "Counts across ordered chest sizes — ggts gallery",
     description: "Simple columns for discrete counts along one ordered axis.",
     canonicalPath: "/examples/col/basic",
     kind: "page",
@@ -12908,7 +13021,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/col/long-labels",
-    title: "Long category labels at a narrow width — ggsvelte gallery",
+    title: "Long category labels at a narrow width — ggts gallery",
     description:
       "A layout specimen: Spanish multi-word names and a long German compound at about 480px, where the band axis has to wrap and rotate to fit.",
     canonicalPath: "/examples/col/long-labels",
@@ -12919,7 +13032,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/col/mixed-outlier-labels",
-    title: "One long label among short ones — ggsvelte gallery",
+    title: "One long label among short ones — ggts gallery",
     description:
       "A layout specimen: short categories with a single four-word outlier at a normal desktop width, where the axis should wrap rather than rotate everything.",
     canonicalPath: "/examples/col/mixed-outlier-labels",
@@ -12930,7 +13043,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/col/theme-linedraw",
-    title: "Linedraw theme on chest-size columns — ggsvelte gallery",
+    title: "Linedraw theme on chest-size columns — ggts gallery",
     description:
       "Linedraw theme on ordered chest counts: hard black axes and grid on white, with no grey chrome.",
     canonicalPath: "/examples/col/theme-linedraw",
@@ -12941,7 +13054,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/col/value-labels",
-    title: "Columns with the rate printed on each bar — ggsvelte gallery",
+    title: "Columns with the rate printed on each bar — ggts gallery",
     description: "Value labels when the exact number is the point of the chart.",
     canonicalPath: "/examples/col/value-labels",
     kind: "page",
@@ -12951,7 +13064,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/color/binned",
-    title: "How many items you can tell apart at once — ggsvelte gallery",
+    title: "How many items you can tell apart at once — ggts gallery",
     description: "Binned continuous colour when discrete steps read clearer than a smooth ramp.",
     canonicalPath: "/examples/color/binned",
     kind: "page",
@@ -12961,7 +13074,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/contour/basic",
-    title: "Contours of height on a grid — ggsvelte gallery",
+    title: "Contours of height on a grid — ggts gallery",
     description: "Contours when the input is a continuous surface on a grid.",
     canonicalPath: "/examples/contour/basic",
     kind: "page",
@@ -12971,7 +13084,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/crossbar/boxes",
-    title: "Interval boxes with mid line — ggsvelte gallery",
+    title: "Interval boxes with mid line — ggts gallery",
     description:
       "Three tall identity boxes with a mid horizontal line — crossbar's mark shape at index thumbnail size.",
     canonicalPath: "/examples/crossbar/boxes",
@@ -12982,7 +13095,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/curve/connectors",
-    title: "Paired points joined by a curve — ggsvelte gallery",
+    title: "Paired points joined by a curve — ggts gallery",
     description:
       "Curved connectors when straight segments would crowd and you want origin→end pairs.",
     canonicalPath: "/examples/curve/connectors",
@@ -12993,7 +13106,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/density/kde-2d",
-    title: "2D density isolines — ggsvelte gallery",
+    title: "2D density isolines — ggts gallery",
     description:
       "Kernel density drawn as contour lines over 578 point locations. The rings tighten where the points cluster — here, the streets around one pump on Snow's 1854 Soho map.",
     canonicalPath: "/examples/density/kde-2d",
@@ -13004,7 +13117,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/density/kde-2d-filled",
-    title: "Filled 2D density bands — ggsvelte gallery",
+    title: "Filled 2D density bands — ggts gallery",
     description:
       "Kernel density drawn as shaded rings over 578 point locations. Darker bands sit where the points are densest — here, the streets around one pump on Snow's 1854 Soho map.",
     canonicalPath: "/examples/density/kde-2d-filled",
@@ -13015,7 +13128,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/density/overlay",
-    title: "Two densities on one axis — ggsvelte gallery",
+    title: "Two densities on one axis — ggts gallery",
     description: "Overlapping density curves for comparing continuous distributions.",
     canonicalPath: "/examples/density/overlay",
     kind: "page",
@@ -13025,7 +13138,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/dotplot/histodot",
-    title: "One dot per measurement, stacked in bins — ggsvelte gallery",
+    title: "One dot per measurement, stacked in bins — ggts gallery",
     description:
       "Dotplots when the sample is small enough that every observation should stay visible.",
     canonicalPath: "/examples/dotplot/histodot",
@@ -13036,7 +13149,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/errorbar/caps",
-    title: "Capped error bars — ggsvelte gallery",
+    title: "Capped error bars — ggts gallery",
     description:
       "Three tall identity intervals with end caps — the mark shape that reads at index thumbnail size.",
     canonicalPath: "/examples/errorbar/caps",
@@ -13047,7 +13160,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/errorbar/mean-se",
-    title: "Mean and standard error by group — ggsvelte gallery",
+    title: "Mean and standard error by group — ggts gallery",
     description: "Mean ± SE for a control and three hypnotic treatments.",
     canonicalPath: "/examples/errorbar/mean-se",
     kind: "page",
@@ -13057,7 +13170,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/errorbar/summary-bin",
-    title: "Mean and standard error in each x class — ggsvelte gallery",
+    title: "Mean and standard error in each x class — ggts gallery",
     description: "Summary error bars after binning x when you need mean and uncertainty together.",
     canonicalPath: "/examples/errorbar/summary-bin",
     kind: "page",
@@ -13067,7 +13180,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/facet/ordered-side-strips",
-    title: "Facets with ordered side strips — ggsvelte gallery",
+    title: "Facets with ordered side strips — ggts gallery",
     description: "Facet strips ordered to match the sample order of the experiment.",
     canonicalPath: "/examples/facet/ordered-side-strips",
     kind: "page",
@@ -13077,7 +13190,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/facet/wrap",
-    title: "One panel per parent–child pair type — ggsvelte gallery",
+    title: "One panel per parent–child pair type — ggts gallery",
     description: "Facet wrap when a grouping field should become a grid of small multiples.",
     canonicalPath: "/examples/facet/wrap",
     kind: "page",
@@ -13087,7 +13200,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/facet/wrap-free-y",
-    title: "Facets with free y scales — ggsvelte gallery",
+    title: "Facets with free y scales — ggts gallery",
     description: "Free y scales when panels share an x axis but live on different magnitudes.",
     canonicalPath: "/examples/facet/wrap-free-y",
     kind: "page",
@@ -13097,7 +13210,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/freqpoly/basic",
-    title: "Frequency polygon through bin centres — ggsvelte gallery",
+    title: "Frequency polygon through bin centres — ggts gallery",
     description: "Frequency polygons when you want a histogram's bins without the solid bars.",
     canonicalPath: "/examples/freqpoly/basic",
     kind: "page",
@@ -13107,7 +13220,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/hex/basic",
-    title: "Hex bins for a dense cloud — ggsvelte gallery",
+    title: "Hex bins for a dense cloud — ggts gallery",
     description: "Hex bins as an alternative to rectangular 2D bins.",
     canonicalPath: "/examples/hex/basic",
     kind: "page",
@@ -13117,7 +13230,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/histogram/basic",
-    title: "Histogram of a hundred experimental runs — ggsvelte gallery",
+    title: "Histogram of a hundred experimental runs — ggts gallery",
     description: "A basic histogram for a single continuous measurement.",
     canonicalPath: "/examples/histogram/basic",
     kind: "page",
@@ -13127,7 +13240,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/hline/threshold",
-    title: "One horizontal threshold — ggsvelte gallery",
+    title: "One horizontal threshold — ggts gallery",
     description:
       "Horizontal rules for thresholds, targets, or known reference values across a panel.",
     canonicalPath: "/examples/hline/threshold",
@@ -13138,7 +13251,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/interaction/brush-zoom",
-    title: "Interval selection and zoom — ggsvelte gallery",
+    title: "Interval selection and zoom — ggts gallery",
     description:
       "333 Palmer penguins: brush a rectangle to select, or zoom into the crowded middle where the species overlap.",
     canonicalPath: "/examples/interaction/brush-zoom",
@@ -13149,7 +13262,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/interaction/facet-intervals",
-    title: "One interval, applied in every panel — ggsvelte gallery",
+    title: "One interval, applied in every panel — ggts gallery",
     description:
       "333 Palmer penguins split by island, with a coordinate interval selection that holds across all the facets at once.",
     canonicalPath: "/examples/interaction/facet-intervals",
@@ -13160,7 +13273,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/interaction/legend-filter",
-    title: "Filter series from the legend — ggsvelte gallery",
+    title: "Filter series from the legend — ggts gallery",
     description: "Legend filter when readers need to hide series without losing colour identity.",
     canonicalPath: "/examples/interaction/legend-filter",
     kind: "page",
@@ -13170,7 +13283,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/interaction/legend-focus",
-    title: "Focus a legend group without changing the data — ggsvelte gallery",
+    title: "Focus a legend group without changing the data — ggts gallery",
     description:
       "Three of Playfair's commodity series. Focusing a group dims the others rather than dropping them, so the scales never move under you.",
     canonicalPath: "/examples/interaction/legend-focus",
@@ -13181,7 +13294,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/interaction/linked-views",
-    title: "Link plots, controls, and a table — ggsvelte gallery",
+    title: "Link plots, controls, and a table — ggts gallery",
     description:
       "Five Palmer penguins per species, so every row a selection touches is visible in the table beside the chart.",
     canonicalPath: "/examples/interaction/linked-views",
@@ -13192,7 +13305,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/interaction/tooltip",
-    title: "Inspect and pin data — ggsvelte gallery",
+    title: "Inspect and pin data — ggts gallery",
     description:
       "Palmer penguin measurements with a crosshair that reads every series at one x, and a pin so the reading stays while you look elsewhere.",
     canonicalPath: "/examples/interaction/tooltip",
@@ -13203,7 +13316,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/jitter/basic",
-    title: "Menu calories, spread so items do not stack — ggsvelte gallery",
+    title: "Menu calories, spread so items do not stack — ggts gallery",
     description:
       "Jittered entrée calories by restaurant. Use this when many points share a category and would otherwise cover each other.",
     canonicalPath: "/examples/jitter/basic",
@@ -13214,7 +13327,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/jitter/spread",
-    title: "Jittered points by group — ggsvelte gallery",
+    title: "Jittered points by group — ggts gallery",
     description:
       "Twelve large points in three columns with wide horizontal jitter — the alias mark that reads at index thumbnail size.",
     canonicalPath: "/examples/jitter/spread",
@@ -13225,7 +13338,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/label/basic",
-    title: "Boxed labels — ggsvelte gallery",
+    title: "Boxed labels — ggts gallery",
     description:
       "A few large rounded boxes behind short names so GeomLabel reads at index thumbnail size.",
     canonicalPath: "/examples/label/basic",
@@ -13236,7 +13349,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/line/ecdf",
-    title: "Empirical distribution of event sizes — ggsvelte gallery",
+    title: "Empirical distribution of event sizes — ggts gallery",
     description: "ECDF lines for the cumulative share of observations at or below each value.",
     canonicalPath: "/examples/line/ecdf",
     kind: "page",
@@ -13246,7 +13359,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/line/function",
-    title: "Observed counts against a fitted curve — ggsvelte gallery",
+    title: "Observed counts against a fitted curve — ggts gallery",
     description: "Function lines when theory (or a fit) should sit on top of the data.",
     canonicalPath: "/examples/line/function",
     kind: "page",
@@ -13256,7 +13369,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/line/labor-cost-of-wheat",
-    title: "Weeks of work for a quarter of wheat — ggsvelte gallery",
+    title: "Weeks of work for a quarter of wheat — ggts gallery",
     description:
       "Playfair's purchasing-power argument as a single series: wheat price divided by a mechanic's weekly wage. A quarter is about eight bushels of grain — lower is cheaper grain in labor terms.",
     canonicalPath: "/examples/line/labor-cost-of-wheat",
@@ -13267,7 +13380,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/line/multi-series",
-    title: "Wheat price and a mechanic's weekly wage — ggsvelte gallery",
+    title: "Wheat price and a mechanic's weekly wage — ggts gallery",
     description:
       "Playfair's 1821 levels chart: the price of one quarter of wheat (~8 bushels) and a good mechanic's weekly pay, both in shillings. Same currency, different baskets — he wanted you to eye the ratio, not add the series.",
     canonicalPath: "/examples/line/multi-series",
@@ -13278,7 +13391,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/line/time-axis",
-    title: "Years inferred from raw four-digit strings — ggsvelte gallery",
+    title: "Years inferred from raw four-digit strings — ggts gallery",
     description: "Temporal scales from plain year strings when the calendar meaning is obvious.",
     canonicalPath: "/examples/line/time-axis",
     kind: "page",
@@ -13288,7 +13401,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/linerange/stems",
-    title: "Bare vertical stems — ggsvelte gallery",
+    title: "Bare vertical stems — ggts gallery",
     description:
       "Three tall identity stems without end caps — linerange's mark shape at index thumbnail size.",
     canonicalPath: "/examples/linerange/stems",
@@ -13299,7 +13412,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/map/choropleth",
-    title: "Snow's outbreak by nearest pump — ggsvelte gallery",
+    title: "Snow's outbreak by nearest pump — ggts gallery",
     description:
       "Thirteen Soho neighbourhoods shaded by cholera deaths inside each. One region holds 359 of the 578, around Broad Street.",
     canonicalPath: "/examples/map/choropleth",
@@ -13310,7 +13423,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/path/connect-hv",
-    title: "Minard's retreat thermometer — ggsvelte gallery",
+    title: "Minard's retreat thermometer — ggts gallery",
     description:
       "Nine temperature readings taken along the road back from Moscow, joined by horizontal-then-vertical elbows so each reading holds until the next one was taken.",
     canonicalPath: "/examples/path/connect-hv",
@@ -13321,7 +13434,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/path/ellipse-rings",
-    title: "Confidence ellipses around groups — ggsvelte gallery",
+    title: "Confidence ellipses around groups — ggts gallery",
     description: "Ellipse rings when each group needs a region of typical bivariate spread.",
     canonicalPath: "/examples/path/ellipse-rings",
     kind: "page",
@@ -13331,7 +13444,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/path/trajectory",
-    title: "Napoleon's march on Moscow, by Minard — ggsvelte gallery",
+    title: "Napoleon's march on Moscow, by Minard — ggts gallery",
     description: "Path map of army strength with a temperature strip.",
     canonicalPath: "/examples/path/trajectory",
     kind: "page",
@@ -13341,7 +13454,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/abline-identity",
-    title: "Points against the identity line — ggsvelte gallery",
+    title: "Points against the identity line — ggts gallery",
     description: "Identity ablines when agreement with y = x is the claim.",
     canonicalPath: "/examples/point/abline-identity",
     kind: "page",
@@ -13351,7 +13464,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/count",
-    title: "Overlapping points sized by how many share a cell — ggsvelte gallery",
+    title: "Overlapping points sized by how many share a cell — ggts gallery",
     description:
       "Count stat on points when discrete rounding collapses many rows onto few coordinates.",
     canonicalPath: "/examples/point/count",
@@ -13362,7 +13475,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/fixed-aspect",
-    title: "Equal data units on both axes — ggsvelte gallery",
+    title: "Equal data units on both axes — ggts gallery",
     description: "Fixed aspect when shape in data units must not stretch with the panel.",
     canonicalPath: "/examples/point/fixed-aspect",
     kind: "page",
@@ -13372,7 +13485,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/gradient-continuous",
-    title: "Many years folded onto one seasonal axis — ggsvelte gallery",
+    title: "Many years folded onto one seasonal axis — ggts gallery",
     description: "Continuous colour gradients when a third continuous channel carries identity.",
     canonicalPath: "/examples/point/gradient-continuous",
     kind: "page",
@@ -13382,7 +13495,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/hue-discrete",
-    title: "Scatter coloured by discrete group — ggsvelte gallery",
+    title: "Scatter coloured by discrete group — ggts gallery",
     description: "Discrete hue when categories are unordered and equal visual weight matters.",
     canonicalPath: "/examples/point/hue-discrete",
     kind: "page",
@@ -13392,7 +13505,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/jitter",
-    title: "Calories by restaurant, with jitter — ggsvelte gallery",
+    title: "Calories by restaurant, with jitter — ggts gallery",
     description:
       "Fast-food menu calories by restaurant. Position jitter spreads marks that would otherwise stack on the same category.",
     canonicalPath: "/examples/point/jitter",
@@ -13403,7 +13516,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/layer-data-bands",
-    title: "What the wars did to the national debt — ggsvelte gallery",
+    title: "What the wars did to the national debt — ggts gallery",
     description:
       "Playfair's debt series with two war periods behind it and one note on top, each layer carrying its own table because only one of the three is a measurement.",
     canonicalPath: "/examples/point/layer-data-bands",
@@ -13414,7 +13527,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/log-scale",
-    title: "Cholera, crowding and water in London, 1849 — ggsvelte gallery",
+    title: "Cholera, crowding and water in London, 1849 — ggts gallery",
     description:
       "Farr's 38 districts: death rate against population density on a log x scale, coloured by which company supplied the water.",
     canonicalPath: "/examples/point/log-scale",
@@ -13425,7 +13538,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/quantile-lines",
-    title: "Flavor against aroma in cupping scores — ggsvelte gallery",
+    title: "Flavor against aroma in cupping scores — ggts gallery",
     description:
       "Quantile lines through coffee cupping scores. Use this when a mean smooth hides how the spread of y moves with x.",
     canonicalPath: "/examples/point/quantile-lines",
@@ -13436,7 +13549,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/scatter-color",
-    title: "Two measures coloured by region — ggsvelte gallery",
+    title: "Two measures coloured by region — ggts gallery",
     description: "Scatter with a discrete colour when geography or group is the third channel.",
     canonicalPath: "/examples/point/scatter-color",
     kind: "page",
@@ -13446,7 +13559,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/stat-manual-mean",
-    title: "Raw points with a manual mean per group — ggsvelte gallery",
+    title: "Raw points with a manual mean per group — ggts gallery",
     description:
       "Manual summary stats when you want both the cloud and the group mean on one panel.",
     canonicalPath: "/examples/point/stat-manual-mean",
@@ -13457,7 +13570,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/stat-unique",
-    title: "Collapse duplicate coordinates to unique marks — ggsvelte gallery",
+    title: "Collapse duplicate coordinates to unique marks — ggts gallery",
     description: "Unique stat when repeated keys would overplot identical positions.",
     canonicalPath: "/examples/point/stat-unique",
     kind: "page",
@@ -13467,7 +13580,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/steps-binned",
-    title: "Cholera against height above the Thames — ggsvelte gallery",
+    title: "Cholera against height above the Thames — ggts gallery",
     description:
       "Farr's 38 London districts of 1849, coloured in bands by their poor rate. A stepped ramp reads as brackets, which is how a rate like this gets argued about.",
     canonicalPath: "/examples/point/steps-binned",
@@ -13478,7 +13591,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/point/void-chrome",
-    title: "A sparkline without axes or grid — ggsvelte gallery",
+    title: "A sparkline without axes or grid — ggts gallery",
     description: "Void theme when the mark alone is the chart.",
     canonicalPath: "/examples/point/void-chrome",
     kind: "page",
@@ -13488,7 +13601,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/pointrange/midpoints",
-    title: "Stem plus mid point — ggsvelte gallery",
+    title: "Stem plus mid point — ggts gallery",
     description:
       "Three tall identity stems with a large mid point — pointrange's mark shape at index thumbnail size.",
     canonicalPath: "/examples/pointrange/midpoints",
@@ -13499,7 +13612,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/polygon/regions",
-    title: "Which pump was nearest — ggsvelte gallery",
+    title: "Which pump was nearest — ggts gallery",
     description:
       "The thirteen areas of Soho closest to each public pump in 1854, each drawn as one closed ring of vertices in winding order.",
     canonicalPath: "/examples/polygon/regions",
@@ -13510,7 +13623,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/qq/cloud",
-    title: "Sparse Q–Q cloud — ggsvelte gallery",
+    title: "Sparse Q–Q cloud — ggts gallery",
     description:
       "Twelve large sample quantiles vs theoretical normal — the scatter mark that reads at index thumbnail size.",
     canonicalPath: "/examples/qq/cloud",
@@ -13521,7 +13634,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/qq/normal",
-    title: "Sample quantiles against the normal — ggsvelte gallery",
+    title: "Sample quantiles against the normal — ggts gallery",
     description: "Normal QQ plots for a quick normality check.",
     canonicalPath: "/examples/qq/normal",
     kind: "page",
@@ -13531,7 +13644,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/qq_line/match",
-    title: "Q–Q reference line — ggsvelte gallery",
+    title: "Q–Q reference line — ggts gallery",
     description:
       "Thick line through the sample/theoretical quartile match — the mark that reads at index thumbnail size.",
     canonicalPath: "/examples/qq_line/match",
@@ -13542,7 +13655,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/raster/grid",
-    title: "Where chocolate reviews cluster — ggsvelte gallery",
+    title: "Where chocolate reviews cluster — ggts gallery",
     description:
       "A complete cocoa-percent × rating grid of bar counts. Use a raster when your table is already a regular grid of fill values.",
     canonicalPath: "/examples/raster/grid",
@@ -13553,7 +13666,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/rect/regions",
-    title: "Background rectangles for eras — ggsvelte gallery",
+    title: "Background rectangles for eras — ggts gallery",
     description: "Rect regions when historical or policy eras should sit behind a series.",
     canonicalPath: "/examples/rect/regions",
     kind: "page",
@@ -13563,7 +13676,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/ribbon/bounds",
-    title: "A ribbon for year-to-year range — ggsvelte gallery",
+    title: "A ribbon for year-to-year range — ggts gallery",
     description: "Ribbons for uncertainty or observed range around a central series.",
     canonicalPath: "/examples/ribbon/bounds",
     kind: "page",
@@ -13573,7 +13686,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/ribbon/paint",
-    title: "A ribbon with gradient fill, stroke and glow — ggsvelte gallery",
+    title: "A ribbon with gradient fill, stroke and glow — ggts gallery",
     description:
       "The paint options a ribbon can carry, on a precomputed interval: a portable gradient across the band, a stroked edge and a glow beneath.",
     canonicalPath: "/examples/ribbon/paint",
@@ -13584,7 +13697,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/rug/ticks",
-    title: "Bottom-edge rug ticks — ggsvelte gallery",
+    title: "Bottom-edge rug ticks — ggts gallery",
     description:
       "Ten long thick ticks along the panel bottom — the marginal mark that reads at index thumbnail size.",
     canonicalPath: "/examples/rug/ticks",
@@ -13595,7 +13708,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/rule/annotation",
-    title: "A crosshair of two fixed intercepts — ggsvelte gallery",
+    title: "A crosshair of two fixed intercepts — ggts gallery",
     description:
       "Annotation rules for cutoffs and known constants: one vertical and one horizontal intercept on continuous data.",
     canonicalPath: "/examples/rule/annotation",
@@ -13606,7 +13719,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/rule/data-driven",
-    title: "A rug of every cupping score — ggsvelte gallery",
+    title: "A rug of every cupping score — ggts gallery",
     description:
       "One vertical rule per coffee lot on total cup points. Use this when you want a 1-D sample drawn as a strip of marks.",
     canonicalPath: "/examples/rule/data-driven",
@@ -13617,7 +13730,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/segment/annotations",
-    title: "Segments from start to end of each pair — ggsvelte gallery",
+    title: "Segments from start to end of each pair — ggts gallery",
     description: "Segments when each row is a directed change between two points.",
     canonicalPath: "/examples/segment/annotations",
     kind: "page",
@@ -13627,7 +13740,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/sf/basic",
-    title: "Simple features as filled polygons — ggsvelte gallery",
+    title: "Simple features as filled polygons — ggts gallery",
     description: "Basic sf polygons for map-like regions without a full basemap stack.",
     canonicalPath: "/examples/sf/basic",
     kind: "page",
@@ -13637,7 +13750,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/sf/boxed-labels",
-    title: "Pump names on measured boxes — ggsvelte gallery",
+    title: "Pump names on measured boxes — ggts gallery",
     description:
       "Thirteen Soho neighbourhoods with each pump name on a measured box. The box keeps the name readable over a coloured fill.",
     canonicalPath: "/examples/sf/boxed-labels",
@@ -13648,7 +13761,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/sf/geometry-collection",
-    title: "One feature with two separate polygons — ggsvelte gallery",
+    title: "One feature with two separate polygons — ggts gallery",
     description: "Geometry collections when one logical feature spans disconnected pieces.",
     canonicalPath: "/examples/sf/geometry-collection",
     kind: "page",
@@ -13658,7 +13771,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/sf/holes",
-    title: "Polygons with holes — ggsvelte gallery",
+    title: "Polygons with holes — ggts gallery",
     description: "Holes when an inner ring should cut out of an outer polygon.",
     canonicalPath: "/examples/sf/holes",
     kind: "page",
@@ -13668,7 +13781,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/sf/labels",
-    title: "Snow's pumps, named in place — ggsvelte gallery",
+    title: "Snow's pumps, named in place — ggts gallery",
     description:
       "The thirteen Soho neighbourhoods with each pump's street name set at the centre of the area it served, positioned from the geometry rather than from x and y.",
     canonicalPath: "/examples/sf/labels",
@@ -13679,7 +13792,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/showcase/kyoto-sakura",
-    title: "Kyoto cherry blossoms, 812–2026 — ggsvelte gallery",
+    title: "Kyoto cherry blossoms, 812–2026 — ggts gallery",
     description:
       "Tufte's full-bloom chart at full fidelity: 30-year rolling median, epoch bands, labeled baseline, and circled records.",
     canonicalPath: "/examples/showcase/kyoto-sakura",
@@ -13690,7 +13803,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/smooth/loess-scatter",
-    title: "Cocoa percent against bar rating — ggsvelte gallery",
+    title: "Cocoa percent against bar rating — ggts gallery",
     description:
       "Loess through a sample of chocolate reviews, with a confidence band. Copy this pattern when you want a smooth trend on a dense scatter.",
     canonicalPath: "/examples/smooth/loess-scatter",
@@ -13701,7 +13814,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/spoke/rays",
-    title: "Eight rays from one origin — ggsvelte gallery",
+    title: "Eight rays from one origin — ggts gallery",
     description:
       "Eight long thick spokes at equal angles — the mark shape that reads at index thumbnail size.",
     canonicalPath: "/examples/spoke/rays",
@@ -13712,7 +13825,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/spoke/vector-field",
-    title: "Direction and length from each point — ggsvelte gallery",
+    title: "Direction and length from each point — ggts gallery",
     description: "Spokes for vector fields with origin, angle, and radius.",
     canonicalPath: "/examples/spoke/vector-field",
     kind: "page",
@@ -13722,7 +13835,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/step/ecdf",
-    title: "Step ECDF of paired differences — ggsvelte gallery",
+    title: "Step ECDF of paired differences — ggts gallery",
     description: "Step ECDFs for cumulative distributions of differences or measurements.",
     canonicalPath: "/examples/step/ecdf",
     kind: "page",
@@ -13732,7 +13845,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/step/stairs",
-    title: "Thick staircase — ggsvelte gallery",
+    title: "Thick staircase — ggts gallery",
     description:
       "Five vertices joined with hv steps — the stair mark that reads at index thumbnail size.",
     canonicalPath: "/examples/step/stairs",
@@ -13743,7 +13856,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/text/labels",
-    title: "Bare text labels — ggsvelte gallery",
+    title: "Bare text labels — ggts gallery",
     description:
       "A few large bare text marks — short names so the geom reads at index thumbnail size.",
     canonicalPath: "/examples/text/labels",
@@ -13754,7 +13867,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/tile/heatmap",
-    title: "Cholera in England and Wales, 1849 — ggsvelte gallery",
+    title: "Cholera in England and Wales, 1849 — ggts gallery",
     description:
       "Every day of the epidemic from Farr's weekly returns, laid out as a calendar of square tiles so the summer peak reads as a block.",
     canonicalPath: "/examples/tile/heatmap",
@@ -13765,7 +13878,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/vline/cutoff",
-    title: "One vertical cutoff — ggsvelte gallery",
+    title: "One vertical cutoff — ggts gallery",
     description: "Vertical rules for cutoffs along a sequence or continuous x across a panel.",
     canonicalPath: "/examples/vline/cutoff",
     kind: "page",
@@ -13775,7 +13888,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/interactions/inspection",
-    title: "Inspect and pin data — ggsvelte gallery",
+    title: "Inspect and pin data — ggts gallery",
     description:
       "Palmer penguin measurements with a crosshair that reads every series at one x, and a pin so the reading stays while you look elsewhere.",
     canonicalPath: "/examples/interaction/tooltip",
@@ -13786,7 +13899,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/examples/interactions/interval-selection",
-    title: "Interval selection and zoom — ggsvelte gallery",
+    title: "Interval selection and zoom — ggts gallery",
     description:
       "333 Palmer penguins: brush a rectangle to select, or zoom into the crowded middle where the species overlap.",
     canonicalPath: "/examples/interaction/brush-zoom",
@@ -13798,7 +13911,7 @@ export const DOCS_ROUTES = [
   {
     path: "/schema/v0.json",
     title: "PortableSpec JSON Schema",
-    description: "Machine-readable ggsvelte PortableSpec schema.",
+    description: "Machine-readable ggts PortableSpec schema.",
     canonicalPath: "/schema/v0.json",
     kind: "endpoint",
     index: false,
@@ -13807,7 +13920,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/llms.txt",
-    title: "ggsvelte documentation index",
+    title: "ggts documentation index",
     description: "A concise machine-readable documentation index.",
     canonicalPath: "/llms.txt",
     kind: "endpoint",
@@ -13817,7 +13930,7 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/llms-full.txt",
-    title: "Complete ggsvelte documentation",
+    title: "Complete ggts documentation",
     description: "Complete guide and example source for machine readers.",
     canonicalPath: "/llms-full.txt",
     kind: "endpoint",
@@ -13847,8 +13960,8 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/__perf/r3-interaction",
-    title: "Performance fixture — ggsvelte",
-    description: "Internal ggsvelte performance fixture; not part of the public documentation.",
+    title: "Performance fixture — ggts",
+    description: "Internal ggts performance fixture; not part of the public documentation.",
     canonicalPath: "/__perf/r3-interaction",
     kind: "performance",
     index: false,
@@ -13857,8 +13970,8 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/__perf/interaction-100k",
-    title: "Performance fixture — ggsvelte",
-    description: "Internal ggsvelte performance fixture; not part of the public documentation.",
+    title: "Performance fixture — ggts",
+    description: "Internal ggts performance fixture; not part of the public documentation.",
     canonicalPath: "/__perf/interaction-100k",
     kind: "performance",
     index: false,
@@ -13867,8 +13980,8 @@ export const DOCS_ROUTES = [
   },
   {
     path: "/__perf/legend-focus-100k",
-    title: "Performance fixture — ggsvelte",
-    description: "Internal ggsvelte performance fixture; not part of the public documentation.",
+    title: "Performance fixture — ggts",
+    description: "Internal ggts performance fixture; not part of the public documentation.",
     canonicalPath: "/__perf/legend-focus-100k",
     kind: "performance",
     index: false,

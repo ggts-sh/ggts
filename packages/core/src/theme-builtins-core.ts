@@ -3,7 +3,7 @@
  * (ggplot2/grey/gray, classic, bw, fivethirtyeight, economist, tufte,
  * linedraw, void). Assembled in order by theme-builtins.ts.
  */
-import type { ThemeName } from "@ggsvelte/spec";
+import type { ThemeName } from "@ggts-sh/spec";
 import { themed, type ThemeTokens } from "./theme-construct.js";
 
 /**

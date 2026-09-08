@@ -29,8 +29,8 @@ describe("generated Docs search index", () => {
     expect(
       entries.find((entry) => entry.id === "diagnostic:validation:scale-scheme-type")?.href,
     ).toBe("/guide/errors#scale-scheme-type");
-    expect(entries.find((entry) => entry.id === "api:ggsvelte-svelte:GGPlot")?.href).toBe(
-      "/guide/lifecycle#ggsvelte-svelte",
+    expect(entries.find((entry) => entry.id === "api:ggts-sh-svelte:GGPlot")?.href).toBe(
+      "/guide/lifecycle#ggts-sh-svelte",
     );
     expect(entries.find((entry) => entry.id === "cli:max-marks")?.href).toBe(
       "/reference/cli#max-marks",

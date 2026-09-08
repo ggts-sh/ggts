@@ -1,4 +1,4 @@
-import type { CoordRadialSpec, CoordTransformAxisSpec } from "@ggsvelte/spec";
+import type { CoordRadialSpec, CoordTransformAxisSpec } from "@ggts-sh/spec";
 
 import { buildPolarProjector, type PolarProjector } from "./coord-polar.js";
 import type { PipelineErrorCode } from "./diagnostics-error-catalog.js";
@@ -18,7 +18,7 @@ export interface CoordAxisProjector {
 }
 
 function docs(code: PipelineErrorCode): string {
-  return `https://ggsvelte.sh/guide/errors#${code}`;
+  return `https://ggts.sh/guide/errors#${code}`;
 }
 
 function failure(

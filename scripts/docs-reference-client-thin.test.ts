@@ -2,7 +2,7 @@
  * Guards: reference detail routes must not ship catalog barrels to the client.
  *
  * Universal +page.ts load re-ran on SPA nav and pulled GEOM_REFERENCE /
- * EXAMPLES / @ggsvelte/spec into every detail client node. Server loads
+ * EXAMPLES / @ggts-sh/spec into every detail client node. Server loads
  * serialize entry data; the client only renders it.
  */
 import { describe, expect, it } from "bun:test";
@@ -38,13 +38,13 @@ describe("docs reference detail client thin", () => {
     }
   });
 
-  it("keeps detail .svelte free of @ggsvelte/spec value imports", () => {
+  it("keeps detail .svelte free of @ggts-sh/spec value imports", () => {
     for (const dir of DETAIL_DIRS) {
       const rel = `${dir}/+page.svelte`;
       const source = read(rel);
       // Type-only imports are fine; value imports pull the package graph.
       expect(source, rel).not.toMatch(
-        /(?:^|\n)\s*import\s+(?!type\b)[^;]*\s+from\s*["']@ggsvelte\/spec["']/,
+        /(?:^|\n)\s*import\s+(?!type\b)[^;]*\s+from\s*["']@ggts-sh\/spec["']/,
       );
     }
   });
@@ -62,12 +62,12 @@ describe("docs reference detail client thin", () => {
   it("keeps ReferenceLede on the thin known-names catalog", () => {
     const lede = read("lib/components/ReferenceLede.svelte");
     expect(lede).toContain("known-names");
-    expect(lede).not.toMatch(/from\s*["']@ggsvelte\/spec["']/);
+    expect(lede).not.toMatch(/from\s*["']@ggts-sh\/spec["']/);
   });
 
   it("documents a pure componentNameForGeom helper outside the spec barrel", () => {
     const helper = read("lib/component-name-for-geom.ts");
     expect(helper).toContain("export function componentNameForGeom");
-    expect(helper).not.toMatch(/from\s*["']@ggsvelte\/spec["']/);
+    expect(helper).not.toMatch(/from\s*["']@ggts-sh\/spec["']/);
   });
 });

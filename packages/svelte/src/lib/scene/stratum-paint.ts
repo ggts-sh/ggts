@@ -4,8 +4,8 @@
  * when called with a live canvas element.
  */
 
-import type { BatchInteractionMask, GeometryBatch, RenderModel } from "@ggsvelte/core";
-import { cssColorResolver, drawStratum, sizeCanvasForDpr } from "@ggsvelte/core/dom";
+import type { BatchInteractionMask, GeometryBatch, RenderModel } from "@ggts-sh/core";
+import { cssColorResolver, drawStratum, sizeCanvasForDpr } from "@ggts-sh/core/dom";
 
 /**
  * Project full-scene interaction masks onto a stratum batch subset using

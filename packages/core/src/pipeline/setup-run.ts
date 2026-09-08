@@ -1,7 +1,7 @@
 /**
  * Pipeline run setup: normalize + validate, edition defaults, theme, coord flip.
  */
-import type { NormalizedSpec, PortableSpec, SpecInput } from "@ggsvelte/spec";
+import type { NormalizedSpec, PortableSpec, SpecInput } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions.js";
 import type { ThemeTokens } from "../theme.js";

@@ -5,7 +5,7 @@
     Inspect,
     Labs,
     ThemeLight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { field } from "./data.js";
 

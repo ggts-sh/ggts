@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { aboveOneEighty } from "./data.js";
 </script>

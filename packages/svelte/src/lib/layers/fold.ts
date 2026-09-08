@@ -1,2 +1,2 @@
-export { foldPlotLayer } from "@ggsvelte/compose";
-export type { AssembleDraft } from "@ggsvelte/compose";
+export { foldPlotLayer } from "@ggts-sh/compose";
+export type { AssembleDraft } from "@ggts-sh/compose";

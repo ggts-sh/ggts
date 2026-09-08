@@ -1,3 +1,4 @@
+import { SVELTE_QUICKSTART_SOURCE } from "./agent-quickstart";
 import { QUICKSTART_PAGE_FILENAME, QUICKSTART_PAGE_SVELTE } from "./quickstart.js";
 
 export type CodeClassification = "complete" | "fragment";
@@ -9,6 +10,7 @@ export interface GuideCodeBlock {
 }
 
 export const COMPLETE_SVELTE_SNIPPETS = [
+  { filename: "src/lib/SandboxChart.svelte", source: SVELTE_QUICKSTART_SOURCE },
   { filename: QUICKSTART_PAGE_FILENAME, source: QUICKSTART_PAGE_SVELTE },
 ] as const;
 

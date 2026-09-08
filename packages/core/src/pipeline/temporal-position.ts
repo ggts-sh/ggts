@@ -3,7 +3,7 @@ import type {
   TemporalDecision,
   TemporalParserSpec,
   TemporalScaleKind,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import {
   cellsToNumeric,
@@ -17,7 +17,7 @@ import {
 import type { ColumnTransformConfig } from "../scales/transform.js";
 import { getTemporalRuntime } from "../temporal-runtime.js";
 
-/** Leap reference year for month-day projection (matches @ggsvelte/spec). */
+/** Leap reference year for month-day projection (matches @ggts-sh/spec). */
 const MONTH_DAY_REFERENCE_YEAR = 2000;
 
 export interface PositionConversionContext {
@@ -215,7 +215,7 @@ function parseDetachedValues(
   // Lean path: ISO via cellToNumber; explicit non-auto parsers need full temporal.
   if (conversion.parser !== "auto") {
     throw new Error(
-      `Position parser ${JSON.stringify(conversion.parser)} requires @ggsvelte/core (full) or @ggsvelte/core/temporal.`,
+      `Position parser ${JSON.stringify(conversion.parser)} requires @ggts-sh/core (full) or @ggts-sh/core/temporal.`,
     );
   }
   const semantic = conversion.forcedNonTemporal

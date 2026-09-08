@@ -9,8 +9,8 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { normalize, validate } from "@ggsvelte/spec";
-import type { SpecInput } from "@ggsvelte/spec";
+import { normalize, validate } from "@ggts-sh/spec";
+import type { SpecInput } from "@ggts-sh/spec";
 import { deprecatedGrammarPropPattern } from "../../packages/svelte/src/lib/layers/grammar-families.ts";
 import { codeBlocks } from "../guide-code-contract.ts";
 import { FILES } from "./test-helpers.ts";

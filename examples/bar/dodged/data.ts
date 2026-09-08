@@ -3,10 +3,10 @@
  *
  * Re-exported from the bundled beerProduction table so the example, the
  * package data export, and the docs JSON asset stay one table. Import the
- * source module (not `@ggsvelte/svelte/data`) so `check:scripts` typechecks
+ * source module (not `@ggts-sh/core/data`) so `check:scripts` typechecks
  * before packages/svelte dist is built.
  *
  * Source: US TTB national totals via TidyTuesday 2020-03-31. See NOTICE and
- * BEER_PRODUCTION_CITATION in @ggsvelte/svelte/data.
+ * BEER_PRODUCTION_CITATION in @ggts-sh/core/data.
  */
-export { beerProduction } from "../../../packages/svelte/src/lib/data/beer-production.js";
+export { beerProduction } from "../../../packages/core/src/data/beer-production.js";

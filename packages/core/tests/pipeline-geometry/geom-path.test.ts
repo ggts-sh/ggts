@@ -4,7 +4,7 @@
 import { describe, expect, it } from "bun:test";
 import { fromAny } from "@total-typescript/shoehorn";
 
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import { runPipeline } from "../../src/pipeline.js";
 
@@ -50,7 +50,7 @@ describe("geom_path vs geom_line order (#788)", () => {
   });
 
   it("accepts path in schema validation", async () => {
-    const { validate } = await import("@ggsvelte/spec");
+    const { validate } = await import("@ggts-sh/spec");
     const result = validate({
       data: { values: [{ x: 1, y: 2 }] },
       aes: { x: { field: "x" }, y: { field: "y" } },

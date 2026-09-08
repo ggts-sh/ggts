@@ -7,7 +7,7 @@
     Labs,
     ScaleFillContinuous,
     ThemeMap,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { neighbourhoodDeaths, pumpNeighbourhoods } from "./data.js";
 </script>

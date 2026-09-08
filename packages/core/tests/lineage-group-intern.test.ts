@@ -10,7 +10,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { LineageStore } from "../src/identity.ts";
 import { runPipeline } from "../src/pipeline.ts";
@@ -134,7 +134,7 @@ describe("stat lineage interning", () => {
     const { preparePanels } = await import("../src/pipeline/prepare-panels.ts");
     const { filterRepresentedSourceRows } =
       await import("../src/pipeline/candidate-construction/represented-rows.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize({

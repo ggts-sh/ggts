@@ -9,7 +9,7 @@
  *    funMax): ymin/ymax = mean ± standard error (sd / sqrt(n)) — ggplot2's
  *    mean_se, its stat_summary default. With any other fun and no explicit
  *    funMin/funMax, ymin/ymax equal y (no spread — DIVERGENCE: ggplot2
- *    emits NA and draws nothing; ggsvelte draws a zero-height bar,
+ *    emits NA and draws nothing; ggts draws a zero-height bar,
  *    decision 0010).
  *  - grouping behavior: summaries are per (group, x) — a continuous x with
  *    repeated values summarizes each distinct x within its group.

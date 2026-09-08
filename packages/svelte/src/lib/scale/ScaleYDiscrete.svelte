@@ -3,7 +3,7 @@
   import {
     scaleYDiscrete,
     type DiscretePositionScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

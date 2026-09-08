@@ -5,7 +5,7 @@
 import { fromAny, fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, scaleXBinned } from "@ggsvelte/spec";
+import { aes, gg, scaleXBinned } from "@ggts-sh/spec";
 
 import { resolveRectSlot } from "../src/pipeline/geometry-rects-slot.ts";
 import type { Frame } from "../src/pipeline/geometry-shared.ts";

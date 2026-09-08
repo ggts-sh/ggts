@@ -21,7 +21,7 @@ import type { LifecycleDoc } from "./gen-llms.ts";
 import { guidePages, renderMarkdown } from "./gen-llms.ts";
 
 const ROOT = join(import.meta.dir, "..");
-const GUIDE_URL_BASE = "https://ggsvelte.sh/guide/";
+const GUIDE_URL_BASE = "https://ggts.sh/guide/";
 
 const lifecycle = JSON.parse(readFileSync(join(ROOT, "lifecycle.json"), "utf8")) as LifecycleDoc;
 
@@ -97,7 +97,7 @@ describe("version-bumping changesets carry an explicit migration marker", () => 
     for (const name of changesets) {
       const body = readFileSync(join(changesetDir, name), "utf8");
       const frontmatter = /^---\n([\s\S]*?)\n---/.exec(body)?.[1] ?? "";
-      const bumps = [...frontmatter.matchAll(/"@ggsvelte\/[^"]+":\s*(minor|major)/g)];
+      const bumps = [...frontmatter.matchAll(/"@ggts-sh\/[^"]+":\s*(minor|major)/g)];
       if (bumps.length === 0) continue;
       const context = `.changeset/${name}`;
       const marker = /Migration: (\S[^\n]*)/.exec(body)?.[1];
@@ -123,7 +123,7 @@ describe("version-bumping changesets carry an explicit migration marker", () => 
       const marker = /Migration: (\S[^\n]*)/.exec(body)?.[1];
       if (marker === undefined || !marker.startsWith("none — additive")) continue;
       const context = `.changeset/${name}`;
-      const packageBumps = [...frontmatter.matchAll(/"@ggsvelte\/[^"]+":\s*(patch|minor|major)/g)];
+      const packageBumps = [...frontmatter.matchAll(/"@ggts-sh\/[^"]+":\s*(patch|minor|major)/g)];
       expect(packageBumps.length, `${context}: expected package bumps`).toBeGreaterThan(0);
       const levels = new Set(packageBumps.map((match) => match[1]));
       expect(

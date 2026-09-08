@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        ggsvelte interaction is semantic and opt-in. Please describe the intended data behavior as well as the visual symptom. Never include private user data or assistive-technology logs containing personal information.
+        ggts interaction is semantic and opt-in. Please describe the intended data behavior as well as the visual symptom. Never include private user data or assistive-technology logs containing personal information.
   - type: dropdown
     id: capability
     attributes:
@@ -85,8 +85,8 @@ body:
   - type: input
     id: versions
     attributes:
-      label: ggsvelte, Svelte, browser, and OS versions
-      placeholder: ggsvelte 0.x, Svelte 5.x, Safari 1x, macOS 15
+      label: ggts, React/Svelte, browser, and OS versions
+      placeholder: ggts 0.x, Svelte 5.x, Safari 1x, macOS 15
     validations:
       required: true
   - type: checkboxes

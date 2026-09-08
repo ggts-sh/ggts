@@ -5,7 +5,7 @@ import "../setup-register-all.js";
  */
 import { describe, expect, it } from "vitest";
 
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 
 import {
   fieldsForDefaultTooltip,

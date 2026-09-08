@@ -2,7 +2,7 @@ import { fromAny, fromPartial } from "@total-typescript/shoehorn";
 import { tick } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 
-import type { RenderModel } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
 
 import type { PlotDiagnostic } from "../src/lib/diagnostics/deprecation.js";
 import GGPlot from "../src/lib/GGPlot.svelte";

@@ -24,7 +24,7 @@ import type {
 import type { PointShape } from "./scales/style.js";
 import type { ThemeTokens } from "./theme.js";
 import { themeVar } from "./theme.js";
-import { POINT_SHAPE_NAMES } from "@ggsvelte/spec";
+import { POINT_SHAPE_NAMES } from "@ggts-sh/spec";
 
 import { stepCorners } from "./path-step.js";
 import { ringCuts } from "./ring-cuts.js";

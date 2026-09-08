@@ -17,6 +17,12 @@ import {
 const HEADER = "// @lifecycle-default experimental\n";
 
 describe("extractExports", () => {
+  it("preserves inline type exports on data and adapter entrypoints", () => {
+    expect(extractExports(HEADER + 'export { rows, type Row } from "./data.js";', "f.ts")).toEqual([
+      { name: "Row", kind: "type", lifecycle: "experimental" },
+      { name: "rows", kind: "value", lifecycle: "experimental" },
+    ]);
+  });
   it("applies the file default, statement JSDoc markers, and name tags", () => {
     const src =
       HEADER +
@@ -97,9 +103,11 @@ describe("lifecycle.json", () => {
     expect(doc.surfaces).toHaveLength(SURFACES.length);
     // Lean subpath entries shipped by package.json exports (#1278).
     for (const entry of [
-      { package: "@ggsvelte/core", entry: "./render" },
-      { package: "@ggsvelte/core", entry: "./temporal" },
-      { package: "@ggsvelte/spec", entry: "./portable" },
+      { package: "@ggts-sh/core", entry: "./render" },
+      { package: "@ggts-sh/core", entry: "./data" },
+      { package: "@ggts-sh/react", entry: "." },
+      { package: "@ggts-sh/core", entry: "./temporal" },
+      { package: "@ggts-sh/spec", entry: "./portable" },
     ] as const) {
       expect(doc.surfaces.some((s) => s.package === entry.package && s.entry === entry.entry)).toBe(
         true,
@@ -109,12 +117,12 @@ describe("lifecycle.json", () => {
       const s = doc.surfaces.find((x) => x.package === pkg && x.entry === entry)!;
       return Object.keys(s.exports).filter((k) => s.exports[k]!.lifecycle === "stable-intent");
     };
-    const spec = stableIntent("@ggsvelte/spec", ".");
+    const spec = stableIntent("@ggts-sh/spec", ".");
     for (const name of ["PortableSpec", "normalize", "validate"]) {
       expect(spec).toContain(name);
     }
-    expect(stableIntent("@ggsvelte/core", ".")).toContain("renderToSVGString");
-    const svelte = stableIntent("@ggsvelte/svelte", ".");
+    expect(stableIntent("@ggts-sh/core", ".")).toContain("renderToSVGString");
+    const svelte = stableIntent("@ggts-sh/svelte", ".");
     for (const name of ["GGPlot", "PortableSpec", "normalize", "validate", "renderToSVGString"]) {
       expect(svelte).toContain(name);
     }
@@ -124,7 +132,7 @@ describe("lifecycle.json", () => {
     }
     // Factory/registry stay experimental (not composition surface).
     const svelteSurface = doc.surfaces.find(
-      (x) => x.package === "@ggsvelte/svelte" && x.entry === ".",
+      (x) => x.package === "@ggts-sh/svelte" && x.entry === ".",
     )!;
     for (const name of ["createGeomLayer", "registerLayer", "GeomProps"]) {
       expect(svelteSurface.exports[name]?.lifecycle).toBe("experimental");

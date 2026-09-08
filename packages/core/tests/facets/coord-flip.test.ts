@@ -2,7 +2,7 @@
  * coord flip — geometry
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import type { RectsBatch } from "../../src/scene.ts";
 import { size, wrapRows } from "./fixtures.ts";

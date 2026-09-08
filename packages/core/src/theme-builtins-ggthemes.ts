@@ -2,7 +2,7 @@
  * ggthemes-derived built-in themes: the Stata schemes, Solarized family, and
  * Economist white variant. Assembled in order by theme-builtins.ts.
  */
-import type { ThemeName } from "@ggsvelte/spec";
+import type { ThemeName } from "@ggts-sh/spec";
 import { themed, type ThemeTokens } from "./theme-construct.js";
 
 export const SOLARIZED_BUILTIN_THEMES = Object.freeze({

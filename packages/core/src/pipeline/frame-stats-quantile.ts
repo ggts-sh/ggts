@@ -1,7 +1,7 @@
 /**
  * Quantile stat → LayerFrame (linear RQ lines per group × τ).
  */
-import type { QuantileParams } from "@ggsvelte/spec";
+import type { QuantileParams } from "@ggts-sh/spec";
 
 import { normalizeQuantiles, statQuantile } from "../stats/quantile.js";
 import type { ColumnTable } from "../table.js";

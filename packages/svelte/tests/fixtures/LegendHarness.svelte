@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SceneLegend, ThemeTokens } from "@ggsvelte/core";
+  import type { SceneLegend, ThemeTokens } from "@ggts-sh/core";
 
   import Legend from "../../src/lib/scene/Legend.svelte";
 

@@ -4,13 +4,13 @@
  * A discrete x joins default grouping (decision 0005, ggplot2 parity), so
  * band-x area/line with a discrete fill/color derives one group per
  * (category, series) cell and each ribbon/stroke degenerates to a single
- * observation — silently. ggplot2's geom_path warns here; ggsvelte now warns
+ * observation — silently. ggplot2's geom_path warns here; ggts now warns
  * for line AND area (`group-single-observation`), naming the aes.group
  * remedy. Mixed group sizes, single groups, and explicit aes.group stay
  * silent.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 
 const size = { width: 640, height: 400 };

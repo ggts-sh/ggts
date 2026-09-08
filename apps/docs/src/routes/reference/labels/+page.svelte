@@ -3,7 +3,7 @@
 
   import CopyCode from "$lib/components/CopyCode.svelte";
 
-  const geomTextExample = `import { GeomPoint, GeomText, GGPlot, Labs } from "@ggsvelte/svelte";
+  const geomTextExample = `import { GeomPoint, GeomText, GGPlot, Labs } from "@ggts-sh/svelte";
 
 <GGPlot data={cities} aes={{ x: "lon", y: "lat", label: "name" }}>
   <GeomPoint />

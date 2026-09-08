@@ -110,10 +110,10 @@ describe("exampleSourceDigest", () => {
   });
 
   test("hashes packages/svelte teaching-data imports so package edits invalidate previews (#1359)", () => {
-    // Monorepo layout: <tmp>/examples + <tmp>/packages/svelte/src/lib/data
+    // Monorepo layout: <tmp>/examples + <tmp>/packages/core/src/data
     const monorepo = mkdtempSync(join(tmpdir(), "ggsvelte-prov-pkg-"));
     const examples = join(monorepo, "examples");
-    const dataDir = join(monorepo, "packages/svelte/src/lib/data");
+    const dataDir = join(monorepo, "packages/core/src/data");
     mkdirSync(dataDir, { recursive: true });
     try {
       writeFileSync(join(dataDir, "chocolate-bars.ts"), "export const chocolateBars = [{ n: 1 }]");
@@ -122,10 +122,10 @@ describe("exampleSourceDigest", () => {
         "spec.ts": "export default {}",
         "meta.json": "{}",
         "data.ts":
-          'import { chocolateBars } from "../../../packages/svelte/src/lib/data/chocolate-bars.js";\nexport const sample = chocolateBars',
+          'import { chocolateBars } from "../../../packages/core/src/data/chocolate-bars.js";\nexport const sample = chocolateBars',
       });
       expect(packageDataSourcePaths(join(examples, "smooth/loess"), examples)).toEqual([
-        "packages/svelte/src/lib/data/chocolate-bars.ts",
+        "packages/core/src/data/chocolate-bars.ts",
       ]);
       const before = exampleSourceDigest(examples, "smooth/loess");
       writeFileSync(join(dataDir, "chocolate-bars.ts"), "export const chocolateBars = [{ n: 2 }]");

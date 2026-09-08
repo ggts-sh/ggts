@@ -4,7 +4,7 @@
 import { fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { bindLayer } from "../src/pipeline/bind-layer.ts";
 import { buildFrame } from "../src/pipeline/frame.ts";

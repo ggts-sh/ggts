@@ -25,10 +25,10 @@ export function dispatchGeometryBatch(
     const family = geomRegisterHint(geom);
     const fix =
       family === undefined
-        ? `Call registerAll() (full grammar) or registerBasic() (identity charts) from @ggsvelte/core, render the geom's <Geom*> component (it self-registers), or call registerGeomBatch("${geom}", …).`
+        ? `Call registerAll() (full grammar) or registerBasic() (identity charts) from @ggts-sh/core, render the geom's <Geom*> component (it self-registers), or call registerGeomBatch("${geom}", …).`
         : isBasicRegisterHint(family)
-          ? `Call ${family}() from @ggsvelte/core/headless/register once at startup, or registerAll() from @ggsvelte/core (full grammar). Low-level: registerGeomBatch("${geom}", …).`
-          : `Call ${family}() once at startup (exported from @ggsvelte/svelte and @ggsvelte/core) or registerAll() (full grammar), or render the geom's <Geom*> component (it self-registers). Low-level: registerGeomBatch("${geom}", …).`;
+          ? `Call ${family}() from @ggts-sh/core/headless/register once at startup, or registerAll() from @ggts-sh/core (full grammar). Low-level: registerGeomBatch("${geom}", …).`
+          : `Call ${family}() once at startup (exported from @ggts-sh/svelte and @ggts-sh/core) or registerAll() (full grammar), or render the geom's <Geom*> component (it self-registers). Low-level: registerGeomBatch("${geom}", …).`;
     throw new PipelineError(
       "unsupported-param",
       `/layers/${String(frame.binding.index)}/geom`,

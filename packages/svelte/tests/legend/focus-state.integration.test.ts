@@ -9,7 +9,7 @@
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import type { RenderModel } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
 import type { LegendFocusEvent } from "../../src/lib/interaction/interaction.js";

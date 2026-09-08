@@ -6,7 +6,7 @@
  * SKIPPED (reported, exit 0) so this script stays safe on fresh checkouts.
  *
  * attw runs with `--profile esm-only`: the workspace is ESM-only by plan
- * (no CJS artifacts, node10 resolution out of scope). The `@ggsvelte/svelte` package
+ * (no CJS artifacts, node10 resolution out of scope). The `@ggts-sh/svelte` package
  * is checked by publint ONLY: its d.ts files import `./*.svelte` modules,
  * which no node16 TS resolution mode can resolve — Svelte packages are
  * consumed through bundlers via the `svelte`/`import` conditions (svelte-kit

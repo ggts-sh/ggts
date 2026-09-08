@@ -3,7 +3,7 @@
  * pre-stat frames (#449). Mirrors the Svelte runtime double-pass: train
  * baseline from data without position domain pins so zoom-out is not starved.
  */
-import type { NormalizedSpec, PortableSpec, PositionScaleSpec } from "@ggsvelte/spec";
+import type { NormalizedSpec, PortableSpec, PositionScaleSpec } from "@ggts-sh/spec";
 
 import { computeTrainedBaselineDomains } from "./compute-domains-baseline.js";
 import { preparePanels } from "./prepare-panels.js";

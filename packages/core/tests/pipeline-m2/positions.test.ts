@@ -2,7 +2,7 @@
  * M2 pipeline — jitter / nudge positions.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import type { PointsBatch } from "../../src/scene.ts";
 import { size } from "./fixtures.ts";

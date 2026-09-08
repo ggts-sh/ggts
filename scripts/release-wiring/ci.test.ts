@@ -14,7 +14,7 @@ describe("R0 release wiring — CI lanes", () => {
     expect(ci).toContain("flags: svelte");
     expect(read("codecov.yml")).toContain("component_id: packages-spec");
     // packages-cli badge goes "unknown" when no unit test loads packages/cli/src
-    // (bin smoke tests spawn a subprocess that imports @ggsvelte/core only).
+    // (bin smoke tests spawn a subprocess that imports @ggts-sh/core only).
     expect(read("codecov.yml")).toContain("component_id: packages-cli");
     expect(read("packages/cli/tests/cli-surface.test.ts")).toContain('from "../src/index.ts"');
     expect(read(".pre-commit-config.yaml")).not.toContain("bun test packages/spec");
@@ -191,7 +191,7 @@ describe("R0 release wiring — CI lanes", () => {
     expect(read(".github/workflows/ci.yml")).toContain("interaction_perf == 'true'");
     expect(interactionPerfJob).toContain("uses: ./.github/actions/ci-download-packages-dist");
     expect(interactionPerfJob).toContain("packages-dist");
-    expect(bench).toContain("ghcr.io/${{ github.repository }}/ci-runner:v1.61.1-noble");
+    expect(bench).toContain("ghcr.io/ggts-sh/ggts/ci-runner:v1.61.1-noble");
     expect(bench).toContain("bun run test:interaction-perf");
     expect(read("package.json")).toContain('"test:interaction-perf"');
     expect(read("tests/performance/interaction.spec.ts")).toContain("/__perf/interaction-100k");

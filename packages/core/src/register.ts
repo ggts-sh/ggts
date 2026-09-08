@@ -1,12 +1,12 @@
 /**
  * Explicit registration entry points (#1420).
  *
- * The `@ggsvelte/core` barrel is side-effect-free: importing it registers no
+ * The `@ggts-sh/core` barrel is side-effect-free: importing it registers no
  * stat frames, no geom batches, and no Temporal runtime. Callers opt in:
  *
  *   - `registerBasic()` — identity-chart geoms/stats (scatter, line, bar,
  *     area, …) plus every color and style scale kind and the band-axis
- *     planner. Same tier `@ggsvelte/core/render` installs on import.
+ *     planner. Same tier `@ggts-sh/core/render` installs on import.
  *   - `registerAll()` — the full grammar (every stat frame + geom batch) plus
  *     the Temporal polyfill parse path and the interaction-candidate runtime
  *     (#1421). One-call migration path for apps that relied on the pre-#1420

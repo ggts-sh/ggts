@@ -11,7 +11,7 @@ Use this during **PR 8**, after the immutable Cloudflare Pages preview passes an
    - `/llms.txt`
    - `/llms-full.txt`
 3. Run the repository metadata and link checks against the same commit.
-4. Confirm the production sitemap contains only canonical, indexable pages and uses `https://ggsvelte.sh`.
+4. Confirm the production sitemap contains only canonical, indexable pages and uses `https://ggts.sh`.
 
 ## Google Search Console domain property
 
@@ -27,14 +27,14 @@ Use this during **PR 8**, after the immutable Cloudflare Pages preview passes an
    ```
 
 6. Complete ownership verification in Search Console and record the timestamp and property type.
-7. After the apex is healthy, submit `https://ggsvelte.sh/sitemap.xml` in the Sitemaps report.
+7. After the apex is healthy, submit `https://ggts.sh/sitemap.xml` in the Sitemaps report.
 8. Record submission acknowledgement, last-read status, discovered URL count, and any parser errors as separate fields.
 
 ## Bing Webmaster Tools
 
-1. Add `https://ggsvelte.sh` in Bing Webmaster Tools.
+1. Add `https://ggts.sh` in Bing Webmaster Tools.
 2. Prefer importing the already verified Search Console property. If import is unavailable, use Bing's DNS verification value and follow the same snapshot, TXT, propagation, and secret-handling steps above.
-3. Submit `https://ggsvelte.sh/sitemap.xml` only after the apex route and certificate checks pass.
+3. Submit `https://ggts.sh/sitemap.xml` only after the apex route and certificate checks pass.
 4. Record ownership verification, submission acknowledgement, fetch status, discovered URLs, and reported errors separately.
 
 ## Post-submission checks
@@ -42,10 +42,10 @@ Use this during **PR 8**, after the immutable Cloudflare Pages preview passes an
 From a fresh client and without a logged-in browser session:
 
 ```sh
-curl --fail --silent --show-error --location https://ggsvelte.sh/ >/dev/null
-curl --fail --silent --show-error https://ggsvelte.sh/robots.txt
-curl --fail --silent --show-error https://ggsvelte.sh/sitemap.xml
-curl --fail --silent --show-error https://ggsvelte.sh/llms.txt | head
+curl --fail --silent --show-error --location https://ggts.sh/ >/dev/null
+curl --fail --silent --show-error https://ggts.sh/robots.txt
+curl --fail --silent --show-error https://ggts.sh/sitemap.xml
+curl --fail --silent --show-error https://ggts.sh/llms.txt | head
 ```
 
 Inspect the home page, Getting Started, one gallery detail, Themes, and Reference in both webmaster tools. Track these states independently:

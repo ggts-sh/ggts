@@ -1,5 +1,5 @@
-import { runPipeline } from "@ggsvelte/core";
-import { MAX_BINNED_BREAKS } from "@ggsvelte/spec";
+import { runPipeline } from "@ggts-sh/core";
+import { MAX_BINNED_BREAKS } from "@ggts-sh/spec";
 
 import {
   maxBoundaryBinnedSpec,

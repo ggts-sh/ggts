@@ -61,6 +61,7 @@ export async function runHashInputsCli(args: string[]): Promise<void> {
   const matrixPm = flagValue(args, "--matrix-pm");
   const matrixPmVersion = flagValue(args, "--matrix-pm-version");
   const matrixSvelte = flagValue(args, "--matrix-svelte");
+  const matrixReact = flagValue(args, "--matrix-react");
   const runtimeNodeVersion = flagValue(args, "--runtime-node-version");
   const runtimePmVersion = flagValue(args, "--runtime-pm-version");
 
@@ -69,12 +70,14 @@ export async function runHashInputsCli(args: string[]): Promise<void> {
     matrixNode !== undefined &&
     matrixPm !== undefined &&
     matrixPmVersion !== undefined &&
-    matrixSvelte !== undefined
+    matrixSvelte !== undefined &&
+    matrixReact !== undefined
       ? {
           node: matrixNode,
           packageManager: matrixPm,
           packageManagerVersion: matrixPmVersion,
           svelte: matrixSvelte,
+          react: matrixReact,
         }
       : undefined;
 

@@ -1,13 +1,13 @@
 /**
  * Side-effect module: wire full Temporal polyfill parsing + axis planning.
- * Imported by the full `@ggsvelte/core` barrel and `@ggsvelte/core/temporal`.
+ * Imported by the full `@ggts-sh/core` barrel and `@ggts-sh/core/temporal`.
  */
 import {
   canonicalTemporalParserKey,
   ensureTemporalPolyfill,
   parseTemporalColumn,
   type TemporalParserSpec,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { compileTemporalLabelFormat } from "./layout/format-temporal-labels.js";
 import type { TemporalLabelFormatOptions } from "./layout/format-temporal-labels.js";

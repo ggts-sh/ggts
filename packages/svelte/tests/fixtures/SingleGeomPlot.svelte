@@ -5,7 +5,7 @@
    */
   import type { Component } from "svelte";
 
-  import type { AesInput } from "@ggsvelte/spec";
+  import type { AesInput } from "@ggts-sh/spec";
 
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";

@@ -3,7 +3,7 @@
  * Returns null for identity so the caller can fall through.
  *
  * Builders are registered by {@link registerAllStatFrames} (full package) or
- * left empty on the lean `@ggsvelte/core/render` entry so identity charts do
+ * left empty on the lean `@ggts-sh/core/render` entry so identity charts do
  * not pull loess/density/sf modules into the client graph.
  */
 import type { ColumnTable } from "../table.js";
@@ -31,10 +31,10 @@ export function buildNonIdentityFrame(
     const family = statRegisterHint(stat);
     const fix =
       family === undefined
-        ? `Call registerAll() (full grammar) or registerBasic() (identity charts) from @ggsvelte/core, render the stat's default <Geom*> component (it self-registers), or call registerStatFrame("${stat}", …).`
+        ? `Call registerAll() (full grammar) or registerBasic() (identity charts) from @ggts-sh/core, render the stat's default <Geom*> component (it self-registers), or call registerStatFrame("${stat}", …).`
         : isBasicRegisterHint(family)
-          ? `Call ${family}() from @ggsvelte/core/headless/register once at startup, or registerAll() from @ggsvelte/core (full grammar). Low-level: registerStatFrame("${stat}", …).`
-          : `Call ${family}() once at startup (exported from @ggsvelte/svelte and @ggsvelte/core) or registerAll() (full grammar). A <Geom*> component self-registers only its default stat, so a stat override needs the family call. Low-level: registerStatFrame("${stat}", …).`;
+          ? `Call ${family}() from @ggts-sh/core/headless/register once at startup, or registerAll() from @ggts-sh/core (full grammar). Low-level: registerStatFrame("${stat}", …).`
+          : `Call ${family}() once at startup (exported from @ggts-sh/svelte and @ggts-sh/core) or registerAll() (full grammar). A <Geom*> component self-registers only its default stat, so a stat override needs the family call. Low-level: registerStatFrame("${stat}", …).`;
     throw new PipelineError(
       "unsupported-param",
       path,

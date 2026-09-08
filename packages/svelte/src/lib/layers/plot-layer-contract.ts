@@ -16,7 +16,7 @@ import type {
   Scales,
   ThemeName,
   ThemeSpec,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { createPlotLayer } from "./plot-layer.svelte.js";
 

@@ -1,9 +1,9 @@
-import { palmerPenguins } from "@ggsvelte/svelte/data";
+import { palmerPenguins } from "@ggts-sh/core/data";
 
 import { homeGrammarStaticSvgFromData } from "$lib/theme-specimens/static-svg";
 
 /**
- * Prerender grammar shells so the home client does not need @ggsvelte/core
+ * Prerender grammar shells so the home client does not need @ggts-sh/core
  * for first paint. Matches `contrastChartTheme()`: fivethirtyeight on the
  * light site, light on dark. CSS picks the shell from `data-theme` set by
  * static/theme.js before first paint.

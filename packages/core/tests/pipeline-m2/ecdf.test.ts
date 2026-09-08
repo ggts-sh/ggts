@@ -2,7 +2,7 @@
  * M2 pipeline — line + stat ecdf.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import type { PathsBatch } from "../../src/scene.ts";
 import { size } from "./fixtures.ts";

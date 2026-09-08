@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { PIPELINE_ERROR_CATALOG, PIPELINE_WARNING_CATALOG } from "../src/diagnostics.ts";
 import { resolveTheme, sceneToSVGString } from "../src/index.ts";

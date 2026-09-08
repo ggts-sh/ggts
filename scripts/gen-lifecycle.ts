@@ -32,22 +32,25 @@ export type LifecycleTag = (typeof LIFECYCLE_TAGS)[number];
 
 /** The index files defining each package's public surface. */
 export const SURFACES: readonly { pkg: string; entry: string; file: string }[] = [
-  { pkg: "@ggsvelte/spec", entry: ".", file: "packages/spec/src/index.ts" },
-  { pkg: "@ggsvelte/spec", entry: "./portable", file: "packages/spec/src/portable-entry.ts" },
-  { pkg: "@ggsvelte/core", entry: ".", file: "packages/core/src/index.ts" },
-  { pkg: "@ggsvelte/core", entry: "./render", file: "packages/core/src/render-entry.ts" },
-  { pkg: "@ggsvelte/core", entry: "./headless", file: "packages/core/src/headless-entry.ts" },
+  { pkg: "@ggts-sh/spec", entry: ".", file: "packages/spec/src/index.ts" },
+  { pkg: "@ggts-sh/spec", entry: "./portable", file: "packages/spec/src/portable-entry.ts" },
+  { pkg: "@ggts-sh/core", entry: ".", file: "packages/core/src/index.ts" },
+  { pkg: "@ggts-sh/core", entry: "./interaction", file: "packages/core/src/interaction-entry.ts" },
+  { pkg: "@ggts-sh/core", entry: "./data", file: "packages/core/src/data/index.ts" },
+  { pkg: "@ggts-sh/core", entry: "./render", file: "packages/core/src/render-entry.ts" },
+  { pkg: "@ggts-sh/core", entry: "./headless", file: "packages/core/src/headless-entry.ts" },
   {
-    pkg: "@ggsvelte/core",
+    pkg: "@ggts-sh/core",
     entry: "./headless/register",
     file: "packages/core/src/headless-register-entry.ts",
   },
-  { pkg: "@ggsvelte/core", entry: "./temporal", file: "packages/core/src/temporal-entry.ts" },
-  { pkg: "@ggsvelte/core", entry: "./dom", file: "packages/core/src/dom/index.ts" },
-  { pkg: "@ggsvelte/core", entry: "./svg-live", file: "packages/core/src/svg-live/index.ts" },
-  { pkg: "@ggsvelte/compose", entry: ".", file: "packages/compose/src/index.ts" },
-  { pkg: "@ggsvelte/svelte", entry: ".", file: "packages/svelte/src/lib/index.ts" },
-  { pkg: "@ggsvelte/cli", entry: ".", file: "packages/cli/src/index.ts" },
+  { pkg: "@ggts-sh/core", entry: "./temporal", file: "packages/core/src/temporal-entry.ts" },
+  { pkg: "@ggts-sh/core", entry: "./dom", file: "packages/core/src/dom/index.ts" },
+  { pkg: "@ggts-sh/core", entry: "./svg-live", file: "packages/core/src/svg-live/index.ts" },
+  { pkg: "@ggts-sh/compose", entry: ".", file: "packages/compose/src/index.ts" },
+  { pkg: "@ggts-sh/svelte", entry: ".", file: "packages/svelte/src/lib/index.ts" },
+  { pkg: "@ggts-sh/react", entry: ".", file: "packages/react/src/index.ts" },
+  { pkg: "@ggts-sh/cli", entry: ".", file: "packages/cli/src/index.ts" },
 ];
 
 export class LifecycleError extends Error {
@@ -76,6 +79,10 @@ function parseEntry(
   kind: "value" | "type",
   file: string,
 ): { export: ExtractedExport } | { problem: string } {
+  if (entry.startsWith("type ")) {
+    kind = "type";
+    entry = entry.slice(5);
+  }
   const asMatch = /(?:^|\s)as\s+(\w+)$/.exec(entry);
   const name = asMatch?.[1] ?? entry;
   if (!/^\w+$/.test(name)) {

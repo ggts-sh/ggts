@@ -10,7 +10,7 @@ import { bindLayer } from "../src/pipeline/bind-layer.ts";
 import type { Advisory } from "../src/pipeline/types.ts";
 import { ColumnTable } from "../src/table.ts";
 import type { GeometryBatch } from "../src/scene.ts";
-import type { LayerSpec } from "@ggsvelte/spec";
+import type { LayerSpec } from "@ggts-sh/spec";
 
 const table = ColumnTable.fromRows([
   { x: 1, y: 10, g: "a" },

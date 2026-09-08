@@ -7,7 +7,7 @@
     Labs,
     ScaleXDiscrete,
     ThemeFivethirtyeight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { polioTrial } from "./data.js";
 </script>

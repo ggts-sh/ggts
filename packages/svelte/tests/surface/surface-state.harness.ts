@@ -11,8 +11,8 @@
 import { fromAny } from "@total-typescript/shoehorn";
 import { afterEach } from "vitest";
 
-import type { CandidateFacts, CellValue, RenderModel } from "@ggsvelte/core";
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import type { CandidateFacts, CellValue, RenderModel } from "@ggts-sh/core";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import type {
   InteractionSource,

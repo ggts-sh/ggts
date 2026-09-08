@@ -13,7 +13,7 @@ import type {
   PointShape,
   PointShapeGeometry,
   ThemeTokens,
-} from "@ggsvelte/core";
+} from "@ggts-sh/core";
 import {
   pathData,
   pointShapeGeometry,
@@ -23,7 +23,7 @@ import {
   resolveRectMark,
   resolveSegmentMark,
   themeVar,
-} from "@ggsvelte/core";
+} from "@ggts-sh/core";
 
 /** Panel-local box origin for a glyph anchor + box size (geom_label).
  *  Local twin of packages/core labelBoxOrigin — keep private; no new

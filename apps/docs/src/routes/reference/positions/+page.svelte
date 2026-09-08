@@ -3,7 +3,7 @@
   import {
     positionReferenceList,
     type PositionReferenceEntry,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
 
   let query = $state("");
   const all = positionReferenceList();
@@ -81,7 +81,7 @@
     geom default.
   </p>
   <pre class="snippet"><code
-      >{`import { GGPlot, GeomBar } from "@ggsvelte/svelte";
+      >{`import { GGPlot, GeomBar } from "@ggts-sh/svelte";
 
 <GGPlot data={rows} aes={{ x: "category", fill: "group" }}>
   <GeomBar position="dodge" />

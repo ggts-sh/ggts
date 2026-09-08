@@ -5,7 +5,7 @@
     Inspect,
     Labs,
     ThemeFivethirtyeight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { britishExports } from "./data.js";
 </script>

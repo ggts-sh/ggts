@@ -40,7 +40,7 @@ describe("density stat — R stats::density parity (fixtures)", () => {
       }
       expect(result.x[0]!).toBeCloseTo(expected.from, 9);
       expect(result.x.at(-1)!).toBeCloseTo(expected.to, 9);
-      // The KDE itself: R approximates by binned FFT; ggsvelte is exact.
+      // The KDE itself: R approximates by binned FFT; ggts is exact.
       expect(maxRelDiff(expected.density, result.density)).toBeLessThan(5e-4);
       expect(maxRelDiff(expected.count, result.count)).toBeLessThan(5e-4);
       expect(maxRelDiff(expected.scaled, result.scaled)).toBeLessThan(5e-4);

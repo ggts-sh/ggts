@@ -44,7 +44,7 @@ export { PipelineError, batchMarkCount } from "./pipeline/public-api.js";
 
 // Registration is explicit (#1420): this barrel has no module-scope side
 // effects. Call registerBasic()/registerAll() (from "./register.js" or the
-// package barrel), or import `@ggsvelte/core/render` for basic auto-
+// package barrel), or import `@ggts-sh/core/render` for basic auto-
 // registration. bunfig.toml preload keeps unit tests on the full grammar.
 // Interaction candidates install via installCandidates() (#1421).
 

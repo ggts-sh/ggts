@@ -1,4 +1,4 @@
-import type { CellValue, PositionTransformName } from "@ggsvelte/core";
+import type { CellValue, PositionTransformName } from "@ggts-sh/core";
 import type { Snippet } from "svelte";
 
 import type { LegendFilterEvent } from "../legend/filter.js";
@@ -352,12 +352,12 @@ export interface PlotInteractionTransition<Key extends PropertyKey> {
 
 /**
  * @deprecated since 0.1.0 — use IntervalSelection. Kept as a source migration
- * alias only: https://ggsvelte.sh/guide/upgrading#deprecated-type-aliases
+ * alias only: https://ggts.sh/guide/upgrading#deprecated-type-aliases
  */
 export type BrushSelection = IntervalSelection;
 /**
  * @deprecated since 0.1.0 — use PlotInspectionChange. Kept as a source
- * migration alias only: https://ggsvelte.sh/guide/upgrading#deprecated-type-aliases
+ * migration alias only: https://ggts.sh/guide/upgrading#deprecated-type-aliases
  */
 export type TooltipContext<
   Row = Record<string, CellValue>,
@@ -365,6 +365,6 @@ export type TooltipContext<
 > = PlotInspectionChange<Row, Key>;
 /**
  * @deprecated since 0.1.0 — use ReadonlyZoomDomains. Kept as a source
- * migration alias only: https://ggsvelte.sh/guide/upgrading#deprecated-type-aliases
+ * migration alias only: https://ggts.sh/guide/upgrading#deprecated-type-aliases
  */
 export type ZoomDomains = { x?: [number, number]; y?: [number, number] };

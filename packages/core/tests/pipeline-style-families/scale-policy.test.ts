@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { fromAny } from "@total-typescript/shoehorn";
 
-import { SpecValidationError } from "@ggsvelte/spec";
+import { SpecValidationError } from "@ggts-sh/spec";
 
 import { runPipeline } from "../../src/pipeline.js";
 

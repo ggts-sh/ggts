@@ -1,22 +1,22 @@
-# Contributing to ggsvelte
+# Contributing to ggts
 
 ## Start in the right place
 
 - Reproducible rendering, runtime, packaging, and grammar defects use the
-  [bug form](https://github.com/ljodea/ggsvelte/issues/new?template=bug.yml).
+  [bug form](https://github.com/ggts-sh/ggts/issues/new?template=bug.yml).
 - Inspection, selection, zoom, keyboard, touch, focus, and assistive-technology
   problems use the
-  [interaction and accessibility form](https://github.com/ljodea/ggsvelte/issues/new?template=interaction-accessibility.yml).
+  [interaction and accessibility form](https://github.com/ggts-sh/ggts/issues/new?template=interaction-accessibility.yml).
 - Scoped additions use the
-  [feature form](https://github.com/ljodea/ggsvelte/issues/new?template=feature.yml);
+  [feature form](https://github.com/ggts-sh/ggts/issues/new?template=feature.yml);
   explore early API and design ideas in
-  [Ideas](https://github.com/ljodea/ggsvelte/discussions/categories/ideas).
+  [Ideas](https://github.com/ggts-sh/ggts/discussions/categories/ideas).
 - Documentation gaps use the
-  [documentation form](https://github.com/ljodea/ggsvelte/issues/new?template=documentation.yml).
+  [documentation form](https://github.com/ggts-sh/ggts/issues/new?template=documentation.yml).
 - Usage questions belong in
-  [Q&A](https://github.com/ljodea/ggsvelte/discussions/categories/q-a), and
+  [Q&A](https://github.com/ggts-sh/ggts/discussions/categories/q-a), and
   reusable examples belong in
-  [Show and tell](https://github.com/ljodea/ggsvelte/discussions/categories/show-and-tell).
+  [Show and tell](https://github.com/ggts-sh/ggts/discussions/categories/show-and-tell).
 - Suspected vulnerabilities must follow the [private security policy](SECURITY.md),
   not a public issue or Discussion.
 
@@ -91,7 +91,7 @@ upstream, `.md`/`.yaml`/`.svelte` can fold back into oxfmt (`.oxfmtrc.json`
 | publint / @arethetypeswrong/cli              | 0.3.21 / 0.18.5        | package publish shape (skips unbuilt stubs)                                        |
 | actionlint (npm, wasm)                       | 2.0.6                  | workflow lint via `scripts/actionlint.ts` (no shellcheck integration — wasm build) |
 | zizmor                                       | 1.26.1 (uv tool)       | Actions security audit                                                             |
-| @changesets/cli                              | 3.0.1                  | versioning/release (spec+core+svelte+cli+skill fixed lockstep, access public)      |
+| @changesets/cli                              | 3.0.1                  | versioning/release (all seven packages in fixed lockstep, access public)           |
 | vitest + @vitest/browser-playwright          | 4.1.11                 | browser-mode component tests (factory `playwright()` provider)                     |
 | playwright / @playwright/test                | 1.61.1 (exact pins)    | must match `ghcr.io/<repo>/ci-runner:v1.61.1-noble` — two-step bump (see below)    |
 | @sveltejs/kit + @sveltejs/adapter-static     | 2.x / 3.x              | apps/docs static docs site (the VR screenshot target)                              |
@@ -119,7 +119,7 @@ Dependabot does **not** auto-bump these (human-authored locksteps / release flow
   never as a Dependabot PR.
 - `pnpm` — root pin must match `support-matrix.json` `packageManagers.pnpm`
   (asserted in `scripts/support-matrix.test.ts`).
-- `@ggsvelte/*` — internal publish ranges are owned by Changesets, not registry
+- `@ggts-sh/*` — internal publish ranges are owned by Changesets, not registry
   bumps from Dependabot.
 
 Majors for `svelte`, `vite`, `@sveltejs/*`, `typescript`, and `vitest` are also
@@ -140,7 +140,7 @@ A single PR that bumps **consumers and publisher together deadlocks**:
 `scripts/support-matrix.test.ts` used to force them equal, so the PR would
 point container jobs at `ci-runner:<new-tag>` before main could publish that
 tag. Use a **two-step** bump (issue
-[#610](https://github.com/ljodea/ggsvelte/issues/610)):
+[#610](https://github.com/ggts-sh/ggts/issues/610)):
 
 **Step 1 — prepublish the image** (publisher may _lead_ consumers):
 
@@ -152,7 +152,7 @@ tag. Use a **two-step** bump (issue
 4. Merge to `main`; wait for the `build CI image` workflow to publish
    `ghcr.io/<owner>/<repo>/ci-runner:<new-tag>`.
 5. Verify the tag exists (Actions run green, or
-   `docker manifest inspect ghcr.io/ljodea/ggsvelte/ci-runner:vX.Y.Z-noble`).
+   `docker manifest inspect ghcr.io/ggts-sh/ggts/ci-runner:vX.Y.Z-noble`).
 
 **Step 2 — consume the published tag**:
 
@@ -174,17 +174,17 @@ a tag main never publishes). The lockstep test encodes that inequality.
 
 | Command                                                       | What it does                                                                                                                                                           |
 | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bun run check`                                               | `tsc -b` project references (packages/spec, packages/core) — EMITS `dist/` since M0c                                                                                   |
-| `bun run build`                                               | `bun run check` + `svelte-package` for packages/svelte (everything the publish shape needs)                                                                            |
+| `bun run check`                                               | Emits spec, core, compose, CLI, and React `dist/`; checks type contracts, scripts, lifecycle, and comparison versions                                                  |
+| `bun run build`                                               | `bun run check` + Svelte and React package builds (everything the publish shape needs)                                                                                 |
 | `bun run check:svelte`                                        | svelte-check `--fail-on-warnings` in packages/svelte (needs `bun run check` first: dist types)                                                                         |
 | `bun run lint`                                                | oxlint over the repo (`.oxlintrc.json`; spikes excluded)                                                                                                               |
 | `bun run lint:md`                                             | markdownlint-cli2 over `**/*.md` (`.markdownlint-cli2.jsonc`; spikes + node_modules ignored)                                                                           |
 | `bun run lint:type-aware`                                     | oxlint `--type-aware --deny-warnings` (tsgolint; permanent CI gate)                                                                                                    |
 | `bun run fmt` / `bun run fmt:check`                           | oxfmt (ts/js/json/css/toml) + prettier (.svelte/.md/.yaml)                                                                                                             |
-| `bun run test`                                                | bun unit tests (spec + core + scripts + evals harness; needs `bun run check` first)                                                                                    |
+| `bun run test`                                                | bun unit tests (spec + core + CLI + benchmarks + scripts + evals harness; needs `bun run check` first)                                                                 |
 | `bun run test:temporal-parser`                                | focused strict-parser, schema/helper, Date.parse gate, and parsed-column cache loop                                                                                    |
 | `bun run test:temporal-pipeline`                              | focused temporal pipeline and calendar-tick loop                                                                                                                       |
-| `bun run test:components`                                     | packages/svelte component tests (Chromium, Firefox, WebKit) followed by the Node SSR suite                                                                             |
+| `bun run test:components`                                     | Svelte browser and SSR suites, React browser suite, then docs component tests                                                                                          |
 | `cd packages/svelte && bun run test:coverage`                 | browser (chromium) + SSR coverage reports; browser config enforces thresholds; CI runs the same chromium+ssr coverage and uploads lcov to Codecov                      |
 | `bun run check:examples`                                      | tsc over the examples corpus's .ts files (needs `bun run check` first: dist types)                                                                                     |
 | `bun run check:docs`                                          | svelte-kit sync + svelte-check for apps/docs (needs `bun run build` first)                                                                                             |
@@ -203,7 +203,7 @@ a tag main never publishes). The lockstep test encodes that inequality.
 | `bun run bench:budgets`                                       | compare `bench-results.json` against `benchmarks/budgets.json` (provisional budgets, +50%)                                                                             |
 | `bun run bench:memory` / `bun run bench:memory:check`         | capture the forced-GC retained-memory sample / enforce `benchmarks/memory-baselines.json`                                                                              |
 | `bun run bench` / `bun run bench:smoke`                       | mitata pipeline+renderer benchmarks (full / 1k CI smoke)                                                                                                               |
-| `bun packages/cli/bin/ggsvelte-render.js`                     | the `ggsvelte-render` CLI (spec JSON -> SVG on stdout; JSON-line diagnostics on stderr)                                                                                |
+| `bun packages/cli/bin/ggts.js render`                         | the `ggts render` CLI (spec JSON -> SVG on stdout; JSON-line diagnostics on stderr)                                                                                    |
 | `Rscript packages/core/tests/fixtures/*/generate.R`           | regenerate the ggplot2-parity fixtures (grouping, stats/positions; needs R + ggplot2)                                                                                  |
 | `bun run knip`                                                | unused files/exports/dependencies                                                                                                                                      |
 | `bun run lint:package`                                        | publint + attw (esm-only profile) over built packages — build first                                                                                                    |
@@ -372,12 +372,12 @@ short, package-specific, and correct — not a second docs site.
 - **One working example** for the package’s primary use case. Absolute URLs only
   (no `../other-package` monorepo links — they 404 on npm).
 - **Do not restate full contracts** (scales, guides, deprecation calendars) in
-  the package README; link to [ggsvelte.sh](https://ggsvelte.sh/) instead. Long
+  the package README; link to [ggts.sh](https://ggts.sh/) instead. Long
   contract dumps are what drifts.
 - **Guards:** `scripts/package-readme.test.ts` runs TypeScript fences for
-  `@ggsvelte/spec` and `@ggsvelte/core`, bans monorepo-relative links, and
-  blocks removed grammar-prop examples in `@ggsvelte/svelte`. The root README
-  stays short and links out to ggsvelte.sh (no embedded gallery or theme
+  `@ggts-sh/spec` and `@ggts-sh/core`, bans monorepo-relative links, and
+  blocks removed grammar-prop examples in `@ggts-sh/svelte`. The root README
+  stays short and links out to ggts.sh (no embedded gallery or theme
   grids) — enforced by `scripts/readme-showcase.test.ts`.
 - **Ship with a patch** when the example or install path changes — package
   README is a shipped surface for `scripts/changeset-check.ts` even though
@@ -520,11 +520,11 @@ PR gets one opened rather than a silent skip. The three-way decision
 Add a `.changeset/*.md` **only** when the PR changes an npm-published package
 surface — the same paths `scripts/changeset-check.ts` treats as shipped
 (`package.json`, `README.md`, `LICENSE`, that package’s npm `files` entries
-under `packages/{cli,core,skill,spec,svelte}`, and — for packages that publish
+under `packages/{cli,compose,core,react,skill,spec,svelte}`, and — for packages that publish
 compiled `dist` without listing `src` — the package’s `src/` tree that builds
-into `dist`, e.g. `packages/svelte/src/**`). Spec, core, svelte, cli, and skill
+into `dist`, e.g. `packages/svelte/src/**`). Spec, core, compose, react, svelte, cli, and skill
 version in **fixed lockstep**, so one real (or spurious) changeset advances all
-five package versions.
+seven package versions.
 
 **Do not** add a changeset for docs site, examples, scripts, tests, CI, or
 guide content alone (`apps/docs/**`, `examples/**`, `scripts/quickstart/**`,
@@ -536,7 +536,7 @@ warrant a patch. Missing changesets on package code stay advisory only.
 ### Bump level (SemVer)
 
 Pick the level from the **public surface change**, not from how small the
-diff looks. Spec, core, svelte, cli, and skill share one version, so the highest
+diff looks. All seven packages share one version, so the highest
 level among pending changesets wins.
 
 | Level     | Use for                                                                                                                                                                            |
@@ -553,8 +553,8 @@ patch.
 
 ## Lifecycle policy (Hadley lesson 13)
 
-Every public export of `@ggsvelte/spec`, `@ggsvelte/core` (both entries), and
-`@ggsvelte/svelte` carries a lifecycle tag, annotated in the package index files
+Every public export of `@ggts-sh/spec`, `@ggts-sh/core` (both entries), and
+`@ggts-sh/svelte` carries a lifecycle tag, annotated in the package index files
 (file default `// @lifecycle-default`, statement-level one-line
 `@lifecycle` JSDoc markers, per-name trailing `// @lifecycle` comments) and
 collected into the generated `lifecycle.json` (`bun run lifecycle:gen`;
@@ -586,7 +586,7 @@ staleness-tested). The docs lifecycle page and llms surfaces render from it.
 
 Related: `normalize()` stamps the current defaults edition (`edition: 2`) on
 every unstamped spec (defaults-edition mechanism, decision 0012) — default aesthetics are keyed by edition in
-`@ggsvelte/core`'s `EDITION_DEFAULTS`, so improving defaults later never
+`@ggts-sh/core`'s `EDITION_DEFAULTS`, so improving defaults later never
 restyles existing specs.
 
 ## No time estimates
@@ -611,16 +611,16 @@ Consequences:
 - Run `bun run check` after a fresh clone before `bun run test`,
   `check:svelte`, or `lint:type-aware` — cross-package imports resolve
   through `dist/`. CI jobs already sequence this.
-- `@ggsvelte/spec`: TypeBox schemas (decision 0004) + `Static<>` types,
+- `@ggts-sh/spec`: TypeBox schemas (decision 0004) + `Static<>` types,
   `normalize()`, tier-1 `validate()` with the agent error contract, the
   `gg()/aes()` builder, portability (`isPortable`/`toPortable`/
   `toPortableLossy`), and the JSON Schema artifact `schema/v0.json`
   (generated — `bun run schema:emit`; oxfmt-ignored; staleness-tested).
-- `@ggsvelte/core` (pure entry): ColumnTable, grouping (decision 0005),
+- `@ggts-sh/core` (pure entry): ColumnTable, grouping (decision 0005),
   value-stable scale state (decision 0002), two-pass layout (decision 0003),
   `runPipeline()`, `renderToSVGString()`. No DOM globals — enforced by the
   Node smoke test. `/dom` stays a stub until M2 canvas work.
-- `@ggsvelte/svelte`: props-first `<GGPlot>`, declaration-only `<GeomPoint>`/
+- `@ggts-sh/svelte`: props-first `<GGPlot>`, declaration-only `<GeomPoint>`/
   `<GeomLine>` sugar (decision 0001, mechanism A), vitest-4 browser-mode
   component tests (`bun run test:components`).
 - Benchmarks live in `benchmarks/` (mitata; `bench-smoke` CI job runs the 1k
@@ -635,7 +635,7 @@ adapter-static site, `<GGPlot>`'s `data-gg-ready` readiness signal, the
 `tests/visual` Playwright suite, and a real (un-guarded) `vr-compare.yml`.
 CI consequence: build jobs run **package-build** (`bun run build`, not just
 `tsc -b`) before docs/examples checks because those imports resolve through
-the built `@ggsvelte/svelte` package.
+the built `@ggts-sh/svelte` package.
 
 ## Milestone context (M2 — statistical layer)
 
@@ -650,7 +650,7 @@ recorded in decision 0010 — loess matches R's `surface = "direct",
 statistics = "exact"` path to float noise, and the fixture tolerances
 quantify the gap to ggplot2's default interpolated loess. Every stat's
 module header documents its generated columns (`STAT_COLUMNS` in
-@ggsvelte/spec is the `{ stat }` channel contract) and its missing-value
+@ggts-sh/spec is the `{ stat }` channel contract) and its missing-value
 policy. Loess attribution: see the repo NOTICE file.
 
 ## Milestone context (M2 — facets, coord flip, canvas strata, interaction)
@@ -658,7 +658,7 @@ policy. Loess attribution: see the repo NOTICE file.
 The interaction half of M2 (decision 0011) added `facet` (wrap + grid,
 fixed/free scales — partition runs BEFORE stats), `coord: {type: "flip"}`
 (the single orientation mechanism), per-layer `render` backends with canvas
-strata (spike 0006 graduated; `@ggsvelte/core/dom` is real now: canvas batch
+strata (spike 0006 graduated; `@ggts-sh/core/dom` is real now: canvas batch
 renderers + the unified hit index), hover/tooltip/brush/brush-to-zoom in
 `<GGPlot>`, `width="container"`, `RenderModel.dispose()`, and the a11y pass
 (focusable SVG marks, canvas description block + data-table toggle,
@@ -679,7 +679,7 @@ the sources); `lintSpec()` spec-lint advisories (wired into
 the docs guide pages GENERATED from those catalogs (`scripts/gen-llms.ts` is
 the one source for guide markdown, `/llms.txt`, and `/llms-full.txt` — the
 docs pages and llms endpoints cannot drift from the code); `/schema/v0.json`
-served from the docs build; the agent skill published as `@ggsvelte/skill`
+served from the docs build; the agent skill published as `@ggts-sh/skill`
 (`packages/skill/`, inventory completeness enforced by skill-content tests); the held-out eval harness (`tests/evals/`,
 44 cases, dry-run mock without a key); benchmark budgets
 (`benchmarks/budgets.json`, provisional) + `bench:json`/`bench:budgets`;

@@ -4,7 +4,7 @@
  * Emit preallocates typed segment buffers (3 segments per kept row); pack
  * reuses dense buffers and never Float32Array.from a number[] scratch list.
  */
-import type { ErrorbarParams } from "@ggsvelte/spec";
+import type { ErrorbarParams } from "@ggts-sh/spec";
 
 import type { SegmentsBatch } from "../scene.js";
 import { linetypeIndex, type Linetype } from "../scales/style.js";

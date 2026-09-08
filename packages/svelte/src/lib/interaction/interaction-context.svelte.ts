@@ -14,8 +14,8 @@
  * reactive values at construction beyond what their own docs allow. The
  * assembly (interaction-states.svelte.ts) owns construction order.
  */
-import type { CellValue, RenderModel } from "@ggsvelte/core";
-import type { CandidateFacts } from "@ggsvelte/core";
+import type { CellValue, RenderModel } from "@ggts-sh/core";
+import type { CandidateFacts } from "@ggts-sh/core";
 
 import type { PlotInteractionController } from "./controller.svelte.js";
 import type {
@@ -36,7 +36,7 @@ export type InteractionContext = {
   readonly root: () => HTMLDivElement | null;
   readonly captureSurface: () => HTMLDivElement | null;
   /** External linked controller, when the plot is controller-driven. */
-  readonly interaction: () => PlotInteractionController<PropertyKey> | undefined;
+  readonly interaction: () => PlotInteractionController | undefined;
   readonly resolvedInteractionScope: () => PlotInteractionScope;
   /** Narrow config slices over the resolved interaction config. */
   readonly selectConfig: () => ResolvedInteractionConfig["select"];

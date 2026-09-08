@@ -6,7 +6,7 @@
  * contract resolution, candidate construction, and model assembly are
  * statements here rather than hop-only modules.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import { getCandidateRuntime, RELEASED_CANDIDATE_STORE } from "../candidate-runtime.js";
 import type { CandidateBuildInput, LazyInteraction } from "../candidate-runtime.js";
@@ -180,7 +180,7 @@ export function finalize(run: PipelineRunState): RenderModel {
       const runtime = getCandidateRuntime();
       if (runtime === null) {
         throw new Error(
-          "Interaction candidates require @ggsvelte/core (full entry); the lean @ggsvelte/core/render graph does not carry the candidate store.",
+          "Interaction candidates require @ggts-sh/core (full entry); the lean @ggts-sh/core/render graph does not carry the candidate store.",
         );
       }
       builtCandidates = runtime.build(input);

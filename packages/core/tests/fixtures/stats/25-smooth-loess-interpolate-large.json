@@ -1,6 +1,6 @@
 {
   "case": "25-smooth-loess-interpolate-large",
-  "description": "Large-n loess (n=1200) with R DEFAULT surface=interpolate / statistics=approximate — pins the ggsvelte interpolate path (#1422).",
+  "description": "Large-n loess (n=1200) with R DEFAULT surface=interpolate / statistics=approximate — pins the ggts interpolate path (#1422).",
   "provenance": "R-generated",
   "ggplot2Version": "4.0.3",
   "rVersion": "4.6.1",

@@ -1,7 +1,7 @@
 /**
  * Identity-stat LayerFrame (source columns, optional ymin/ymax).
  */
-import type { SpokeParams } from "@ggsvelte/spec";
+import type { SpokeParams } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 import type { CellValue } from "../table-types.js";

@@ -11,7 +11,7 @@
   // Join so the example's closing script tag does not terminate this module.
   const namedExample = [
     '<script lang="ts">',
-    '  import { GeomPoint, GGPlot, ThemeDark } from "@ggsvelte/svelte";',
+    '  import { GeomPoint, GGPlot, ThemeDark } from "@ggts-sh/svelte";',
     "",
     "  const rows = [",
     "    { x: 1, y: 2 },",

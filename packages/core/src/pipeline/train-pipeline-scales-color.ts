@@ -1,7 +1,7 @@
 /**
  * Resolve global color and fill scales for a pipeline run.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions.js";
 import { humanizeFieldTitle } from "../humanize-field.js";

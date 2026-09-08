@@ -72,9 +72,16 @@ export type GuideCatalogEntry = GuideCatalogEntryBase &
 /** User-facing guide identity and ordering. Guide prose remains catalog-generated. */
 export const GUIDE_CATALOG = [
   {
+    slug: "agents",
+    title: "Agent sandboxes",
+    description: "Install the skill and CLI, check chart specs, and render SVG in a sandbox.",
+    section: "Start",
+    navigationOrder: 0.5,
+  },
+  {
     slug: "getting-started",
     title: "Getting started",
-    description: "Install @ggsvelte/svelte and render one chart from a Svelte file.",
+    description: "Render the same chart in an agent sandbox, React, or Svelte.",
     section: "Start",
     navigationOrder: 1,
   },

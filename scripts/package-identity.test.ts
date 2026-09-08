@@ -30,10 +30,10 @@ describe("published package identity", () => {
     expect(new Set(versions).size).toBe(1);
     expect(versions[0]).toMatch(/^\d+\.\d+\.\d+$/);
     for (const [index, entry] of manifests.entries()) {
-      expect(entry.homepage).toBe("https://ggsvelte.sh/");
+      expect(entry.homepage).toBe("https://ggts.sh/");
       expect(entry.repository).toEqual({
         type: "git",
-        url: "git+https://github.com/ljodea/ggsvelte.git",
+        url: "git+https://github.com/ggts-sh/ggts.git",
         directory: packagePaths[index]!.replace("/package.json", ""),
       });
     }

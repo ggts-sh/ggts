@@ -52,7 +52,7 @@ export function buildFrame(
   advisories: Advisory[],
   binRange?: [number, number],
   functionDomain?: [number, number],
-  datasets?: import("@ggsvelte/spec").PortableSpec["datasets"],
+  datasets?: import("@ggts-sh/spec").PortableSpec["datasets"],
   xDiscreteRisk = false,
 ): LayerFrame {
   // Annotation frames are rowless (n=0, empty inputGroups). Do not derive or

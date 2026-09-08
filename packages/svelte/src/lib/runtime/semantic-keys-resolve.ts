@@ -3,7 +3,7 @@
  * Source identity / epoch tokens: semantic-source-identity.ts,
  * semantic-data-identity.ts. Projection cache: semantic-keys-projection.ts.
  */
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 
 import type { InteractionDiagnostic } from "../interaction/interaction.js";
 import { INTERACTION_DIAGNOSTIC_CATALOG } from "../interaction/interaction.js";

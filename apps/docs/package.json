@@ -1,5 +1,5 @@
 {
-  "name": "@ggsvelte/docs",
+  "name": "@ggts-sh/docs",
   "version": "0.0.0",
   "private": true,
   "description": "ggsvelte docs site: SvelteKit + adapter-static. The gallery and per-example pages render from examples/manifest.ts (one source, three uses); the built output in build/ is the VR screenshot target.",
@@ -12,10 +12,10 @@
     "test": "svelte-kit sync && vitest run"
   },
   "dependencies": {
-    "@ggsvelte/core": "workspace:*",
-    "@ggsvelte/examples": "workspace:*",
-    "@ggsvelte/spec": "workspace:*",
-    "@ggsvelte/svelte": "workspace:*",
+    "@ggts-sh/core": "workspace:*",
+    "@ggts-sh/examples": "workspace:*",
+    "@ggts-sh/spec": "workspace:*",
+    "@ggts-sh/svelte": "workspace:*",
     "bits-ui": "^2.18.1",
     "highlight.js": "^11.12.0"
   },

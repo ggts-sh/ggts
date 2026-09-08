@@ -167,7 +167,7 @@ describe("manual AT alias commit audit", () => {
         releaseCommit: packagingTip,
         releaseVersion: "0.1.2",
       });
-    }).toThrow(/@ggsvelte\/svelte is 0\.1\.1/);
+    }).toThrow(/@ggts-sh\/svelte is 0\.1\.1/);
   });
 
   it("rejects a commit range that substantively edits runtime sources", () => {

@@ -4,7 +4,7 @@
   import CodeTabs from "$lib/CodeTabs.svelte";
   import { FEATURED_EXAMPLES, galleryCatalog } from "$lib/catalog/gallery";
   import BenchmarkTabs from "$lib/components/BenchmarkTabs.svelte";
-  import Benchmarks from "$lib/components/Benchmarks.svelte";
+  import { SANDBOX_INSTALL, SANDBOX_COMMANDS } from "$scripts/agent-quickstart";
   import GrammarDemo from "$lib/components/GrammarDemo.svelte";
   import { EXAMPLES } from "$lib/examples-manifest";
   import { HOME_CODE_PATH_TABS } from "$lib/home-code-path";
@@ -22,10 +22,27 @@
 
 <section class="home-hero" aria-labelledby="home-heading">
   <h1 id="home-heading">
-    ggsvelte is a <span class="hero-fast">fast</span>, agent-native
-    implementation of the layered grammar of graphics
+    ggts: ggplot2’s grammar for <span class="hero-fast">TypeScript</span>
   </h1>
-  <BenchmarkTabs />
+  <div>
+    <p>
+      Built for coding agents. Check charts in a sandbox, then use the same spec
+      in React or Svelte.
+    </p>
+    <CodeTabs
+      tabs={[
+        {
+          label: "Agent sandbox",
+          code: `${SANDBOX_INSTALL}\n${SANDBOX_COMMANDS}`,
+          language: "bash",
+        },
+      ]}
+    />
+    <p>
+      <a href={`${base}/guide/agents`}>Set up an agent sandbox</a> ·
+      <a href={`${base}/guide/getting-started`}>React and Svelte quickstarts</a>
+    </p>
+  </div>
 </section>
 
 <section class="home-featured" aria-label="Examples">
@@ -52,8 +69,6 @@
   </ol>
 </section>
 
-<Benchmarks />
-
 <section class="code-path" aria-labelledby="code-path-heading">
   <div class="code-path-chart">
     <GrammarDemo
@@ -62,17 +77,21 @@
     />
   </div>
   <div class="code-path-copy">
-    <h2 id="code-path-heading">
-      Svelte for builders, JSON for embedded agents.
-    </h2>
+    <h2 id="code-path-heading">One grammar. React, Svelte, or a sandbox.</h2>
     <p>
-      Human-agent pairs get Svelte components for clarity. Embedded agents can
-      use JSON specs for interactive charts on demand.
+      Compose charts with familiar ggplot2 names, or generate PortableSpec JSON.
+      Both framework adapters use the same TypeScript pipeline.
     </p>
   </div>
   <div class="code-path-tabs">
     <CodeTabs {tabs} />
   </div>
+</section>
+
+<section aria-labelledby="benchmark-heading">
+  <h2 id="benchmark-heading">Framework benchmarks</h2>
+  <BenchmarkTabs />
+  <p><a href={`${base}/benchmarks`}>All results and measurement method</a></p>
 </section>
 
 <section class="evidence" aria-labelledby="evidence-heading">

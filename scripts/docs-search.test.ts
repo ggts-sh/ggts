@@ -5,7 +5,7 @@ import { searchDocs } from "../apps/docs/src/lib/search.ts";
 
 const winners = [
   ["scale-scheme-type", "/guide/errors#scale-scheme-type"],
-  ["GGPlot", "/guide/lifecycle#ggsvelte-svelte"],
+  ["GGPlot", "/guide/lifecycle#ggts-sh-svelte"],
   ["--max-marks", "/reference/cli#max-marks"],
   ["date axis", "/guide/scales-guides#date-and-time-axes"],
   ["tooltip", "/guide/interactions#inspection"],

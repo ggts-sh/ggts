@@ -1,5 +1,5 @@
 /**
- * The ggsvelte spec schema — TypeBox is the source of truth (decision 0004).
+ * The ggts spec schema — TypeBox is the source of truth (decision 0004).
  *
  * These definitions ARE the published JSON Schema (via `Type.Cyclic` for named
  * `$defs`, emitted to `schema/v0.json` by `scripts/emit-schema.ts`) AND the TS

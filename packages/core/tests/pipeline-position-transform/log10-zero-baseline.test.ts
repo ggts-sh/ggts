@@ -2,7 +2,7 @@
  * Position transform — log10-zero-baseline.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, scaleYLog10 } from "@ggsvelte/spec";
+import { aes, gg, scaleYLog10 } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import { size } from "./fixtures.ts";
 

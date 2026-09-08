@@ -1,4 +1,4 @@
-// @ggsvelte/spec — spec types, schemas, normalize(), validate(), portability,
+// @ggts-sh/spec — spec types, schemas, normalize(), validate(), portability,
 // fluent builder. Zero d3, zero DOM. TypeBox is the schema source of truth
 // (decision 0004): the same definitions provide the TS types (Static<>), the
 // runtime validator, and the published JSON Schema artifact (schema/v0.json).

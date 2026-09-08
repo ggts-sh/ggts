@@ -6,7 +6,9 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 
 import { COMPLETE_SVELTE_SNIPPETS } from "./guide-code-contract.js";
+import { SVELTE_QUICKSTART_SOURCE, SANDBOX_SPEC } from "./agent-quickstart.js";
 import { type PackageManager } from "./support-matrix.js";
+import { assertRecipeImports } from "./consumer-compat-skill.js";
 import { consumerPlotSpec } from "./consumer-compat-plan.js";
 
 const fixtureDependencies = [
@@ -30,18 +32,19 @@ export function fixtureManifest(
 ) {
   const file = (path: string) => `file:${relative(directory, path).replaceAll("\\", "/")}`;
   const named = (directoryName: string) => {
-    const found = tarballs.find((path) => path.includes(`ggsvelte-${directoryName}-`));
+    const found = tarballs.find((path) => path.includes(`ggts-sh-${directoryName}-`));
     if (found === undefined) {
-      throw new Error(`consumer fixture missing ggsvelte-${directoryName} tarball`);
+      throw new Error(`consumer fixture missing ggts-sh-${directoryName} tarball`);
     }
     return file(found);
   };
   const localPackages = {
-    "@ggsvelte/spec": named("spec"),
-    "@ggsvelte/core": named("core"),
-    "@ggsvelte/compose": named("compose"),
-    "@ggsvelte/svelte": named("svelte"),
-    "@ggsvelte/cli": named("cli"),
+    "@ggts-sh/spec": named("spec"),
+    "@ggts-sh/core": named("core"),
+    "@ggts-sh/compose": named("compose"),
+    "@ggts-sh/svelte": named("svelte"),
+    "@ggts-sh/cli": named("cli"),
+    "@ggts-sh/skill": named("skill"),
   };
   return {
     name: "ggsvelte-packed-consumer",
@@ -73,12 +76,17 @@ export function writeConsumerFixture(
 ): void {
   mkdirSync(join(directory, "src", "lib"), { recursive: true });
   mkdirSync(join(directory, "src", "routes", "contract"), { recursive: true });
+  mkdirSync(join(directory, "src", "routes", "agent"), { recursive: true });
+  writeFileSync(
+    join(directory, "src", "routes", "agent", "+page.svelte"),
+    SVELTE_QUICKSTART_SOURCE + "\n",
+  );
   const manifest = fixtureManifest(svelteVersion, tarballs, directory, packageManager);
   writeFileSync(join(directory, "package.json"), `${JSON.stringify(manifest, null, 2)}\n`);
   if (packageManager === "pnpm") {
     writeFileSync(
       join(directory, "pnpm-workspace.yaml"),
-      `packages: []\noverrides:\n  '@ggsvelte/spec': ${JSON.stringify(manifest.dependencies["@ggsvelte/spec"])}\n  '@ggsvelte/core': ${JSON.stringify(manifest.dependencies["@ggsvelte/core"])}\n  '@ggsvelte/compose': ${JSON.stringify(manifest.dependencies["@ggsvelte/compose"])}\n  '@ggsvelte/svelte': ${JSON.stringify(manifest.dependencies["@ggsvelte/svelte"])}\n  '@ggsvelte/cli': ${JSON.stringify(manifest.dependencies["@ggsvelte/cli"])}\n`,
+      `packages: []\noverrides:\n  '@ggts-sh/spec': ${JSON.stringify(manifest.dependencies["@ggts-sh/spec"])}\n  '@ggts-sh/core': ${JSON.stringify(manifest.dependencies["@ggts-sh/core"])}\n  '@ggts-sh/compose': ${JSON.stringify(manifest.dependencies["@ggts-sh/compose"])}\n  '@ggts-sh/svelte': ${JSON.stringify(manifest.dependencies["@ggts-sh/svelte"])}\n  '@ggts-sh/cli': ${JSON.stringify(manifest.dependencies["@ggts-sh/cli"])}\n`,
     );
   }
   writeFileSync(
@@ -124,7 +132,7 @@ export function writeConsumerFixture(
   writeFileSync(
     join(directory, "src", "routes", "contract", "+page.svelte"),
     `<script lang="ts">
-  import { Coord, coord_transform, coordTransform, dmy, GGPlot, GeomLine, GeomPoint, guideColorsteps, guideLegend, guide_legend, Guides, Scale, scaleColorBinned, scaleColourBinned, scaleShapeDiscrete, scaleSizeContinuous, scaleXBinned, scaleXDate, scaleXLog10, scale_color_binned, scale_colour_binned, scale_shape_discrete, scale_x_date, scale_x_log10, type GuidePlan, type PortableSpec } from "@ggsvelte/svelte";
+  import { Coord, coord_transform, coordTransform, dmy, GGPlot, GeomLine, GeomPoint, guideColorsteps, guideLegend, guide_legend, Guides, Scale, scaleColorBinned, scaleColourBinned, scaleShapeDiscrete, scaleSizeContinuous, scaleXBinned, scaleXDate, scaleXLog10, scale_color_binned, scale_colour_binned, scale_shape_discrete, scale_x_date, scale_x_log10, type GuidePlan, type PortableSpec } from "@ggts-sh/svelte";
   const spec: PortableSpec = ${JSON.stringify(consumerPlotSpec)};
   const temporalRows = [
     { year: "1835", value: 12 },
@@ -215,7 +223,8 @@ export function writeConsumerFixture(
 </GGPlot>
 `,
   );
-  writeFileSync(join(directory, "plot.json"), `${JSON.stringify(consumerPlotSpec)}\n`);
+  assertRecipeImports(SVELTE_QUICKSTART_SOURCE, ["@ggts-sh/svelte"], "Svelte quickstart");
+  writeFileSync(join(directory, "plot.json"), `${JSON.stringify(SANDBOX_SPEC)}\n`);
   writeFileSync(
     join(directory, "verify-prerender.mjs"),
     `import { strict as assert } from "node:assert";
@@ -233,14 +242,17 @@ assert.equal(
   existsSync("build/contract.html") || existsSync("build/contract/index.html"),
   true,
 );
+const agentHtml = readFileSync(existsSync("build/agent.html") ? "build/agent.html" : "build/agent/index.html", "utf8");
+assert.match(agentHtml, /Annual sales/);
+for (const year of ["2023", "2024", "2025"]) assert.ok(agentHtml.includes(year));
 console.log("prerendered Quickstart verified");
 `,
   );
   writeFileSync(
     join(directory, "smoke.mjs"),
     `import { strict as assert } from "node:assert";
-import { coord_equal, coord_fixed, coord_transform, coordEqual, coordFixed, coordTransform, guideColorsteps, guideLegend, guide_legend, SpecModule, normalize, scaleColorBinned, scaleColourBinned, scaleShapeDiscrete, scaleSizeContinuous, scaleXBinned, scaleXLog10, scale_colour_binned, scale_shape_discrete, scale_x_log10, validate } from "@ggsvelte/spec";
-import { registerAll, renderToSVGString, runPipeline } from "@ggsvelte/core";
+import { coord_equal, coord_fixed, coord_transform, coordEqual, coordFixed, coordTransform, guideColorsteps, guideLegend, guide_legend, SpecModule, normalize, scaleColorBinned, scaleColourBinned, scaleShapeDiscrete, scaleSizeContinuous, scaleXBinned, scaleXLog10, scale_colour_binned, scale_shape_discrete, scale_x_log10, validate } from "@ggts-sh/spec";
+import { registerAll, renderToSVGString, runPipeline } from "@ggts-sh/core";
 
 // Headless full-grammar rendering (#1420): explicit opt-in.
 registerAll();
@@ -251,7 +263,7 @@ import {
   kyotoSakura,
   mpg,
   palmerPenguins,
-} from "@ggsvelte/svelte/data";
+} from "@ggts-sh/core/data";
 
 // Bundled datasets resolve from the packed tarball's subpath export, which is
 // what makes a copy-pasted quickstart file build in a bare app.

@@ -30,7 +30,7 @@ axis:
 
 \`\`\`svelte fragment
 <script lang="ts">
-  import { GeomLine, GeomPoint, GGPlot, Inspect } from "@ggsvelte/svelte";
+  import { GeomLine, GeomPoint, GGPlot, Inspect } from "@ggts-sh/svelte";
 </script>
 
 <GGPlot
@@ -124,7 +124,7 @@ emitting the callback again. Controlled plots never infer channel names: add an
 
 \`\`\`svelte fragment
 <script lang="ts">
-  import { createPlotInteraction } from "@ggsvelte/svelte";
+  import { createPlotInteraction } from "@ggts-sh/svelte";
 
   const interaction = createPlotInteraction<string>({ identity: "id" });
   const scope = { keys: "penguin-id", x: "flipper-mm", y: "mass-g" } as const;

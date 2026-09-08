@@ -33,10 +33,10 @@ For a real-data scatter surface, see [scatter color](/examples/point/scatter-col
 
 ## Server and export
 
-Three paths, one PortableSpec: Svelte SSR, pure \`renderToSVGString\`, CLI.
+One PortableSpec: React or Svelte SSR, pure \`renderToSVGString\`, CLI.
 
 \`\`\`ts fragment
-import { registerAll, renderToSVGString } from "@ggsvelte/core";
+import { registerAll, renderToSVGString } from "@ggts-sh/core";
 
 // Headless full-grammar rendering (#1420): explicit opt-in.
 registerAll();
@@ -45,8 +45,9 @@ const svg = renderToSVGString(spec, { width: 640, height: 400 });
 \`\`\`
 
 \`\`\`sh fragment
-# npm install -g @ggsvelte/cli
-ggsvelte-render spec.json > chart.svg
+# npm install -g @ggts-sh/cli
+ggts check spec.json
+ggts render spec.json > chart.svg
 \`\`\`
 
 SVG on stdout; JSON Lines diagnostics on stderr — the agent feedback loop.
@@ -56,15 +57,16 @@ SVG on stdout; JSON Lines diagnostics on stderr — the agent feedback loop.
 
 Every release is tested as an installed package: clean install, strict
 type-check, client build, server render, pure Node render, and the
-\`ggsvelte-render\` CLI.
+\`ggts\` CLI.
 
 - Node.js \`${supportMatrix.node.range}\` (${supportMatrix.node.tested.join(" and ")} in CI; ${supportMatrix.node.canary} nightly)
+- React DOM \`${supportMatrix.react.range}\` (tested floor ${supportMatrix.react.minimum}, current ${supportMatrix.react.current})
 - Svelte \`${supportMatrix.svelte.range}\` (tested floor ${supportMatrix.svelte.minimum}, current ${supportMatrix.svelte.current})
 - npm ${supportMatrix.packageManagers.npm}, pnpm ${supportMatrix.packageManagers.pnpm}, Bun ${supportMatrix.packageManagers.bun}
 - Chromium, Firefox, and WebKit (Playwright ${supportMatrix.browsers.playwright})
 - Ubuntu and Windows in CI; macOS nightly
 
 Exact machine-checked rows live in
-[support-matrix.json](https://github.com/ljodea/ggsvelte/blob/main/support-matrix.json).
+[support-matrix.json](https://github.com/ggts-sh/ggts/blob/main/support-matrix.json).
 Bun is the contributor toolchain only; consumers can use any installer above.
 `;

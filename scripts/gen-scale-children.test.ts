@@ -6,7 +6,7 @@ import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { SCALE_CAPABILITIES } from "@ggsvelte/spec";
+import { SCALE_CAPABILITIES } from "@ggts-sh/spec";
 
 import {
   expectedCamelHelpers,
@@ -104,7 +104,7 @@ describe("renderShell", () => {
     expect(src.startsWith(GENERATED_HEADER)).toBe(true);
     expect(src).toContain("type ContinuousPositionScaleOptions");
     expect(src).toContain('createPlotLayer("scale", () => scaleXContinuous(definedProps(props)))');
-    expect(src).toContain('from "@ggsvelte/spec"');
+    expect(src).toContain('from "@ggts-sh/spec"');
     expect(src).toContain('from "../layers/plot-layer.svelte.js"');
     // Factory import is multi-line so it stays under printWidth 80.
     expect(src).toContain(
@@ -117,10 +117,10 @@ describe("renderShell", () => {
     // Short names stay single-line (TemporalScaleOptions fits printWidth 80).
     const date = SHELL_MANIFEST.find((s) => s.helper === "scaleXDate")!;
     expect(renderShell(date)).toContain(
-      'import { scaleXDate, type TemporalScaleOptions } from "@ggsvelte/spec";',
+      'import { scaleXDate, type TemporalScaleOptions } from "@ggts-sh/spec";',
     );
-    expect(renderShell(date)).toContain('import "@ggsvelte/core/temporal";');
-    expect(src).not.toContain('import "@ggsvelte/core/temporal";');
+    expect(renderShell(date)).toContain('import "@ggts-sh/core/temporal";');
+    expect(src).not.toContain('import "@ggts-sh/core/temporal";');
   });
 
   it("every script line of every generated shell is ≤ printWidth 80", () => {

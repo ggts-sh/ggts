@@ -13,7 +13,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import { CATEGORICAL_PALETTES } from "../apps/docs/src/lib/catalog/themes.js";
 import {

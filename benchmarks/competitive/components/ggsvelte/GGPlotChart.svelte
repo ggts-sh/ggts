@@ -1,31 +1,27 @@
 <script lang="ts">
-  import { GGPlot } from "@ggsvelte/svelte";
-  import type { SpecInput } from "@ggsvelte/spec/portable";
-
-  import { COLORS, type ScatterColumns } from "../../scenarios";
+  import { GGPlot } from "@ggts-sh/svelte";
+  import type { SpecInput } from "@ggts-sh/spec/portable";
+  import { scenarioSpec } from "../../adapters/ggsvelte-svg";
+  import type { ScenarioId, UpdateColumns } from "../../scenarios";
 
   let {
     data,
+    scenario = "scatter-color",
     width = 800,
     height = 500,
-  }: { data: ScatterColumns; width?: number; height?: number } = $props();
+  }: {
+    data: UpdateColumns;
+    scenario?: ScenarioId;
+    width?: number;
+    height?: number;
+  } = $props();
 
   const spec: SpecInput = $derived({
+    ...scenarioSpec(scenario),
     data: { columns: data },
-    aes: { x: "x", y: "y", color: "cls" },
-    layers: [
-      { geom: "point", render: "svg", params: { size: 1.5, alpha: 0.7 } },
-    ],
-    scales: {
-      color: {
-        type: "manual",
-        domain: ["series-0", "series-1", "series-2", "series-3", "series-4"],
-        range: COLORS.slice(0, 5),
-      },
-    },
   });
 
-  export function setData(next: ScatterColumns): void {
+  export function setData(next: UpdateColumns): void {
     data = next;
   }
 </script>

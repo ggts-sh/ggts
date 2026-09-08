@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import type { CandidateFacts } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import type { CandidateFacts } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { createSemanticCandidateProjection } from "../../src/lib/runtime/semantic-candidate-projection.svelte.js";
 import { withFlushedEffectRoot } from "../helpers/effect-root.svelte.js";

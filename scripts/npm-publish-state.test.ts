@@ -22,13 +22,13 @@ describe("readPublishedPackageVersions", () => {
     const pkgs = readPublishedPackageVersions(root);
     const names = pkgs.map((p) => p.name).toSorted();
     expect(names).toEqual([
-      "@ggsvelte/cli",
-      "@ggsvelte/compose",
-      "@ggsvelte/core",
-      "@ggsvelte/react",
-      "@ggsvelte/skill",
-      "@ggsvelte/spec",
-      "@ggsvelte/svelte",
+      "@ggts-sh/cli",
+      "@ggts-sh/compose",
+      "@ggts-sh/core",
+      "@ggts-sh/react",
+      "@ggts-sh/skill",
+      "@ggts-sh/spec",
+      "@ggts-sh/svelte",
     ]);
     for (const pkg of pkgs) {
       expect(pkg.version).toMatch(/^\d+\.\d+\.\d+/);
@@ -39,8 +39,8 @@ describe("readPublishedPackageVersions", () => {
 
 describe("npmVersionUrl", () => {
   it("encodes scoped package names for the registry path", () => {
-    expect(npmVersionUrl("@ggsvelte/core", "0.24.1")).toBe(
-      "https://registry.npmjs.org/@ggsvelte%2Fcore/0.24.1",
+    expect(npmVersionUrl("@ggts-sh/core", "0.24.1")).toBe(
+      "https://registry.npmjs.org/@ggts-sh%2Fcore/0.24.1",
     );
   });
 
@@ -53,19 +53,19 @@ describe("npmVersionUrl", () => {
 
 describe("filterUnpublished", () => {
   const local: PackageVersion[] = [
-    { dir: "packages/core", name: "@ggsvelte/core", version: "0.24.1" },
-    { dir: "packages/spec", name: "@ggsvelte/spec", version: "0.24.1" },
+    { dir: "packages/core", name: "@ggts-sh/core", version: "0.24.1" },
+    { dir: "packages/spec", name: "@ggts-sh/spec", version: "0.24.1" },
   ];
 
   it("returns packages whose name@version is not in the published set", () => {
-    const published = new Set(["@ggsvelte/core@0.24.1"]);
+    const published = new Set(["@ggts-sh/core@0.24.1"]);
     expect(filterUnpublished(local, published)).toEqual([
-      { dir: "packages/spec", name: "@ggsvelte/spec", version: "0.24.1" },
+      { dir: "packages/spec", name: "@ggts-sh/spec", version: "0.24.1" },
     ]);
   });
 
   it("returns empty when everything is published", () => {
-    const published = new Set(["@ggsvelte/core@0.24.1", "@ggsvelte/spec@0.24.1"]);
+    const published = new Set(["@ggts-sh/core@0.24.1", "@ggts-sh/spec@0.24.1"]);
     expect(filterUnpublished(local, published)).toEqual([]);
   });
 });
@@ -73,15 +73,15 @@ describe("filterUnpublished", () => {
 describe("parseNewTags", () => {
   it("extracts scoped and unscoped tags from changeset publish output", () => {
     const stdout = `
-🦋  info npm info @ggsvelte/core
-New tag: @ggsvelte/core@0.24.1
-New tag: @ggsvelte/spec@0.24.1
+🦋  info npm info @ggts-sh/core
+New tag: @ggts-sh/core@0.24.1
+New tag: @ggts-sh/spec@0.24.1
 Creating git tags...
 New tag:  left-pad@1.0.0
 `;
     expect(parseNewTags(stdout)).toEqual([
-      "@ggsvelte/core@0.24.1",
-      "@ggsvelte/spec@0.24.1",
+      "@ggts-sh/core@0.24.1",
+      "@ggts-sh/spec@0.24.1",
       "left-pad@1.0.0",
     ]);
   });
@@ -92,7 +92,7 @@ New tag:  left-pad@1.0.0
 });
 
 describe("changelogSectionForVersion", () => {
-  const sample = `# @ggsvelte/core
+  const sample = `# @ggts-sh/core
 
 ## 0.24.1
 
@@ -146,9 +146,9 @@ describe("changelogSectionForVersion", () => {
 describe("formatUnpublishedFailure", () => {
   it("names every unpublished package and explains the race", () => {
     const msg = formatUnpublishedFailure([
-      { dir: "packages/core", name: "@ggsvelte/core", version: "0.24.1" },
+      { dir: "packages/core", name: "@ggts-sh/core", version: "0.24.1" },
     ]);
-    expect(msg).toContain("@ggsvelte/core@0.24.1");
+    expect(msg).toContain("@ggts-sh/core@0.24.1");
     expect(msg).toContain("changesets/action");
     expect(msg).toContain("ERROR:");
   });
@@ -156,26 +156,26 @@ describe("formatUnpublishedFailure", () => {
 
 describe("packageReleaseTag", () => {
   it("joins scoped name and version the way changesets tags them", () => {
-    expect(packageReleaseTag("@ggsvelte/core", "0.24.1")).toBe("@ggsvelte/core@0.24.1");
+    expect(packageReleaseTag("@ggts-sh/core", "0.24.1")).toBe("@ggts-sh/core@0.24.1");
   });
 });
 
 describe("planGithubReleaseStaging", () => {
   const local: PackageVersion[] = [
-    { dir: "packages/core", name: "@ggsvelte/core", version: "0.24.1" },
-    { dir: "packages/spec", name: "@ggsvelte/spec", version: "0.24.1" },
+    { dir: "packages/core", name: "@ggts-sh/core", version: "0.24.1" },
+    { dir: "packages/spec", name: "@ggts-sh/spec", version: "0.24.1" },
   ];
 
   it("stages only packages already on npm and uses caller notes", () => {
-    const onNpm = new Set(["@ggsvelte/core@0.24.1"]);
+    const onNpm = new Set(["@ggts-sh/core@0.24.1"]);
     const planned = planGithubReleaseStaging(local, onNpm, (pkg) => `notes for ${pkg.name}`);
-    expect(planned).toEqual([{ tag: "@ggsvelte/core@0.24.1", notes: "notes for @ggsvelte/core" }]);
+    expect(planned).toEqual([{ tag: "@ggts-sh/core@0.24.1", notes: "notes for @ggts-sh/core" }]);
   });
 
   it("stages every local package when all are on npm (release recovery)", () => {
-    const onNpm = new Set(["@ggsvelte/core@0.24.1", "@ggsvelte/spec@0.24.1"]);
+    const onNpm = new Set(["@ggts-sh/core@0.24.1", "@ggts-sh/spec@0.24.1"]);
     const planned = planGithubReleaseStaging(local, onNpm, () => "body");
-    expect(planned.map((e) => e.tag)).toEqual(["@ggsvelte/core@0.24.1", "@ggsvelte/spec@0.24.1"]);
+    expect(planned.map((e) => e.tag)).toEqual(["@ggts-sh/core@0.24.1", "@ggts-sh/spec@0.24.1"]);
   });
 
   it("returns empty when nothing is on npm yet", () => {
@@ -187,13 +187,13 @@ describe("npmVersionExists", () => {
   it("returns true on 200", async () => {
     const fetchImpl = (() =>
       Promise.resolve(new Response("{}", { status: 200 }))) as unknown as typeof fetch;
-    expect(await npmVersionExists("@ggsvelte/core", "0.24.0", { fetchImpl })).toBe(true);
+    expect(await npmVersionExists("@ggts-sh/core", "0.24.0", { fetchImpl })).toBe(true);
   });
 
   it("returns false on 404", async () => {
     const fetchImpl = (() =>
       Promise.resolve(new Response("Not Found", { status: 404 }))) as unknown as typeof fetch;
-    expect(await npmVersionExists("@ggsvelte/core", "9.9.9", { fetchImpl })).toBe(false);
+    expect(await npmVersionExists("@ggts-sh/core", "9.9.9", { fetchImpl })).toBe(false);
   });
 
   it("throws on non-404 errors so the assert cannot green on outages", async () => {
@@ -201,7 +201,7 @@ describe("npmVersionExists", () => {
       Promise.resolve(new Response("nope", { status: 500 }))) as unknown as typeof fetch;
     let threw: unknown;
     try {
-      await npmVersionExists("@ggsvelte/core", "0.24.0", { fetchImpl });
+      await npmVersionExists("@ggts-sh/core", "0.24.0", { fetchImpl });
     } catch (err) {
       threw = err;
     }
@@ -212,8 +212,8 @@ describe("npmVersionExists", () => {
 
 describe("parsePackageReleaseTag", () => {
   it("parses scoped and unscoped tags", () => {
-    expect(parsePackageReleaseTag("@ggsvelte/core@0.24.1")).toEqual({
-      name: "@ggsvelte/core",
+    expect(parsePackageReleaseTag("@ggts-sh/core@0.24.1")).toEqual({
+      name: "@ggts-sh/core",
       version: "0.24.1",
     });
     expect(parsePackageReleaseTag("left-pad@1.0.0")).toEqual({
@@ -233,7 +233,7 @@ describe("npmVersionExists retries", () => {
       return Promise.resolve(new Response("{}", { status: 200 }));
     }) as unknown as typeof fetch;
     const sleeps: number[] = [];
-    const ok = await npmVersionExists("@ggsvelte/core", "0.24.1", {
+    const ok = await npmVersionExists("@ggts-sh/core", "0.24.1", {
       fetchImpl,
       retries: 4,
       retryDelayMs: 10,
@@ -251,7 +251,7 @@ describe("npmVersionExists retries", () => {
 describe("commitForPackageVersion", () => {
   it("returns git-log result when present", () => {
     const sha = commitForPackageVersion(
-      { dir: "packages/core", name: "@ggsvelte/core", version: "0.24.1" },
+      { dir: "packages/core", name: "@ggts-sh/core", version: "0.24.1" },
       "HEADSHA",
       () => "abc123",
     );
@@ -260,7 +260,7 @@ describe("commitForPackageVersion", () => {
 
   it("falls back to HEAD when git finds nothing", () => {
     const sha = commitForPackageVersion(
-      { dir: "packages/core", name: "@ggsvelte/core", version: "0.24.1" },
+      { dir: "packages/core", name: "@ggts-sh/core", version: "0.24.1" },
       "HEADSHA",
       () => null,
     );

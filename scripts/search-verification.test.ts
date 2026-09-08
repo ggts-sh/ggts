@@ -10,7 +10,7 @@ describe("search verification runbook", () => {
 
     expect(runbook).toContain("Google Search Console domain property");
     expect(runbook).toContain("Bing Webmaster Tools");
-    expect(runbook).toContain("https://ggsvelte.sh/sitemap.xml");
+    expect(runbook).toContain("https://ggts.sh/sitemap.xml");
     expect(runbook).toContain("Submission is not evidence of indexing");
     expect(runbook).toContain("PR 8");
     expect(runbook).toContain("Rollback");

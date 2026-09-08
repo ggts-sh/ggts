@@ -6,7 +6,7 @@
     Labs,
     ScaleColorHue,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { armadaSquadrons } from "./data.js";
 </script>

@@ -1,4 +1,4 @@
-import { aes, gg, guideNone, scaleXContinuous } from "@ggsvelte/spec";
+import { aes, gg, guideNone, scaleXContinuous } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { spacedScores } from "./data.js";

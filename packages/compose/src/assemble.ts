@@ -13,8 +13,8 @@ import type {
   SpecInput,
   ThemeName,
   ThemeSpec,
-} from "@ggsvelte/spec";
-import { calendarDateFields, normalize, toAuthoringDataRef, toDataRef } from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
+import { calendarDateFields, normalize, toAuthoringDataRef, toDataRef } from "@ggts-sh/spec";
 
 import type { PlotInteractionScope, ZoomInput } from "./interaction-scope.js";
 import { foldPlotLayer, type AssembleDraft } from "./fold.js";

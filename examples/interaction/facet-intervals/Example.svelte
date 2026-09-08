@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FacetIntervalPreset } from "@ggsvelte/svelte";
+  import type { FacetIntervalPreset } from "@ggts-sh/svelte";
   import {
     FacetWrap,
     GeomPoint,
@@ -7,7 +7,7 @@
     Inspect,
     Labs,
     ThemeClean,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { observations } from "./data.js";
 

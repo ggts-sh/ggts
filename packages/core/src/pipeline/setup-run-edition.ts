@@ -1,7 +1,7 @@
 /**
  * Resolve defaults edition for a pipeline run (with unknown-edition warning).
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions-resolve.js";
 import { resolveEditionDefaults } from "../editions-resolve.js";
@@ -22,7 +22,7 @@ export function resolvePipelineEditionDefaults(
       code: "unknown-edition",
       message:
         `The spec targets defaults edition ${editionResolution.unknownRequested}, which this ` +
-        `version of ggsvelte does not know; falling back to edition ${editionResolution.edition} defaults.`,
+        `version of ggts does not know; falling back to edition ${editionResolution.edition} defaults.`,
     });
   }
   return editionResolution.defaults;

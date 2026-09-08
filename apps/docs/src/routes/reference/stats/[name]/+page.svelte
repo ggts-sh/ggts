@@ -23,7 +23,7 @@
   );
 
   const svelteSnippet = $derived(
-    `import { GGPlot, ${primaryComponent} } from "@ggsvelte/svelte";\n\n${plotOpen}\n  <${primaryComponent} stat="${entry.name}" />\n</GGPlot>`,
+    `import { GGPlot, ${primaryComponent} } from "@ggts-sh/svelte";\n\n${plotOpen}\n  <${primaryComponent} stat="${entry.name}" />\n</GGPlot>`,
   );
   const jsonSnippet = $derived(
     `{\n  "geom": "${geomName}",\n  "stat": "${entry.name}"\n}`,

@@ -1,5 +1,5 @@
 /** Shared helpers for manual, identity, and binned color/fill families. */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import { resolveMissingColors } from "../scales/engine.js";
 

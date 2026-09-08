@@ -6,7 +6,7 @@
     ScaleXContinuous,
     ScaleYContinuous,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { halleyFrame } from "./data.js";
 </script>

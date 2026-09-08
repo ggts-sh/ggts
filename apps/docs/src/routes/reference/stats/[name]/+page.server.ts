@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 
-import { STAT_REFERENCE, type StatName, KNOWN_STATS } from "@ggsvelte/spec";
+import { STAT_REFERENCE, type StatName, KNOWN_STATS } from "@ggts-sh/spec";
 
 import { EXAMPLES } from "$lib/examples-manifest";
 

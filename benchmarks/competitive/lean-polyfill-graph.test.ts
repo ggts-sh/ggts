@@ -67,7 +67,7 @@ describe("lean competitive SVG graph", () => {
 describe("lean competitive canvas graph", () => {
   it("excludes Temporal polyfill and jsbi after minify", async () => {
     // Canvas marks need planStrata; it must come from the lean render graph,
-    // not the full @ggsvelte/core barrel (which installs Temporal on import).
+    // not the full @ggts-sh/core barrel (which installs Temporal on import).
     expectPolyfillFree(await buildEntry("ggsvelte-canvas__scatter-color.ts"), 700_000);
   }, 120_000);
 });

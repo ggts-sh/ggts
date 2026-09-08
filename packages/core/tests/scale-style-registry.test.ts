@@ -30,7 +30,7 @@ describe("style-kind registration (Seam B)", () => {
       import { renderToSVGString } from ${JSON.stringify(path.join(coreRoot, "src", "headless-entry.ts"))};
       import { registerBasicPoints, registerOrdinalColor } from ${JSON.stringify(path.join(coreRoot, "src", "headless-register-entry.ts"))};
       import { registerNumericStyle } from ${JSON.stringify(path.join(coreRoot, "src", "pipeline", "register-style-numeric.ts"))};
-      import { aes, gg } from "@ggsvelte/spec/portable";
+      import { aes, gg } from "@ggts-sh/spec/portable";
 
       const colorOnly = [
         { x: 1, y: 2, g: "a" },

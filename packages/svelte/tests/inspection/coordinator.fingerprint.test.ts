@@ -1,8 +1,8 @@
 import "../setup-register-all.js";
 import { describe, expect, it, vi } from "vitest";
 
-import { runPipeline, type CandidateFacts, type RenderModel } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import { runPipeline, type CandidateFacts, type RenderModel } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 // Characterization via the stable resolver.js re-export path (internal barrel).
 import { createInspectionCoordinator } from "../../src/lib/inspection/resolver.js";

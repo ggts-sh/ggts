@@ -22,7 +22,7 @@
   "externalRedirects": [
     {
       "source": "https://ggsvelte.pages.dev",
-      "target": "https://ggsvelte.sh",
+      "target": "https://ggts.sh",
       "status": 301,
       "preserveQueryString": true,
       "subpathMatching": true,
@@ -30,8 +30,8 @@
       "includeSubdomains": false
     },
     {
-      "source": "https://www.ggsvelte.sh",
-      "target": "https://ggsvelte.sh",
+      "source": "https://www.ggts.sh",
+      "target": "https://ggts.sh",
       "status": 301,
       "preserveQueryString": true,
       "subpathMatching": true,

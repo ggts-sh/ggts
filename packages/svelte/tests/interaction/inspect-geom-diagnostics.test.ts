@@ -9,7 +9,7 @@
  * svelte/server render() never executes, so these assertions would be
  * vacuous in the SSR lane.
  */
-import { registerErrorbar, registerViolin } from "@ggsvelte/core";
+import { registerErrorbar, registerViolin } from "@ggts-sh/core";
 import { describe, expect, it } from "vitest";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";

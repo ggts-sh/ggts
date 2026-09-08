@@ -1,4 +1,4 @@
-import type { CellValue, RenderModel } from "@ggsvelte/core";
+import type { CellValue, RenderModel } from "@ggts-sh/core";
 
 import type {
   LegendFocusEvent,

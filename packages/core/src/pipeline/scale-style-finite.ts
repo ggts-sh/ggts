@@ -1,5 +1,5 @@
 /** Finite style scales: shape / linetype (identity, binned, ordinal, manual). */
-import { LINETYPE_NAMES, POINT_SHAPE_NAMES } from "@ggsvelte/spec";
+import { LINETYPE_NAMES, POINT_SHAPE_NAMES } from "@ggts-sh/spec";
 
 import { numberFormatter } from "../layout/format-number.js";
 import { disambiguatedLabels } from "../domain-labels.js";

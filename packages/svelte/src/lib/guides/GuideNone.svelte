@@ -4,7 +4,7 @@
    * (#659 slice 6). `<GuideNone channel="size"/>` hides the size legend.
    * Any aesthetic, positional or not. Emits NO markup.
    */
-  import { guideNone } from "@ggsvelte/spec";
+  import { guideNone } from "@ggts-sh/spec";
 
   import { createPlotLayer } from "../layers/plot-layer.svelte.js";
   import { splitChannel, type GuideChannel } from "./factory.svelte.js";

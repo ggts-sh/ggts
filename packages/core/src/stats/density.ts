@@ -23,7 +23,7 @@
  *    summation (exact), where R uses a binned FFT approximation — the
  *    R-fixture tolerance quantifies that gap (decision 0010). DIVERGENCE
  *    from ggplot2: ggplot2 evaluates on the scale range (curves cut off at
- *    the data extremes); ggsvelte keeps R's cut·bw tails so curves fall to
+ *    the data extremes); ggts keeps R's cut·bw tails so curves fall to
  *    ~0 (decision 0010).
  *  - weights (aes.weight): normalized to sum 1 within each group before
  *    estimation (R's requirement); `count` still scales by the unweighted

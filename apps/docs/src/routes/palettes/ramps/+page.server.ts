@@ -1,4 +1,4 @@
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import { THEME_STATIC_SHELL_BY_ID } from "$lib/generated/theme-static-shells";
 import { RASTER_Z_DOMAIN } from "$lib/theme-specimens/catalog";

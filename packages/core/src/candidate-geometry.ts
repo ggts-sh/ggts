@@ -1,5 +1,5 @@
 import type { ResolvedCandidateInspectMode } from "./candidate-store-types.js";
-import { POINT_SHAPE_NAMES } from "@ggsvelte/spec";
+import { POINT_SHAPE_NAMES } from "@ggts-sh/spec";
 
 import type { GeometryBatch, PointsBatch } from "./scene.js";
 import { ringCuts } from "./ring-cuts.js";

@@ -111,9 +111,16 @@ describe("consumer support matrix", () => {
     for (const dir of ["spec", "core", "compose", "svelte", "react", "cli"]) {
       const manifest = JSON.parse(
         readFileSync(join(root, "packages", dir, "package.json"), "utf8"),
-      ) as { engines?: { node?: string }; peerDependencies?: { svelte?: string } };
+      ) as {
+        engines?: { node?: string };
+        peerDependencies?: { svelte?: string; react?: string; "react-dom"?: string };
+      };
       expect(manifest.engines?.node).toBe(matrix.node.range);
       if (dir === "svelte") expect(manifest.peerDependencies?.svelte).toBe(matrix.svelte.range);
+      if (dir === "react") {
+        expect(manifest.peerDependencies?.react).toBe(matrix.react.range);
+        expect(manifest.peerDependencies?.["react-dom"]).toBe(matrix.react.range);
+      }
     }
   });
 
@@ -128,6 +135,9 @@ describe("consumer support matrix", () => {
     );
     expect(new Set(rows.map((row) => row.svelte))).toEqual(
       new Set([matrix.svelte.minimum, matrix.svelte.current]),
+    );
+    expect(new Set(rows.map((row) => row.react))).toEqual(
+      new Set([matrix.react.minimum, matrix.react.current]),
     );
     expect(new Set(rows.map((row) => row.os))).toEqual(new Set(matrix.operatingSystems));
     expect(new Set(rows.map((row) => row.node))).toEqual(
@@ -197,8 +207,10 @@ describe("consumer support matrix", () => {
     const matrix = loadSupportMatrix(root);
     const readme = readFileSync(join(root, "README.md"), "utf8");
     const svelteFloorLabel = matrix.svelte.minimum.replace(/\.0$/, "");
+    expect(readme).toContain(`Node.js ${matrix.node.tested[0]}+`);
+    expect(readme).toContain(`Svelte ${svelteFloorLabel}+`);
     expect(readme).toContain(
-      `Requires Node.js ${matrix.node.tested[0]}+ and Svelte ${svelteFloorLabel}+.`,
+      `React DOM ${matrix.react.minimum.replace(/\.0$/, "")} or ${matrix.react.current.split(".")[0]}`,
     );
   });
 });

@@ -232,12 +232,8 @@ describe("shouldBypassContentCache", () => {
 
 describe("git ls-tree digests include mode", () => {
   test("mode-only change changes the entry digest", () => {
-    const blob = parseGitLsTreeLine(
-      "100644 blob abcdef0123456789\tpackages/cli/bin/ggsvelte-render.js",
-    );
-    const exec = parseGitLsTreeLine(
-      "100755 blob abcdef0123456789\tpackages/cli/bin/ggsvelte-render.js",
-    );
+    const blob = parseGitLsTreeLine("100644 blob abcdef0123456789\tpackages/cli/bin/ggts.js");
+    const exec = parseGitLsTreeLine("100755 blob abcdef0123456789\tpackages/cli/bin/ggts.js");
     expect(blob).not.toBeNull();
     expect(exec).not.toBeNull();
     expect(formatTreeEntryDigest(blob!.mode, blob!.oid)).toBe("100644:abcdef0123456789");
@@ -246,7 +242,7 @@ describe("git ls-tree digests include mode", () => {
       formatTreeEntryDigest(exec!.mode, exec!.oid),
     );
 
-    const path = "packages/cli/bin/ggsvelte-render.js";
+    const path = "packages/cli/bin/ggts.js";
     const hash644 = hashJobInputs(
       "packages_dist",
       new Map([[path, formatTreeEntryDigest("100644", "abcdef0123456789")]]),

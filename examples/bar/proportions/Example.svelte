@@ -7,7 +7,7 @@
     ScaleFillDiscrete,
     ScaleYContinuous,
     ThemeFivethirtyeight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { armadaCrews } from "./data.js";
 </script>

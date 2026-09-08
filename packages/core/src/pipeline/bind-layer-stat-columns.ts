@@ -1,4 +1,4 @@
-import type { StatName } from "@ggsvelte/spec";
+import type { StatName } from "@ggts-sh/spec";
 
 /**
  * y-channel { stat } columns each stat exposes (module-header contracts).

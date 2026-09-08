@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { runPipeline } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import { runPipeline } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 import {
   coord_equal,

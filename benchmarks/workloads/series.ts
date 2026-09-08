@@ -1,4 +1,4 @@
-import { renderToSVGString, runPipeline } from "@ggsvelte/core";
+import { renderToSVGString, runPipeline } from "@ggts-sh/core";
 
 import { facetedBarsSpec, lineSeriesSpec, stackedBarSpec } from "../workload-specs";
 import { fmtK, opts, type Workload } from "./shared";

@@ -21,7 +21,7 @@ import type {
   SpecInput,
   ThemeName,
   ThemeSpec,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 type GrammarBag = {
   readonly data?: DataInput | readonly Record<string, unknown>[];

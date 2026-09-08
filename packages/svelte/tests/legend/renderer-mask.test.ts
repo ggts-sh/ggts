@@ -1,7 +1,7 @@
 import { fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 
-import type { BatchInteractionMask, GeometryBatch, ThemeTokens } from "@ggsvelte/core";
+import type { BatchInteractionMask, GeometryBatch, ThemeTokens } from "@ggts-sh/core";
 
 import BatchFocusHarness from "../fixtures/BatchFocusHarness.svelte";
 import { render } from "../helpers/render.js";

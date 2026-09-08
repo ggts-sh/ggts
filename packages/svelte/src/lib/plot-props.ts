@@ -15,8 +15,8 @@ import type {
   LayerInput,
   PortableSpec,
   SpecInput,
-} from "@ggsvelte/spec";
-import type { CellValue, RenderModel } from "@ggsvelte/core";
+} from "@ggts-sh/spec";
+import type { CellValue, RenderModel } from "@ggts-sh/core";
 
 import type { PlotDiagnostic } from "./diagnostics/deprecation.js";
 import type {
@@ -73,7 +73,7 @@ export interface GGPlotProps<
    * Still honoured (dual-read) until 0.22.0; emits DEPRECATED_PLOT_PROP.
    * Default when no surface sets identity: `id` column when present, else
    * row index. Ordinary charts should omit identity entirely.
-   * Migration: https://ggsvelte.sh/guide/upgrading#row-identity-on-interaction
+   * Migration: https://ggts.sh/guide/upgrading#row-identity-on-interaction
    */
   key?: Identity;
   /** Opt into inspection, its semantic crosshair, tooltip, and pinning. */
@@ -85,13 +85,13 @@ export interface GGPlotProps<
   /**
    * @deprecated since 0.19.0 — use `<GuideLegend channel="…" focus />` instead.
    * Still honoured (plot-wide enablement) until 0.20.0; emits DEPRECATED_PLOT_PROP.
-   * Migration: https://ggsvelte.sh/guide/upgrading#legend-focus-on-guidelegend
+   * Migration: https://ggts.sh/guide/upgrading#legend-focus-on-guidelegend
    */
   legendFocus?: LegendFocusInput;
   /**
    * @deprecated since 0.19.0 — use `<GuideLegend channel="…" filter />` instead.
    * Still honoured (plot-wide enablement) until 0.20.0; emits DEPRECATED_PLOT_PROP.
-   * Migration: https://ggsvelte.sh/guide/upgrading#legend-filter-on-guidelegend
+   * Migration: https://ggts.sh/guide/upgrading#legend-filter-on-guidelegend
    */
   legendFilter?: LegendFilterInput;
   /** Controlled initial/active tool. */
@@ -197,7 +197,7 @@ export type EnginePlotProps = Omit<
   "key" | "interaction" | "oninspect" | "onselect" | "onlegendfocus" | "oninteraction"
 > & {
   key?: PropertyKey | ((row: Record<string, CellValue>, index: number) => PropertyKey);
-  interaction?: PlotInteractionController<PropertyKey>;
+  interaction?: PlotInteractionController;
   oninspect?: (event: PlotInspection<Record<string, CellValue>>) => void;
   onselect?: (event: PlotSelection) => void;
   onlegendfocus?: (event: LegendFocusEvent) => void;

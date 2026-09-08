@@ -2,7 +2,7 @@
  * renderToSVGString that injects the full named-theme catalog.
  * Headless keeps the slim default via run-scene.ts.
  */
-import type { GGBuilder, SpecInput } from "@ggsvelte/spec";
+import type { GGBuilder, SpecInput } from "@ggts-sh/spec";
 
 import { EDITION_DEFAULTS } from "./editions.js";
 import { renderToSVGString as renderToSVGStringCore, type RenderSVGOptions } from "./render-svg.js";

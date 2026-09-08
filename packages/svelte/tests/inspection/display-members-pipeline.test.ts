@@ -1,7 +1,7 @@
 import "../setup-register-all.js";
 import { describe, expect, it } from "vitest";
 
-import { runPipeline } from "@ggsvelte/core";
+import { runPipeline } from "@ggts-sh/core";
 
 import {
   collapseIdenticalDisplayMembers,

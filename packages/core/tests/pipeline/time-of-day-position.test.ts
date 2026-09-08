@@ -4,7 +4,7 @@
  * the same ms-of-day scale space so points align with the axis.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, scaleXTime } from "@ggsvelte/spec";
+import { aes, gg, scaleXTime } from "@ggts-sh/spec";
 
 import { ColumnTable } from "../../src/table.ts";
 import { runPipeline } from "../../src/pipeline.ts";

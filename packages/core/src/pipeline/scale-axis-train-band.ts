@@ -1,7 +1,7 @@
 /**
  * Band positional axis training from discrete column evidence.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import { trainBand } from "../scales/train.js";
 

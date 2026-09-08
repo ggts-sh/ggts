@@ -9,7 +9,7 @@ describe("granular headless registration", () => {
     const script = `
       import { renderToSVGString } from ${JSON.stringify(path.join(coreRoot, "src", "headless-entry.ts"))};
       import { registerBasicLines, registerBasicPoints } from ${JSON.stringify(path.join(coreRoot, "src", "headless-register-entry.ts"))};
-      import { aes, gg } from "@ggsvelte/spec/portable";
+      import { aes, gg } from "@ggts-sh/spec/portable";
       const rows = [{ x: 1, y: 2 }, { x: 2, y: 3 }];
       const render = (kind) => {
         const plot = gg(rows, aes({ x: "x", y: "y" }));
@@ -83,7 +83,7 @@ describe("granular headless registration", () => {
     const script = `
       import { renderToSVGString } from ${JSON.stringify(path.join(coreRoot, "src", "headless-entry.ts"))};
       import { registerBasicBars } from ${JSON.stringify(path.join(coreRoot, "src", "headless-register-entry.ts"))};
-      import { aes, gg } from "@ggsvelte/spec/portable";
+      import { aes, gg } from "@ggts-sh/spec/portable";
       registerBasicBars();
       const svg = renderToSVGString(
         gg([{ x: "a" }, { x: "a" }, { x: "b" }], aes({ x: "x" })).geomBar(),

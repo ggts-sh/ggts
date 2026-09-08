@@ -15,7 +15,8 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { chromium, type Page } from "playwright";
-import { createServer } from "vite";
+import { build, preview } from "vite";
+import { measurementProvenance } from "./provenance";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import react from "@vitejs/plugin-react";
 
@@ -37,20 +38,8 @@ const onlyCases = process.env["COMPETITIVE_CASES"]
   .map((s) => s.trim())
   .filter(Boolean);
 const cases = casesForRun(full).filter((c) => !onlyCases || onlyCases.includes(c.id));
-const browserLibs = LIBS.filter(
-  (lib) =>
-    (lib.browser ||
-      ((lib.id === "ggsvelte-ggplot" || lib.id === "ggsvelte-react") &&
-        onlyLibs?.includes(lib.id))) &&
-    (!onlyLibs || onlyLibs.includes(lib.id)),
-);
-const ggplotRequested = browserLibs.some((lib) => lib.id === "ggsvelte-ggplot");
-const reactRequested = browserLibs.some((lib) => lib.id === "ggsvelte-react");
-const benchQuery = [
-  ...(ggplotRequested ? ["ggplot=1"] : []),
-  ...(reactRequested ? ["ggreact=1"] : []),
-].join("&");
-const benchUrl = `http://127.0.0.1:5199/${benchQuery === "" ? "" : `?${benchQuery}`}`;
+const browserLibs = LIBS.filter((lib) => lib.browser && (!onlyLibs || onlyLibs.includes(lib.id)));
+let benchUrl = "http://127.0.0.1:5199/";
 
 type BenchApi = {
   mount: (lib: string, caseId: string) => Promise<{ ms: number; syncMs: number; markHint: number }>;
@@ -114,51 +103,24 @@ function pairs(): { lib: LibMeta; caseId: string; scenario: string; n: number }[
   return out;
 }
 
-const server = await createServer({
-  configFile: false,
+process.env.NODE_ENV = "production";
+const outDir = path.join(root, ".browser-dist");
+const config = {
+  configFile: false as const,
   root: path.join(root, "fixtures"),
-  server: { host: "127.0.0.1", port: 5199, strictPort: true },
+  logLevel: "warn" as const,
   plugins: [react(), svelte({ compilerOptions: { css: "injected" }, emitCss: false })],
   resolve: {
     conditions: ["svelte", "browser", "import", "module", "default"],
     dedupe: ["svelte", "react", "react-dom"],
   },
-  optimizeDeps: {
-    // Svelte component libs must share one svelte runtime with the fixture
-    // components (context + flushSync break across duplicated runtimes).
-    exclude: ["svelte", "svelteplot", "layercake", "@unovis/svelte"],
-    include: [
-      "@ggsvelte/core",
-      "@ggsvelte/core/render",
-      "@ggsvelte/core/dom",
-      "@ggsvelte/spec/portable",
-      "@unovis/ts",
-      "d3-scale",
-      "d3-selection",
-      "d3-array",
-      "d3-axis",
-      "d3-shape",
-      "uplot",
-      "chart.js",
-      "echarts/core",
-      "echarts/charts",
-      "echarts/components",
-      "echarts/renderers",
-      "react",
-      "react/jsx-runtime",
-      "react-dom",
-      "react-dom/client",
-      "@tanstack/charts/react",
-    ],
-  },
+  build: { outDir, emptyOutDir: true, target: "es2022" },
+};
+await build(config);
+const server = await preview({
+  ...config,
+  preview: { host: "127.0.0.1", port: 5199, strictPort: true },
 });
-await server.listen();
-
-// Warm the vite transform graph BEFORE launching Chromium: on a cold
-// node_modules/.vite the first page load compiles the whole import graph
-// (fixture + all lib adapters) and can blow the 120s page timeout.
-// warmupRequest crawls the import graph from the entry module.
-await server.warmupRequest("/main.ts");
 
 // Paint-inclusive timing uses a double-rAF; a vsync-locked compositor floors
 // every cell at ~2 frames (~32 ms @60Hz) and hides real CPU differences.
@@ -166,6 +128,7 @@ await server.warmupRequest("/main.ts");
 const browser = await chromium.launch({
   args: ["--disable-frame-rate-limit", "--disable-gpu-vsync"],
 });
+const provenance = measurementProvenance(browser.version());
 let page = await browser.newPage();
 page.setDefaultTimeout(120_000);
 
@@ -230,9 +193,18 @@ async function recoverPage(): Promise<void> {
 await gotoBenchPage(page);
 
 for (const cell of matrix) {
+  // Load each GGPlot host only on its own page, keeping its registration
+  // and framework state out of the lean core and other peer cells.
+  const query =
+    cell.lib.id === "ggsvelte-ggplot"
+      ? "?ggplot=1"
+      : cell.lib.id === "ggsvelte-react"
+        ? "?ggreact=1"
+        : "";
+  benchUrl = `http://127.0.0.1:5199/${query}`;
   // A fresh page keeps each cell independent from framework state, detached
   // DOM, and garbage-collection pressure accumulated by earlier libraries.
-  // The Vite graph and Chromium process stay warm; each cell still performs
+  // The preview server and Chromium process stay warm; each cell still performs
   // its own two warmups before the recorded samples.
   await page.close();
   page = await browser.newPage();
@@ -362,6 +334,7 @@ for (const r of results) {
 
 const payload = {
   generatedAt: new Date().toISOString(),
+  provenance,
   full,
   measuresUpdate: true,
   measuresSync: true,
@@ -373,4 +346,6 @@ writeFileSync(path.join(resultsDir, "browser.json"), JSON.stringify(payload, nul
 console.log("\nWrote results/browser.json");
 
 await browser.close();
-await server.close();
+await new Promise<void>((resolve, reject) =>
+  server.httpServer.close((error) => (error ? reject(error) : resolve())),
+);

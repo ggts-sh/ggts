@@ -8,5 +8,5 @@ export {
   deprecatedGrammarPropPattern,
   grammarCodemodRules,
   grammarDocUrl,
-} from "@ggsvelte/compose";
-export type { GrammarCodemodForm, MergeByKeyKind, ReplaceKind } from "@ggsvelte/compose";
+} from "@ggts-sh/compose";
+export type { GrammarCodemodForm, MergeByKeyKind, ReplaceKind } from "@ggts-sh/compose";

@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 
-import { SCALE_REFERENCE, knownScaleSlugs, type ScaleReferenceEntry } from "@ggsvelte/spec";
+import { SCALE_REFERENCE, knownScaleSlugs, type ScaleReferenceEntry } from "@ggts-sh/spec";
 
 import { EXAMPLES } from "$lib/examples-manifest";
 

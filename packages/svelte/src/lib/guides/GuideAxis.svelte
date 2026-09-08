@@ -5,7 +5,7 @@
    * showTicks={false}/>` → `guides: { x: { type: "axis", showTicks: false } }`.
    * Emits NO markup.
    */
-  import { guideAxis, type AxisGuideOptions } from "@ggsvelte/spec";
+  import { guideAxis, type AxisGuideOptions } from "@ggts-sh/spec";
 
   import { createPlotLayer } from "../layers/plot-layer.svelte.js";
   import { splitChannel, type PositionGuideChannel } from "./factory.svelte.js";

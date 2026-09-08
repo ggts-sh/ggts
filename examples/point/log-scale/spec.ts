@@ -1,4 +1,4 @@
-import { aes, gg, scaleXLog10 } from "@ggsvelte/spec";
+import { aes, gg, scaleXLog10 } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { londonCholera } from "./data.js";

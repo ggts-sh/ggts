@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { installTemporal } from "../src/install-temporal.ts";
 import { runPipeline } from "../src/pipeline.ts";
@@ -8,7 +8,7 @@ import { ColumnTable } from "../src/table.ts";
 import { getTemporalRuntime, resetTemporalRuntimeForTests } from "../src/temporal-runtime.ts";
 
 /**
- * Lean `@ggsvelte/core/render` leaves the temporal runtime unset. Unit tests
+ * Lean `@ggts-sh/core/render` leaves the temporal runtime unset. Unit tests
  * preload the full runtime (bunfig), so this suite clears it and restores after.
  */
 describe("lean ColumnTable temporal detection (no runtime)", () => {

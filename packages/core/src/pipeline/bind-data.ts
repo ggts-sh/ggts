@@ -2,7 +2,7 @@
  * Resolve NamedData / dataset refs into ColumnTables for the pipeline.
  * Supports plot-level and per-layer DataRef (#589).
  */
-import type { DataRef, PortableSpec } from "@ggsvelte/spec";
+import type { DataRef, PortableSpec } from "@ggts-sh/spec";
 
 import type { Columns, Rows } from "../table.js";
 import { ColumnTable } from "../table.js";

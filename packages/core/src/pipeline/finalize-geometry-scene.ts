@@ -1,7 +1,7 @@
 /**
  * Finalize phase: geometry batches and scene assembly after layout.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { PanelCoordProjector } from "../coord-projector.js";
 import { perfMark, perfMeasure } from "../perf.js";
@@ -69,7 +69,7 @@ export function finalizeGeometryAndScene(input: {
   // LAYER-major order: layer order is paint order across the whole plot, and
   // it keeps each layer's batches contiguous so strata planning (contiguous
   // same-backend batches share a stratum) never fragments on facet panels.
-  perfMark("ggsvelte:geometry:start");
+  perfMark("ggts:geometry:start");
   const batches = buildGeometryBatches({
     layerCount: normalized.layers.length,
     facetPanels,
@@ -83,8 +83,8 @@ export function finalizeGeometryAndScene(input: {
     coordProjectors,
     warnings,
   });
-  perfMark("ggsvelte:geometry:end");
-  perfMeasure("ggsvelte:geometry", "ggsvelte:geometry:start", "ggsvelte:geometry:end");
+  perfMark("ggts:geometry:end");
+  perfMeasure("ggts:geometry", "ggts:geometry:start", "ggts:geometry:end");
 
   // Guides were resolved once in finalizePanelLayoutPass / layoutPanels and
   // carried on panelLayout — do not call resolveAxisGuide again (#1076).

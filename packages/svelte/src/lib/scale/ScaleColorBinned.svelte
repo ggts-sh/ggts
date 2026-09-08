@@ -3,7 +3,7 @@
   import {
     scaleColorBinned,
     type BinnedColorScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

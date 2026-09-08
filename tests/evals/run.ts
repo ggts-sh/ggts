@@ -7,7 +7,7 @@
  * For each case under tests/evals/cases/, the responder (a model via the
  * OpenRouter chat-completions API, or the deterministic MockResponder)
  * receives the system prompt + the case prompt with its DataProfile, and
- * must emit ONE ggsvelte PortableSpec as JSON. The harness then normalizes, validates against the
+ * must emit ONE ggts PortableSpec as JSON. The harness then normalizes, validates against the
  * profile, scores structurally against the gold, optionally runs ONE repair
  * round (default ON: re-prompt with the SpecError JSON — "errors include
  * fix.example — apply the fixes"), and renders the candidate headlessly.
@@ -36,7 +36,7 @@
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-import type { SpecError } from "@ggsvelte/spec";
+import type { SpecError } from "@ggts-sh/spec";
 
 import type { Responder } from "./model.ts";
 import { MockResponder, OpenRouterResponder } from "./model.ts";

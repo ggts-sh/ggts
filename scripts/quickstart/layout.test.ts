@@ -3,7 +3,7 @@
  * aspect. PR #1073 targeted outer 2.5:1 and crushed the panel to ~5.8:1;
  * this pins the panel across widths.
  */
-import { runPipeline } from "@ggsvelte/core";
+import { runPipeline } from "@ggts-sh/core";
 import { describe, expect, it } from "bun:test";
 
 import { SAKURA_STEPS, foldSakura } from "../quickstart.ts";

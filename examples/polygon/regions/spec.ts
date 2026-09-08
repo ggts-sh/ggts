@@ -1,4 +1,4 @@
-import { aes, gg, guideNone } from "@ggsvelte/spec";
+import { aes, gg, guideNone } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { pumpNeighbourhoods, waterPumps } from "./data.js";

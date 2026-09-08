@@ -4,7 +4,7 @@
    * Mounts GeomPoint + the keyed-MERGE grammar children under GGPlot and
    * optionally captures the plot registry for registrationCount assertions.
    */
-  import type { GuidesSpec, LegendSpec } from "@ggsvelte/spec";
+  import type { GuidesSpec, LegendSpec } from "@ggts-sh/spec";
 
   import type { PlotDiagnostic } from "../../src/lib/diagnostics/deprecation.js";
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";

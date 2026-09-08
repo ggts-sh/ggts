@@ -1,14 +1,14 @@
 /**
- * Render the site-wide Open Graph / Twitter large-image card for ggsvelte.sh.
+ * Render the site-wide Open Graph / Twitter large-image card for ggts.sh.
  *
- * Layout mirrors the homepage hero (headline + Area cold-mount bench),
+ * Layout mirrors the homepage hero (headline + sandbox example),
  * framed for the standard 1200×630 social card crop used by WhatsApp, Slack,
  * iMessage, Discord, Facebook, LinkedIn, and X.
  *
- *   bun scripts/gen-og-home.ts          # rewrite apps/docs/static/og/home-v4.png
+ *   bun scripts/gen-og-home.ts          # rewrite apps/docs/static/og/home-v5.png
  *   bun scripts/gen-og-home.ts --check  # assert committed PNG dimensions + IHDR
  *
- * Bump OG_HOME_FILENAME in docs-seo-image.ts (home-v4.png …) when iterating the
+ * Bump OG_HOME_FILENAME in docs-seo-image.ts (home-v5.png …) when iterating the
  * design so scrapers cannot serve a stale cached card after deploy.
  */
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -17,6 +17,8 @@ import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { chromium } from "@playwright/test";
+import { registerAll, renderToSVGString } from "@ggts-sh/core";
+import { SANDBOX_SPEC } from "./agent-quickstart";
 
 import {
   OG_HOME_FILENAME,
@@ -28,11 +30,9 @@ import {
 
 const ROOT = resolve(import.meta.dir, "..");
 const OUT_FILE = join(ROOT, "apps", "docs", "static", "og", OG_HOME_FILENAME);
-const BENCH_SVG = join(ROOT, "apps", "docs", "static", "benchmarks", "bench-area-mount.svg");
 
-function cardHtml(benchSvg: string): string {
-  // Inline the live homepage bench SVG so the card stays self-contained and
-  // matches the numbers on ggsvelte.sh without a docs server.
+function cardHtml(chartSvg: string): string {
+  // Render the same complete chart used in the sandbox quickstart.
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -126,20 +126,17 @@ function cardHtml(benchSvg: string): string {
 <body>
   <div class="card">
     <div class="copy">
-      <p class="brand">ggsvelte</p>
-      <h1>ggsvelte is a <span class="fast">fast</span>, agent-native implementation of the layered grammar of graphics</h1>
-      <p class="url">ggsvelte.sh</p>
+      <p class="brand">ggts</p>
+      <h1>ggplot2’s grammar for <span class="fast">TypeScript</span></h1>
+      <p class="url">Built for coding agents.<br>CLI · React · Svelte<br><br>ggts.sh</p>
     </div>
     <div class="visual">
       <div class="tabs" aria-hidden="true">
-        <span class="active">Area</span>
-        <span>Bars</span>
-        <span>Line 100k</span>
-        <span>Scatter</span>
-        <span>Scatter 10k</span>
+        <span class="active">One spec</span>
+        <span>Every surface</span>
       </div>
       <div class="panel">
-        <div class="chart">${benchSvg}</div>
+        <div class="chart">${chartSvg}</div>
       </div>
     </div>
   </div>
@@ -148,13 +145,8 @@ function cardHtml(benchSvg: string): string {
 }
 
 export async function renderOgHome(outFile: string = OUT_FILE): Promise<void> {
-  if (!existsSync(BENCH_SVG)) {
-    throw new Error(`missing benchmark SVG at ${BENCH_SVG}; run gen-benchmark-charts first`);
-  }
-  const benchSvg = readFileSync(BENCH_SVG, "utf8");
-  // Drop XML declaration if present so the fragment embeds cleanly.
-  const svgBody = benchSvg.replace(/^\s*<\?xml[^?]*\?>\s*/i, "");
-  const html = cardHtml(svgBody);
+  registerAll();
+  const html = cardHtml(renderToSVGString(SANDBOX_SPEC, { width: 480, height: 380 }));
   const tmp = mkdtempSync(join(tmpdir(), "ggsvelte-og-"));
   const htmlPath = join(tmp, "card.html");
   writeFileSync(htmlPath, html);

@@ -1,7 +1,7 @@
 import { fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 
-import { trainBand, type AxisEditModel, type CellValue } from "@ggsvelte/core";
+import { trainBand, type AxisEditModel, type CellValue } from "@ggts-sh/core";
 
 import {
   boundsEditorInputForScale,

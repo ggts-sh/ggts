@@ -11,10 +11,21 @@ type DocsRouteRecord = DocsRouteMetadata;
 
 export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   {
-    path: "/",
-    title: "ggsvelte — layered grammar of graphics for Svelte",
+    path: "/benchmarks",
+    title: "Benchmarks — ggts",
     description:
-      "Layered grammar of graphics for Svelte: ggplot2-style aes, geoms, stats, and themes, with PortableSpec JSON and hybrid SVG/canvas rendering.",
+      "Production measurements for the core, React, Svelte, and existing charting comparators.",
+    canonicalPath: "/benchmarks",
+    kind: "page",
+    index: true,
+    sitemap: true,
+    shell: "site",
+  },
+  {
+    path: "/",
+    title: "ggts — ggplot2’s grammar for TypeScript",
+    description:
+      "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
     canonicalPath: "/",
     kind: "page",
     index: true,
@@ -23,7 +34,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/docs",
-    title: "Documentation — ggsvelte",
+    title: "Documentation — ggts",
     description: "Install, compose the grammar, add interaction, ship, and read public contracts.",
     canonicalPath: "/docs",
     kind: "page",
@@ -34,8 +45,8 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/examples",
-    title: "Gallery — ggsvelte",
-    description: "Runnable ggsvelte examples across marks, stats, scales, and interaction.",
+    title: "Gallery — ggts",
+    description: "Runnable ggts examples across marks, stats, scales, and interaction.",
     canonicalPath: "/examples",
     kind: "page",
     index: true,
@@ -44,7 +55,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/themes",
-    title: "Chart themes — ggsvelte",
+    title: "Chart themes — ggts",
     description: "Built-in chart themes for paper, grids, axes, and type.",
     canonicalPath: "/themes",
     kind: "page",
@@ -54,7 +65,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/palettes",
-    title: "Color palettes — ggsvelte",
+    title: "Color palettes — ggts",
     description:
       "Categorical palettes for discrete series: browse, compare, and preview every scheme.",
     canonicalPath: "/palettes",
@@ -65,7 +76,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/palettes/ramps",
-    title: "Sequential color ramps — ggsvelte",
+    title: "Sequential color ramps — ggts",
     description:
       "Sequential color ramps for continuous fill, and how reverse, range, and domain read on a chart.",
     canonicalPath: "/palettes/ramps",
@@ -76,7 +87,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference",
-    title: "Reference — ggsvelte",
+    title: "Reference — ggts",
     description:
       "Geom, guide, labs, axes, labels, interaction, CLI, diagnostic, lifecycle, and PortableSpec contracts.",
     canonicalPath: "/reference",
@@ -88,7 +99,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/geoms",
-    title: "Geoms — ggsvelte",
+    title: "Geoms — ggts",
     description:
       "Schema-derived API reference for every Geom* component: defaults, allowed stats and positions, and params.",
     canonicalPath: "/reference/geoms",
@@ -104,7 +115,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/stats",
-    title: "Stats — ggsvelte",
+    title: "Stats — ggts",
     description:
       "Schema-derived API reference for every statistical transform: after_stat columns and compatible geoms.",
     canonicalPath: "/reference/stats",
@@ -120,7 +131,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/positions",
-    title: "Positions — ggsvelte",
+    title: "Positions — ggts",
     description:
       "Schema-derived API reference for every position adjustment: positionParams and compatible geoms.",
     canonicalPath: "/reference/positions",
@@ -136,7 +147,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/scales",
-    title: "Scales — ggsvelte",
+    title: "Scales — ggts",
     description:
       "API reference for every Scale* component: position, color/fill, and style channels with params and guide interaction.",
     canonicalPath: "/reference/scales",
@@ -158,7 +169,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/coords",
-    title: "Coords — ggsvelte",
+    title: "Coords — ggts",
     description:
       "Schema-derived API reference for every Coord* shell: cartesian, flip, transform, fixed, and sf with helpers and props.",
     canonicalPath: "/reference/coords",
@@ -175,7 +186,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/guides",
-    title: "Guides and legends — ggsvelte",
+    title: "Guides and legends — ggts",
     description:
       "Schema-derived API reference for GuideLegend, GuideColorbar, GuideColorsteps, GuideAxis, and GuideNone: channels, props, and helpers.",
     canonicalPath: "/reference/guides",
@@ -192,7 +203,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/labs",
-    title: "Labs — ggsvelte",
+    title: "Labs — ggts",
     description:
       "Plot title, subtitle, caption, and per-aesthetic axis/legend titles via the Labs child layer.",
     canonicalPath: "/reference/labs",
@@ -211,7 +222,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/axes",
-    title: "Axes and ticks — ggsvelte",
+    title: "Axes and ticks — ggts",
     description:
       "Axis titles, GuideAxis presentation, scale breaks/labels, band layout, and theme grids.",
     canonicalPath: "/reference/axes",
@@ -232,7 +243,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/labels",
-    title: "Labels — ggsvelte",
+    title: "Labels — ggts",
     description:
       "Plot chrome vs tick labels vs data labels (GeomText, GeomLabel, SF text/label geoms).",
     canonicalPath: "/reference/labels",
@@ -252,9 +263,9 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/interactions",
-    title: "Search interactions — ggsvelte",
+    title: "Search interactions — ggts",
     description:
-      "Filter ggsvelte interaction capabilities, events, diagnostics, and accessibility defaults.",
+      "Filter ggts interaction capabilities, events, diagnostics, and accessibility defaults.",
     canonicalPath: "/reference/interactions",
     kind: "page",
     index: true,
@@ -264,7 +275,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/themes",
-    title: "Themes — ggsvelte",
+    title: "Themes — ggts",
     description:
       "Theme components, role tokens, CSS variables, and safe overrides for paper, ink, and interaction chrome.",
     canonicalPath: "/reference/themes",
@@ -284,7 +295,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/palettes",
-    title: "Palettes — ggsvelte",
+    title: "Palettes — ggts",
     description:
       "Named color schemes as scale inputs: categorical and sequential scheme catalogs mapped to ScaleColor* / ScaleFill* helpers.",
     canonicalPath: "/reference/palettes",
@@ -305,7 +316,7 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   },
   {
     path: "/reference/cli",
-    title: "Command-line reference — ggsvelte",
+    title: "Command-line reference — ggts",
     description:
       "Render PortableSpec JSON to SVG with implementation-derived flags, streams, diagnostics, and exit classes.",
     canonicalPath: "/reference/cli",
@@ -330,11 +341,11 @@ export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
 ];
 
 export const ENDPOINT_ROUTES: readonly DocsRouteRecord[] = [
-  ["/schema/v0.json", "PortableSpec JSON Schema", "Machine-readable ggsvelte PortableSpec schema."],
-  ["/llms.txt", "ggsvelte documentation index", "A concise machine-readable documentation index."],
+  ["/schema/v0.json", "PortableSpec JSON Schema", "Machine-readable ggts PortableSpec schema."],
+  ["/llms.txt", "ggts documentation index", "A concise machine-readable documentation index."],
   [
     "/llms-full.txt",
-    "Complete ggsvelte documentation",
+    "Complete ggts documentation",
     "Complete guide and example source for machine readers.",
   ],
   ["/sitemap.xml", "Sitemap", "Generated canonical route sitemap."],
@@ -356,8 +367,8 @@ export const PERFORMANCE_ROUTES: readonly DocsRouteRecord[] = [
   "/__perf/legend-focus-100k",
 ].map((path) => ({
   path,
-  title: "Performance fixture — ggsvelte",
-  description: "Internal ggsvelte performance fixture; not part of the public documentation.",
+  title: "Performance fixture — ggts",
+  description: "Internal ggts performance fixture; not part of the public documentation.",
   canonicalPath: path,
   kind: "performance",
   index: false,

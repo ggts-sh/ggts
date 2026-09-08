@@ -1,5 +1,5 @@
 /** Shared per-primitive style lookup over mapped/literal/scaled channels. */
-import type { StyleAesthetic } from "@ggsvelte/spec";
+import type { StyleAesthetic } from "@ggts-sh/spec";
 
 import type { ResolvedStyleScale, StyleOutput } from "../scales/style.js";
 import type { CellValue } from "../table.js";

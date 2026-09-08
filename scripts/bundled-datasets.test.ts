@@ -1,5 +1,5 @@
 /**
- * Gate G2 — the bundled teaching datasets under `@ggsvelte/svelte/data` are
+ * Gate G2 — the bundled teaching datasets under `@ggts-sh/core/data` are
  * real, intact, and cover the guide shapes: time series (kyotoSakura),
  * categorical comparison (mpg, beerProduction, fastfoodMenu), continuous
  * distribution + groups (palmerPenguins, coffeeRatings), and dense scatter /
@@ -9,6 +9,8 @@
 import { readFileSync } from "node:fs";
 
 import { describe, expect, it } from "bun:test";
+import * as coreData from "@ggts-sh/core/data";
+import * as svelteData from "../packages/svelte/src/lib/data/index.ts";
 
 import {
   BEER_PRODUCTION_CITATION,
@@ -32,10 +34,17 @@ import {
   type KyotoSakuraRow,
   type MpgRow,
   type PalmerPenguinRow,
-} from "../packages/svelte/src/lib/data/index.ts";
+} from "../packages/core/src/data/index.ts";
 
 const STATIC = new URL("../apps/docs/static/", import.meta.url).pathname;
 const NOTICE = readFileSync(new URL("../NOTICE", import.meta.url).pathname, "utf8");
+
+it("the Svelte data compatibility entry forwards the same framework-neutral bindings", () => {
+  expect(Object.keys(svelteData)).toEqual(Object.keys(coreData));
+  for (const name of Object.keys(coreData) as (keyof typeof coreData)[]) {
+    expect(svelteData[name]).toBe(coreData[name]);
+  }
+});
 
 /** Median day-of-year over an inclusive year range. */
 function medianDoy(from: number, to: number): number {

@@ -278,7 +278,7 @@ export function auditAliasCommitRange(input: {
   const versionAtTip = packageVersionAtCommit(repoRoot, releaseCommit);
   if (versionAtTip !== releaseVersion) {
     throw new Error(
-      `alias release ${releaseVersion} points at commit ${releaseCommit} where @ggsvelte/svelte is ${versionAtTip}`,
+      `alias release ${releaseVersion} points at commit ${releaseCommit} where @ggts-sh/svelte is ${versionAtTip}`,
     );
   }
 

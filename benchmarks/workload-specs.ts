@@ -18,8 +18,8 @@ import {
   scaleSizeContinuous,
   scaleXBinned,
   scaleXContinuous,
-} from "@ggsvelte/spec";
-import type { PortableSpec } from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 // Mulberry32 — deterministic data across runs/machines.
 function mulberry32(seed: number): () => number {

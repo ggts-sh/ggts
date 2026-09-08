@@ -6,7 +6,7 @@
  * grammatically valid spec can still be a meaningless plot.
  *
  * Distinct from the two error tiers (validate()) and from the pipeline's
- * heuristic advisories (@ggsvelte/core `RenderModel.advisories`): lint runs
+ * heuristic advisories (@ggts-sh/core `RenderModel.advisories`): lint runs
  * BEFORE any pipeline, on the spec alone (plus inline data or a DataProfile
  * when available — data-dependent rules skip silently without evidence).
  *
@@ -29,7 +29,7 @@
  *    fractional-calendar-years (year+month/12 linear pitfall)
  *
  * Wired into `validate(spec, { lint: true })` (advisories ride the result)
- * and into the `ggsvelte-render` CLI (stderr JSON lines, kind "advisory",
+ * and into the `ggts render` CLI (stderr JSON lines, kind "advisory",
  * source "spec-lint").
  */
 import type { JSONValue } from "./portability.js";

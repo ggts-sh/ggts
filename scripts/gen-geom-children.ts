@@ -47,17 +47,17 @@ function typeImportBlock(spec: ShellSpec): string {
       `    PositionParams,`,
       `    ${spec.paramsType},`,
       `    ${spec.layerInput},`,
-      `  } from "@ggsvelte/spec";`,
+      `  } from "@ggts-sh/spec";`,
     ].join("\n");
   }
-  const single = `  import type { DataInput, ${spec.paramsType}, ${spec.layerInput} } from "@ggsvelte/spec";`;
+  const single = `  import type { DataInput, ${spec.paramsType}, ${spec.layerInput} } from "@ggts-sh/spec";`;
   if (single.length <= 80) return single;
   return [
     `  import type {`,
     `    DataInput,`,
     `    ${spec.paramsType},`,
     `    ${spec.layerInput},`,
-    `  } from "@ggsvelte/spec";`,
+    `  } from "@ggts-sh/spec";`,
   ].join("\n");
 }
 
@@ -100,7 +100,7 @@ function registrationBlock(spec: ShellSpec): string[] {
   if (spec.registration === undefined) return [];
   return [
     `<script module lang="ts">`,
-    `  import { ${spec.registration} } from "@ggsvelte/core";`,
+    `  import { ${spec.registration} } from "@ggts-sh/core";`,
     ``,
     `  // Self-registration (#1420): this component's geom batch + default stat`,
     `  // frame enter the bundle (and the core registries) only when the`,
@@ -124,7 +124,7 @@ function renderJitterShell(spec: ShellSpec): string {
     `      width?: number;\n` +
     `      /** Maximum vertical jitter (data units / band-step fraction). */\n` +
     `      height?: number;\n` +
-    `      /** Seeded RNG seed (ggsvelte jitter is always seeded; default 42). */\n` +
+    `      /** Seeded RNG seed (ggts jitter is always seeded; default 42). */\n` +
     `      seed?: number;\n` +
     `    }`;
   return [

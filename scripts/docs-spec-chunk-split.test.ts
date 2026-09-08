@@ -35,6 +35,51 @@ describe.skipIf(!hasBuild)("docs ggsvelte-spec render/validate chunk split", () 
     // TypeBox compile templates out of the render body (asserted above).
   });
 
+  it("keeps reference catalogs and the served JSON schema out of render code", () => {
+    const render = readFileSync(renderChunk, "utf8");
+    expect(render.includes("GEOM_REFERENCE_DATA")).toBe(false);
+    expect(render.includes("SCALE_REFERENCE")).toBe(false);
+    expect(render.includes("json-schema.org/draft/2020-12/schema")).toBe(false);
+  });
+
+  it("does not pull reference catalogs through shared capability tables", () => {
+    for (const name of ["ggsvelte-core.js", "ggsvelte-spec.js", "ggsvelte-spec-validate.js"]) {
+      const source = readFileSync(path.join(serverChunks, name), "utf8");
+      expect(source.includes('from "./ggsvelte-spec-reference.js"'), name).toBe(false);
+    }
+  });
+
+  it("keeps reference catalogs outside the client chart dependency graph", () => {
+    const manifest = JSON.parse(
+      readFileSync(
+        path.join(root, "apps/docs/.svelte-kit/output/client/.vite/manifest.json"),
+        "utf8",
+      ),
+    ) as Record<string, { name?: string; imports?: string[] }>;
+    const reference = Object.keys(manifest).find(
+      (key) => manifest[key]?.name === "ggsvelte-spec-reference",
+    );
+    expect(reference).toBeDefined();
+    for (const name of [
+      "ggsvelte-core",
+      "ggsvelte-svelte",
+      "ggsvelte-spec",
+      "ggsvelte-spec-validate",
+    ]) {
+      const entry = Object.keys(manifest).find((key) => manifest[key]?.name === name);
+      if (entry === undefined) throw new Error(`missing client chunk ${name}`);
+      const seen = new Set<string>();
+      const pending = [entry];
+      while (pending.length > 0) {
+        const key = pending.pop()!;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        pending.push(...(manifest[key]?.imports ?? []));
+      }
+      expect(seen.has(reference!), name).toBe(false);
+    }
+  });
+
   it("keeps the render chunk well under the pre-split ~1MB client bill", () => {
     const renderBytes = statSync(renderChunk).size;
     const validateBytes = statSync(validateChunk).size;

@@ -11,7 +11,7 @@
  * Geom families live in the synthesize-*.ts siblings; the orchestrator calls
  * them in a fixed order and stops at the first match.
  */
-import type { DataProfile } from "@ggsvelte/spec";
+import type { DataProfile } from "@ggts-sh/spec";
 
 import { PROFILE_MARKER, REPAIR_MARKER } from "../../prompt.ts";
 import type { Responder } from "../types.ts";

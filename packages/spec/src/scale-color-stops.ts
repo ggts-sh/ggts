@@ -13,7 +13,7 @@ import {
 // Shared stop defaults (navy→sky continuous; red–light–blue diverging).
 const STOP_DEFAULT_LOW = "#132B43";
 const STOP_DEFAULT_HIGH = "#56B1F7";
-/** ggsvelte diverging defaults (red–light–blue); not claimed as ggplot2 muted(). */
+/** ggts diverging defaults (red–light–blue); not claimed as ggplot2 muted(). */
 const STOP2_DEFAULT_LOW = "#B2182B";
 const STOP2_DEFAULT_MID = "#F7F7F7";
 const STOP2_DEFAULT_HIGH = "#2166AC";

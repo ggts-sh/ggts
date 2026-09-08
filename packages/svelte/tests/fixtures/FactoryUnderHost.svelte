@@ -3,7 +3,7 @@
    * Stable registry host wrapping FactoryProbe so createGeomLayer registers
    * under provideRegistry and live prop updates share one registry instance.
    */
-  import type { GeomName } from "@ggsvelte/spec";
+  import type { GeomName } from "@ggts-sh/spec";
   import { untrack } from "svelte";
 
   import type { LayerRegistry } from "../../src/lib/geoms/registry.svelte.js";

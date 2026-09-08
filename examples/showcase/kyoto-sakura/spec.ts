@@ -1,6 +1,6 @@
-import { aes, gg, guideNone } from "@ggsvelte/spec";
+import { aes, gg, guideNone } from "@ggts-sh/spec";
 
-import { kyotoSakura } from "../../../packages/svelte/src/lib/data/index.js";
+import { kyotoSakura } from "../../../packages/core/src/data/index.js";
 import { defineExample } from "../../define.js";
 
 /**
@@ -13,7 +13,7 @@ import { defineExample } from "../../define.js";
  * The same chart is built step by step in /guide/getting-started; this is the
  * finished composition as one spec. Annotation tables are chart decoration,
  * so they stay inline; the 838-row series resolves from
- * `@ggsvelte/svelte/data`.
+ * `@ggts-sh/core/data`.
  */
 
 // Bands cover every observation; a strip above holds the epoch names.

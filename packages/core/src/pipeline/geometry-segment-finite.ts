@@ -4,7 +4,7 @@
  * Distinct from rule's panel-spanning segmentsBatch. Reuses SegmentsBatch
  * packing so flip/coord/candidates/render stay shared.
  */
-import type { SegmentParams } from "@ggsvelte/spec";
+import type { SegmentParams } from "@ggts-sh/spec";
 
 import type { SegmentsBatch } from "../scene.js";
 

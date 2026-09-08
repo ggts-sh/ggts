@@ -1,3 +1,5 @@
+import type { ReactElement, RefAttributes } from "react";
+import type { CellValue } from "@ggts-sh/core";
 import { forwardRef, useMemo } from "react";
 
 import type { GGPlotHandle, GGPlotProps } from "./plot-props.js";
@@ -14,22 +16,15 @@ function restWithoutChildren(props: GGPlotProps): Omit<GGPlotProps, "children" |
   return withoutKey;
 }
 
-function identityKeyFallback(props: object): GGPlotProps["key"] {
-  return Reflect.get(props, "key") as GGPlotProps["key"];
-}
-
 export const GGPlot = forwardRef<GGPlotHandle, GGPlotProps>(function GGPlot(props, ref) {
   const registry = useMemo(() => new LayerRegistry(), []);
   const rest = restWithoutChildren(props);
   return (
     <PlotRegistryContext.Provider value={registry}>
       {props.children}
-      <PlotSurface
-        {...rest}
-        identityKey={identityKeyFallback(props)}
-        registry={registry}
-        plotRef={ref}
-      />
+      <PlotSurface {...rest} registry={registry} plotRef={ref} />
     </PlotRegistryContext.Provider>
   );
-});
+}) as <Row extends Record<string, CellValue> = Record<string, CellValue>>(
+  props: GGPlotProps<Row> & RefAttributes<GGPlotHandle>,
+) => ReactElement | null;

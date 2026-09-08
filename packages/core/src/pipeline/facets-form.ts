@@ -1,7 +1,7 @@
 /**
  * Facet form validation and free-scale flag derivation.
  */
-import type { FacetSpec } from "@ggsvelte/spec";
+import type { FacetSpec } from "@ggts-sh/spec";
 
 import { PipelineError } from "./types.js";
 

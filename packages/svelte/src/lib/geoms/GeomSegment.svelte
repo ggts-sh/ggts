@@ -4,7 +4,7 @@
     DataInput,
     SegmentParams,
     SegmentLayerInput,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
 
   import { createGeomLayer } from "./factory.svelte.js";
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { useRef } from "react";
 
-import { aes, gg, normalize } from "@ggsvelte/spec";
+import { aes, gg, normalize } from "@ggts-sh/spec";
 
 import {
   FacetWrap,
@@ -239,7 +239,7 @@ describe("readiness + canvas + handle", () => {
     const painted = [...container.querySelectorAll("svg.gg-plot, canvas.gg-canvas")].map((el) =>
       el.tagName.toLowerCase(),
     );
-    expect(painted).toEqual(["canvas", "svg"]);
+    expect(painted).toEqual(["svg", "canvas", "svg"]);
   });
 
   it("paints every canvas stratum", () => {
@@ -261,7 +261,7 @@ describe("readiness + canvas + handle", () => {
       [...container.querySelectorAll("svg.gg-plot, canvas.gg-canvas")].map((el) =>
         el.tagName.toLowerCase(),
       ),
-    ).toEqual(["canvas", "svg", "canvas"]);
+    ).toEqual(["svg", "canvas", "svg", "canvas", "svg"]);
   });
 
   it("sets aria-label on the live svg", () => {

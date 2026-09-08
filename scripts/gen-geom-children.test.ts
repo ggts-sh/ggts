@@ -6,7 +6,7 @@ import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { KNOWN_GEOMS } from "@ggsvelte/spec";
+import { KNOWN_GEOMS } from "@ggts-sh/spec";
 
 import {
   BASIC_SHELL_GEOMS,
@@ -89,7 +89,7 @@ describe("renderShell", () => {
     expect(src).toContain("DataInput");
     expect(src).toContain('createGeomLayer("hex", () => props)');
     expect(src).not.toContain("paramKeys");
-    expect(src).toContain('from "@ggsvelte/spec"');
+    expect(src).toContain('from "@ggts-sh/spec"');
     expect(src).toContain('from "./factory.svelte.js"');
   });
 
@@ -97,7 +97,7 @@ describe("renderShell", () => {
     const hex = SHELL_MANIFEST.find((s) => s.geom === "hex")!;
     const src = renderShell(hex);
     expect(src).toContain('<script module lang="ts">');
-    expect(src).toContain('import { registerHex } from "@ggsvelte/core";');
+    expect(src).toContain('import { registerHex } from "@ggts-sh/core";');
     expect(src).toContain("registerHex();");
     // Module script precedes the instance script.
     expect(src.indexOf("<script module")).toBeLessThan(src.indexOf('<script lang="ts">'));
@@ -114,7 +114,7 @@ describe("renderShell", () => {
     for (const geom of ["histogram", "freqpoly"] as const) {
       const shell = SHELL_MANIFEST.find((s) => s.geom === geom)!;
       const src = renderShell(shell);
-      expect(src).toContain('import { registerBin } from "@ggsvelte/core";');
+      expect(src).toContain('import { registerBin } from "@ggts-sh/core";');
     }
   });
 

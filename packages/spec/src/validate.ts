@@ -58,7 +58,7 @@ function isRecord(v: unknown): v is Record<string, unknown> {
  */
 export function validate(input: unknown, options?: ValidateOptions): ValidateResult {
   // Agent validate path may inspect temporal columns / IANA zones — load the
-  // polyfill here so lean `@ggsvelte/core/render` graphs never need it.
+  // polyfill here so lean `@ggts-sh/core/render` graphs never need it.
   ensureTemporalPolyfill();
   const limits = { ...DEFAULT_VALIDATE_LIMITS, ...options?.limits };
 

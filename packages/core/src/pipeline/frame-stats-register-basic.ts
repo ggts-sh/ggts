@@ -1,5 +1,5 @@
 /**
- * Basic non-identity stats for `@ggsvelte/core/render` (bar/count, sum).
+ * Basic non-identity stats for `@ggts-sh/core/render` (bar/count, sum).
  * Heavy stats (smooth, density, sf, …) stay on the full package registration.
  */
 import { buildCountFrame } from "./frame-stats-count.js";

@@ -1,4 +1,4 @@
-import { runPipeline } from "@ggsvelte/core";
+import { runPipeline } from "@ggts-sh/core";
 
 import { mappedStyleSpec } from "../workload-specs";
 import { fmtK, opts, type Workload } from "./shared";

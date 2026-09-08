@@ -1,7 +1,7 @@
 /**
  * Computed-y and bin-param contracts for bindLayer.
  */
-import type { BarParams, LayerSpec } from "@ggsvelte/spec";
+import type { BarParams, LayerSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

@@ -48,7 +48,7 @@ Raw observations per group; the summary stat computes mean ± se, no preaggregat
 ```
 
 The `stat="summary"` override needs one call at app startup:
-`import { registerSummary } from "@ggsvelte/svelte"; registerSummary();`
+`import { registerSummary } from "@ggts-sh/svelte"; registerSummary();`
 (or `registerAll()`; the JSON spec twin needs `registerAll()` regardless).
 
 ## Value labels on columns

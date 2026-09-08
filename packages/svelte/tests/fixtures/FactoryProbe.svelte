@@ -3,7 +3,7 @@
    * Thin shell that exercises createGeomLayer the same way real Geom*
    * components do: live $props proxy + schema-derived param whitelist.
    */
-  import type { GeomName } from "@ggsvelte/spec";
+  import type { GeomName } from "@ggts-sh/spec";
   import { untrack } from "svelte";
 
   import {

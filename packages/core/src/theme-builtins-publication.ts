@@ -3,7 +3,7 @@
  * test chrome): wsj, hc/hcdark, pander, base, igray, map, solid, test.
  * Assembled in order by theme-builtins.ts.
  */
-import type { ThemeName } from "@ggsvelte/spec";
+import type { ThemeName } from "@ggts-sh/spec";
 import { themed, type ThemeTokens } from "./theme-construct.js";
 
 export const PUBLICATION_BUILTIN_THEMES = Object.freeze({

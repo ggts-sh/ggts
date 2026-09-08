@@ -341,7 +341,10 @@ function validateReleaseRecord(file: string, record: ReleaseRecord): void {
   }
 
   for (const issue of record.acceptedIssues) {
-    expect(issue.url).toBe(`https://github.com/ljodea/ggsvelte/issues/${String(issue.id)}`);
+    // Historical evidence keeps the issue URL recorded before the repository transfer.
+    expect(issue.url.replace("github.com/ljodea/ggsvelte/", "github.com/ggts-sh/ggts/")).toBe(
+      `https://github.com/ggts-sh/ggts/issues/${String(issue.id)}`,
+    );
     for (const scope of issue.scope)
       expect(referencedScopes, `unused accepted scope ${scope}`).toContain(scope);
   }

@@ -11,17 +11,17 @@
  * The user prompt is the case's natural-language request plus the serialized
  * DataProfile on a single marked line (MockResponder parses that line back).
  */
-import type { DataProfile, SpecError } from "@ggsvelte/spec";
+import type { DataProfile, SpecError } from "@ggts-sh/spec";
 
 export const PROFILE_MARKER = "DataProfile (JSON):";
 export const REPAIR_MARKER = "VALIDATION ERRORS (SpecError JSON):";
 
 export function buildSystemPrompt(): string {
-  return `You are a chart-spec compiler. Turn the user's natural-language request plus a DataProfile into ONE ggsvelte PortableSpec, as JSON.
+  return `You are a chart-spec compiler. Turn the user's natural-language request plus a DataProfile into ONE ggts PortableSpec, as JSON.
 
 OUTPUT CONTRACT
 - Reply with a single JSON object and NOTHING else: no prose, no markdown fences.
-- The spec is strict JSON. A JSON Schema for it exists (ggsvelte spec v0), but this cheat-sheet is authoritative for you.
+- The spec is strict JSON. A JSON Schema for it exists (ggts spec v0), but this cheat-sheet is authoritative for you.
 - Reference the caller's data with "data": {"name": "main"} — the harness supplies the rows out of band.
 
 GRAMMAR CHEAT-SHEET

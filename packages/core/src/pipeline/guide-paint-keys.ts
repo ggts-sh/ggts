@@ -19,7 +19,7 @@
  * shape when both exist. Two constant linetypes that conflict also get the
  * solid fallback so the colour key stays a stroke.
  */
-import { LINETYPE_NAMES, POINT_SHAPE_NAMES } from "@ggsvelte/spec";
+import { LINETYPE_NAMES, POINT_SHAPE_NAMES } from "@ggts-sh/spec";
 
 import type { DiscreteLegendInput } from "../legend.js";
 import type { Linetype, PointShape } from "../scales/style.js";

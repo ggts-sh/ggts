@@ -8,6 +8,7 @@ import {
 } from "./guide-code-contract.ts";
 import { guidePages, type LifecycleDoc } from "./gen-llms.ts";
 import { QUICKSTART_PAGE_SVELTE } from "./quickstart.ts";
+import { SVELTE_QUICKSTART_SOURCE } from "./agent-quickstart.ts";
 
 describe("guide code truth contract", () => {
   it("rejects unclassified, doubly classified, and unknown complete Svelte blocks", () => {
@@ -42,6 +43,7 @@ describe("guide code truth contract", () => {
 
   it("keeps the complete Quickstart byte-identical to the packed registry", () => {
     expect(COMPLETE_SVELTE_SNIPPETS).toEqual([
+      { filename: "src/lib/SandboxChart.svelte", source: SVELTE_QUICKSTART_SOURCE },
       {
         filename: "src/routes/+page.svelte",
         source: QUICKSTART_PAGE_SVELTE,

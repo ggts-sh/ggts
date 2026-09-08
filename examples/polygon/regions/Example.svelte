@@ -8,7 +8,7 @@
     Inspect,
     Labs,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { pumpNeighbourhoods, waterPumps } from "./data.js";
 </script>

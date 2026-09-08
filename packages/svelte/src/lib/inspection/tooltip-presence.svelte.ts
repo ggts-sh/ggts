@@ -1,4 +1,4 @@
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 
 import type { PlotInspectionChange } from "../interaction/interaction.js";
 import {

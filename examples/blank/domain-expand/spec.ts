@@ -1,4 +1,4 @@
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { earthDensity, waterDensity } from "./data.js";

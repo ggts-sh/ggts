@@ -6,7 +6,7 @@ import type {
   TemporalDisambiguation,
   TemporalKind,
   TemporalPrecision,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 export type CellValue = string | number | boolean | Date | null;
 export type Columns = Readonly<Record<string, readonly CellValue[]>>;

@@ -54,7 +54,7 @@ const FIXTURE_ENTRY: DocsSearchEntry = {
   id: "getting-started",
   kind: "page",
   title: "Getting started",
-  summary: "Install @ggsvelte/svelte and render one chart.",
+  summary: "Install @ggts-sh/svelte and render one chart.",
   href: "/guide/getting-started",
   keywords: ["install", "quickstart"],
   exact: ["getting started"],

@@ -1,15 +1,17 @@
-# @ggsvelte/skill
+# @ggts-sh/skill
 
-The ggsvelte agent skill: `SKILL.md` plus deep-dive `references/` that teach a
-coding agent the ggsvelte grammar of graphics — Svelte 5 child-component
-composition, PortableSpec JSON authoring, and the `validate()` /
-`ggsvelte-render` feedback loop.
+The ggts agent skill: `SKILL.md` plus deep-dive `references/` that teach a
+coding agent the shared grammar of graphics — TypeScript builders, React
+and Svelte components, PortableSpec JSON, and the `ggts check` /
+`ggts render` feedback loop.
 
 This package is the one published home of the skill. It versions in lock-step
-with [`@ggsvelte/spec`](https://www.npmjs.com/package/@ggsvelte/spec),
-[`@ggsvelte/core`](https://www.npmjs.com/package/@ggsvelte/core),
-[`@ggsvelte/svelte`](https://www.npmjs.com/package/@ggsvelte/svelte), and
-[`@ggsvelte/cli`](https://www.npmjs.com/package/@ggsvelte/cli): a given version
+with [`@ggts-sh/spec`](https://www.npmjs.com/package/@ggts-sh/spec),
+[`@ggts-sh/core`](https://www.npmjs.com/package/@ggts-sh/core),
+[`@ggts-sh/compose`](https://www.npmjs.com/package/@ggts-sh/compose),
+[`@ggts-sh/react`](https://www.npmjs.com/package/@ggts-sh/react),
+[`@ggts-sh/svelte`](https://www.npmjs.com/package/@ggts-sh/svelte), and
+[`@ggts-sh/cli`](https://www.npmjs.com/package/@ggts-sh/cli): a given version
 number describes the spec, the renderers, and this skill as of the same
 release. Pin it like any other dependency and let dependabot (or
 npm-check-updates) tell you when the bundled skill in your repo is stale.
@@ -17,52 +19,53 @@ npm-check-updates) tell you when the bundled skill in your repo is stale.
 ## Install
 
 ```sh
-bun add -D @ggsvelte/skill
-# or: npm install --save-dev @ggsvelte/skill
+npm install --save-dev --save-exact @ggts-sh/skill @ggts-sh/cli
 ```
 
 The package root **is** the skill directory: `SKILL.md` sits next to this
-README. Skill loaders key off the frontmatter (`name: ggsvelte`), not the
+README. Skill loaders key off the frontmatter (`name: ggts`), not the
 directory name.
 
 ## Use
 
 Point your agent at the skill, or copy/symlink it into your agent's skills
-directory under the name `ggsvelte`:
+directory under the name `ggts`:
 
 ```sh
 # Claude Code
-cp -R node_modules/@ggsvelte/skill .claude/skills/ggsvelte
+cp -R node_modules/@ggts-sh/skill .claude/skills/ggts
 
 # pi
-cp -R node_modules/@ggsvelte/skill .pi/agent/skills/ggsvelte
+cp -R node_modules/@ggts-sh/skill .pi/agent/skills/ggts
 
 # or reference it in place
-node_modules/@ggsvelte/skill/SKILL.md
+node_modules/@ggts-sh/skill/SKILL.md
 ```
 
 Re-run the copy on every version bump (a two-line `postinstall` or a sync
 script works); the dependabot PR is the signal that the skill changed.
 
 The skill assumes the agent can also run
-[`@ggsvelte/cli`](https://www.npmjs.com/package/@ggsvelte/cli)
-(`ggsvelte-render`) for spec validation and headless SVG rendering — install it
+[`@ggts-sh/cli`](https://www.npmjs.com/package/@ggts-sh/cli)
+(`ggts check` and `ggts render`) for spec validation and headless SVG rendering — install it
 in every sandbox where an agent authors specs.
 
 ## Contents
 
-- `SKILL.md` — trigger conditions, layer ontology, authoring workflow.
+- `SKILL.md` — target selection, shared grammar, authoring workflow.
+- `references/react.md` and `references/svelte.md` — adapter instructions.
 - `references/` — geoms and stats, scales and palettes, themes, interactions,
   composition surfaces, recipes.
 
 ## Guarantees
 
-The skill cannot quietly fall behind the library. CI enforces three layers:
+CI checks the teaching contracts and shipped examples:
 
 1. **Content contracts** (`scripts/skill-content/*.test.ts`,
    `scripts/skill-package.test.ts`) — inventory completeness for every geom,
    stat, position, theme, and color scheme; every complete JSON fence
-   normalizes and validates; pack shape and lock-step version.
+   normalizes and validates; pack shape and lock-step version. Packed-consumer
+   checks also compile complete TSX and Svelte examples from the installed skill.
 2. **Trigger / disclosure contracts** (`scripts/skill-trigger.test.ts`) —
    frontmatter description quality (the loader's selection signal), balanced
    positive/negative trigger fixtures under `evals/trigger-cases.json`,

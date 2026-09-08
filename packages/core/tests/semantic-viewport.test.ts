@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.ts";
 

@@ -2,7 +2,7 @@
   import { base } from "$app/paths";
   import { page } from "$app/state";
   import { untrack } from "svelte";
-  import type { CATEGORICAL_SCHEME_NAMES, ThemeName } from "@ggsvelte/spec";
+  import type { CATEGORICAL_SCHEME_NAMES, ThemeName } from "@ggts-sh/spec";
 
   import PaletteIndex from "$lib/components/PaletteIndex.svelte";
   import PalettePreview from "$lib/components/PalettePreview.svelte";

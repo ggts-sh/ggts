@@ -14,6 +14,6 @@ if (import.meta.main) {
   if (process.argv.includes("--check")) {
     await check();
   } else {
-    await write();
+    await write(process.argv.includes("--publish"));
   }
 }

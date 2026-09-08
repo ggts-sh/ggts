@@ -4,8 +4,8 @@
  * runtime). Spec construction is inside the timed call so each render is
  * data -> SVG, matching what the peer components do per SSR render.
  */
-import { renderToSVGString } from "@ggsvelte/core/render";
-import { aes, gg } from "@ggsvelte/spec/portable";
+import { renderToSVGString } from "@ggts-sh/core/render";
+import { aes, gg } from "@ggts-sh/spec/portable";
 
 import { makeScatter, PLOT_HEIGHT, PLOT_WIDTH } from "../scenarios";
 

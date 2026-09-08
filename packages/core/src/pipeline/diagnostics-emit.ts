@@ -9,7 +9,7 @@
 import type { Advisory, PipelineWarning } from "./types-advisory.js";
 import type { ScaleDiagnostic } from "./types-scale-diagnostics.js";
 
-const DOCS = "https://ggsvelte.sh/guide/errors";
+const DOCS = "https://ggts.sh/guide/errors";
 
 /** Max sample values attached to rich diagnostic evidence. */
 export const DIAGNOSTIC_EVIDENCE_VALUE_LIMIT = 5;

@@ -4,7 +4,7 @@
  */
 
 export const SEQUENTIAL_RASTER_SNIPPET = `<script lang="ts">
-  import { GeomRaster, GGPlot, Labs, Scale } from "@ggsvelte/svelte";
+  import { GeomRaster, GGPlot, Labs, Scale } from "@ggts-sh/svelte";
 
   // Macdonell man-count grid (48 cells in the live demos).
   const grid = [

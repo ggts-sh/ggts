@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, SpecValidationError } from "@ggsvelte/spec";
+import { aes, gg, SpecValidationError } from "@ggts-sh/spec";
 
 import { runPipeline } from "../../src/pipeline.ts";
 import { axisGuideFor, size, yearRows } from "./fixtures.ts";

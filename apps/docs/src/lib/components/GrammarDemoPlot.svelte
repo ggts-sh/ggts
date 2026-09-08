@@ -7,14 +7,14 @@
     Inspect,
     Labs,
     Theme,
-  } from "@ggsvelte/svelte";
-  import { palmerPenguins } from "@ggsvelte/svelte/data";
+  } from "@ggts-sh/svelte";
+  import { palmerPenguins } from "@ggts-sh/core/data";
 
   import { contrastChartTheme } from "$lib/docs-appearance-state.svelte";
 
   /**
    * Live homepage grammar plot. Dynamically imported so the section chrome +
-   * static SVG shell can SSR without pulling @ggsvelte into the home node.
+   * static SVG shell can SSR without pulling @ggts-sh into the home node.
    *
    * Full interactive state (same as the old accordion step 4 / Interaction):
    * xy inspect (numeric crosshair) + GuideLegend focus + loess smooth.

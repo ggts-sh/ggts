@@ -36,6 +36,8 @@ const LANGUAGE_ALIASES: Record<string, string> = {
   javascript: "javascript",
   json: "json",
   ts: "typescript",
+  tsx: "typescript",
+  jsx: "javascript",
   typescript: "typescript",
   html: "xml",
   svelte: "xml",

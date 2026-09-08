@@ -6,9 +6,9 @@
  */
 import { describe, expect, it } from "vitest";
 
-import type { BatchInteractionMask, Scene } from "@ggsvelte/core";
-import { sceneLabel } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import type { BatchInteractionMask, Scene } from "@ggts-sh/core";
+import { sceneLabel } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 import SceneView from "../../src/lib/scene/SceneView.svelte";
 import { modelFor } from "../helpers/model.js";

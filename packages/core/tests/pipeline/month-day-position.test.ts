@@ -11,7 +11,7 @@
  * share one scale space, or points drift off their own axis.
  */
 import { describe, expect, it } from "bun:test";
-import { MONTH_DAY_REFERENCE_YEAR, aes, gg, scaleXMonthDay, scaleYMonthDay } from "@ggsvelte/spec";
+import { MONTH_DAY_REFERENCE_YEAR, aes, gg, scaleXMonthDay, scaleYMonthDay } from "@ggts-sh/spec";
 
 import { ColumnTable } from "../../src/table.ts";
 import { runPipeline } from "../../src/pipeline.ts";

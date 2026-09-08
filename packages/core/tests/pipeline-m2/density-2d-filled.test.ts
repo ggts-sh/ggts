@@ -2,7 +2,7 @@
  * M2 pipeline — geom_density_2d_filled closed rings (#802 phase 2).
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import type { PathsBatch } from "../../src/scene.ts";
 import { isClosedRing } from "../../src/stats/density-2d.ts";

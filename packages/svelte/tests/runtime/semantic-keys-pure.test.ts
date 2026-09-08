@@ -4,7 +4,7 @@
 import { fromAny } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 
 import { INTERACTION_DIAGNOSTIC_CATALOG } from "../../src/lib/interaction/interaction.js";
 import {

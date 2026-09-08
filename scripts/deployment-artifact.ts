@@ -116,11 +116,11 @@ export function ensureNotFoundNoindex(buildDirectory: string): void {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex,follow" />
     <meta http-equiv="content-security-policy" content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-src 'none'; img-src 'self' data:; object-src 'none'; script-src 'none'; script-src-attr 'none'; style-src 'self' 'sha256-${styleHash}'; style-src-attr 'none'; upgrade-insecure-requests" />
-    <title>Not found — ggsvelte</title>
+    <title>Not found — ggts</title>
     <style>${NOT_FOUND_STYLE}</style>
   </head>
   <body>
-    <main><h1>Not found</h1><p>This page does not exist.</p><p><a href="/">Go to the ggsvelte documentation</a></p></main>
+    <main><h1>Not found</h1><p>This page does not exist.</p><p><a href="/">Go to the ggts documentation</a></p></main>
   </body>
 </html>
 `,
@@ -143,7 +143,7 @@ export function ensurePreviewNoindexHeader(
 
 /**
  * Production keeps absolute `/ggsvelte` cleanup redirects so cutover smoke sees
- * canonical `Location: https://ggsvelte.sh/...`. Preview must stay on the
+ * canonical `Location: https://ggts.sh/...`. Preview must stay on the
  * preview origin — rewrite those rules to same-host targets so trusted
  * previews never force traffic onto production.
  */
@@ -155,8 +155,8 @@ export function ensurePreviewCleanupRedirects(
   const path = join(buildDirectory, "_redirects");
   if (!existsSync(path)) return;
   const redirects = readFileSync(path, "utf8")
-    .replaceAll("/ggsvelte https://ggsvelte.sh/ 301", "/ggsvelte / 301")
-    .replaceAll("/ggsvelte/* https://ggsvelte.sh/:splat 301", "/ggsvelte/* /:splat 301");
+    .replaceAll("/ggsvelte https://ggts.sh/ 301", "/ggsvelte / 301")
+    .replaceAll("/ggsvelte/* https://ggts.sh/:splat 301", "/ggsvelte/* /:splat 301");
   writeFileSync(path, redirects);
 }
 
@@ -267,8 +267,8 @@ function validateRedirects(
   }
   if (expected.buildMode === "cloudflare-production") {
     if (
-      !hasRedirectRule(redirects, "/ggsvelte https://ggsvelte.sh/ 301") ||
-      !hasRedirectRule(redirects, "/ggsvelte/* https://ggsvelte.sh/:splat 301")
+      !hasRedirectRule(redirects, "/ggsvelte https://ggts.sh/ 301") ||
+      !hasRedirectRule(redirects, "/ggsvelte/* https://ggts.sh/:splat 301")
     ) {
       problems.push("_redirects is missing the absolute /ggsvelte cleanup redirect");
     }
@@ -276,8 +276,8 @@ function validateRedirects(
   }
   if (expected.buildMode !== "cloudflare-preview") return;
   if (
-    hasRedirectRule(redirects, "/ggsvelte https://ggsvelte.sh/ 301") ||
-    hasRedirectRule(redirects, "/ggsvelte/* https://ggsvelte.sh/:splat 301")
+    hasRedirectRule(redirects, "/ggsvelte https://ggts.sh/ 301") ||
+    hasRedirectRule(redirects, "/ggsvelte/* https://ggts.sh/:splat 301")
   ) {
     problems.push("preview _redirects must not send /ggsvelte cleanup traffic to production");
   }

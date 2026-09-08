@@ -4,7 +4,7 @@
     SHARED_LAYER_PROPS,
     geomReferenceList,
     type GeomReferenceEntry,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
 
   import { thumbnailPathForGeom } from "$lib/geom-thumbnails";
 

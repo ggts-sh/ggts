@@ -1,7 +1,7 @@
 import { fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 
-import type { SemanticViewport } from "@ggsvelte/core";
+import type { SemanticViewport } from "@ggts-sh/core";
 
 import {
   buildIntervalSelectionFromScene,

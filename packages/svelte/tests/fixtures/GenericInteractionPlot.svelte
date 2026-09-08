@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PortableSpec, SpecInput } from "@ggsvelte/spec";
+  import type { PortableSpec, SpecInput } from "@ggts-sh/spec";
 
   import GGPlot from "../../src/lib/GGPlot.svelte";
   import { createPlotInteraction } from "../../src/lib/interaction/controller.svelte.js";

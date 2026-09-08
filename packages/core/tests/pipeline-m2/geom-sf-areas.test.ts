@@ -4,7 +4,7 @@
  * GeometryCollection sources, plus params/stat surface basics.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import type { PathsBatch } from "../../src/scene.ts";
 import { geo, polyA, polyB, size } from "./geom-sf-fixtures.ts";

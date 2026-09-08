@@ -4,7 +4,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { planBasicAxis } from "../../src/layout/basic-axis.ts";
 import { runPipeline } from "../../src/pipeline.ts";

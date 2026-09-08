@@ -10,8 +10,8 @@
     GeometryBatch,
     RenderModel,
     Stratum,
-  } from "@ggsvelte/core";
-  import { sceneLabel } from "@ggsvelte/core";
+  } from "@ggts-sh/core";
+  import { sceneLabel } from "@ggts-sh/core";
 
   import {
     paintCanvasStratum,

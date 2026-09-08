@@ -1,7 +1,7 @@
 /**
  * Build per-panel LayerFrames: bind layers, stats, position, remap source rows.
  */
-import { configuredColorScaleType, type NormalizedSpec, type PortableSpec } from "@ggsvelte/spec";
+import { configuredColorScaleType, type NormalizedSpec, type PortableSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 
@@ -27,7 +27,7 @@ import { preflightTemporalBindings } from "./temporal-preflight.js";
 import type { ColumnTransformConfig } from "../scales/transform.js";
 import { DIAGNOSTIC_EVIDENCE_VALUE_LIMIT } from "./diagnostics-emit.js";
 
-const DOCS = "https://ggsvelte.sh/guide/errors";
+const DOCS = "https://ggts.sh/guide/errors";
 
 const STYLE_AESTHETICS = ["size", "linewidth", "alpha", "shape", "linetype"] as const;
 

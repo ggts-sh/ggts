@@ -5,7 +5,7 @@
  * SSR + first client paint use these strings so the page is readable and
  * full-width immediately; user intent (hover/focus) upgrades to interactive.
  */
-import { registerAll, renderToSVGString } from "@ggsvelte/core";
+import { registerAll, renderToSVGString } from "@ggts-sh/core";
 
 // Headless full-grammar rendering (#1420): explicit opt-in.
 registerAll();
@@ -18,7 +18,7 @@ import {
   type AuthoringRows,
   type ThemeName,
   type ThemeSpec,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { MONTH_BREAKS, type SchemeName, type ThemeSpecimenKind } from "./catalog.js";
 import {
@@ -291,7 +291,7 @@ void MONTH_BREAKS;
 /** Sequential Macdonell raster — static shell before SequentialColorLabLive hydrates. */
 export function sequentialRasterStaticSvg(input: {
   readonly label: string;
-  readonly scale: import("@ggsvelte/spec").ColorScaleSpec;
+  readonly scale: import("@ggts-sh/spec").ColorScaleSpec;
   readonly width?: number;
   readonly height?: number;
 }): string {

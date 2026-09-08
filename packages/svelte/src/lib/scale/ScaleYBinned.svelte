@@ -3,7 +3,7 @@
   import {
     scaleYBinned,
     type ContinuousPositionScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

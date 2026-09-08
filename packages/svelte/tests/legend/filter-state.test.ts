@@ -7,7 +7,7 @@
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import type { LegendFilterEvent } from "../../src/lib/legend/filter.js";
 import { createLegendFilterState } from "../../src/lib/legend/filter-state.svelte.js";

@@ -1,5 +1,5 @@
 {
-  "name": "ggsvelte-monorepo",
+  "name": "ggts-monorepo",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -95,8 +95,8 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
     "@changesets/cli": "3.0.1",
-    "@ggsvelte/core": "workspace:*",
-    "@ggsvelte/spec": "workspace:*",
+    "@ggts-sh/core": "workspace:*",
+    "@ggts-sh/spec": "workspace:*",
     "@playwright/test": "1.61.1",
     "@total-typescript/shoehorn": "^0.1.2",
     "@types/bun": "^1.4.0",

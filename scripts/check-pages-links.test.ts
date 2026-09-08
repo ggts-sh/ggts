@@ -62,7 +62,7 @@ describe("packed Pages link checks", () => {
           "../llms.txt",
           "../_app/app.js",
           "../",
-          "https://github.com/ljodea/ggsvelte",
+          "https://github.com/ggts-sh/ggts",
           "#inspection",
         ],
         files,

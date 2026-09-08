@@ -2,7 +2,7 @@
  * Edition-1 (legacy) theme overlay. Kept apart from the cohort tables so the
  * legacy table can spread the fully-assembled catalog without an import cycle.
  */
-import type { ThemeName } from "@ggsvelte/spec";
+import type { ThemeName } from "@ggts-sh/spec";
 import { LEGACY_BASE_FOUNDATION, themed, type ThemeTokens } from "./theme-construct.js";
 
 const LEGACY_BASE = themed(LEGACY_BASE_FOUNDATION);

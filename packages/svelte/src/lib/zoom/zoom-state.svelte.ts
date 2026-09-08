@@ -6,7 +6,7 @@
  * NOT read model/announce (later-declared / handler-only;
  * construction-order DAG). Those are handler-only deferred getters.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { InteractionContext } from "../interaction/interaction-context.svelte.js";
 import type { InteractionSource, ResolvedInteractionConfig } from "../interaction/interaction.js";

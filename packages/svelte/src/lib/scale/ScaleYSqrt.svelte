@@ -3,7 +3,7 @@
   import {
     scaleYSqrt,
     type TransformedPositionScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

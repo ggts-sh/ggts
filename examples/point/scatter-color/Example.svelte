@@ -7,7 +7,7 @@
     Labs,
     ScaleColorDiscrete,
     ThemeFew,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { guerry } from "./data.js";
 </script>

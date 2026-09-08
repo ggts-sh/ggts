@@ -1,7 +1,7 @@
 /**
  * Smooth stat → LayerFrame (fitted y with optional SE band).
  */
-import type { SmoothParams } from "@ggsvelte/spec";
+import type { SmoothParams } from "@ggts-sh/spec";
 
 import { statSmooth } from "../stats/smooth.js";
 import type { ColumnTable } from "../table.js";
@@ -41,7 +41,7 @@ export function buildSmoothFrame(
     advisories.push({
       code: "smooth-method-inferred",
       path: `layers.${index}`,
-      chosen: `stat smooth using method = "${result.methodUsed}" (largest group ${result.methodUsed === "loess" ? "<" : ">="} 1000 rows; ggplot2 would escalate to gam, which ggsvelte does not ship)`,
+      chosen: `stat smooth using method = "${result.methodUsed}" (largest group ${result.methodUsed === "loess" ? "<" : ">="} 1000 rows; ggplot2 would escalate to gam, which ggts does not ship)`,
       howToOverride: `Set params.method ("lm" | "loess") on layer ${index}.`,
     });
   }

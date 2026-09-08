@@ -14,7 +14,15 @@ export interface CommandStep {
   expect?: string;
 }
 
-export const publishablePackageDirectories = ["spec", "core", "compose", "svelte", "cli"] as const;
+export const publishablePackageDirectories = [
+  "spec",
+  "core",
+  "compose",
+  "svelte",
+  "react",
+  "cli",
+  "skill",
+] as const;
 
 export type PublishablePackageVersions = Readonly<
   Record<(typeof publishablePackageDirectories)[number], string>
@@ -33,7 +41,7 @@ export const consumerPlotSpec = {
 
 export function packageTarballNames(versions: PublishablePackageVersions): string[] {
   return publishablePackageDirectories.map(
-    (packageDirectory) => `ggsvelte-${packageDirectory}-${versions[packageDirectory]}.tgz`,
+    (packageDirectory) => `ggts-sh-${packageDirectory}-${versions[packageDirectory]}.tgz`,
   );
 }
 
@@ -53,6 +61,7 @@ export function resolveConsumerOptions(
     // Single-sourced from support-matrix.json — the floor lives in one place.
     svelteVersion: args[1] ?? environment["SVELTE_VERSION"] ?? loadSupportMatrix().svelte.minimum,
     packageManagerVersion: args[2] ?? environment["PACKAGE_MANAGER_VERSION"],
+    reactVersion: args[3] ?? environment["REACT_VERSION"] ?? loadSupportMatrix().react.minimum,
   };
 }
 
@@ -98,6 +107,7 @@ function scriptRunner(packageManager: PackageManager, script: string): CommandSt
 export function commandPlan(
   packageManager: PackageManager,
   expectedCliPackageVersion: string,
+  framework: "svelte" | "react" = "svelte",
 ): CommandStep[] {
   const install: CommandStep =
     packageManager === "npm"
@@ -119,16 +129,18 @@ export function commandPlan(
           };
 
   const typecheck = scriptRunner(packageManager, "check");
-  typecheck.label = "sync and type-check SvelteKit consumer";
+  typecheck.label =
+    framework === "svelte" ? "sync and type-check SvelteKit consumer" : "type-check React consumer";
   const build = scriptRunner(packageManager, "build");
-  build.label = "build and prerender SvelteKit consumer";
-  const cliVersion = runner(packageManager, "ggsvelte-render", ["--version"]);
+  build.label =
+    framework === "svelte" ? "build and prerender SvelteKit consumer" : "build React consumer";
+  const cliVersion = runner(packageManager, "ggts", ["--version"]);
   cliVersion.label = "CLI version";
   cliVersion.expect = expectedCliPackageVersion;
-  const cliFile = runner(packageManager, "ggsvelte-render", ["plot.json"]);
+  const cliFile = runner(packageManager, "ggts", ["render", "plot.json"]);
   cliFile.label = "CLI file input";
   cliFile.expect = "<svg";
-  const cliStdin = runner(packageManager, "ggsvelte-render", []);
+  const cliStdin = runner(packageManager, "ggts", ["render"]);
   cliStdin.label = "CLI stdin";
   cliStdin.input = `${JSON.stringify(consumerPlotSpec)}\n`;
   cliStdin.expect = "<svg";
@@ -137,12 +149,16 @@ export function commandPlan(
     install,
     typecheck,
     build,
-    {
-      label: "verify prerendered Quickstart",
-      command: "node",
-      args: ["verify-prerender.mjs"],
-      expect: "prerendered Quickstart verified",
-    },
+    ...(framework === "svelte"
+      ? [
+          {
+            label: "verify prerendered Quickstart",
+            command: "node",
+            args: ["verify-prerender.mjs"],
+            expect: "prerendered Quickstart verified",
+          },
+        ]
+      : []),
     {
       label: "runtime and SSR smoke",
       command: "node",
@@ -152,5 +168,6 @@ export function commandPlan(
     cliVersion,
     cliFile,
     cliStdin,
+    { ...runner(packageManager, "ggts", ["check", "plot.json"]), label: "CLI check" },
   ];
 }

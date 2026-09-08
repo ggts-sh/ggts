@@ -2,8 +2,8 @@
  * M1 geoms: col, bar, area, rule, text, and multi-geom determinism.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
-import type { SpecInput } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
+import type { SpecInput } from "@ggts-sh/spec";
 import { EDITION_DEFAULTS } from "../../src/editions.ts";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import { renderToSVGString } from "../../src/render-svg-full.ts";

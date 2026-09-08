@@ -65,7 +65,7 @@ export interface RenderModel {
   lineage: LineageStore<number>;
   /** Shared epoch-scoped interaction candidate storage. Built lazily on first
    *  access (#1421): headless renders never pay for it, and the lean
-   *  `@ggsvelte/core/render` entry throws here (full entry required). */
+   *  `@ggts-sh/core/render` entry throws here (full entry required). */
   candidates: CandidateStore;
   /** Trained semantic formatters. Coord transforms never swap x and y here. */
   axisFormatters: Readonly<{ x: AxisValueFormatter; y: AxisValueFormatter }>;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { gg, aes } from "@ggsvelte/spec";
+import { gg, aes } from "@ggts-sh/spec";
 
 import { PipelineError, runPipeline } from "../src/pipeline.ts";
 import type { PathsBatch, PointsBatch } from "../src/scene.ts";

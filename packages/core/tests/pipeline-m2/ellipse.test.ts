@@ -2,7 +2,7 @@
  * M2 pipeline — stat ellipse on path (#812).
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import type { PathsBatch } from "../../src/scene.ts";
 import { size } from "./fixtures.ts";

@@ -4,7 +4,7 @@
  *
  * Within-mark gradient/glow paint (#591) lives in mark-paint.ts.
  */
-import { LINETYPE_NAMES, POINT_SHAPE_NAMES } from "@ggsvelte/spec";
+import { LINETYPE_NAMES, POINT_SHAPE_NAMES } from "@ggts-sh/spec";
 
 import type { GlyphsBatch, PathsBatch, PointsBatch, RectsBatch, SegmentsBatch } from "./scene.js";
 import { LINETYPE_DASHES, type Linetype, type PointShape } from "./scales/style.js";

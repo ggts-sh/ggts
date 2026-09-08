@@ -1,6 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
-  import { coordReferenceList, type CoordReferenceEntry } from "@ggsvelte/spec";
+  import { coordReferenceList, type CoordReferenceEntry } from "@ggts-sh/spec";
 
   let query = $state("");
   const all = coordReferenceList();
@@ -87,7 +87,7 @@
     replace whole; only one coord is active. Omit coord for default Cartesian.
   </p>
   <pre class="snippet"><code
-      >{`import { GGPlot, GeomCol, CoordFlip } from "@ggsvelte/svelte";
+      >{`import { GGPlot, GeomCol, CoordFlip } from "@ggts-sh/svelte";
 
 <GGPlot data={rows} aes={{ x: "category", y: "value" }}>
   <GeomCol />
@@ -99,7 +99,7 @@
     <code>normalize()</code>:
   </p>
   <pre class="snippet"><code
-      >{`import { coordFixed, coordTransform } from "@ggsvelte/spec";
+      >{`import { coordFixed, coordTransform } from "@ggts-sh/spec";
 
 coordFixed({ ratio: 1 })
 // → { type: "fixed" }
@@ -123,7 +123,7 @@ coordTransform({ x: "log10", y: { transform: "sqrt", reverse: true } })
     shells are preferred when the form is known at authoring time.
   </p>
   <pre class="snippet"><code
-      >{`import { GGPlot, GeomPoint, Coord } from "@ggsvelte/svelte";
+      >{`import { GGPlot, GeomPoint, Coord } from "@ggts-sh/svelte";
 
 const coord = condition ? { type: "flip" } : { type: "fixed", ratio: 2 };
 

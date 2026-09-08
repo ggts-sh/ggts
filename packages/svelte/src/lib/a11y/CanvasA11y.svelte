@@ -3,7 +3,7 @@
    * Canvas-stratum accessibility surface for GGPlot.
    * Host owns shared open state (plot-scoped across canvas strata).
    */
-  import type { GeometryBatch, RenderModel } from "@ggsvelte/core";
+  import type { GeometryBatch, RenderModel } from "@ggts-sh/core";
 
   import { a11yMarkCount, a11yRows } from "./canvas-a11y.js";
 

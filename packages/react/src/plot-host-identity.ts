@@ -9,7 +9,7 @@ import {
 import type { GGPlotProps } from "./plot-props.js";
 
 function childInspectIdentity(registry: LayerRegistry): DatumKey | undefined {
-  const inspectChild = registry.capabilities("inspect")[0];
+  const inspectChild = registry.capabilities("inspect").at(-1);
   const identity = inspectChild?.["identity"];
   if (
     typeof identity === "function" ||
@@ -28,7 +28,10 @@ export function hostDatumKey(
   identityKey: GGPlotProps["key"],
   assembledData: unknown,
 ): DatumKey {
-  const inspectIdentity = childInspectIdentity(registry) ?? identityFromInspectInput(props.inspect);
+  const inspectIdentity =
+    registry.capabilities("inspect").length > 0
+      ? childInspectIdentity(registry)
+      : identityFromInspectInput(props.inspect);
   const selectIdentity = identityFromSelectInput(props.select);
   const explicitKey = pickExplicitDatumKey({
     ...(inspectIdentity !== undefined && { inspect: inspectIdentity }),
@@ -41,14 +44,4 @@ export function hostDatumKey(
     ...(explicitKey !== undefined && { explicit: explicitKey }),
     data: props.data ?? assembledData,
   });
-}
-
-export function inspectMaxDistance(
-  props: Pick<GGPlotProps, "inspect">,
-  registry: LayerRegistry,
-): number {
-  const fromProp = typeof props.inspect === "object" ? props.inspect.maxDistance : undefined;
-  if (fromProp !== undefined) return fromProp;
-  const child = registry.capabilities("inspect")[0]?.["maxDistance"];
-  return typeof child === "number" ? child : 20;
 }

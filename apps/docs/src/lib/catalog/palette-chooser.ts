@@ -2,7 +2,7 @@
  * Chooser logic for /palettes: sort order, deep-link resolution, and the
  * self-declared colorblind-safe set. Pure functions — no chart imports.
  */
-import type { CATEGORICAL_SCHEME_NAMES } from "@ggsvelte/spec";
+import type { CATEGORICAL_SCHEME_NAMES } from "@ggts-sh/spec";
 
 type CategoricalSchemeName = (typeof CATEGORICAL_SCHEME_NAMES)[number];
 

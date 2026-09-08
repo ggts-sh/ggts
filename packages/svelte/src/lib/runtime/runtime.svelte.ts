@@ -5,16 +5,16 @@
  * Effects register at construction (#627)
  * so relative order vs host effects is preserved.
  */
-import { installCandidates, planStrata, registerBasic, runPipeline } from "@ggsvelte/core";
-import type { RenderModel, ScaleState, Stratum } from "@ggsvelte/core";
-import type { PortableSpec } from "@ggsvelte/spec";
+import { installCandidates, planStrata, registerBasic, runPipeline } from "@ggts-sh/core";
+import type { RenderModel, ScaleState, Stratum } from "@ggts-sh/core";
+import type { PortableSpec } from "@ggts-sh/spec";
 import { untrack } from "svelte";
 
 // GGPlot default registration contract (#1420): basic geoms/stats +
 // interaction candidates (#1421), so identity charts and hit-testing work out
 // of the box. Temporal scale children self-register full temporal support;
 // spec-driven apps call registerAll(). Calls (not the /render side effect)
-// keep one @ggsvelte/core entry in dev-server prebundles — a /render + barrel
+// keep one @ggts-sh/core entry in dev-server prebundles — a /render + barrel
 // split would fork the registries.
 registerBasic();
 installCandidates();

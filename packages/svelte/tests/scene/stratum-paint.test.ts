@@ -1,7 +1,7 @@
 import { fromAny, fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it, vi } from "vitest";
 
-import type { GeometryBatch } from "@ggsvelte/core";
+import type { GeometryBatch } from "@ggts-sh/core";
 
 import { paintCanvasStratum, resolveBatchFocusMasks } from "../../src/lib/scene/stratum-paint.js";
 

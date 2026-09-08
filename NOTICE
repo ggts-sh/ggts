@@ -24,7 +24,7 @@ project plan.
 
 Kyoto cherry-blossom full-bloom dates (bundled teaching dataset)
 ----------------------------------------------------------------
-packages/svelte/src/lib/data/kyoto-sakura.ts and the docs asset
+packages/core/src/data/kyoto-sakura.ts and the docs asset
 apps/docs/static/kyoto-sakura.json contain peak-bloom dates for Kyoto,
 Japan, 812–2026 CE.
 
@@ -109,7 +109,7 @@ in any publication using the data, which this notice does.
 
 Palmer Archipelago penguins (bundled teaching dataset)
 ------------------------------------------------------
-packages/svelte/src/lib/data/palmer-penguins.ts and the docs asset
+packages/core/src/data/palmer-penguins.ts and the docs asset
 apps/docs/static/palmer-penguins.json contain 333 complete penguin body
 measurements (Adelie, Chinstrap, Gentoo) from Palmer Station, Antarctica,
 2007–2009.
@@ -128,7 +128,7 @@ Palmer LTER (see the PALMER_PENGUINS_CITATION export).
 
 EPA fuel economy — popular models (bundled teaching dataset)
 ------------------------------------------------------------
-packages/svelte/src/lib/data/mpg.ts and the docs asset apps/docs/static/mpg.json
+packages/core/src/data/mpg.ts and the docs asset apps/docs/static/mpg.json
 contain 234 vehicle configurations for 38 popular models in model years 1999
 and 2008.
 
@@ -144,7 +144,7 @@ subset definition when publishing charts (see the MPG_CITATION export).
 
 TidyTuesday teaching tables (bundled)
 -------------------------------------
-Four additional teaching tables under packages/svelte/src/lib/data/ and the
+Four additional teaching tables under packages/core/src/data/ and the
 matching apps/docs/static/*.json assets are curated subsets of TidyTuesday
 weekly datasets (https://github.com/rfordatascience/tidytuesday). The
 TidyTuesday project releases its curated tables under CC0 1.0 Universal.

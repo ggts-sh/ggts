@@ -6,7 +6,7 @@
  * preflights so browser chart chunks do not load schema-declarations /
  * typebox/compile.
  */
-import type { NormalizedSpec, PortableSpec, SpecError, SpecInput } from "@ggsvelte/spec";
+import type { NormalizedSpec, PortableSpec, SpecError, SpecInput } from "@ggts-sh/spec";
 import {
   assertStructuralGate,
   normalize,
@@ -14,7 +14,7 @@ import {
   temporalGuideTypeMismatchError,
   temporalLabelConfigurationError,
   temporalLocaleConfigurationError,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { PipelineError } from "./types.js";
 

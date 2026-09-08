@@ -7,7 +7,7 @@
     Labs,
     ScaleYSqrt,
     ThemeClean,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { breslauBurials } from "./data.js";
 </script>

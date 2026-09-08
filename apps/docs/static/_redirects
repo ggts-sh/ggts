@@ -1,5 +1,5 @@
-/ggsvelte https://ggsvelte.sh/ 301
-/ggsvelte/* https://ggsvelte.sh/:splat 301
+/ggsvelte https://ggts.sh/ 301
+/ggsvelte/* https://ggts.sh/:splat 301
 /guide/data-mappings /guide/getting-started 301
 /guide/layers-marks /guide/getting-started 301
 /guide/themes-color /themes 301

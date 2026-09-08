@@ -2,7 +2,7 @@
  * Layout/scene assembly helpers used by runPipeline: domain projection,
  * tick formatters, margin max, and warning/advisory dedupe.
  */
-import type { PositionScaleSpec, TemporalPrecision, TemporalScaleKind } from "@ggsvelte/spec";
+import type { PositionScaleSpec, TemporalPrecision, TemporalScaleKind } from "@ggts-sh/spec";
 
 import type {
   BandLayoutDomainContext,

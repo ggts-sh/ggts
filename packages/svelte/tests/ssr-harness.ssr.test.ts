@@ -1,4 +1,4 @@
-import { runPipeline, type AxisGuidePlan } from "@ggsvelte/core";
+import { runPipeline, type AxisGuidePlan } from "@ggts-sh/core";
 import { describe, expect, it } from "vitest";
 
 import GGPlot from "../src/lib/GGPlot.svelte";

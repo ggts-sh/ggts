@@ -3,7 +3,7 @@
   import {
     scaleColorContinuous,
     type SequentialColorScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

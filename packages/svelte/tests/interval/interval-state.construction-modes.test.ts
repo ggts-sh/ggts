@@ -4,8 +4,8 @@
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import type { RenderModel } from "@ggsvelte/core";
-import { encodeKey } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
+import { encodeKey } from "@ggts-sh/core";
 
 import { withEffectRoot } from "../helpers/effect-root.svelte.js";
 import { testInteractionContext } from "../helpers/interaction-context.js";

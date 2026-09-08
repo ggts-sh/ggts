@@ -10,7 +10,7 @@ import {
   registerBasicPoints,
   registerBandGuide,
   registerOrdinalColor,
-} from "@ggsvelte/core/headless/register";
+} from "@ggts-sh/core/headless/register";
 
 import { mountChartJs } from "../adapters/chartjs";
 import { mountD3 } from "../adapters/d3";
@@ -28,14 +28,12 @@ import {
   type LibId,
   type ScenarioCase,
   type ScenarioId,
-  type ScatterColumns,
   type UpdateColumns,
 } from "../scenarios";
 import type { MountHandle } from "./lifecycle";
 
-// The ggplot adapter is genuinely runtime-selected: it is opt-in via the
-// `?ggplot` query flag so ggplot stays out of the default harness graph; a
-// static import would eagerly pull it into every page load.
+// The harness loads the requested GGPlot host on its own page.
+// A static import would install its registrations in every peer cell.
 const ggplotAdapter = new URLSearchParams(location.search).has("ggplot")
   ? await import("../adapters/ggsvelte-ggplot")
   : null;
@@ -101,11 +99,11 @@ export function mountSync(
     }
     case "ggsvelte-ggplot": {
       if (ggplotAdapter === null) throw new Error("ggsvelte-ggplot is not loaded");
-      return ggplotAdapter.mountGgsvelteGgplot(scenario, data as ScatterColumns, root);
+      return ggplotAdapter.mountGgsvelteGgplot(scenario, data, root);
     }
     case "ggsvelte-react": {
       if (reactAdapter === null) throw new Error("ggsvelte-react is not loaded");
-      return reactAdapter.mountGgsvelteReact(scenario, data as ScatterColumns, root);
+      return reactAdapter.mountGgsvelteReact(scenario, data, root);
     }
     default:
       throw new Error(

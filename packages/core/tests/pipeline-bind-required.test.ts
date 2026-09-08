@@ -9,7 +9,7 @@
  * is a compile error until someone picks an arm.
  */
 import { describe, expect, it } from "bun:test";
-import { ALIAS_GEOMS, KNOWN_GEOMS, type NormalizedGeomName } from "@ggsvelte/spec";
+import { ALIAS_GEOMS, KNOWN_GEOMS, type NormalizedGeomName } from "@ggts-sh/spec";
 
 import { assertRequiredChannels } from "../src/pipeline/bind-layer-required.ts";
 import { PipelineError } from "../src/pipeline/types.ts";

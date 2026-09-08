@@ -1,6 +1,6 @@
 {
-  "name": "@ggsvelte/compose",
-  "version": "0.42.0",
+  "name": "@ggts-sh/compose",
+  "version": "0.43.0",
   "description": "Framework-free plot composition: assemble PortableSpec from props and grammar layers.",
   "keywords": [
     "charts",
@@ -8,13 +8,13 @@
     "grammar-of-graphics",
     "spec"
   ],
-  "homepage": "https://ggsvelte.sh/",
-  "bugs": "https://github.com/ljodea/ggsvelte/issues",
+  "homepage": "https://ggts.sh/",
+  "bugs": "https://github.com/ggts-sh/ggts/issues",
   "license": "MIT",
   "author": "Liam O'Dea",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ljodea/ggsvelte.git",
+    "url": "git+https://github.com/ggts-sh/ggts.git",
     "directory": "packages/compose"
   },
   "files": [
@@ -34,7 +34,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@ggsvelte/spec": "^0.42.0"
+    "@ggts-sh/spec": "^0.43.0"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

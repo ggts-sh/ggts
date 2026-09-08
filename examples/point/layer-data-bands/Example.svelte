@@ -7,7 +7,7 @@
     Inspect,
     Labs,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { callouts, nationalDebt, warYears } from "./data.js";
 </script>

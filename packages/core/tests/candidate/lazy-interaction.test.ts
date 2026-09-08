@@ -1,7 +1,7 @@
 /**
  * Lazy interaction candidates (#1421).
  *
- * The lean render entry (`@ggsvelte/core/render`) must not carry the
+ * The lean render entry (`@ggts-sh/core/render`) must not carry the
  * candidate-store graph, and even the full entry must not BUILD the store
  * until something actually touches `model.candidates` / `model.lineage`
  * (headless SSR renders never hit-test).
@@ -14,7 +14,7 @@
  * assembly, exactly as before #1421.
  */
 import { afterAll, describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import {
   getCandidateRuntime,
@@ -93,7 +93,7 @@ describe("lazy interaction candidates", () => {
       expect(svg).toContain("<svg");
 
       const model = runPipeline(spec, size);
-      expect(() => model.candidates).toThrowError(/@ggsvelte\/core/);
+      expect(() => model.candidates).toThrowError(/@ggts-sh\/core/);
     } finally {
       installCandidates();
     }

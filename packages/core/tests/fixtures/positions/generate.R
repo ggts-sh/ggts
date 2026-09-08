@@ -6,7 +6,7 @@
 #
 # Expected rows are keyed by (x value, group value) so comparisons are
 # order-independent. Datasets are chosen so first-occurrence order equals
-# factor-level (alphabetical) order: ggsvelte canonicalizes groups by first
+# factor-level (alphabetical) order: ggts canonicalizes groups by first
 # occurrence while ggplot2 uses factor levels — with aligned orders the
 # fixtures pin the shared semantics (decision 0008 documents the deviation
 # for unaligned data).

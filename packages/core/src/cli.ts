@@ -1,10 +1,10 @@
 /**
- * `ggsvelte-render` CLI implementation (the bin lives on the `@ggsvelte/cli`
- * package — packages/cli/bin/ggsvelte-render.js is a thin wrapper around
+ * `ggts render` CLI implementation (the bin lives on the `@ggts-sh/cli`
+ * package — packages/cli/bin/ggts.js is a thin wrapper around
  * this pure-entry module, so the logic is testable without spawning).
  *
  * Contract:
- *   ggsvelte-render [spec.json] [--width N] [--height N] [--data file.json]
+ *   ggts render [spec.json] [--width N] [--height N] [--data file.json]
  *                   [--max-marks N] [--inspect MODE]
  *
  *   - The spec is read from the file argument, or from stdin when omitted.
@@ -27,8 +27,8 @@
  *   2  usage error (bad flags, unreadable input, invalid JSON)
  *   3  invalid spec (validation errors — see stderr JSON lines)
  */
-import type { SpecInput } from "@ggsvelte/spec";
-import { lintSpec, SpecValidationError, validate } from "@ggsvelte/spec";
+import type { SpecInput } from "@ggts-sh/spec";
+import { lintSpec, SpecValidationError, validate } from "@ggts-sh/spec";
 
 import type { CLIDiagnosticCode } from "./diagnostics.js";
 import {
@@ -103,7 +103,7 @@ export const CLI_OPTIONS = [
     anchor: "version",
     flag: "--version",
     value: "",
-    description: "Print the installed ggsvelte CLI version",
+    description: "Print the installed ggts CLI version",
     kind: "boolean",
     target: "version",
   },
@@ -127,16 +127,18 @@ const cliOptionLines = CLI_OPTIONS.map((option) => {
   return `  ${signature.padEnd(17)} ${option.description}${detail}`;
 }).join("\n");
 
-const USAGE = `Usage: ggsvelte-render [spec.json] [options]
+function cliUsage(command?: "render" | "check"): string {
+  return `Usage: ggts ${command ?? "render"} [spec.json] [options]
 
-Renders a ggsvelte plot spec (JSON) to SVG on stdout. Reads the spec from
+Renders a ggts plot spec (JSON) to SVG on stdout. Reads the spec from
 the file argument, or from stdin when omitted.
 
 Options:
 ${cliOptionLines}
 
 Diagnostics are JSON lines on stderr. Exit codes: 0 rendered, 1 render
-failed, 2 usage error, 3 invalid spec.`;
+failed, 2 usage error, 3 invalid spec.${command === "check" ? "\nCheck runs the same rendering checks and diagnostics, with no SVG output." : ""}`;
+}
 
 interface ParsedArgs {
   specPath: string | null;
@@ -234,8 +236,10 @@ function parseJSON(io: CLIIO, text: string, what: string): { value: unknown } | 
 }
 
 export interface CLIRunOptions {
-  /** Version of the package that owns the installed ggsvelte-render bin. */
+  /** Version of the package that owns the installed ggts render bin. */
   version?: string;
+  /** Installed CLI subcommand; check validates the full render and suppresses SVG. */
+  command?: "render" | "check";
 }
 
 function handleSpecialArgs(args: ParsedArgs, io: CLIIO, options: CLIRunOptions): number | null {
@@ -256,14 +260,14 @@ function handleSpecialArgs(args: ParsedArgs, io: CLIIO, options: CLIRunOptions):
           ? "--version must be used without a spec or other options"
           : "--version is unavailable from this programmatic runner",
       );
-      io.writeErr(USAGE);
+      io.writeErr(cliUsage(options.command));
       return 2;
     }
     io.writeOut(`${options.version}\n`);
     return 0;
   }
   if (args.help) {
-    io.writeErr(USAGE);
+    io.writeErr(cliUsage(options.command));
     return 0;
   }
   return null;
@@ -398,7 +402,7 @@ export async function runCLI(
     args = parseArgs(argv);
   } catch (error) {
     cliError(io, "usage", (error as Error).message);
-    io.writeErr(USAGE);
+    io.writeErr(cliUsage(options.command));
     return 2;
   }
   const special = handleSpecialArgs(args, io, options);
@@ -418,5 +422,20 @@ export async function runCLI(
   const height =
     args.height ?? (typeof specRecord["height"] === "number" ? specRecord["height"] : 400);
 
-  return renderCLI(spec, args, data, width, height, io);
+  return renderCLI(
+    spec,
+    args,
+    data,
+    width,
+    height,
+    options.command === "check"
+      ? {
+          ...io,
+          writeOut: () => {},
+          writeErr: (line) => {
+            io.writeErr(line);
+          },
+        }
+      : io,
+  );
 }

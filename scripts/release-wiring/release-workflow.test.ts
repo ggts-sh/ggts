@@ -38,7 +38,7 @@ it("uses elastic hosted runners for PR correctness and visual checks", () => {
   const cancel = read(".github/workflows/cancel-on-pr-close.yml");
 
   // PR CI and VR must not regress to the four-slot repo-local pool. Optional,
-  // hardware-sensitive benchmark and nightly workflows may remain self-hosted.
+  // the migrated repository has no registered self-hosted runner pool.
   for (const workflow of [ci, vr, bench, nightly]) {
     expect(heavyRunsOnCount(workflow)).toBe(0);
     expect(workflow).not.toContain("heavy-self-hosted-cpu");
@@ -48,8 +48,8 @@ it("uses elastic hosted runners for PR correctness and visual checks", () => {
   expect(ci.match(/runs-on: ubuntu-latest/g)?.length).toBeGreaterThanOrEqual(16);
   expect(ci).toContain("runs-on: ${{ matrix.os }}");
   expect(vr.match(/runs-on: ubuntu-latest/g)?.length).toBeGreaterThanOrEqual(4);
-  expect(selfHostedGgsvelteCount(bench)).toBe(1);
-  expect(selfHostedGgsvelteCount(nightly)).toBeGreaterThanOrEqual(1);
+  expect(selfHostedGgsvelteCount(bench)).toBe(0);
+  expect(selfHostedGgsvelteCount(nightly)).toBe(0);
   expect(ci).not.toContain("heavy-component");
   expect(ci).not.toContain("heavy-packages-dist");
   expect(ci).not.toContain("heavy-consumer-ubuntu");

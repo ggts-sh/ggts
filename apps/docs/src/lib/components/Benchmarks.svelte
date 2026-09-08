@@ -34,7 +34,7 @@
   const kb = (value: number): string => `${String(Math.round(value))} KB`;
 
   /*
-   * Column order ggsvelte → TanStack → SveltePlot → Unovis → LayerCake.
+   * Column order ggts → TanStack → SveltePlot → Unovis → LayerCake.
    * Bun's homepage table leads with its flaw before the wins; same here:
    * bundle size and pre-1.0 up top. Claims verified against svelteplot@0.14
    * / @tanstack/charts@0.14 / @unovis/svelte@1.6 / layercake@10 sources.
@@ -42,7 +42,7 @@
   const rows: readonly Row[] = [
     {
       feature: "Bundle size",
-      desc: "Min+gzip, 1k scatter app",
+      desc: "Min+gzip, scatter import graph",
       gg: { mark: "partial", note: kb(BENCHMARK_BUNDLE_KB.ggsvelteKb) },
       ts: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.tanstackKb) },
       lc: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.layercakeKb) },
@@ -129,7 +129,7 @@
 
 <section class="benchmarks" aria-labelledby="benchmarks-heading">
   <header class="bench-intro">
-    <h2 id="benchmarks-heading">Why ggsvelte?</h2>
+    <h2 id="benchmarks-heading">Svelte ecosystem capabilities</h2>
   </header>
 
   <div class="bench-table-wrap">
@@ -141,7 +141,7 @@
       <thead>
         <tr>
           <th scope="col">Capability</th>
-          <th scope="col">ggsvelte</th>
+          <th scope="col">ggts</th>
           <th scope="col">TanStack</th>
           <th scope="col">SveltePlot</th>
           <th scope="col">Unovis</th>

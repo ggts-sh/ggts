@@ -2,7 +2,7 @@
  * Resolve a `type: "binned"` axis's transformed-space boundaries before any
  * frame/stat construction, from the parent (pre-facet) table.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 import {

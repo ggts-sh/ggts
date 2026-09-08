@@ -3,8 +3,8 @@
  * beside it, and the finished file at the end all come from `foldSakura`, and
  * every accumulated spec really renders.
  */
-import { renderToSVGString, runPipeline } from "@ggsvelte/core";
-import { validate } from "@ggsvelte/spec";
+import { renderToSVGString, runPipeline } from "@ggts-sh/core";
+import { validate } from "@ggts-sh/spec";
 import { describe, expect, it } from "bun:test";
 
 import {

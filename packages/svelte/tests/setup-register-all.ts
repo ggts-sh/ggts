@@ -26,7 +26,7 @@ import {
   registerAllStatFrames,
   registerAllStyleKinds,
   registerBandGuide,
-} from "@ggsvelte/core";
+} from "@ggts-sh/core";
 
 registerAllStatFrames();
 registerAllGeomBatches();

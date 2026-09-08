@@ -2,12 +2,12 @@
   "$schema": "https://unpkg.com/@changesets/config@4.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [["@ggsvelte/spec", "@ggsvelte/core", "@ggsvelte/compose", "@ggsvelte/svelte", "@ggsvelte/react", "@ggsvelte/cli", "@ggsvelte/skill"]],
+  "fixed": [["@ggts-sh/spec", "@ggts-sh/core", "@ggts-sh/compose", "@ggts-sh/svelte", "@ggts-sh/react", "@ggts-sh/cli", "@ggts-sh/skill"]],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "privatePackages": false,
-  "ignore": ["@ggsvelte-spike/*"],
+  "ignore": ["@ggts-sh-spike/*"],
   "format": "prettier"
 }

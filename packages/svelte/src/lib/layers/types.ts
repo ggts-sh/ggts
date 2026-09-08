@@ -1,7 +1,2 @@
-export { isHostPlotLayer } from "@ggsvelte/compose";
-export type {
-  GrammarLayerKind,
-  Layer,
-  MarkLayerDescriptor,
-  PlotLayerLike,
-} from "@ggsvelte/compose";
+export { isHostPlotLayer } from "@ggts-sh/compose";
+export type { GrammarLayerKind, Layer, MarkLayerDescriptor, PlotLayerLike } from "@ggts-sh/compose";

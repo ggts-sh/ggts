@@ -1,7 +1,7 @@
 /**
  * Rule-layer form resolution (annotation vs data-driven vertical/horizontal).
  */
-import type { Aes, LayerSpec } from "@ggsvelte/spec";
+import type { Aes, LayerSpec } from "@ggts-sh/spec";
 
 import type { RuleForm } from "./types.js";
 import { PipelineError } from "./types.js";

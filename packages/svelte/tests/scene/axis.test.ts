@@ -3,8 +3,8 @@
  */
 import { describe, expect, it } from "vitest";
 
-import { resolveTheme } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import { resolveTheme } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 import Axis from "../../src/lib/scene/Axis.svelte";
 import { modelFor } from "../helpers/model.js";
@@ -22,7 +22,7 @@ describe("Axis", () => {
       orient: "x" as const,
       axisKey: "axisX" as const,
       groupSelector: "g.gg-axis-x",
-      groupTransform: (panel: import("@ggsvelte/core").ScenePanel) =>
+      groupTransform: (panel: import("@ggts-sh/core").ScenePanel) =>
         `translate(${panel.x},${panel.y + panel.height})`,
       tickTransform: (pos: number) => `translate(${pos},0)`,
       anchor: "middle",
@@ -31,7 +31,7 @@ describe("Axis", () => {
       orient: "y" as const,
       axisKey: "axisY" as const,
       groupSelector: "g.gg-axis-y",
-      groupTransform: (panel: import("@ggsvelte/core").ScenePanel) =>
+      groupTransform: (panel: import("@ggts-sh/core").ScenePanel) =>
         `translate(${panel.x},${panel.y})`,
       tickTransform: (pos: number) => `translate(0,${pos})`,
       anchor: "end",

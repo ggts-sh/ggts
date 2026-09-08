@@ -90,7 +90,7 @@ jobs:
     container:
       # Pinned baseline platform — keep in sync with ci.yml's component job
       # and the repo-pinned playwright/@playwright/test 1.61.1.
-      image: ghcr.io/${{ github.repository }}/ci-runner:v1.61.1-noble
+      image: ghcr.io/ggts-sh/ggts/ci-runner:v1.61.1-noble
     defaults:
       run:
         # The container's /bin/sh is dash, which rejects `set -o pipefail`.
@@ -305,7 +305,7 @@ jobs:
     container:
       # SAME pinned image as the compare job — container-only baseline
       # policy (decision 0009).
-      image: ghcr.io/${{ github.repository }}/ci-runner:v1.61.1-noble
+      image: ghcr.io/ggts-sh/ggts/ci-runner:v1.61.1-noble
     defaults:
       run:
         # The container's /bin/sh is dash, which rejects `set -o pipefail`.

@@ -1,7 +1,7 @@
 /**
  * Optional candidate-build runtime hook.
  *
- * The lean `@ggsvelte/core/render` entry leaves this unset so headless/SSR
+ * The lean `@ggts-sh/core/render` entry leaves this unset so headless/SSR
  * bundles never carry the candidate-store graph (build-candidates →
  * candidate-store → hit geometry/spatial indexes). The full package barrel
  * installs it via `install-candidates.ts` (mirrors `temporal-runtime.ts` +

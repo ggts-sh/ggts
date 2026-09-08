@@ -25,7 +25,7 @@
  *                spirit. Tolerances: decision 0010 + fixture 25.
  *    method omitted -> inferred: "loess" when the largest group has fewer
  *    than 1000 rows, else "lm" (advisory `smooth-method-inferred`;
- *    DIVERGENCE: ggplot2 escalates to mgcv::gam, which ggsvelte does not
+ *    DIVERGENCE: ggplot2 escalates to mgcv::gam, which ggts does not
  *    ship — lm is the honest large-n fallback, decision 0010).
  */
 import type { CellValue } from "../table.js";

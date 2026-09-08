@@ -1,7 +1,7 @@
 /**
  * Continuous positional axis training (linear/log/time) with zero forcing.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import type { ContinuousConfig } from "../scales/train.js";
 import { ScaleConfigError, trainContinuous } from "../scales/train.js";

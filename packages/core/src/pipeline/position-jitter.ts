@@ -1,7 +1,7 @@
 /**
  * Point/text position adjustments: identity, nudge, and seeded jitter.
  */
-import type { PositionParams } from "@ggsvelte/spec";
+import type { PositionParams } from "@ggts-sh/spec";
 
 import { DEFAULT_JITTER_SEED, jitterOffsets, nudgeOffsets } from "../positions/jitter.js";
 import type { ColumnTable } from "../table.js";
@@ -40,7 +40,7 @@ function applyJitterPosition(
   advisories.push({
     code: "jitter-seeded",
     path: `layers.${binding.index}`,
-    chosen: `deterministic seeded jitter (seed ${params.seed ?? DEFAULT_JITTER_SEED}) — ggplot2 draws new random offsets every render; ggsvelte seeds for reproducibility`,
+    chosen: `deterministic seeded jitter (seed ${params.seed ?? DEFAULT_JITTER_SEED}) — ggplot2 draws new random offsets every render; ggts seeds for reproducibility`,
     howToOverride: `Set positionParams.seed (and width/height) on layer ${binding.index}.`,
   });
 }

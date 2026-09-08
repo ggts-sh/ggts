@@ -1,5 +1,5 @@
 /** Legend builder input/output contracts and layout error type. */
-import type { GuideThemeSpec, StyleAesthetic } from "@ggsvelte/spec";
+import type { GuideThemeSpec, StyleAesthetic } from "@ggts-sh/spec";
 
 import type { Linetype, PointShape } from "./scales/style.js";
 import type { SceneLegend } from "./scene.js";

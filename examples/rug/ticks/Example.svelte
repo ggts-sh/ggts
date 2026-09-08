@@ -7,7 +7,7 @@
     Labs,
     ScaleXContinuous,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { spacedScores } from "./data.js";
 </script>

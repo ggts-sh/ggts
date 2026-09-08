@@ -11,7 +11,7 @@
  * any role override → ThemeSpec object with only defined keys (never
  * `undefined` values — ThemeSpec is additionalProperties:false).
  */
-import type { ThemeName, ThemeSpec } from "@ggsvelte/spec";
+import type { ThemeName, ThemeSpec } from "@ggts-sh/spec";
 
 import { registerPlotLayer } from "../geoms/registry.svelte.js";
 

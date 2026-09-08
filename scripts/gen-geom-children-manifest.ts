@@ -8,7 +8,7 @@
  *
  * Emission / FS generate stay in gen-geom-children.ts.
  */
-import { KNOWN_GEOMS, type GeomName } from "@ggsvelte/spec";
+import { KNOWN_GEOMS, type GeomName } from "@ggts-sh/spec";
 
 // ---------------------------------------------------------------------------
 // Manifest
@@ -28,10 +28,10 @@ export interface ShellSpec {
   /** Special shell template (jitter merges flat width/height/seed). */
   kind: ShellKind;
   /**
-   * Self-registration function from @ggsvelte/core (#1420), emitted in a
+   * Self-registration function from @ggts-sh/core (#1420), emitted in a
    * <script module> block — importing the component pulls its geom batch +
    * default stat frame into the bundle and registers them. undefined for
-   * basic-tier geoms (covered by @ggsvelte/core/render, which GGPlot loads).
+   * basic-tier geoms (covered by @ggts-sh/core/render, which GGPlot loads).
    */
   registration?: string;
 }
@@ -111,7 +111,7 @@ const PARAMS_TYPE: Record<GeomName, string> = {
 
 /**
  * Basic-tier shells: geom batch AND default stat both registered by
- * `@ggsvelte/core/render` (which GGPlot always loads), so these components
+ * `@ggts-sh/core/render` (which GGPlot always loads), so these components
  * emit no self-registration. `count` is basic (stat sum); alias shells
  * hline/vline/jitter normalize to rule/rule/point with identity stats.
  */
@@ -141,7 +141,7 @@ export const BASIC_SHELL_GEOMS: readonly GeomName[] = [
  * STAT + geom batch (not the component name): histogram/freqpoly normalize
  * to bar/line (basic geom batches) but need the bin stat; density's geom
  * batch is basic but its stat is not. Every function named here is exported
- * from @ggsvelte/core (packages/core/src/index.ts).
+ * from @ggts-sh/core (packages/core/src/index.ts).
  */
 export const SHELL_REGISTRATION: Partial<Record<GeomName, string>> = {
   histogram: "registerBin",

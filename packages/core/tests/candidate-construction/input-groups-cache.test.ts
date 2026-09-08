@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { size } from "./fixtures.ts";
 
 describe("pre-stat inputGroups cache (issue #217)", () => {
@@ -11,7 +11,7 @@ describe("pre-stat inputGroups cache (issue #217)", () => {
     const { preparePanels } = await import("../../src/pipeline/prepare-panels.ts");
     const { buildCandidateIdentityIndex } =
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize(
@@ -47,7 +47,7 @@ describe("pre-stat inputGroups cache (issue #217)", () => {
     const { preparePanels } = await import("../../src/pipeline/prepare-panels.ts");
     const { buildCandidateIdentityIndex } =
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize({

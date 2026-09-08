@@ -1,7 +1,7 @@
 /**
  * Sole module that statically imports `@js-temporal/polyfill`.
  *
- * Lean chart graphs (`@ggsvelte/core/render` + `@ggsvelte/spec/portable`) must
+ * Lean chart graphs (`@ggts-sh/core/render` + `@ggts-sh/spec/portable`) must
  * never import this file — identity / numeric charts then keep Temporal out of
  * the client bundle. Full temporal paths call {@link ensureTemporalPolyfill}
  * (via `installTemporal` / agent `validate()`) before parsing non-UTC zones.

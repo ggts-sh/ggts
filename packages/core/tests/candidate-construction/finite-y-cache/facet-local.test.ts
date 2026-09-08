@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { size } from "./fixtures.ts";
 
@@ -14,7 +14,7 @@ describe("finite-y cache: facet local rows", () => {
       await import("../../../src/pipeline/candidate-construction/identity-index.ts");
     const { filterRepresentedSourceRows } =
       await import("../../../src/pipeline/candidate-construction/represented-rows.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize(

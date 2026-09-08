@@ -262,7 +262,7 @@ export const PlotDecls = {
       clip: Type.Optional(
         Type.Boolean({
           description:
-            'Clip marks to the panel. ggplot2 coord_radial defaults to clip off; coord_polar defaults to clip on. ggsvelte stores the effective boolean (default false for type "radial").',
+            'Clip marks to the panel. ggplot2 coord_radial defaults to clip off; coord_polar defaults to clip on. ggts stores the effective boolean (default false for type "radial").',
         }),
       ),
       reverse: Type.Optional(
@@ -316,13 +316,13 @@ export const PlotDecls = {
     {
       $schema: Type.Optional(
         Type.String({
-          description: "URL of the ggsvelte spec JSON Schema version this spec targets.",
+          description: "URL of the ggts spec JSON Schema version this spec targets.",
         }),
       ),
       edition: Type.Optional(
         Type.Integer({
           minimum: 1,
-          description: `Defaults edition this spec was authored against (currently ${CURRENT_EDITION}). normalize() stamps the current edition when absent, so a spec keeps ITS edition's default look (theme roles, categorical palette) even after ggsvelte's defaults improve in a later edition. Explicit theme/scale settings always win over edition defaults.`,
+          description: `Defaults edition this spec was authored against (currently ${CURRENT_EDITION}). normalize() stamps the current edition when absent, so a spec keeps ITS edition's default look (theme roles, categorical palette) even after ggts's defaults improve in a later edition. Explicit theme/scale settings always win over edition defaults.`,
         }),
       ),
       data: Type.Optional(
@@ -379,7 +379,7 @@ export const PlotDecls = {
     {
       additionalProperties: false,
       description:
-        "A complete ggsvelte plot specification: data + aesthetic mapping + one or more layers, in layered grammar. Strictly JSON (PortableSpec).",
+        "A complete ggts plot specification: data + aesthetic mapping + one or more layers, in layered grammar. Strictly JSON (PortableSpec).",
     },
   ),
 };

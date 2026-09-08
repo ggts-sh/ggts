@@ -34,7 +34,7 @@
   );
 
   const svelteSnippet = $derived(
-    `import { GGPlot, ${geom}, ${entry.component} } from "@ggsvelte/svelte";\n\n<GGPlot data={rows} ${plotAes}>
+    `import { GGPlot, ${geom}, ${entry.component} } from "@ggts-sh/svelte";\n\n<GGPlot data={rows} ${plotAes}>
   <${geom} />
   <${entry.component} />
 </GGPlot>`,

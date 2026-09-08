@@ -7,7 +7,7 @@
     Inspect,
     Labs,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { maungaWhauSlope } from "./data.js";
 </script>

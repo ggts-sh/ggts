@@ -1,7 +1,7 @@
 /**
  * Panel layout chrome: labs, axis titles (coord flip), formatters, legends.
  */
-import type { PortableSpec, TemporalPrecision, TemporalScaleKind } from "@ggsvelte/spec";
+import type { PortableSpec, TemporalPrecision, TemporalScaleKind } from "@ggts-sh/spec";
 
 import { humanizeFieldTitle } from "../humanize-field.js";
 import { FONT_METRICS } from "../layout/font-metrics.js";
@@ -26,7 +26,7 @@ import { PipelineError, type LayerFrame, type PipelineWarning, type RunOptions }
 
 export interface PanelLayoutChrome {
   flip: boolean;
-  scalesConfig: import("@ggsvelte/spec").Scales;
+  scalesConfig: import("@ggts-sh/spec").Scales;
   title: string;
   subtitle: string;
   caption: string;

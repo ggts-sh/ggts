@@ -1,5 +1,5 @@
 /** Manual color/fill scale family (explicit domain ↔ range). */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import { disambiguatedLabels } from "../domain-labels.js";
 import { normalizeColor } from "../scales/color.js";

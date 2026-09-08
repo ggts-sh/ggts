@@ -7,7 +7,7 @@ body:
     attributes:
       label: Documentation location
       description: Link the page, README section, example, error code, or source file.
-      placeholder: https://ggsvelte.sh/guide/interactions
+      placeholder: https://ggts.sh/guide/interactions
     validations:
       required: true
   - type: dropdown

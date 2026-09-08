@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { CATEGORICAL_SCHEME_NAMES } from "@ggsvelte/spec";
+import { CATEGORICAL_SCHEME_NAMES } from "@ggts-sh/spec";
 
 import {
   CATEGORICAL_SCHEMES,

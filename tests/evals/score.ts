@@ -35,9 +35,9 @@
  * is rendered with its data ref forced to the harness dataset (the request's
  * data is out of band by construction) and any candidate `datasets` dropped.
  */
-import type { DataProfile, PortableSpec, SpecError, SpecInput } from "@ggsvelte/spec";
-import { GEOM_DEFAULTS, normalize, validate } from "@ggsvelte/spec";
-import { registerAll, renderToSVGString } from "@ggsvelte/core";
+import type { DataProfile, PortableSpec, SpecError, SpecInput } from "@ggts-sh/spec";
+import { GEOM_DEFAULTS, normalize, validate } from "@ggts-sh/spec";
+import { registerAll, renderToSVGString } from "@ggts-sh/core";
 
 // Headless full-grammar rendering (#1420): explicit opt-in.
 registerAll();

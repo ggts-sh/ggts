@@ -1,7 +1,7 @@
 /**
  * Resolve color/fill ChannelValue into a ColorBinding.
  */
-import type { ChannelValue, StatName } from "@ggsvelte/spec";
+import type { ChannelValue, StatName } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

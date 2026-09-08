@@ -42,7 +42,7 @@ export interface DeprecationDiagnostic {
  */
 export type PlotDiagnostic = InteractionDiagnostic | DeprecationDiagnostic | CompositionDiagnostic;
 
-const GUIDE_UPGRADING = "https://ggsvelte.sh/guide/upgrading";
+const GUIDE_UPGRADING = "https://ggts.sh/guide/upgrading";
 
 /**
  * Frozen catalog entry for the single deprecation code. Message / prop /

@@ -6,7 +6,7 @@
  * Owns placement, chrome, and the resolved axis guides for the run so scene
  * assembly does not re-resolve them (ADR-0003 two-pass layout stands).
  */
-import type { PortableSpec, TemporalPrecision, TemporalScaleKind } from "@ggsvelte/spec";
+import type { PortableSpec, TemporalPrecision, TemporalScaleKind } from "@ggts-sh/spec";
 
 import { planBasicAxis } from "../layout/basic-axis.js";
 import {

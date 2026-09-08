@@ -33,7 +33,7 @@ import {
   KNOWN_STATS,
   SEQUENTIAL_SCHEME_NAMES,
   THEME_NAMES,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 import { ROOT, SKILL_DIR, tableCellNames } from "./test-helpers.ts";
 
 /**
@@ -119,7 +119,7 @@ describe("reference inventories are complete", () => {
  * (#1210).
  */
 describe("SKILL.md lead-line scheme/theme inventory matches registries", () => {
-  const skillMd = readFileSync(join(SKILL_DIR, "SKILL.md"), "utf8");
+  const skillMd = readFileSync(join(SKILL_DIR, "references", "grammar.md"), "utf8");
   const scalesRef = readFileSync(join(SKILL_DIR, "references", "scales-and-palettes.md"), "utf8");
   const themesRef = readFileSync(join(SKILL_DIR, "references", "themes.md"), "utf8");
 

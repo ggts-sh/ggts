@@ -1,5 +1,5 @@
 /** Shared temporal preflight helpers (docs + config assert). */
-import { temporalParserConfigurationError } from "@ggsvelte/spec";
+import { temporalParserConfigurationError } from "@ggts-sh/spec";
 
 import { getTemporalRuntime } from "../temporal-runtime.js";
 
@@ -7,7 +7,7 @@ import type { PositionConversionContext } from "./temporal-position.js";
 import { PipelineError } from "./types.js";
 
 export function temporalPreflightDocs(code: string): string {
-  return `https://ggsvelte.sh/guide/errors#${code}`;
+  return `https://ggts.sh/guide/errors#${code}`;
 }
 
 export function assertTemporalConfiguration(
@@ -22,7 +22,7 @@ export function assertTemporalConfiguration(
     throw new PipelineError(
       "temporal-parse-failed",
       `/scales/${axis}`,
-      `The ${axis} scale uses an explicit temporal parser and requires @ggsvelte/core (full) or @ggsvelte/core/temporal.`,
+      `The ${axis} scale uses an explicit temporal parser and requires @ggts-sh/core (full) or @ggts-sh/core/temporal.`,
       {
         code: "temporal-parse-failed",
         severity: "error",
@@ -30,7 +30,7 @@ export function assertTemporalConfiguration(
         problem: "Temporal parser configuration requires the temporal runtime.",
         cause: "Lean render entry does not load the Temporal polyfill.",
         fixes: [
-          { description: "Import @ggsvelte/core or @ggsvelte/core/temporal before rendering." },
+          { description: "Import @ggts-sh/core or @ggts-sh/core/temporal before rendering." },
         ],
         documentationUrl: temporalPreflightDocs("temporal-parse-failed"),
       },

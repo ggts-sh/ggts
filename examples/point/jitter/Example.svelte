@@ -7,7 +7,7 @@
     Labs,
     ScaleColorDiscrete,
     ThemeClean,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { fastfoodMenu } from "./data.js";
 </script>

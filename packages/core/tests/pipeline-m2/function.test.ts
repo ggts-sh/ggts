@@ -2,7 +2,7 @@
  * M2 pipeline — geom_function / stat_function analytic curves.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import { buildFunctionFrame } from "../../src/pipeline/frame-stats-function.ts";
 import type { PathsBatch } from "../../src/scene.ts";

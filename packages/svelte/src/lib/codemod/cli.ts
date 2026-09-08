@@ -1,11 +1,11 @@
 /**
- * `ggsvelte-codemod` — opt-in migration of deprecated <GGPlot> grammar props
+ * `ggts-codemod` — opt-in migration of deprecated <GGPlot> grammar props
  * to child layers (#659 slice 7, closes #290).
  *
  * Pure entry point: all I/O is injected through {@link CodemodIO}, so the whole
- * command is testable without touching a disk. bin/ggsvelte-codemod.js wires
- * process streams and the exit code, exactly as @ggsvelte/cli's
- * bin/ggsvelte-render.js does.
+ * command is testable without touching a disk. bin/ggts-codemod.js wires
+ * process streams and the exit code, exactly as @ggts-sh/cli's
+ * bin/ggts.js does.
  *
  * ADR 0013: dry-run by default, writes only behind an explicit `--write`, and
  * anything the transform refuses to guess at is reported with the guide anchor
@@ -26,17 +26,17 @@ export interface CodemodIO {
 }
 
 const USAGE = [
-  "usage: ggsvelte-codemod [--write] <path…>",
+  "usage: ggts-codemod [--write] <path…>",
   "",
   "Migrate deprecated <GGPlot> grammar props (facet, coord, scales, guides,",
   "legend, theme, labs) to declaration-only child layers.",
   "",
   "  --write     apply the changes (default: print a diff and write nothing)",
-  "  --source=S  also treat module specifier S as ggsvelte (repeatable)",
+  "  --source=S  also treat module specifier S as ggts (repeatable)",
   "  --help      show this message",
   "",
   "Shapes the codemod will not guess at are reported with the guide anchor",
-  "for the manual change: https://ggsvelte.sh/guide/upgrading",
+  "for the manual change: https://ggts.sh/guide/upgrading",
 ].join("\n");
 
 interface Options {

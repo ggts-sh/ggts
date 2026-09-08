@@ -28,7 +28,7 @@ describe("deployment immutable asset smoke", () => {
     expect(
       evaluateAssetProbe({
         asset: "_app/immutable/nodes/2.missing.js",
-        url: "https://ggsvelte.sh/_app/immutable/nodes/2.missing.js",
+        url: "https://ggts.sh/_app/immutable/nodes/2.missing.js",
         status: 404,
         contentType: "text/html",
       }),
@@ -37,7 +37,7 @@ describe("deployment immutable asset smoke", () => {
     expect(
       evaluateAssetProbe({
         asset: "_app/immutable/nodes/2.fake.js",
-        url: "https://ggsvelte.sh/_app/immutable/nodes/2.fake.js",
+        url: "https://ggts.sh/_app/immutable/nodes/2.fake.js",
         status: 200,
         contentType: "text/html; charset=utf-8",
       }),
@@ -46,7 +46,7 @@ describe("deployment immutable asset smoke", () => {
     expect(
       evaluateAssetProbe({
         asset: "_app/immutable/nodes/2.ok.js",
-        url: "https://ggsvelte.sh/_app/immutable/nodes/2.ok.js",
+        url: "https://ggts.sh/_app/immutable/nodes/2.ok.js",
         status: 200,
         contentType: "text/javascript",
       }),
@@ -74,7 +74,7 @@ describe("deployment immutable asset smoke", () => {
     };
 
     const problems = await smokeImmutableAssets({
-      baseUrl: "https://ggsvelte.sh",
+      baseUrl: "https://ggts.sh",
       paths: ["/"],
       fetchImpl,
     });

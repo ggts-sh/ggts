@@ -49,7 +49,7 @@ export type LegendFocusReconcilePorts = {
   readonly entries: () => readonly InteractiveLegendEntry[];
   readonly entryKeys: () => LegendEntryKeyAccess;
   readonly root: () => HTMLElement | null;
-  readonly interaction: () => PlotInteractionController<PropertyKey> | undefined;
+  readonly interaction: () => PlotInteractionController | undefined;
   readonly legendFocusEnabled: () => boolean;
   /** Emphasis store — local shadow when controller-driven, source of truth local. */
   readonly emphasisKeys: ScopedStore<readonly PropertyKey[]>;

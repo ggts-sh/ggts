@@ -1,5 +1,5 @@
 /** Semantic numeric view for sequential/binned color and fill scales. */
-import type { ColorScaleSpec, TemporalKind, TemporalParserSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec, TemporalKind, TemporalParserSpec } from "@ggts-sh/spec";
 
 import { encodeKey } from "../scales/state.js";
 import type { CellValue } from "../table.js";

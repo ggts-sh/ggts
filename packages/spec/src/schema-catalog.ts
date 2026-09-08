@@ -86,7 +86,7 @@ export const GEOM_ALIASES = {
  * defaults "without breaking existing code"). normalize() stamps this onto
  * specs that carry no `edition`, freezing which generation of default
  * aesthetics (theme role tokens, categorical palette) the spec was authored
- * against. @ggsvelte/core keys its theme/palette default tables by edition,
+ * against. @ggts-sh/core keys its theme/palette default tables by edition,
  * so when a future edition improves the defaults, already-stamped specs keep
  * their edition-1 look. Explicit theme/scale settings always win regardless.
  */
@@ -165,7 +165,7 @@ export type PositionName = (typeof KNOWN_POSITIONS)[number];
  * geom bar counts (stat "count") and stacks; histogram bins and stacks;
  * freqpoly bins and draws as line (identity position); col/area stack
  * pre-computed values; boxplot dodges (ggplot2 defaults to dodge2 —
- * ggsvelte uses plain dodge, decision 0010); jitter aliases to
+ * ggts uses plain dodge, decision 0010); jitter aliases to
  * point+position jitter; hline/vline alias to rule; everything else is
  * identity/identity.
  */

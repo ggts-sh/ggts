@@ -1,14 +1,10 @@
 # Release — independent publish + changesets version PR on every push to main.
 # All third-party actions pinned by full commit SHA (zizmor-enforced).
 #
-# DORMANT until two pieces of USER-BLOCKED setup exist:
-#   1. A GitHub remote for this repo — until the repo is pushed to GitHub,
-#      this workflow never runs.
-#   2. npm "trusted publishing" configured on npmjs.com for EACH published
-#      package — @ggsvelte/spec, @ggsvelte/core, @ggsvelte/svelte, @ggsvelte/cli,
-#      and @ggsvelte/skill — each pointing
-#      at this repository + this workflow file (release.yml). This requires
-#      the npm org/packages to exist and is maintainer-side setup.
+# Release setup is live. A repository/scope migration must pause the existing
+# NPM_PUBLISH_ENABLED gate until all seven packages have destination trust.
+# New package bootstrap is the maintainer-only exception in ADR 0023; routine
+# CI publication stays OIDC-only. See docs/ggts-migration.md.
 #
 # Publishing credential: there is deliberately NO NPM_TOKEN secret anywhere.
 # `id-token: write` + npm's OIDC exchange ("trusted publisher") is the only
@@ -90,7 +86,7 @@ jobs:
         run: bun run build
       # Publishing is gated behind the NPM_PUBLISH_ENABLED repo variable so
       # this workflow stays green until npm trusted publishing (OIDC) is
-      # configured for all five packages on npmjs.com. Flip the gate with:
+      # configured for all seven packages on npmjs.com. Flip the gate with:
       #   gh variable set NPM_PUBLISH_ENABLED --body true
       #
       # MUST run before changesets/action: the action switches the workspace

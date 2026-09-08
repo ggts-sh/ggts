@@ -15,6 +15,7 @@ import { highlightCodeToHtml, resolveHighlightLanguage } from "../../../../scrip
 export function languageFromCodeTabLabel(label?: string): string {
   if (label === undefined) return "plaintext";
   const lower = label.toLowerCase();
+  if (lower.includes("react")) return "tsx";
   if (lower.includes("svelte")) return "svelte";
   if (lower.includes("json") || lower.includes("spec")) return "json";
   if (lower.includes("ts") || lower.includes("builder") || lower.includes("type")) {

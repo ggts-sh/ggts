@@ -2,7 +2,7 @@
  * Position transform — edge-contracts.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, scaleXLog10, scaleXSqrt } from "@ggsvelte/spec";
+import { aes, gg, scaleXLog10, scaleXSqrt } from "@ggts-sh/spec";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import { size, xScale } from "./fixtures.ts";
 

@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { size } from "./fixtures.ts";
 import { runPipeline } from "../../src/pipeline.ts";
 
@@ -13,7 +13,7 @@ describe("aggregate lineage index (issue #184)", () => {
     const { buildCandidateIdentityIndex } =
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
     const { bandKey } = await import("../../src/scales/train.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     // Continuous (numeric) x does not participate in grouping, so count expands
     // many x levels inside one group — the O(k·g) case the index must fix.
@@ -42,7 +42,7 @@ describe("aggregate lineage index (issue #184)", () => {
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
     const { filterBinRepresentedRows } =
       await import("../../src/pipeline/candidate-construction/represented-rows.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     for (const closed of ["right", "left"] as const) {
       const prepared = preparePanels(
@@ -90,7 +90,7 @@ describe("aggregate lineage index (issue #184)", () => {
     const { buildCandidateIdentityIndex } =
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
     const { bandKey } = await import("../../src/scales/train.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize(
@@ -146,7 +146,7 @@ describe("aggregate lineage index (issue #184)", () => {
     const { preparePanels } = await import("../../src/pipeline/prepare-panels.ts");
     const { buildCandidateIdentityIndex } =
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     // Mixed layers force identity-indexed path; only count should fill group×x.
     const prepared = preparePanels(
@@ -213,7 +213,7 @@ describe("aggregate lineage index (issue #184)", () => {
     const { filterRepresentedSourceRows } =
       await import("../../src/pipeline/candidate-construction/represented-rows.ts");
     const { LineageStore } = await import("../../src/identity.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize(
@@ -271,7 +271,7 @@ describe("identity index bucket sealing", () => {
     const { preparePanels } = await import("../../src/pipeline/prepare-panels.ts");
     const { buildCandidateIdentityIndex } =
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize(

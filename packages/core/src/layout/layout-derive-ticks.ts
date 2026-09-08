@@ -155,7 +155,7 @@ function requireBandAxisPlanner(): NonNullable<ReturnType<typeof getBandAxisPlan
   const plan = getBandAxisPlanner();
   if (plan === undefined) {
     throw new Error(
-      `Band axis guide is not registered in this build. Call registerBandGuide() from @ggsvelte/core/headless/register once at startup, or registerBasic() from @ggsvelte/core.`,
+      `Band axis guide is not registered in this build. Call registerBandGuide() from @ggts-sh/core/headless/register once at startup, or registerBasic() from @ggts-sh/core.`,
     );
   }
   return plan;
@@ -453,7 +453,7 @@ export function deriveTicks(
 
   if (domain.type === "time") {
     // Full temporal guide planning needs the polyfill runtime. Lean
-    // `@ggsvelte/core/render` still classifies ISO columns as temporal and
+    // `@ggts-sh/core/render` still classifies ISO columns as temporal and
     // trains a time scale — fall through to timeTicks + formatTime instead of
     // throwing when planAxis is unavailable.
     return deriveTimeDomainTicks(domain, min, max, requestedCount, format, context);

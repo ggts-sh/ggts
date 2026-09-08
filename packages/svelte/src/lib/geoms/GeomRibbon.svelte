@@ -4,7 +4,7 @@
     DataInput,
     RibbonParams,
     RibbonLayerInput,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
 
   import { createGeomLayer } from "./factory.svelte.js";
 

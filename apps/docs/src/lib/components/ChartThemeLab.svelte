@@ -1,6 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
-  import type { ThemeName } from "@ggsvelte/spec";
+  import type { ThemeName } from "@ggts-sh/spec";
   import { onMount } from "svelte";
 
   import { CATEGORICAL_PALETTES, THEME_OPTIONS } from "$lib/catalog/themes";

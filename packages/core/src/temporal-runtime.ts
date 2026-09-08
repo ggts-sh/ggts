@@ -1,12 +1,12 @@
 /**
  * Optional temporal runtime hooks.
  *
- * The lean `@ggsvelte/core/render` entry leaves these unset so chart bundles
+ * The lean `@ggts-sh/core/render` entry leaves these unset so chart bundles
  * that only need numeric axes never load `@js-temporal/polyfill` or the full
- * temporal guide planner. The full package entry (and `@ggsvelte/core/temporal`)
+ * temporal guide planner. The full package entry (and `@ggts-sh/core/temporal`)
  * call {@link installTemporalRuntime}.
  */
-import type { TemporalParserSpec } from "@ggsvelte/spec";
+import type { TemporalParserSpec } from "@ggts-sh/spec";
 
 import type { AxisGuidePlan } from "./layout/temporal-guide.js";
 import type { TemporalAxisPlanInput } from "./layout/temporal-axis-types.js";

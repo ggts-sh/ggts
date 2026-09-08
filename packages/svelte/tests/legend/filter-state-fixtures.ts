@@ -2,7 +2,7 @@
  * Shared legend-filter controller fixtures: pure data and pure helper
  * functions only — no vitest, no Svelte runtime state.
  */
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import type { LegendFilterEvent } from "../../src/lib/legend/filter.js";
 

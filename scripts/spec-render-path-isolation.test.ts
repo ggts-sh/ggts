@@ -69,7 +69,7 @@ describe("spec render path isolation", () => {
   it("keeps pipeline setup off TypeBox validate()", () => {
     const source = read("packages/core/src/pipeline/setup-run-normalize.ts");
     expect(source).not.toMatch(
-      /import\s*\{[^}]*\bvalidate\b[^}]*\}\s*from\s*["']@ggsvelte\/spec["']/,
+      /import\s*\{[^}]*\bvalidate\b[^}]*\}\s*from\s*["']@ggts-sh\/spec["']/,
     );
     // Must keep a TypeBox-free structural gate (not silent skip).
     expect(source).toMatch(/structuralGate|structural-gate|assertStructural/);
@@ -88,7 +88,7 @@ describe("spec render path isolation", () => {
   it("keeps foldPlotLayer off the fluent builder", () => {
     const fold = read("packages/compose/src/fold.ts");
     expect(fold).not.toMatch(/import\s*\{[^}]*\bgg\b/);
-    expect(fold).not.toMatch(/from\s*["']@ggsvelte\/spec["'][^;\n]*\bgg\b/);
+    expect(fold).not.toMatch(/from\s*["']@ggts-sh\/spec["'][^;\n]*\bgg\b/);
   });
 
   it("keeps schema-names and temporal runtime free of typebox imports", () => {

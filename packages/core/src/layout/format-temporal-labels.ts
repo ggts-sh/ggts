@@ -1,8 +1,8 @@
 /**
  * Strict `dateLabels` grammar and span-uniform temporal tick label sequences.
  */
-import type { TemporalInterval, TemporalScaleKind } from "@ggsvelte/spec";
-import { temporalLabelConfigurationError } from "@ggsvelte/spec";
+import type { TemporalInterval, TemporalScaleKind } from "@ggts-sh/spec";
+import { temporalLabelConfigurationError } from "@ggts-sh/spec";
 
 import { MONTHS_LONG, MONTHS_SHORT, pad2, pad3 } from "./format-time.js";
 

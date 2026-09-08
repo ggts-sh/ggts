@@ -4,7 +4,7 @@
     scaleShapeIdentity,
     type IdentityFiniteStyleScaleOptions,
     type PointShapeName,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

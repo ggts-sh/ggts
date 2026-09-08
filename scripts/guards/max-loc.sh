@@ -113,6 +113,7 @@ if git rev-parse --verify -q "${ANCHOR_REF}" >/dev/null 2>&1 \
   parse_exclusions "${HEAD_LIST}"
   PARSE_TARGET="EXCL"
   rm -f "${HEAD_LIST}"
+  moved_head=()
   wt_i=0
   for wt_path in ${EXCL_PATH[@]+"${EXCL_PATH[@]}"}; do
     head_base=""
@@ -122,6 +123,19 @@ if git rev-parse --verify -q "${ANCHOR_REF}" >/dev/null 2>&1 \
         break
       fi
     done
+    # An unchanged file may move packages without resetting its baseline.
+    if [[ -z "${head_base}" && -f "${wt_path}" ]]; then
+      wt_blob="$(git hash-object -- "${wt_path}")"
+      for h_i in ${HEAD_PATH[@]+"${!HEAD_PATH[@]}"}; do
+        old_path="${HEAD_PATH[$h_i]}"
+        if [[ ! -e "${old_path}" && "${moved_head[$h_i]:-0}" == 0 ]] \
+          && [[ "$(git rev-parse "${ANCHOR_REF}:${old_path}" 2>/dev/null)" == "${wt_blob}" ]]; then
+          head_base="${HEAD_LOC[$h_i]}"
+          moved_head[$h_i]=1
+          break
+        fi
+      done
+    fi
     if [[ -z "${head_base}" ]]; then
       ratchet_violations+=("${wt_path}: NEW exclusion entry (refactor instead)")
     elif [[ "${EXCL_LOC[$wt_i]}" -gt "${head_base}" ]]; then

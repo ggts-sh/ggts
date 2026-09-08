@@ -2,7 +2,7 @@
 
 # Svelte interactions
 
-`@ggsvelte/svelte` requires Svelte `^5.33.1` (peerDependency). Interactions are
+`@ggts-sh/svelte` requires Svelte `^5.33.1` (peerDependency). Interactions are
 opt-in host capabilities — they are not PortableSpec fields. Prefer declaration
 children where they exist (`<Inspect>`, `<GuideLegend focus>`). Row identity for
 selection, legend focus, and coordinated intervals **defaults** to an `id`
@@ -15,7 +15,7 @@ charts omit custom identity. Prefer `identity` on `<Inspect>`, object-form
 
 ```svelte fragment
 <script lang="ts">
-  import { GeomPoint, GGPlot, Inspect } from "@ggsvelte/svelte";
+  import { GeomPoint, GGPlot, Inspect } from "@ggts-sh/svelte";
 </script>
 
 <GGPlot data={rows} aes={{ x: "x", y: "y" }}>
@@ -110,17 +110,17 @@ longitude only, not linked selection between series that do not share row identi
 
 ## CLI cannot catch host inspect behaviour
 
-`ggsvelte-render` validates PortableSpec and prints pipeline warnings/advisories
+`ggts render` validates PortableSpec and prints pipeline warnings/advisories
 on stderr. It does **not** validate host Inspect mode, tooltip content, or which
 layers steal hover hits. Layer `"inspect": false` is portable and can appear in
 the JSON loop; **mode is not**. Agents that only re-render SVG never see blank
 x-rows, freescrolling guides, or noisy multi-layer hits.
 
 After changing interaction, verify with a **real hover and pin** (docs site,
-playground, or browser test) — not only `ggsvelte-render` / an SVG dump. Read
+playground, or browser test) — not only `ggts render` / an SVG dump. Read
 this file before enabling Inspect on any chart.
 
-**Skill packaging decision (#1530):** keep a **single skill** (`@ggsvelte/skill`)
+**Skill packaging decision (#1530):** keep a **single skill** (`@ggts-sh/skill`)
 for both PortableSpec agents and Svelte app agents. Do not split until progressive
 disclosure fails (agents ignore `references/`, or the frontmatter description
 cannot route both audiences).
@@ -250,7 +250,7 @@ custom content snippet.
 `ondiagnostic` receives `PlotDiagnostic`, the union of three catalogs (each
 entry has `severity`, `code`, `message`, `prop`, `suggestions`, `docUrl`).
 
-**Agent/CLI path:** inspect mode is host-only. `ggsvelte-render --inspect MODE`
+**Agent/CLI path:** inspect mode is host-only. `ggts render --inspect MODE`
 runs the same pure inspect×geom collectors and emits matching codes on stderr
 with `source: "interaction"` (for example `INTERACTION_INSPECT_X_ON_COL` when
 `MODE` is `x`/`xy` and the spec has a `col` layer). Without `--inspect`, the
@@ -286,7 +286,7 @@ a mounted plot.
     GeomPoint,
     GGPlot,
     GuideLegend,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   const interaction = createPlotInteraction<number>();
   const scope = { keys: "sales-rows", intervals: "sales-range" } as const;

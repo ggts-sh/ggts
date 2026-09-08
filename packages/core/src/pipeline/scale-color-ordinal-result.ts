@@ -1,7 +1,7 @@
 /**
  * Pack ordinal ColorScale into ColorResolution + palette-inferred advisory.
  */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 import { disambiguatedLabels } from "../domain-labels.js";
 import { resolveMissingColors } from "../scales/engine.js";
 import type { ColorScale } from "../scales/train.js";

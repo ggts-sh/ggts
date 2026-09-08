@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, scaleXBinned, scaleXLog10, scaleYLog10 } from "@ggsvelte/spec";
+import { aes, gg, scaleXBinned, scaleXLog10, scaleYLog10 } from "@ggts-sh/spec";
 
 import { PipelineError, runPipeline } from "../src/pipeline.ts";
 

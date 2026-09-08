@@ -1,7 +1,7 @@
 /**
  * Ordinal (value-stable categorical) color/fill scale training and discrete legend.
  */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions.js";
 import { resolveOrdinalPipelineRange } from "../scales/engine.js";

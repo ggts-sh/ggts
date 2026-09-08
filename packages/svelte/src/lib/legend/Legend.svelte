@@ -12,7 +12,7 @@
    * Emits NO markup; registers a live legend layer during component init and
    * unregisters on destroy. Inert without a <GGPlot> ancestor.
    */
-  import type { LegendSpec } from "@ggsvelte/spec";
+  import type { LegendSpec } from "@ggts-sh/spec";
 
   import {
     createPlotLayer,

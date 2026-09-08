@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { SceneLegend } from "@ggsvelte/core";
+import type { SceneLegend } from "@ggts-sh/core";
 
 import {
   buildLegendEntryKeyIndex,

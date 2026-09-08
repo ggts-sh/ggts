@@ -5,7 +5,7 @@
  * Resolution without the catalog: theme-resolve.ts. This module keeps the
  * stable `./theme.js` import and defaults resolveTheme to the full catalog.
  */
-import type { ThemeName, ThemeSpec } from "@ggsvelte/spec";
+import type { ThemeName, ThemeSpec } from "@ggts-sh/spec";
 
 import { BUILTIN_THEMES } from "./theme-builtins.js";
 import { resolveTheme as resolveThemeAgainst, type ThemeTable } from "./theme-resolve.js";

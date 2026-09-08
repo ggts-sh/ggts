@@ -8,7 +8,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { CURRENT_EDITION, normalize } from "@ggsvelte/spec";
+import { CURRENT_EDITION, normalize } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../src/editions.ts";
 import { EDITION_DEFAULTS, resolveEditionDefaults } from "../src/editions.ts";
@@ -89,7 +89,7 @@ describe("resolveEditionDefaults", () => {
 
 describe("pipeline defaults keyed by edition", () => {
   it("an edition-1 spec keeps edition-1 colors even when edition 2 exists", () => {
-    // The old spec: stamped edition 1 (normalize default). A NEW ggsvelte
+    // The old spec: stamped edition 1 (normalize default). A NEW ggts
     // whose table also contains edition 2 must NOT restyle it.
     const model = runPipeline(scatterSpec(1), { ...RUN, editions: EDITIONS_WITH_FAKE_2 });
     const colors = pointColors(model);

@@ -10,7 +10,7 @@ import {
   parseTemporalInterval,
   TemporalIntervalError,
   temporalIntervalTicks,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import {
   automaticCandidate,

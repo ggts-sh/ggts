@@ -3,7 +3,7 @@
   import {
     scaleColorBrewer,
     type ColorBrewerScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

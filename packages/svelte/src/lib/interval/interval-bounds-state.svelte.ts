@@ -11,8 +11,8 @@
  * synchronously during component init so the cancel effect registers at the
  * derivation's original position (after the interval-reconcile effect).
  */
-import type { RenderModel, ScenePanel } from "@ggsvelte/core";
-import type { TemporalScaleKind } from "@ggsvelte/spec";
+import type { RenderModel, ScenePanel } from "@ggts-sh/core";
+import type { TemporalScaleKind } from "@ggts-sh/spec";
 
 import type { PlotInteractionInterval } from "../interaction/interaction.js";
 import type { ContinuousZoomDomains } from "../scene/geometry.js";

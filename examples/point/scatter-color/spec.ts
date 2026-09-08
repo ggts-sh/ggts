@@ -1,4 +1,4 @@
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { guerry } from "./data.js";

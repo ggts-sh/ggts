@@ -1,9 +1,9 @@
 /**
  * Thin name lists for docs client chrome (ReferenceLede, etc.).
  *
- * Do not import these from `@ggsvelte/spec` on client routes: the package
+ * Do not import these from `@ggts-sh/spec` on client routes: the package
  * barrel co-chunks with the ggsvelte-spec graph. Parity is locked by
- * scripts/docs-known-names-parity.test.ts against @ggsvelte/spec.
+ * scripts/docs-known-names-parity.test.ts against @ggts-sh/spec.
  */
 
 export const KNOWN_GEOMS = [

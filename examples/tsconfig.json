@@ -1,12 +1,14 @@
 {
-  // Type-checks the corpus's .ts files (spec.ts / data.ts / define.ts /
+  // Type-checks the corpus's .ts and .tsx files (spec.ts / data.ts / define.ts /
   // manifest.ts) via `bun run check:examples` (CI / manual).
   // Example.svelte files are compiled and checked by the docs app
   // (apps/docs svelte-check + vite build). Requires `bun run check` +
   // `bun run build` first: imports resolve through the packages' dist/.
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"]
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

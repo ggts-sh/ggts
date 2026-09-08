@@ -9,7 +9,7 @@
  */
 import type { GrammarLayerKind } from "./types.js";
 
-const GUIDE = "https://ggsvelte.sh/guide/upgrading";
+const GUIDE = "https://ggts.sh/guide/upgrading";
 
 /** How sibling children of the same kind compose when folding into the builder. */
 type GrammarComposition = "merge-by-channel" | "merge-by-key" | "replace";

@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { chestSizes } from "./data.js";
 </script>

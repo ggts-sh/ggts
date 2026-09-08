@@ -2,7 +2,7 @@
  * Shared pure fixtures for display-members test siblings.
  * Data-only helpers — no behavior, no vitest imports.
  */
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 
 import type { PlotDatum, TooltipField } from "../../src/lib/interaction/interaction.js";
 

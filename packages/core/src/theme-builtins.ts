@@ -6,7 +6,7 @@
  * edition-1 overlay lives in theme-builtins-legacy.ts. Token construction is
  * theme-construct.ts; resolution is theme-resolve.ts.
  */
-import type { ThemeName } from "@ggsvelte/spec";
+import type { ThemeName } from "@ggts-sh/spec";
 import type { ThemeTokens } from "./theme-construct.js";
 import { CORE_BUILTIN_THEMES } from "./theme-builtins-core.js";
 import { SOLARIZED_BUILTIN_THEMES } from "./theme-builtins-ggthemes.js";

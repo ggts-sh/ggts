@@ -5,7 +5,7 @@
  * real codemod to revisit it. This transform only ever removes attribute
  * ranges and inserts child elements, so the whole requirement is "apply
  * non-overlapping [start, end) replacements to the original string" — 20 lines
- * that keep `@ggsvelte/svelte` free of a runtime dependency consumers would
+ * that keep `@ggts-sh/svelte` free of a runtime dependency consumers would
  * install forever to run a tool once.
  *
  * Applying right-to-left is what makes earlier offsets stay valid, which is

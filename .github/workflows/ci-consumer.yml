@@ -60,7 +60,7 @@ jobs:
           echo "matrix=$(bun scripts/support-matrix.ts "${flavor}")" >> "$GITHUB_OUTPUT"
 
   consumer-compat:
-    name: packed consumer (${{ matrix.os }}, Node ${{ matrix.node }}, ${{ matrix.packageManager }}, Svelte ${{ matrix.svelte }})
+    name: packed consumer (${{ matrix.os }}, Node ${{ matrix.node }}, ${{ matrix.packageManager }}, Svelte ${{ matrix.svelte }}, React ${{ matrix.react }})
     needs: [compatibility-matrix]
     strategy:
       fail-fast: false
@@ -118,6 +118,7 @@ jobs:
           matrix_pm: ${{ matrix.packageManager }}
           matrix_pm_version: ${{ matrix.packageManagerVersion }}
           matrix_svelte: ${{ matrix.svelte }}
+          matrix_react: ${{ matrix.react }}
           runtime_node_version: ${{ steps.consumer_runtime.outputs.runtime_node }}
           runtime_pm_version: ${{ steps.consumer_runtime.outputs.runtime_pm_ver }}
       - if: steps.content_hash.outputs.hit != 'true'
@@ -136,6 +137,7 @@ jobs:
           PACKAGE_MANAGER: ${{ matrix.packageManager }}
           PACKAGE_MANAGER_VERSION: ${{ matrix.packageManagerVersion }}
           SVELTE_VERSION: ${{ matrix.svelte }}
+          REACT_VERSION: ${{ matrix.react }}
         run: bun scripts/consumer-compat.ts
 
       # Component surface is split for wall-clock (issue #243). All three schedule

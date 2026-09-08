@@ -4,7 +4,7 @@
  * Configured domain is resolved inline in trainSequentialColorScale via the
  * color value view (`semanticOf`) so parser + transform validity stay one path.
  */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions.js";
 import { resolveSequentialPipelineRange } from "../scales/engine.js";

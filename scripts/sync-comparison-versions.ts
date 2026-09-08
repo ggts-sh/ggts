@@ -1,10 +1,10 @@
 /**
- * Keep the "Why ggsvelte?" comparison tables on the released package version.
+ * Keep the "Why ggts?" comparison tables on the released package version.
  *
- * Source of truth: packages/svelte/package.json (lockstep with all @ggsvelte/*).
+ * Source of truth: packages/svelte/package.json (lockstep with all @ggts-sh/*).
  * Consumers:
  *   - README.md API-stability cell (GitHub front door)
- *   - apps/docs/.../benchmark-charts.ts BENCHMARK_VERSIONS.ggsvelte (docs homepage)
+ * Measured benchmark versions are pinned to their published run.
  *
  * Changesets' Version Packages PR runs this after `changeset version` so the
  * bump lands in the same commit as the package.json versions. CI
@@ -23,11 +23,8 @@ const ROOT = resolve(import.meta.dir, "..");
 
 const SEMVER = /^\d+\.\d+\.\d+$/;
 
-/** API-stability row: ggsvelte cell is the first version cell after the label. */
+/** API-stability row: ggts cell is the first version cell after the label. */
 const README_API_STABILITY_ROW = /^(\|\s*\*\*API stability\*\*\s*\|)\s*⚠️ v[\d.]+(\s*\|)/m;
-
-/** Projection field written by gen-benchmark-charts.ts. */
-const PROJECTION_GGSVELTE = /(ggsvelte:\s*")[^"]+(")/;
 
 export function assertSemver(version: string): void {
   if (!SEMVER.test(version)) {
@@ -50,7 +47,7 @@ export function readLockstepVersion(root: string = ROOT): string {
 }
 
 /**
- * Rewrite the README "API stability" ggsvelte cell to `⚠️ v{version}`.
+ * Rewrite the README "API stability" ggts cell to `⚠️ v{version}`.
  * Peer cells (SveltePlot / LayerCake / Unovis) are left alone.
  *
  * Does not re-pad the markdown table: a version string of a different width
@@ -60,23 +57,11 @@ export function syncReadmeApiStability(markdown: string, version: string): strin
   assertSemver(version);
   if (!README_API_STABILITY_ROW.test(markdown)) {
     throw new Error(
-      "README.md is missing a recognizable **API stability** row with a ggsvelte ⚠️ v… cell. " +
+      "README.md is missing a recognizable **API stability** row with a ggts ⚠️ v… cell. " +
         "Restore the comparison table or update the sync pattern.",
     );
   }
   return markdown.replace(README_API_STABILITY_ROW, `$1 ⚠️ v${version}$2`);
-}
-
-/** Rewrite only BENCHMARK_VERSIONS.ggsvelte in the generated projection source. */
-export function syncBenchmarkGgsvelteVersion(source: string, version: string): string {
-  assertSemver(version);
-  if (!PROJECTION_GGSVELTE.test(source)) {
-    throw new Error(
-      "benchmark-charts projection is missing BENCHMARK_VERSIONS.ggsvelte. " +
-        "Run: bun scripts/gen-benchmark-charts.ts (or restore the field).",
-    );
-  }
-  return source.replace(PROJECTION_GGSVELTE, `$1${version}$2`);
 }
 
 /**
@@ -102,13 +87,11 @@ export function prettierFormatMarkdown(filePath: string, root: string = ROOT): v
 export type SyncResult = {
   readonly version: string;
   readonly readmeChanged: boolean;
-  readonly projectionChanged: boolean;
 };
 
 export function syncComparisonVersions(root: string = ROOT): SyncResult {
   const version = readLockstepVersion(root);
   const readmePath = join(root, "README.md");
-  const projectionPath = join(root, "apps/docs/src/lib/generated/benchmark-charts.ts");
 
   const readmeBefore = readFileSync(readmePath, "utf8");
   const readmeRewritten = syncReadmeApiStability(readmeBefore, version);
@@ -119,21 +102,14 @@ export function syncComparisonVersions(root: string = ROOT): SyncResult {
     prettierFormatMarkdown(readmePath, root);
   }
 
-  const projBefore = readFileSync(projectionPath, "utf8");
-  const projAfter = syncBenchmarkGgsvelteVersion(projBefore, version);
-  const projectionChanged = projAfter !== projBefore;
-  if (projectionChanged) writeFileSync(projectionPath, projAfter);
+  // Measured benchmark versions belong to the published run, not the latest release.
 
-  return { version, readmeChanged, projectionChanged };
+  return { version, readmeChanged };
 }
 
 export function checkComparisonVersions(root: string = ROOT): void {
   const version = readLockstepVersion(root);
   const readme = readFileSync(join(root, "README.md"), "utf8");
-  const projection = readFileSync(
-    join(root, "apps/docs/src/lib/generated/benchmark-charts.ts"),
-    "utf8",
-  );
 
   // Version presence (not full-file equality after prettier padding).
   const apiCell = new RegExp(
@@ -141,10 +117,6 @@ export function checkComparisonVersions(root: string = ROOT): void {
   );
   const stale: string[] = [];
   if (!apiCell.test(readme)) stale.push("README.md");
-  const wantProj = syncBenchmarkGgsvelteVersion(projection, version);
-  if (wantProj !== projection) {
-    stale.push("apps/docs/src/lib/generated/benchmark-charts.ts");
-  }
   if (stale.length > 0) {
     throw new Error(
       `comparison-table version is STALE for ${version} (${stale.join(", ")}). ` +
@@ -157,21 +129,15 @@ function main(argv: readonly string[]): void {
   const check = argv.includes("--check");
   if (check) {
     checkComparisonVersions(ROOT);
-    console.log(
-      `comparison versions current (ggsvelte v${readLockstepVersion(ROOT)} in README + docs projection).`,
-    );
+    console.log(`comparison versions current (ggts v${readLockstepVersion(ROOT)} in README).`);
     return;
   }
   const result = syncComparisonVersions(ROOT);
-  if (!result.readmeChanged && !result.projectionChanged) {
+  if (!result.readmeChanged) {
     console.log(`comparison versions already at v${result.version}`);
     return;
   }
-  const parts = [
-    result.readmeChanged ? "README.md" : null,
-    result.projectionChanged ? "benchmark-charts.ts" : null,
-  ].filter((p): p is string => p !== null);
-  console.log(`comparison versions synced to v${result.version} (${parts.join(", ")})`);
+  console.log(`comparison versions synced to v${result.version} (README.md)`);
 }
 
 if (import.meta.main) {

@@ -6,8 +6,8 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { PIPELINE_ERROR_CATALOG } from "@ggsvelte/core";
-import { ERROR_CATALOG } from "@ggsvelte/spec";
+import { PIPELINE_ERROR_CATALOG } from "@ggts-sh/core";
+import { ERROR_CATALOG } from "@ggts-sh/spec";
 
 const validationCodes = new Set(Object.keys(ERROR_CATALOG));
 const pipelineCodes = new Set(Object.keys(PIPELINE_ERROR_CATALOG));

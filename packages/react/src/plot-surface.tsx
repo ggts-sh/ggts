@@ -1,328 +1,500 @@
 import {
+  usePlotInputs,
+  useInteractionRevision,
+  plotBoundsInputs,
+  preciseInterval,
+  intervalPixels,
+  plotLabel,
+  inspectionKeys,
+  type SurfaceProps,
+} from "./plot-inputs.js";
+import {
   useCallback,
   useEffect,
+  useId,
   useImperativeHandle,
   useMemo,
   useRef,
   useState,
   useSyncExternalStore,
 } from "react";
+import { collectCompositionDiagnostics } from "@ggts-sh/compose";
+import { buildInteractionMasks, collectInspectIntentDiagnostics } from "@ggts-sh/core";
+import {
+  buildZoomEvent,
+  filterScopeChannelsByZoomMode,
+  INTERACTION_DIAGNOSTIC_CATALOG,
+  iterateCandidates,
+  resolveSemanticKeysForPlot,
+  sanitizePartialZoomDomains,
+  uniqueKeysFromRowIndexes,
+} from "@ggts-sh/core/interaction";
+import type { BatchInteractionMask, RenderModel } from "@ggts-sh/core";
+import type {
+  InteractionSource,
+  LegendFilterClause,
+  PreciseBoundsApplyEvent,
+  ZoomDomains,
+} from "@ggts-sh/core/interaction";
+import type { LiveSvgHandle } from "@ggts-sh/core/svg-live";
+import {
+  CanvasAccessibility,
+  inspectionLabel,
+  PlotTooltip,
+  visuallyHidden,
+} from "./plot-accessibility.js";
+import { PlotOverlay } from "./plot-overlay.js";
+import { PlotControls } from "./plot-controls.js";
+import { usePlotInteractions } from "./plot-interactions.js";
+import { usePlotLegends } from "./plot-legends.js";
+import { usePlotModel } from "./plot-runtime.js";
+import { useHostLayoutEffect } from "./host-effect.js";
+import { destroyAllLives, renderStackHTML, syncStrata } from "./strata-sync.js";
 
-import { resolveInteractionScope } from "@ggsvelte/compose";
-import type { RenderModel, ScaleState } from "@ggsvelte/core";
-import { planStrata, runPipeline } from "@ggsvelte/core";
-import type { LiveSvgHandle } from "@ggsvelte/core/svg-live";
-import type { PortableSpec } from "@ggsvelte/spec";
+const EMPTY_FILTERS: readonly LegendFilterClause[] = [];
+const NO_MASKS: readonly (BatchInteractionMask | null)[] = [];
 
-import type { PlotInspectionChange, ZoomDomains } from "./interaction.js";
-import { assembleFromProps } from "./plot-assemble.js";
-import { hostDatumKey, inspectMaxDistance } from "./plot-host-identity.js";
-import { clientRectOf, hitAt, inspectionFromHit, zoomFromBrush } from "./plot-pointer.js";
-import type { GGPlotHandle, GGPlotProps } from "./plot-props.js";
-import { applyZoom, numericDomain } from "./plot-zoom.js";
-import type { LayerRegistry } from "./registry.js";
-import { applyAriaLabel, destroyAllLives, syncStrata, withChromeSvg } from "./strata-sync.js";
-
-const DEFAULT_HEIGHT = 400;
-
-function isContainerWidth(
-  width: number | "container" | undefined,
-): width is "container" | undefined {
-  return width === undefined || width === "container";
-}
-
-function subscribeNone(): () => void {
-  return () => {};
-}
-
-function readRevision(controller: GGPlotProps["interaction"]): number {
-  return controller?.revision ?? 0;
-}
-
-function disposePlot(
-  lives: Map<number, LiveSvgHandle>,
-  modelRef: { current: RenderModel | null },
-): void {
-  destroyAllLives(lives);
-  modelRef.current?.dispose();
-  modelRef.current = null;
-}
-
-function plotTools(props: GGPlotProps, registry: LayerRegistry) {
-  return {
-    inspect:
-      props.tool === "inspect" ||
-      props.inspect === true ||
-      typeof props.inspect === "object" ||
-      registry.capabilities("inspect")[0] !== undefined,
-    select: props.tool === "point" || (props.select !== false && props.select !== undefined),
-    zoom: props.tool === "zoom-area" || props.zoom === true || typeof props.zoom === "object",
+function usePlotSurface(props: SurfaceProps) {
+  const { registry } = props;
+  const revision = useSyncExternalStore(
+    registry.subscribe,
+    registry.getSnapshot,
+    registry.getSnapshot,
+  );
+  useInteractionRevision(props.interaction);
+  const root = useRef<HTMLDivElement | null>(null);
+  const capture = useRef<HTMLDivElement | null>(null);
+  const stack = useRef<HTMLDivElement | null>(null);
+  const lives = useRef(new Map<number, LiveSvgHandle>());
+  const plotId = `gg-${useId().replaceAll(/[^a-zA-Z0-9_-]/g, "")}`;
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [localZoom, setLocalZoom] = useState<ZoomDomains | null>(null);
+  const [filters, setFilters] = useState<readonly LegendFilterClause[]>(EMPTY_FILTERS);
+  const [paintedModel, setPaintedModel] = useState<RenderModel | null>(null);
+  const {
+    width,
+    height,
+    assembled,
+    inspectChildren,
+    config,
+    datumKey,
+    scope,
+    zoom,
+    effectiveSpec,
+  } = usePlotInputs(props, revision, containerWidth, localZoom);
+  const runtime = usePlotModel({
+    spec: effectiveSpec,
+    baselineSpec: zoom === null ? null : assembled,
+    width,
+    height,
+    rowFilters: filters,
+  });
+  const { model, strata } = runtime;
+  const label = plotLabel(props, model);
+  const rowIdentity = props.data ?? props.spec?.data;
+  const priorKeys = useMemo(() => new Map<string, PropertyKey>(), [rowIdentity, datumKey]);
+  const hasLegendIntent =
+    registry.layers.some(
+      (layer) =>
+        (layer.kind === "legendFocus" || layer.kind === "legendFilter") && layer.value !== null,
+    ) ||
+    Boolean(props.legendFocus) ||
+    Boolean(props.legendFilter);
+  const keyResolution = useMemo(
+    () =>
+      resolveSemanticKeysForPlot({
+        model:
+          config.interactive || props.interaction !== undefined || hasLegendIntent ? model : null,
+        layers: assembled?.layers ?? [],
+        datumKey,
+        priorKeys,
+        dataToken: "data",
+        specToken: "spec",
+      }),
+    [model, assembled, datumKey, priorKeys, config.interactive, props.interaction, hasLegendIntent],
+  );
+  const keyForRow = useCallback(
+    (index: number) => keyResolution.keys.get(index) ?? null,
+    [keyResolution],
+  );
+  const onZoom = (domains: ZoomDomains | null, source: InteractionSource) => {
+    const next = domains === null ? null : sanitizePartialZoomDomains(domains, model?.scales, zoom);
+    if (domains !== null && next === null) return;
+    setLocalZoom(next);
+    const zoomScope = filterScopeChannelsByZoomMode(scope, config.zoom?.mode ?? null);
+    if (next === null) props.interaction?.resetZoom({ scope: zoomScope, source });
+    else props.interaction?.setZoom(next, { scope: zoomScope, source });
+    const event = buildZoomEvent(next, source);
+    props.onzoom?.(event);
+    props.oninteraction?.(event);
   };
-}
-
-export function PlotSurface(
-  props: Omit<GGPlotProps, "key" | "children"> & {
-    identityKey?: GGPlotProps["key"];
-    registry: LayerRegistry;
-    plotRef: React.ForwardedRef<GGPlotHandle>;
-  },
-) {
-  const { registry, plotRef, identityKey } = props;
-  useSyncExternalStore(
-    (onStoreChange) => registry.subscribe(onStoreChange),
-    () => registry.getSnapshot(),
-    () => registry.getSnapshot(),
-  );
-  const interactionRevision = useSyncExternalStore(
-    (onStoreChange) => {
-      if (props.interaction === undefined) return subscribeNone();
-      return props.interaction.subscribe(onStoreChange);
-    },
-    () => readRevision(props.interaction),
-    () => readRevision(props.interaction),
-  );
-
-  const rootRef = useRef<HTMLDivElement | null>(null);
-  const stackRef = useRef<HTMLDivElement | null>(null);
-  const livesRef = useRef(new Map<number, LiveSvgHandle>());
-  const modelRef = useRef<RenderModel | null>(null);
-  const prevScalesRef = useRef<Record<string, ScaleState> | null>(null);
-  const assembledRef = useRef<PortableSpec | null>(null);
-  const onrenderRef = useRef(props.onrender);
-  onrenderRef.current = props.onrender;
-  const brushOrigin = useRef<{ x: number; y: number } | null>(null);
-  const [containerWidth, setContainerWidth] = useState(480);
-  const [zoomDomains, setZoomDomains] = useState<Partial<ZoomDomains> | null>(null);
-  const [inspection, setInspection] = useState<PlotInspectionChange<
-    Record<string, unknown>,
-    PropertyKey
-  > | null>(null);
-
-  const resolvedWidth: number = isContainerWidth(props.width) ? containerWidth : props.width;
-  const resolvedHeight = props.height ?? DEFAULT_HEIGHT;
-
-  useEffect(() => {
-    if (!isContainerWidth(props.width) || rootRef.current === null) {
-      return () => {};
-    }
-    const el = rootRef.current;
-    const ro = new ResizeObserver((entries) => {
-      const w = entries[0]?.contentRect.width;
-      if (w !== undefined && w > 0) setContainerWidth(w);
+  const interactions = usePlotInteractions({
+    flipped: assembled?.coord?.type === "flip",
+    model,
+    config,
+    props,
+    scope,
+    capture,
+    keyForRow,
+    zoom,
+    onZoom,
+  });
+  const legends = usePlotLegends({
+    model,
+    registry,
+    revision,
+    props,
+    scope,
+    keyForRow,
+    filters,
+    setFilters,
+  });
+  const semanticCandidates = useMemo(() => {
+    if (
+      model === null ||
+      (!config.interactive && !hasLegendIntent && props.interaction === undefined)
+    )
+      return [];
+    const lineageKeys = new Map<number, PropertyKey[]>();
+    return [...iterateCandidates(model.candidates)].map((candidate) => {
+      let keys = lineageKeys.get(candidate.lineage);
+      if (keys === undefined) {
+        keys = uniqueKeysFromRowIndexes(model.lineage.keys(candidate.lineage), keyForRow);
+        lineageKeys.set(candidate.lineage, keys);
+      }
+      return { ...candidate, keys };
     });
-    ro.observe(el);
-    const initial = el.getBoundingClientRect().width;
-    if (initial > 0) setContainerWidth(initial);
+  }, [model, keyForRow, config.interactive, hasLegendIntent, props.interaction]);
+  const focusKeys = [
+    ...legends.emphasis,
+    ...interactions.selected,
+    ...interactions.intervalKeys,
+    ...inspectionKeys(config, interactions),
+  ];
+  const focusToken = useRef<readonly PropertyKey[]>([]);
+  if (
+    focusToken.current.length !== focusKeys.length ||
+    focusKeys.some((key, index) => key !== focusToken.current[index])
+  )
+    focusToken.current = focusKeys;
+  const masks = useMemo(
+    () =>
+      model === null || focusToken.current.length === 0
+        ? NO_MASKS
+        : buildInteractionMasks(model.scene.batches, focusToken.current, semanticCandidates),
+    [model, semanticCandidates, focusToken.current],
+  );
+  const firstMarkup = useRef<string | null>(null);
+  if (firstMarkup.current === null && model !== null)
+    firstMarkup.current = renderStackHTML(model.scene, strata, plotId, label);
+  const initialHTML = useMemo(() => ({ __html: firstMarkup.current ?? "" }), [firstMarkup.current]);
+  const lastPainted = useRef<RenderModel | null>(null);
+  const callbacks = useRef(props);
+  callbacks.current = props;
+
+  useHostLayoutEffect(() => {
+    const element = root.current;
+    if (typeof props.width === "number" || element === null) return () => {};
+    const observer = new ResizeObserver((entries) => {
+      const measured = entries[0]?.contentRect.width;
+      if (measured !== undefined) setContainerWidth(measured);
+    });
+    observer.observe(element);
+    const measured = element.getBoundingClientRect().width;
+    setContainerWidth(measured);
     return () => {
-      ro.disconnect();
+      observer.disconnect();
     };
   }, [props.width]);
-
-  const assembled = useMemo(
-    () => assembleFromProps(props, registry),
-    [props.spec, props.data, props.aes, props.layers, props.a11y, registry.getSnapshot()],
-  );
-  assembledRef.current = assembled;
-  const runSpec = assembled === null ? null : applyZoom(assembled, zoomDomains);
-
-  const paint = useCallback(
-    (spec: PortableSpec) => {
-      const stack = stackRef.current;
-      if (stack === null) return;
-      const model = runPipeline(spec, {
-        width: resolvedWidth,
-        height: resolvedHeight,
-        ...(prevScalesRef.current !== null && { prevScales: prevScalesRef.current }),
-      });
-      modelRef.current?.dispose();
-      modelRef.current = model;
-      prevScalesRef.current = model.scales.state;
-      syncStrata(
-        stack,
+  useHostLayoutEffect(() => {
+    const element = stack.current;
+    if (element === null) return () => {};
+    if (model === null) {
+      destroyAllLives(lives.current);
+      element.replaceChildren();
+      setPaintedModel(null);
+      return () => {};
+    }
+    const paint = () => {
+      const complete = syncStrata(
+        element,
         model.scene,
-        withChromeSvg(planStrata(model.scene, model.layerBackends)),
-        livesRef.current,
+        strata,
+        lives.current,
+        plotId,
+        label,
+        masks,
       );
-      applyAriaLabel(stack, props.ariaLabel);
-      onrenderRef.current?.(model, spec);
-    },
-    [props.ariaLabel, resolvedHeight, resolvedWidth],
-  );
-
-  useEffect(() => {
-    if (runSpec === null) {
-      disposePlot(livesRef.current, modelRef);
-      return;
-    }
-    paint(runSpec);
-  }, [paint, runSpec]);
-
-  useEffect(() => {
-    return () => {
-      disposePlot(livesRef.current, modelRef);
+      setPaintedModel(complete ? model : null);
+      if (complete && lastPainted.current !== model) {
+        lastPainted.current = model;
+        if (effectiveSpec !== null) callbacks.current.onrender?.(model, effectiveSpec);
+      }
     };
-  }, []);
-
-  useEffect(() => {
-    const controller = props.interaction;
-    const scope = props.interactionScope;
-    if (controller === undefined || scope === undefined) return;
-    if (scope.x === undefined && scope.y === undefined) return;
-    const next = controller.zoom(scope);
-    const x = numericDomain(next.x);
-    const y = numericDomain(next.y);
-    if (x === undefined && y === undefined) {
-      setZoomDomains(null);
-      return;
-    }
-    setZoomDomains({
-      ...(x !== undefined && { x }),
-      ...(y !== undefined && { y }),
+    paint();
+    if (!strata.some((stratum) => stratum.backend === "canvas")) return () => {};
+    const observer = new MutationObserver(paint);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "data-theme", "style"],
     });
-  }, [interactionRevision, props.interaction, props.interactionScope]);
-
-  const tools = plotTools(props, registry);
-  const maxDistance = inspectMaxDistance(props, registry);
-  const datumKey = hostDatumKey(props, registry, identityKey, assembled?.data);
-  const interactionScope = resolveInteractionScope({
-    interaction: props.interaction,
-    ...(props.interactionScope !== undefined && { interactionScope: props.interactionScope }),
-    zoom: props.zoom ?? tools.zoom,
-    assembled,
-    datumKey,
-  });
-
-  useImperativeHandle(plotRef, () => ({
+    // A local theme provider can override canvas CSS without replacing chart props.
+    observer.observe(element, { attributes: true, attributeFilter: ["class", "style"] });
+    return () => {
+      observer.disconnect();
+    };
+  }, [model, strata, plotId, label, masks, effectiveSpec]);
+  useHostLayoutEffect(
+    () => () => {
+      destroyAllLives(lives.current);
+      lastPainted.current = null;
+    },
+    [],
+  );
+  useEffect(() => {
+    const diagnostics = [
+      ...config.diagnostics,
+      ...keyResolution.diagnostics,
+      ...collectCompositionDiagnostics(registry.layers),
+    ];
+    if (inspectChildren.length > 1)
+      diagnostics.push(INTERACTION_DIAGNOSTIC_CATALOG.INTERACTION_DUPLICATE_INSPECT_CAPABILITY);
+    for (const diagnostic of diagnostics) callbacks.current.ondiagnostic?.(diagnostic);
+    if (config.inspect !== null && assembled !== null) {
+      for (const diagnostic of collectInspectIntentDiagnostics(
+        assembled.layers,
+        config.inspect.mode,
+      ))
+        callbacks.current.ondiagnostic?.(diagnostic);
+    }
+  }, [config, keyResolution, assembled, registry, revision]);
+  useImperativeHandle(props.plotRef, () => ({
     resetScales() {
-      prevScalesRef.current = null;
-      setZoomDomains(null);
-      const spec = assembledRef.current;
-      if (spec !== null) paint(spec);
+      runtime.resetScales();
+      onZoom(null, "programmatic");
     },
     setZoom(domains) {
-      setZoomDomains((prev) => ({ ...prev, ...domains }));
-      props.interaction?.setZoom(domains, {
-        scope: interactionScope,
-        source: "programmatic",
-      });
-      if (domains.x !== undefined || domains.y !== undefined) {
-        props.onzoom?.({
-          type: "zoom",
-          phase: "end",
-          source: "programmatic",
-          domains,
-        });
-      }
+      onZoom({ ...zoom, ...domains }, "programmatic");
     },
   }));
-
-  const locateHit = (event: React.PointerEvent<HTMLDivElement>) =>
-    hitAt(event, modelRef.current, clientRectOf(rootRef.current), datumKey, maxDistance);
-
-  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!tools.inspect) return;
-    const found = locateHit(event);
-    if (found === null) {
-      setInspection(null);
+  const boundsInputs = useMemo(
+    () => plotBoundsInputs(model, config),
+    [model, config.select, config.zoom],
+  );
+  const applyBounds = (panelId: string, event: PreciseBoundsApplyEvent) => {
+    if (model === null) return;
+    if (event.action === "zoom") {
+      if (event.scale !== "band")
+        onZoom({ ...zoom, [event.axis]: [...event.bounds] }, event.inputSource);
       return;
     }
-    const next = inspectionFromHit(event, found);
-    setInspection(next);
-    props.oninspect?.(next as never);
-    props.oninteraction?.(next as never);
+    const selection = preciseInterval(
+      model,
+      panelId,
+      event,
+      interactions.intervals,
+      semanticCandidates,
+      config.select?.mode,
+    );
+    if (selection !== null) interactions.commitInterval(selection.event, selection.domains);
   };
-
-  const onPointerLeave = () => {
-    brushOrigin.current = null;
-    if (inspection === null) return;
-    const clear = { type: "inspect" as const, phase: "clear" as const, source: "pointer" as const };
-    setInspection(null);
-    props.oninspect?.(clear);
+  const canvasBatches = useMemo(
+    () =>
+      strata
+        .filter((stratum) => stratum.backend === "canvas")
+        .flatMap((stratum) => stratum.batches),
+    [strata],
+  );
+  const liveText =
+    inspectionLabel(interactions.inspection) ||
+    (interactions.selected.length > 0 ? `${interactions.selected.length} selected` : "");
+  const interactive = config.availableTools.length > 0;
+  const intervalRects =
+    model === null
+      ? []
+      : interactions.intervals.flatMap((record) => {
+          const rect = intervalPixels(model, record.panelId, record.domains);
+          return rect === null ? [] : [rect];
+        });
+  const rectangles = [
+    ...intervalRects,
+    ...(interactions.brush === null ? [] : [interactions.brush]),
+  ];
+  return {
+    ready:
+      (typeof props.width === "number" || containerWidth > 0) &&
+      model !== null &&
+      paintedModel === model,
+    props,
+    config,
+    interactions,
+    legends,
+    zoom,
+    onZoom,
+    boundsInputs,
+    applyBounds,
+    root,
+    capture,
+    stack,
+    model,
+    height,
+    initialHTML,
+    semanticCandidates,
+    rectangles,
+    assembled,
+    interactive,
+    plotId,
+    label,
+    liveText,
+    canvasBatches,
   };
+}
 
-  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const model = modelRef.current;
-    const rect = clientRectOf(rootRef.current);
-    if (model !== null && rect !== null) {
-      brushOrigin.current = model.viewport.locate(event.clientX, event.clientY, rect);
-    }
-  };
+export function PlotSurface(props: SurfaceProps) {
+  return <PlotSurfaceView state={usePlotSurface(props)} />;
+}
 
-  const onPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
-    const origin = brushOrigin.current;
-    brushOrigin.current = null;
-    const model = modelRef.current;
-    const rect = clientRectOf(rootRef.current);
-    if (model === null || rect === null) return;
-    const end = model.viewport.locate(event.clientX, event.clientY, rect);
-    const start = origin ?? end;
-    const dragged = Math.hypot(end.x - start.x, end.y - start.y) >= 8;
-    if (tools.zoom && dragged) {
-      const domains = zoomFromBrush(model, start, end);
-      if (domains === null) return;
-      setZoomDomains((prev) => ({ ...prev, ...domains }));
-      props.interaction?.setZoom(domains, { scope: interactionScope, source: "pointer" });
-      props.onzoom?.({ type: "zoom", phase: "end", source: "pointer", domains });
-      props.oninteraction?.({ type: "zoom", phase: "end", source: "pointer", domains });
-      return;
-    }
-    if (!tools.select) return;
-    const found = locateHit(event);
-    if (found === null) return;
-    const selection = {
-      type: "select" as const,
-      phase: "end" as const,
-      mode: "point" as const,
-      keys: [found.key],
-      source: "pointer" as const,
-    };
-    props.onselect?.(selection);
-    props.interaction?.setSelection([found.key], { scope: interactionScope, source: "pointer" });
-    props.oninteraction?.(selection);
-  };
-
-  const ready = runSpec !== null;
-  const tooltip = inspection !== null;
-
+function PlotSurfaceView({ state }: { state: ReturnType<typeof usePlotSurface> }) {
+  const {
+    ready,
+    props,
+    config,
+    interactions,
+    legends,
+    zoom,
+    onZoom,
+    boundsInputs,
+    applyBounds,
+    root,
+    capture,
+    stack,
+    model,
+    height,
+    initialHTML,
+    semanticCandidates,
+    rectangles,
+    assembled,
+    interactive,
+    plotId,
+    label,
+    liveText,
+    canvasBatches,
+  } = state;
   return (
-    <div
-      ref={rootRef}
-      className={`gg-plot-root${isContainerWidth(props.width) ? " gg-container-width" : ""}`}
-      data-gg-ready={ready ? "true" : "false"}
-      aria-label={props.ariaLabel}
-      style={{
-        position: "relative",
-        width: isContainerWidth(props.width) ? "100%" : resolvedWidth,
-        height: resolvedHeight,
-      }}
-    >
-      <div
-        ref={stackRef}
-        className="gg-stratum-stack"
-        style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-      />
-      <div
-        className="gg-capture"
-        style={{ position: "absolute", inset: 0 }}
-        onPointerMove={onPointerMove}
-        onPointerLeave={onPointerLeave}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-      />
-      {tooltip ? (
-        <div
-          className="gg-tooltip"
-          role="tooltip"
-          style={{
-            position: "absolute",
-            left: inspection.focus.anchor.x + 8,
-            top: inspection.focus.anchor.y + 8,
-            pointerEvents: "none",
+    <div>
+      {interactive && (
+        <PlotControls
+          tools={config.availableTools}
+          activeTool={interactions.activeTool}
+          onToolChange={interactions.chooseTool}
+          canResetZoom={zoom !== null}
+          onResetZoom={() => {
+            onZoom(null, "pointer");
           }}
-        >
-          {inspection.focus.key === null ? "tooltip" : String(inspection.focus.key)}
-        </div>
-      ) : null}
+          canClearSelection={interactions.selected.length > 0}
+          onClearSelection={() => {
+            interactions.clearSelection("pointer");
+          }}
+          canClearIntervals={interactions.intervals.length > 0}
+          onClearIntervals={() => {
+            interactions.clearIntervals("pointer");
+          }}
+          boundsInputs={boundsInputs}
+          onApplyBounds={applyBounds}
+        />
+      )}
+      <div
+        ref={root}
+        className={`gg-plot-root${typeof props.width === "number" ? "" : " gg-container-width"}`}
+        data-gg-ready={ready ? "true" : "false"}
+        style={{
+          position: "relative",
+          width: typeof props.width === "number" ? props.width : "100%",
+          height,
+        }}
+      >
+        <div
+          ref={stack}
+          className="gg-stratum-stack"
+          style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+          dangerouslySetInnerHTML={initialHTML}
+        />
+        {model !== null && (
+          <PlotOverlay
+            model={model}
+            inspection={interactions.inspection}
+            seed={interactions.seed}
+            candidates={semanticCandidates}
+            selected={interactions.selected}
+            emphasized={legends.emphasis}
+            rectangles={rectangles}
+            flipped={assembled?.coord?.type === "flip"}
+          />
+        )}
+        {interactive && (
+          <div
+            ref={capture}
+            className="gg-capture"
+            role="group"
+            tabIndex={0}
+            aria-label={label}
+            aria-describedby={`${plotId}-description ${plotId}-active`}
+            aria-controls={interactions.inspection === null ? undefined : `${plotId}-tooltip`}
+            style={{
+              position: "absolute",
+              inset: 0,
+              touchAction: interactions.activeTool.endsWith("-area") ? "none" : "pan-y pinch-zoom",
+              cursor: interactions.activeTool.endsWith("-area") ? "crosshair" : "auto",
+            }}
+            onPointerDown={interactions.onPointerDown}
+            onPointerMove={interactions.onPointerMove}
+            onPointerUp={interactions.onPointerUp}
+            onPointerCancel={interactions.onPointerCancel}
+            onLostPointerCapture={interactions.onLostPointerCapture}
+            onPointerLeave={interactions.onPointerLeave}
+            onFocus={interactions.onFocus}
+            onBlur={interactions.onBlur}
+            onKeyDown={interactions.onKeyDown}
+            onDoubleClick={() => {
+              if (config.zoom !== null) onZoom(null, "pointer");
+            }}
+          />
+        )}
+        {model !== null &&
+          assembled !== null &&
+          config.inspect !== null &&
+          interactions.inspection !== null && (
+            <PlotTooltip
+              id={`${plotId}-tooltip`}
+              inspection={interactions.inspection}
+              options={config.inspect}
+              model={model}
+              spec={assembled}
+              onClose={interactions.closeInspection}
+              onEnter={interactions.onTooltipEnter}
+              onLeave={interactions.onTooltipLeave}
+            />
+          )}
+        {interactive && (
+          <>
+            <p id={`${plotId}-description`} style={visuallyHidden}>
+              Use arrow keys to explore data. Enter pins inspection or selects a point. For area
+              tools, Enter starts and finishes a selection; arrow keys move its boundary. Escape
+              cancels. Delete clears selection.
+            </p>
+            <p id={`${plotId}-active`} style={visuallyHidden}>
+              {liveText}
+            </p>
+            <div role="status" aria-live="polite" aria-atomic="true" style={visuallyHidden}>
+              {liveText}
+            </div>
+          </>
+        )}
+      </div>
+      {legends.controls}
+      {model !== null && canvasBatches.length > 0 && (
+        <CanvasAccessibility model={model} batches={canvasBatches} label={label} />
+      )}
     </div>
   );
 }

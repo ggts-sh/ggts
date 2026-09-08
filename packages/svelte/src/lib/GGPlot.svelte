@@ -36,8 +36,8 @@
    * Controller wiring lives in `plot-engine.svelte.ts` (construction /
    * effect-order contract documented there).
    */
-  import type { CellValue } from "@ggsvelte/core";
-  import { sceneLabel } from "@ggsvelte/core";
+  import type { CellValue } from "@ggts-sh/core";
+  import { sceneLabel } from "@ggts-sh/core";
 
   import type { ZoomDomains } from "./interaction/interaction.js";
   import { provideRegistry } from "./geoms/registry.svelte.js";

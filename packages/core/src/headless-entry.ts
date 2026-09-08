@@ -2,16 +2,16 @@
 /**
  * Side-effect-free headless pipeline and pure renderers.
  *
- * Unlike `@ggsvelte/core/render`, this entry registers no geom, stat,
+ * Unlike `@ggts-sh/core/render`, this entry registers no geom, stat,
  * color-kind, style-kind, or band-guide families. Import the required
  * `registerBasic*` / `register*Color` / `registerNumericStyle` /
  * `registerFiniteStyle` / `registerBandGuide` functions from
- * `@ggsvelte/core/headless/register` before running a spec.
+ * `@ggts-sh/core/headless/register` before running a spec.
  */
 export { batchMarkCount, CANVAS_AUTO_THRESHOLD, PipelineError } from "./pipeline/public-api.js";
 export { runPipeline } from "./pipeline/run-pipeline.js";
 // Scene-only runner for the lean SVG path (no RenderModel-only contracts);
-// pairs with mountSceneSvg from "@ggsvelte/core/svg-live" for live updates.
+// pairs with mountSceneSvg from "@ggts-sh/core/svg-live" for live updates.
 export { runScene } from "./pipeline/run-scene.js";
 export type {
   Advisory,

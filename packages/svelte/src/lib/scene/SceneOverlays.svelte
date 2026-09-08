@@ -6,7 +6,7 @@
    * Surface-interactive and inert selection overlays are mutually exclusive
    * via `{:else if}` so both never mount even if host props are inconsistent.
    */
-  import type { CellValue } from "@ggsvelte/core";
+  import type { CellValue } from "@ggts-sh/core";
 
   import type {
     InteractionTool,

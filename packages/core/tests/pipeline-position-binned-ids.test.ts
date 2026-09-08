@@ -15,7 +15,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, scaleXBinned } from "@ggsvelte/spec";
+import { aes, gg, scaleXBinned } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.ts";
 import { assignBinId, binIdColumn, resolveBinnedBoundaries } from "../src/pipeline/binned-scale.ts";

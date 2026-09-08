@@ -4,7 +4,7 @@
  * Contract: no axis lines, ticks, tick labels, grid, or panel border/fill;
  * mark geometry remains. Labels gate is theme-level (labelsX/labelsY).
  */
-import { aes, gg, THEME_NAMES } from "@ggsvelte/spec";
+import { aes, gg, THEME_NAMES } from "@ggts-sh/spec";
 import { describe, expect, it } from "bun:test";
 
 import { runPipeline } from "../src/pipeline.ts";

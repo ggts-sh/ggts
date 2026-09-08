@@ -1,5 +1,5 @@
 /** Train a transformed sequential color/fill scale. */
-import { CYCLIC_SCHEME_NAMES, type ColorScaleSpec } from "@ggsvelte/spec";
+import { CYCLIC_SCHEME_NAMES, type ColorScaleSpec } from "@ggts-sh/spec";
 
 const CYCLIC_SCHEMES = new Set<string>(CYCLIC_SCHEME_NAMES);
 

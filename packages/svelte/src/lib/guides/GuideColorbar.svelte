@@ -4,7 +4,7 @@
    * (#659 slice 6). Continuous-legend presentation for one aesthetic.
    * Emits NO markup.
    */
-  import { guideColorbar, type ColorbarGuideOptions } from "@ggsvelte/spec";
+  import { guideColorbar, type ColorbarGuideOptions } from "@ggts-sh/spec";
 
   import { createPlotLayer } from "../layers/plot-layer.svelte.js";
   import {

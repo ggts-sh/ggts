@@ -1,7 +1,7 @@
 {
-  "name": "@ggsvelte/core",
-  "version": "0.42.0",
-  "description": "ggsvelte core: framework-agnostic grammar-of-graphics pipeline, scale stability, layout, and the pure SVG-string renderer.",
+  "name": "@ggts-sh/core",
+  "version": "0.43.0",
+  "description": "ggts core: framework-agnostic grammar-of-graphics pipeline, scale stability, layout, and the pure SVG-string renderer.",
   "keywords": [
     "canvas",
     "charts",
@@ -14,18 +14,19 @@
     "svg",
     "visualization"
   ],
-  "homepage": "https://ggsvelte.sh/",
-  "bugs": "https://github.com/ljodea/ggsvelte/issues",
+  "homepage": "https://ggts.sh/",
+  "bugs": "https://github.com/ggts-sh/ggts/issues",
   "license": "MIT",
   "author": "Liam O'Dea",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ljodea/ggsvelte.git",
+    "url": "git+https://github.com/ggts-sh/ggts.git",
     "directory": "packages/core"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "NOTICE"
   ],
   "type": "module",
   "sideEffects": [
@@ -60,6 +61,14 @@
     "./svg-live": {
       "types": "./dist/svg-live/index.d.ts",
       "default": "./dist/svg-live/index.js"
+    },
+    "./data": {
+      "types": "./dist/data/index.d.ts",
+      "default": "./dist/data/index.js"
+    },
+    "./interaction": {
+      "types": "./dist/interaction-entry.d.ts",
+      "default": "./dist/interaction-entry.js"
     }
   },
   "publishConfig": {
@@ -67,7 +76,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@ggsvelte/spec": "^0.42.0"
+    "@ggts-sh/spec": "^0.43.0"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

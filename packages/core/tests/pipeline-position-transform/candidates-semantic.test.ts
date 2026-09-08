@@ -2,7 +2,7 @@
  * Position transform — candidates-semantic.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, scaleXLog10, scaleYLog10 } from "@ggsvelte/spec";
+import { aes, gg, scaleXLog10, scaleYLog10 } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import { size } from "./fixtures.ts";
 

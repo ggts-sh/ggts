@@ -33,19 +33,16 @@ export interface ScopedStore<T> {
 
 export type CreateScopedStoreInput<T> = {
   readonly initial: T;
-  readonly controller: () => PlotInteractionController<PropertyKey> | undefined;
+  readonly controller: () => PlotInteractionController | undefined;
   readonly scope: () => PlotInteractionScope;
   /** Read channel state from a live controller. */
-  readonly read: (
-    controller: PlotInteractionController<PropertyKey>,
-    scope: PlotInteractionScope,
-  ) => T;
+  readonly read: (controller: PlotInteractionController, scope: PlotInteractionScope) => T;
   /**
    * Write channel state to a live controller. Return `{ value }` on commit, or
    * `null` when the controller treated the write as a no-op.
    */
   readonly write: (
-    controller: PlotInteractionController<PropertyKey>,
+    controller: PlotInteractionController,
     next: T,
     scope: PlotInteractionScope,
     source: InteractionSource,
@@ -55,7 +52,7 @@ export type CreateScopedStoreInput<T> = {
    * was a no-op.
    */
   readonly clearShared: (
-    controller: PlotInteractionController<PropertyKey>,
+    controller: PlotInteractionController,
     scope: PlotInteractionScope,
     source: InteractionSource,
   ) => boolean;
@@ -128,7 +125,7 @@ export interface IntervalScopedStore {
 }
 
 export type CreateIntervalScopedStoreInput = {
-  readonly controller: () => PlotInteractionController<PropertyKey> | undefined;
+  readonly controller: () => PlotInteractionController | undefined;
   readonly scope: () => PlotInteractionScope;
 };
 

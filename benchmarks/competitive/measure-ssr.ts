@@ -25,13 +25,21 @@ import { pathToFileURL } from "node:url";
 
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { build } from "vite";
+import { measurementProvenance } from "./provenance";
 
 const root = import.meta.dirname;
 const outRoot = path.join(root, "results", "ssr");
 if (existsSync(outRoot)) rmSync(outRoot, { recursive: true });
 mkdirSync(outRoot, { recursive: true });
 
-type SsrLibId = "ggsvelte" | "svelteplot" | "layercake" | "unovis" | "tanstack-svelte";
+type SsrLibId =
+  | "ggsvelte"
+  | "ggsvelte-react"
+  | "ggsvelte-ggplot"
+  | "svelteplot"
+  | "layercake"
+  | "unovis"
+  | "tanstack-svelte";
 type SsrScenario = "scatter-color" | "line-multiseries";
 
 const LIBS: {
@@ -47,8 +55,18 @@ const LIBS: {
 }[] = [
   {
     id: "ggsvelte",
-    label: "ggsvelte (headless)",
-    note: "gg() -> renderToSVGString (@ggsvelte/core/render lean entry; no DOM, no Svelte runtime)",
+    label: "ggts (headless)",
+    note: "gg() -> renderToSVGString (@ggts-sh/core/render lean entry; no DOM, no Svelte runtime)",
+  },
+  {
+    id: "ggsvelte-react",
+    label: "ggts React (SSR)",
+    note: "react-dom/server renderToString() of shipped GGPlot with spec prop and SVG marks",
+  },
+  {
+    id: "ggsvelte-ggplot",
+    label: "ggts Svelte (SSR)",
+    note: "svelte/server render() of shipped GGPlot with spec prop and SVG marks",
   },
   {
     id: "svelteplot",
@@ -127,6 +145,8 @@ function median(values: number[]): number {
   return sorted[Math.floor(sorted.length / 2)]!;
 }
 
+process.env.NODE_ENV = "production";
+const provenance = measurementProvenance();
 const results: SsrResult[] = [];
 
 for (const c of CASES) {
@@ -140,7 +160,7 @@ for (const c of CASES) {
         configFile: false,
         logLevel: "error",
         plugins:
-          lib.id === "ggsvelte"
+          lib.id === "ggsvelte" || lib.id === "ggsvelte-react"
             ? []
             : [svelte({ compilerOptions: { css: "external" }, emitCss: false })],
         build: {
@@ -277,8 +297,9 @@ for (const r of results) {
 const failed = results.filter((r) => !r.ok);
 const payload = {
   generatedAt: new Date().toISOString(),
+  provenance,
   method:
-    "data -> SVG string, no browser. ggsvelte: gg() spec -> renderToSVGString. Peers: svelte/server render() of the browser-harness chart components (LayerCake with its documented ssr prop). warmup 3, samples 15, median.",
+    "data -> SVG markup, no browser. Headless: gg() -> renderToSVGString. React: react-dom/server renderToString(GGPlot). Svelte GGPlot and Svelte peers: svelte/server render() of fixture components (LayerCake with its ssr prop). Warmup 3, samples 15, median.",
   cases: CASES.map(({ id, scenario, label }) => ({ id, scenario, label })),
   results,
 };

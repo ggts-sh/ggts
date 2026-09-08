@@ -9,7 +9,7 @@
  * in the inspection-state lexical owner and is re-read on every call, never
  * cached or snapshotted.
  */
-import type { CandidateFacts, RenderModel } from "@ggsvelte/core";
+import type { CandidateFacts, RenderModel } from "@ggts-sh/core";
 
 export type InspectionTraversalPorts = {
   /** Candidate-store authority — re-read per call, never cached. */

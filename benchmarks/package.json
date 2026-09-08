@@ -1,5 +1,5 @@
 {
-  "name": "@ggsvelte-bench/benchmarks",
+  "name": "@ggts-sh-bench/benchmarks",
   "version": "0.0.0",
   "private": true,
   "description": "mitata benchmarks for the ggsvelte pipeline + SVG renderer (plan: instrumented from the walking skeleton). `bun run bench` for the full suite, `bun run bench:smoke` for the CI smoke (1k only), `bun run bench:json` to emit bench-results.json (repo root), `bun run bench:budgets` to gate it against budgets.json (M3).",
@@ -13,8 +13,8 @@
     "bench:memory:check": "bun run retained-memory.ts --check"
   },
   "dependencies": {
-    "@ggsvelte/core": "workspace:*",
-    "@ggsvelte/spec": "workspace:*"
+    "@ggts-sh/core": "workspace:*",
+    "@ggts-sh/spec": "workspace:*"
   },
   "devDependencies": {
     "mitata": "^1.0.34"

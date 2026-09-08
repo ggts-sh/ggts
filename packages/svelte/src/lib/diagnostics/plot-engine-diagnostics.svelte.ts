@@ -16,7 +16,7 @@
  * the chrome re-delivery effects register later via the register* functions —
  * still during init, at the engine's original registration positions.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import {
   collectCompositionDiagnostics,
@@ -76,7 +76,7 @@ export function createPlotEngineDiagnostics(input: PlotEngineDiagnosticsInput): 
     const nodeEnvironment = (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process
       ?.env?.NODE_ENV;
     if (nodeEnvironment !== "production" && ondiagnostic === undefined)
-      console.warn(`[ggsvelte:${diagnostic.code}] ${diagnostic.message}`);
+      console.warn(`[ggts:${diagnostic.code}] ${diagnostic.message}`);
   }
 
   $effect(() => {

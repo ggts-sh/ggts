@@ -92,7 +92,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force .manual-at/evidence/${{ matrix.browser }} | Out-Null
-          $targetUrl = 'https://ggsvelte.sh'
+          $targetUrl = 'https://ggts.sh'
           $response = Invoke-WebRequest -UseBasicParsing "$targetUrl/examples/interactions/inspection"
           if ($response.StatusCode -ne 200) { throw "Live fixture returned $($response.StatusCode)." }
           "TARGET_URL=$targetUrl" | Out-File -FilePath $env:GITHUB_ENV -Append

@@ -5,7 +5,7 @@
     GGPlot,
     Inspect,
     Labs,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { unitCircle } from "./data.js";
 </script>

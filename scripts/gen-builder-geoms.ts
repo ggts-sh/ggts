@@ -12,7 +12,7 @@
  */
 import { join } from "node:path";
 
-import { KNOWN_GEOMS, type GeomName } from "@ggsvelte/spec";
+import { KNOWN_GEOMS, type GeomName } from "@ggts-sh/spec";
 
 import { defineArtifact, formatGeneratedSource } from "./artifact.ts";
 
