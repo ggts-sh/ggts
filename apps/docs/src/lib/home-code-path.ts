@@ -120,8 +120,8 @@ export const HOME_CODE_PATH_TABS: {
   code: string;
   language: string;
 }[] = [
-  { label: "React", code: HOME_CODE_PATH_REACT, language: "tsx" },
   { label: "Svelte", code: HOME_CODE_PATH_SVELTE, language: "svelte" },
+  { label: "React", code: HOME_CODE_PATH_REACT, language: "tsx" },
   {
     label: "Spec (JSON)",
     code: HOME_CODE_PATH_SPEC_JSON,
