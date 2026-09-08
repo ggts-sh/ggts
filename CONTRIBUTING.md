@@ -91,7 +91,7 @@ upstream, `.md`/`.yaml`/`.svelte` can fold back into oxfmt (`.oxfmtrc.json`
 | publint / @arethetypeswrong/cli              | 0.3.21 / 0.18.5        | package publish shape (skips unbuilt stubs)                                        |
 | actionlint (npm, wasm)                       | 2.0.6                  | workflow lint via `scripts/actionlint.ts` (no shellcheck integration — wasm build) |
 | zizmor                                       | 1.26.1 (uv tool)       | Actions security audit                                                             |
-| @changesets/cli                              | 3.0.1                  | versioning/release (spec+core+svelte+cli+skill fixed lockstep, access public)      |
+| @changesets/cli                              | 3.0.1                  | versioning/release (all seven packages in fixed lockstep, access public)           |
 | vitest + @vitest/browser-playwright          | 4.1.11                 | browser-mode component tests (factory `playwright()` provider)                     |
 | playwright / @playwright/test                | 1.61.1 (exact pins)    | must match `ghcr.io/<repo>/ci-runner:v1.61.1-noble` — two-step bump (see below)    |
 | @sveltejs/kit + @sveltejs/adapter-static     | 2.x / 3.x              | apps/docs static docs site (the VR screenshot target)                              |
@@ -174,17 +174,17 @@ a tag main never publishes). The lockstep test encodes that inequality.
 
 | Command                                                       | What it does                                                                                                                                                           |
 | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bun run check`                                               | `tsc -b` project references (packages/spec, packages/core) — EMITS `dist/` since M0c                                                                                   |
-| `bun run build`                                               | `bun run check` + `svelte-package` for packages/svelte (everything the publish shape needs)                                                                            |
+| `bun run check`                                               | Emits spec, core, compose, CLI, and React `dist/`; checks type contracts, scripts, lifecycle, and comparison versions                                                  |
+| `bun run build`                                               | `bun run check` + Svelte and React package builds (everything the publish shape needs)                                                                                 |
 | `bun run check:svelte`                                        | svelte-check `--fail-on-warnings` in packages/svelte (needs `bun run check` first: dist types)                                                                         |
 | `bun run lint`                                                | oxlint over the repo (`.oxlintrc.json`; spikes excluded)                                                                                                               |
 | `bun run lint:md`                                             | markdownlint-cli2 over `**/*.md` (`.markdownlint-cli2.jsonc`; spikes + node_modules ignored)                                                                           |
 | `bun run lint:type-aware`                                     | oxlint `--type-aware --deny-warnings` (tsgolint; permanent CI gate)                                                                                                    |
 | `bun run fmt` / `bun run fmt:check`                           | oxfmt (ts/js/json/css/toml) + prettier (.svelte/.md/.yaml)                                                                                                             |
-| `bun run test`                                                | bun unit tests (spec + core + scripts + evals harness; needs `bun run check` first)                                                                                    |
+| `bun run test`                                                | bun unit tests (spec + core + CLI + benchmarks + scripts + evals harness; needs `bun run check` first)                                                                 |
 | `bun run test:temporal-parser`                                | focused strict-parser, schema/helper, Date.parse gate, and parsed-column cache loop                                                                                    |
 | `bun run test:temporal-pipeline`                              | focused temporal pipeline and calendar-tick loop                                                                                                                       |
-| `bun run test:components`                                     | packages/svelte component tests (Chromium, Firefox, WebKit) followed by the Node SSR suite                                                                             |
+| `bun run test:components`                                     | Svelte browser and SSR suites, React browser suite, then docs component tests                                                                                          |
 | `cd packages/svelte && bun run test:coverage`                 | browser (chromium) + SSR coverage reports; browser config enforces thresholds; CI runs the same chromium+ssr coverage and uploads lcov to Codecov                      |
 | `bun run check:examples`                                      | tsc over the examples corpus's .ts files (needs `bun run check` first: dist types)                                                                                     |
 | `bun run check:docs`                                          | svelte-kit sync + svelte-check for apps/docs (needs `bun run build` first)                                                                                             |
@@ -520,11 +520,11 @@ PR gets one opened rather than a silent skip. The three-way decision
 Add a `.changeset/*.md` **only** when the PR changes an npm-published package
 surface — the same paths `scripts/changeset-check.ts` treats as shipped
 (`package.json`, `README.md`, `LICENSE`, that package’s npm `files` entries
-under `packages/{cli,core,skill,spec,svelte}`, and — for packages that publish
+under `packages/{cli,compose,core,react,skill,spec,svelte}`, and — for packages that publish
 compiled `dist` without listing `src` — the package’s `src/` tree that builds
-into `dist`, e.g. `packages/svelte/src/**`). Spec, core, svelte, cli, and skill
+into `dist`, e.g. `packages/svelte/src/**`). Spec, core, compose, react, svelte, cli, and skill
 version in **fixed lockstep**, so one real (or spurious) changeset advances all
-five package versions.
+seven package versions.
 
 **Do not** add a changeset for docs site, examples, scripts, tests, CI, or
 guide content alone (`apps/docs/**`, `examples/**`, `scripts/quickstart/**`,
@@ -536,7 +536,7 @@ warrant a patch. Missing changesets on package code stay advisory only.
 ### Bump level (SemVer)
 
 Pick the level from the **public surface change**, not from how small the
-diff looks. Spec, core, svelte, cli, and skill share one version, so the highest
+diff looks. All seven packages share one version, so the highest
 level among pending changesets wins.
 
 | Level     | Use for                                                                                                                                                                            |

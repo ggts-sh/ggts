@@ -5,10 +5,11 @@ Read this reference for a React target. The shared [grammar](grammar.md) and
 Use React DOM 18.2 or 19 and install `@ggts-sh/react`.
 For the bundled dataset example below, also install `@ggts-sh/core`:
 
-````sh fragment
+```sh fragment
 npm install @ggts-sh/react @ggts-sh/core
-``` In a server-component
-application, place interactive charts behind a client component boundary.
+```
+
+In a server-component application, place interactive charts behind a client component boundary.
 
 ## Render a portable spec
 
@@ -39,7 +40,7 @@ const spec: PortableSpec = {
 export default function SalesChart() {
   return <GGPlot spec={spec} height={400} />;
 }
-````
+```
 
 ## Compose the grammar in JSX
 

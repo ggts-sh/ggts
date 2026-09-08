@@ -10,11 +10,13 @@ Svelte 5 components for ggts. Re-exports `@ggts-sh/spec` and
 every sandbox where an agent authors specs.
 
 ```sh
-bun add @ggts-sh/svelte
-# or: npm install @ggts-sh/svelte
+bun add @ggts-sh/svelte @ggts-sh/core
+# or: npm install @ggts-sh/svelte @ggts-sh/core
 ```
 
-Requires Node.js 22+ and Svelte 5.33.1+.
+Requires Node.js 22+ and Svelte 5.33.1+. The example imports bundled data
+from `@ggts-sh/core/data`, so it installs core as a direct dependency.
+Charts with inline data need only `@ggts-sh/svelte`.
 
 ## Example
 
@@ -72,8 +74,8 @@ If you still have pre-0.13 sources with grammar props on `<GGPlot>`, the
 codemod rewrites them to children:
 
 ```sh
-npx ggts-codemod src          # show what would change
-npx ggts-codemod --write src  # apply
+npm exec --package=@ggts-sh/svelte -- ggts-codemod src          # show what would change
+npm exec --package=@ggts-sh/svelte -- ggts-codemod --write src  # apply
 ```
 
 Shapes it will not rewrite mechanically are printed as `manual change

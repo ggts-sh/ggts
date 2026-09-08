@@ -75,5 +75,5 @@ in
 **Removed in 0.13.0** (deprecated since 0.11.0): the seven `<GGPlot>` grammar
 props `facet`, `coord`, `scales`, `guides`, `legend`, `theme`, `labs`. Compose
 them as children instead; `spec`, `data`, `aes`, and `layers` stay first-class.
-Migrate old sources with `npx ggts-codemod --write src` (dry-run without
+Migrate old sources with `npm exec --package=@ggts-sh/svelte -- ggts-codemod --write src` (dry-run without
 `--write`).

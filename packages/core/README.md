@@ -89,6 +89,7 @@ const svg = renderToSVGString(
 | `@ggts-sh/core/render`            | Lean identity-chart surface (auto-registers basics) |
 | `@ggts-sh/core/headless`          | Side-effect-free headless pipeline and SVG renderer |
 | `@ggts-sh/core/headless/register` | Tree-shakeable basic geom/stat family registration  |
+| `@ggts-sh/core/data`              | Bundled teaching datasets for any framework         |
 | `@ggts-sh/core/dom`               | Browser canvas draw + hit index                     |
 | `@ggts-sh/core/temporal`          | Temporal polyfill entry                             |
 
