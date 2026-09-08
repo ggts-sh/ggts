@@ -38,15 +38,15 @@
       "project": ["src/**", "scripts/**", "tests/**"],
     },
     "packages/core": {
-      "entry": ["tests/**/*.test.ts"],
+      // Compile-time dataset assignments are checked by tsc, never imported.
+      "entry": ["tests/**/*.test.ts", "src/data/data-contract.ts"],
       "project": ["src/**", "tests/**"],
     },
     "packages/compose": {
-      "entry": ["src/index.ts"],
       "project": ["src/**"],
     },
     "packages/react": {
-      "entry": ["src/index.ts", "tests/**/*.test.ts", "tests/**/*.test.tsx"],
+      "entry": ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
       "project": ["src/**", "tests/**"],
     },
     "packages/cli": {
@@ -58,9 +58,6 @@
       // tests/migrations are upgrade-guide fixtures: read by
       // scripts/migration-fixtures.test.ts via the filesystem (not imports)
       // and type-checked by svelte-check — invisible to knip's graph.
-      // src/lib/data/data-contract.ts exists only to be type-checked: it
-      // asserts every bundled dataset stays assignable to the plot's data
-      // prop, which nothing imports at runtime by design.
       // src/lib/codemod is reached only from bin/ggts-codemod.js, which
       // imports the BUILT dist path — invisible to knip's source graph.
       "entry": [
@@ -69,9 +66,8 @@
         // Same story as tests/migrations: codemod fixtures are read from the
         // filesystem by the harness, never imported.
         "tests/codemod/fixtures/**",
-        "src/lib/data/data-contract.ts",
         // Compile-time kind→value guard for createPlotLayer (#786); never
-        // imported at runtime — same story as data-contract.ts.
+        // imported at runtime.
         "src/lib/layers/plot-layer-contract.ts",
         "src/lib/codemod/index.ts",
       ],
@@ -88,7 +84,7 @@
       // fixtures/ggplot-*/App.svelte imports @ggts-sh/svelte — knip excludes
       // compiled .svelte from the project graph (hint above), so the import
       // is invisible here.
-      "ignoreDependencies": ["@ggts-sh/svelte", "@ggts-sh/react"],
+      "ignoreDependencies": ["@ggts-sh/svelte"],
     },
     "examples": {
       // The corpus: spec.ts/data.ts are consumed by the docs app via the

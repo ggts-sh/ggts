@@ -183,10 +183,13 @@ jobs:
         if: steps.content_hash.outputs.hit != 'true'
         working-directory: packages/svelte
         run: bunx --bun vitest run --config vitest.ssr.config.ts
-      - name: component tests (packages/react, chromium + SSR)
+      - name: component tests (packages/react, all browsers + SSR)
         if: steps.content_hash.outputs.hit != 'true'
         working-directory: packages/react
-        run: bun run --bun test && bun run --bun test:ssr
+        run: |
+          # Firefox requires the container home to belong to the running user.
+          chown "$(id -u):$(id -g)" "$HOME"
+          bun run --bun test && bun run --bun test:ssr
       # --project chromium keeps coverage-v8 from rejecting the firefox/webkit
       # instances the config also declares; it does not re-run anything. This is
       # the ONLY place the configured thresholds are enforced.

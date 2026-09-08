@@ -2,7 +2,6 @@
 export {
   type ResolveInspectionInput,
   type InspectionSnapshotCompleteness,
-  type ResolvedTarget,
   TRANSIENT_MEMBER_LIMIT,
   selectTransientMembers,
   resolvedTarget,

@@ -8,7 +8,7 @@ import type { CellValue } from "./table.js";
 import type { InteractionDiagnostic } from "./interaction-diagnostics.js";
 import { INTERACTION_DIAGNOSTIC_CATALOG } from "./interaction-diagnostics.js";
 
-export type SemanticKeyCandidate = {
+type SemanticKeyCandidate = {
   readonly id: number;
   readonly rowIndex: number | null;
   readonly layerIndex: number;
@@ -21,7 +21,7 @@ type SemanticKeyLayer = {
 };
 
 /** Narrow model surface needed for key resolution (no RenderModel import). */
-export type SemanticKeyModelView = {
+type SemanticKeyModelView = {
   readonly candidateCount: number;
   candidate(id: number): SemanticKeyCandidate | null;
   lineageKeys(lineageId: number): Iterable<number>;

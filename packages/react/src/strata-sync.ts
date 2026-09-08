@@ -19,7 +19,7 @@ function slots(scene: Scene, strata: ReturnType<typeof planStrata>): Slot[] {
 }
 
 /** Prefix generated resource ids so sibling plots cannot borrow clips/gradients. */
-export function namespaceSvg(markup: string, prefix: string): string {
+function namespaceSvg(markup: string, prefix: string): string {
   return markup
     .replaceAll(/\bid="([^"]+)"/g, (_match, id: string) => `id="${prefix}-${id}"`)
     .replaceAll(/url\(#([^)]+)\)/g, (_match, id: string) => `url(#${prefix}-${id})`);

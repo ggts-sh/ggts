@@ -127,7 +127,7 @@ function mergeKeyChild(kind: DuplicateMergeKeyKind): string {
  * Frozen catalog entry for composition codes. Per-emission fields are filled
  * by {@link duplicateScaleChannelDiagnostic} / {@link duplicatePlotLayerDiagnostic}.
  */
-export const COMPOSITION_DIAGNOSTIC_CATALOG: Readonly<
+const COMPOSITION_DIAGNOSTIC_CATALOG: Readonly<
   Record<
     CompositionDiagnosticCode,
     Pick<CompositionDiagnostic, "severity" | "code"> & {

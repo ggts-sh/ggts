@@ -2,7 +2,6 @@
 export {
   type PresentationChrome,
   type PresentationAnchor,
-  type CandidateAnchorKeys,
   EMPHASIS_RING_DENSITY_LIMIT,
   presentationChromeForKind,
   hoverChromeForKind,
@@ -11,13 +10,10 @@ export {
   buildPointSelectionEvent,
   uniqueKeysFromRowIndexes,
   nextPointSelectionKeys,
-  type CandidateLookup,
   iterateCandidates,
   collectCandidates,
   anchorsFromCandidateKeys,
   type PresentationInspectionFocus,
-  type PresentationSeedFacts,
   presentationFocusFromInspection,
-  type MergePresentationFocusOptions,
   mergePresentationFocusKeys,
 } from "@ggts-sh/core/interaction";

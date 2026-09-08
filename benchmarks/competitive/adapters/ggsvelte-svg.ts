@@ -15,9 +15,9 @@ import {
   type SeriesColumns,
 } from "../scenarios";
 
-export type UpdateColumns = ScatterColumns | SeriesColumns | BarsColumns;
+type UpdateColumns = ScatterColumns | SeriesColumns | BarsColumns;
 
-export type MountHandle = {
+type MountHandle = {
   destroy: () => void;
   update: (data: UpdateColumns) => void;
 };

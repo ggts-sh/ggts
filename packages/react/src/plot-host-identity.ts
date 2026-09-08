@@ -45,13 +45,3 @@ export function hostDatumKey(
     data: props.data ?? assembledData,
   });
 }
-
-export function inspectMaxDistance(
-  props: Pick<GGPlotProps, "inspect">,
-  registry: LayerRegistry,
-): number {
-  const fromProp = typeof props.inspect === "object" ? props.inspect.maxDistance : undefined;
-  if (fromProp !== undefined) return fromProp;
-  const child = registry.capabilities("inspect").at(-1)?.["maxDistance"];
-  return typeof child === "number" ? child : 20;
-}

@@ -17,7 +17,7 @@ export const PROJECTION = join(
   "benchmark-charts.ts",
 );
 
-export interface MeasurementProvenance {
+interface MeasurementProvenance {
   readonly commit: string;
   readonly dirty: boolean;
   readonly mode: "production";
