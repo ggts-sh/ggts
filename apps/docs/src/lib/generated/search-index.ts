@@ -3,16 +3,6 @@ import type { DocsSearchEntry } from "../search-types.js";
 
 export const DOCS_SEARCH_INDEX = [
   {
-    id: "page:benchmarks",
-    kind: "page",
-    title: "Benchmarks",
-    summary:
-      "Production measurements for the core, React, Svelte, and existing charting comparators.",
-    href: "/benchmarks",
-    keywords: [],
-    exact: ["Benchmarks"],
-  },
-  {
     id: "page:home",
     kind: "page",
     title: "ggts — ggplot2’s grammar for TypeScript",

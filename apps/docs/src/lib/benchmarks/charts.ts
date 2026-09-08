@@ -1,7 +1,7 @@
 /**
- * Fixed core/React/Svelte benchmark charts drawn with the headless renderer.
- * The generator reads a committed measurement snapshot. Every result is
- * retained regardless of winner; bars sort by measured time, fastest first.
+ * Selected SVG comparisons drawn with the headless renderer.
+ * The generator reads a committed measurement snapshot; bars sort by
+ * measured time, fastest first.
  */
 import { registerAll, renderToSVGString } from "@ggts-sh/core";
 
@@ -111,7 +111,7 @@ export function benchmarkChartSpec(input: BenchmarkChartInput): PortableSpec {
       // the bottom, so reverse puts the fastest bar on top.
       x: { type: "band", domain: libsByAscendingValue(input.bars), reverse: true },
       // Headroom past the longest bar so bar-end value labels never clip.
-      y: { expand: { mult: 0.35, add: 0 } },
+      y: { expand: { mult: 0.45, add: 0 } },
       fill: {
         type: "manual",
         domain: ["ggsvelte", "peer"],

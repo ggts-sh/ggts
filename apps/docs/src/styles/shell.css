@@ -666,104 +666,26 @@
   }
 }
 
-/*
- * Homepage benchmark section (Benchmarks.svelte). Lives in the global sheet,
- * not a component <style>, so SvelteKit serves it as an external <link>
- * covered by CSP style-src 'self' — component <style> gets inlined below the
- * threshold and csp.mode:"hash" only hashes scripts, not styles.
- */
-.benchmarks {
-  /* contain:paint — min-width table inside .bench-table-wrap must not expand
-   * the document scrollWidth on narrow viewports (overflow-x:clip alone does
-   * not stop root scroll contribution in Chromium for this layout). */
+/* Static homepage highlights. Keep styles external for the site's CSP. */
+.benchmark-highlights {
+  display: grid;
+  max-width: 64rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.benchmark-highlight {
   min-width: 0;
-  overflow-x: clip;
-  contain: paint;
-  padding-block: clamp(2.5rem, 5vw, 4rem);
-  border-top: 1px solid var(--line);
-}
-
-.bench-intro {
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.bench-intro h2 {
-  margin: 0;
-  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-  line-height: 1.1;
-}
-
-.bench-intro > p {
-  margin: 0.4rem 0 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-/* Hero benchmark tabs (BenchmarkTabs.svelte) — bun.sh-style compact tabs:
- * text triggers with an accent underline for the active scenario, chart in a
- * bordered card. --paper card bg: the light SVG bakes a white paper and the
- * dark-site SVG is transparent, so both portraits blend into the card. */
-.bench-tabs {
-  min-width: 0;
-  max-width: 100%;
-  overflow-x: clip;
-}
-
-.bench-tabs-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.1rem 1.25rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.bench-tabs-trigger {
-  position: relative; /* anchors the extended hit region */
-  min-height: 2.25rem;
-  margin-bottom: -1px;
-  padding: 0.45rem 0.15rem;
-  border: none;
-  border-bottom: 2px solid transparent;
-  background: none;
-  color: var(--muted);
-  font: 600 0.85rem/1.2 var(--body-font);
-  cursor: pointer;
-}
-
-/* 36px visual height, 44px hit height (DESIGN.md hit-region floor). */
-.bench-tabs-trigger::after {
-  content: "";
-  position: absolute;
-  inset: -4px 0;
-}
-
-.bench-tabs-trigger:hover {
-  color: var(--fg);
-}
-
-.bench-tabs-trigger[data-state="active"] {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-.bench-tabs-trigger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.bench-tabs-content {
-  padding-top: 1.25rem;
-}
-
-/* Title/subtitle live inside the SVG (labs) — no HTML chrome here. */
-
-.bench-tabs-chart {
-  min-width: 0;
-  padding: 0.5rem 0.75rem;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--code-radius);
   background: var(--paper);
+}
+
+@media (max-width: 42rem) {
+  .benchmark-highlights {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .bench-chart-img {
@@ -786,118 +708,6 @@
 
 :root[data-theme="dark"] .bench-chart--dark {
   display: block;
-}
-
-/* Bun-style capability table: a true bordered, rounded table — compact and
- * contained, not a full-width minimalist rules list. Marks are tinted badge
- * circles like bun's green/amber/red dots. */
-.bench-table-wrap {
-  display: block;
-  max-width: 56rem;
-  margin-inline: auto;
-  overflow-x: auto;
-  border: 1px solid var(--line);
-  border-radius: var(--code-radius);
-  background: var(--paper);
-}
-
-.benchmarks table {
-  width: 100%;
-  /* Five lib columns (ggsvelte + TanStack + SveltePlot + Unovis + LayerCake). */
-  min-width: 44rem;
-  table-layout: fixed;
-  border-collapse: collapse;
-  font-size: 0.88rem;
-}
-
-.benchmarks .bench-col-feature {
-  width: auto;
-}
-
-.benchmarks .bench-col-lib {
-  width: 14%;
-}
-
-.benchmarks th,
-.benchmarks td {
-  padding: 0.6rem 0.7rem;
-  border-bottom: 1px solid var(--line);
-  vertical-align: middle;
-}
-
-.benchmarks tbody tr:last-child th,
-.benchmarks tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.benchmarks thead th {
-  background: var(--surface);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-.benchmarks thead th:not(:first-child),
-.benchmarks tbody td {
-  text-align: center;
-}
-
-.benchmarks tbody th {
-  font-weight: 600;
-  text-align: left;
-}
-
-.benchmarks tbody th small {
-  display: block;
-  margin-top: 0.1rem;
-  color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 400;
-}
-
-.benchmarks td {
-  white-space: nowrap;
-}
-
-.benchmarks td small {
-  display: block;
-  color: var(--muted);
-  font-size: 0.72rem;
-  white-space: normal;
-}
-
-.benchmarks .mark {
-  display: inline-grid;
-  place-items: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.benchmarks .mark--yes {
-  background: color-mix(in srgb, var(--success) 15%, transparent);
-  color: var(--success);
-}
-
-.benchmarks .mark--partial {
-  background: color-mix(in srgb, var(--warning) 18%, transparent);
-  color: var(--warning);
-}
-
-.benchmarks .mark--no {
-  background: color-mix(in srgb, var(--error) 13%, transparent);
-  color: var(--error);
-}
-
-@media (max-width: 42rem) {
-  /* The table scrolls inside .bench-table-wrap instead of forcing the page
-   * wider than a mobile viewport (min-width on the table). */
-  .benchmarks .bench-col-lib {
-    width: 20%;
-  }
 }
 
 /* Visually-hidden but screen-reader-accessible label (benchmark charts). */

@@ -43,11 +43,15 @@ Results: `results/bundles.json`, `results/browser.json`.
 
 ## Published benchmarks
 
-The README and docs lead with **core SVG**, compared with five SVG peers on
-six fixed workloads: scatter at 1k/10k, lines at 3k/30k, area at 3k, and stacked
-bars. React and Svelte component results remain selectable on the docs page.
-Core renderer timings are not framework-host timings. A loss stays in the chart.
-The full tables retain the canvas comparators and the earlier full matrix.
+The homepage and README show four **core SVG** highlights against LayerCake,
+TanStack, Unovis, and SveltePlot: scatter first render at 1k/10k, scatter update
+at 10k, and line update at 30k. These are selected comparisons, not the full
+matrix. D3 remains in the benchmark data, not in the promotional charts.
+
+Full results live here: [browser, bundles, SSR, and historical high-N](published.json)
+and the [focused SVG run](published-svg.json). There is no docs benchmark route.
+Core renderer timings are not framework-host timings.
+[Pre-migration chart lineage](history.md) explains the old and new Svelte labels.
 
 `measure:browser` builds the fixture in production mode and serves the output
 through Vite preview. Both GGPlot hosts cover all four geom families in the
@@ -92,13 +96,13 @@ bun scripts/gen-benchmark-charts.ts --check
 
 `published-svg.json` records this run's own commit, date, environment, and
 versions. All SVG comparison bars come from that one run. It does not replace
-or splice rows into `published.json`: framework charts, bundles, and SSR retain
+or splice rows into `published.json`: framework timings, bundles, and SSR retain
 their original measurements and provenance. `--publish` preserves the focused
 SVG snapshot. Generation validates all six SVG workloads and refuses missing
 or invalid measurements. First mount means fresh chart creation after two
 warmups, including paint, not cold network download or module evaluation.
 
-The full page includes the SSR and bundle matrices alongside browser
+The committed snapshot includes SSR and bundle matrices alongside browser
 results. It preserves high-N results from their historical run, labeled with
 the recorded date and development-server protocol; its source commit and
 package versions were not recorded. These rows must not be compared with the

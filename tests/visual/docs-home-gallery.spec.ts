@@ -61,10 +61,10 @@ test("homepage leads with the agent sandbox and links to both framework quicksta
   await expect(page.locator(".home-featured ol li")).toHaveCount(6);
   await expect(page.locator(".home-featured header a")).toHaveText("Gallery");
   await expect(
-    page.getByRole("heading", { name: "Fast SVG rendering. One shared core.", level: 2 }),
+    page.getByRole("heading", { name: "The grammar you want. The speed you need.", level: 2 }),
   ).toBeVisible();
-  await expect(page.getByLabel("Surface")).toHaveValue("core");
-  await expect(page.getByLabel("Operation")).toHaveValue("mount");
+  await expect(page.locator(".home-performance select")).toHaveCount(0);
+  await expect(page.locator(".benchmark-highlight")).toHaveCount(4);
   await expectNoOverflow(page);
 });
 
@@ -73,9 +73,9 @@ async function expectHomeSectionOrder(page: import("@playwright/test").Page): Pr
     [
       ".home-hero h1",
       ".home-hero .code-tabs",
+      '[aria-labelledby="benchmark-heading"]',
       ".home-featured",
       ".code-path",
-      '[aria-labelledby="benchmark-heading"]',
     ].map((selector) => {
       const rect = document.querySelector(selector)!.getBoundingClientRect();
       return { top: rect.top, bottom: rect.bottom };
@@ -86,9 +86,7 @@ async function expectHomeSectionOrder(page: import("@playwright/test").Page): Pr
   }
 }
 
-test("homepage stacks title, sandbox, featured gallery, code path, then benchmarks", async ({
-  page,
-}) => {
+test("homepage puts performance highlights before the gallery and code path", async ({ page }) => {
   await page.setViewportSize({ width: 960, height: 900 });
   await page.goto("/?theme=light");
   await expectHomeSectionOrder(page);
@@ -167,7 +165,7 @@ test("homepage grammar inspect draws xy crosshair and supports legend focus", as
   await expect(legendTarget).toBeFocused();
 });
 
-test("homepage mobile order keeps onboarding before examples and benchmarks", async ({ page }) => {
+test("homepage mobile order puts performance highlights before examples", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/?theme=light");
   await expectHomeSectionOrder(page);
@@ -272,52 +270,33 @@ test("detail is specimen-first and orders React, Svelte, builder, then JSON", as
   await expect(page.locator(".related li")).toHaveCount(3);
 });
 
-test("benchmark navigation compares fixed workloads for each surface and operation", async ({
+test("homepage shows four static comparisons and sends benchmark details to GitHub", async ({
   page,
+  request,
 }) => {
-  await page.goto("/?theme=light");
-  await page.getByRole("link", { name: "All results and measurement method" }).click();
-  await expect(page).toHaveURL(/\/benchmarks(?:\?|$)/);
-  await expect(page.getByRole("heading", { level: 1, name: "Benchmarks" })).toBeVisible();
-  const benchmark = page.locator(".bench-tabs");
-  await expect(benchmark.getByLabel("Surface")).toHaveValue("core");
-  for (const surface of ["core", "svelte", "react"]) {
-    await benchmark.getByLabel("Surface").selectOption(surface);
-    const workloads = [
-      ["Scatter 10k", "scatter-10k"],
-      ["Scatter 1k", "scatter-1k"],
-      ["Line 3k", "line-3k"],
-      ["Line 30k", "line-30k"],
-      ["Area 3k", "area-3k"],
-      ["Stacked bars", "bars-stacked"],
-    ].filter(([label]) => surface === "core" || label === "Scatter 10k" || label === "Line 30k");
-    for (const operation of ["mount", "update"]) {
-      await benchmark.getByLabel("Operation").selectOption(operation);
-      const tabs = benchmark.getByRole("tablist", { name: "Benchmark scenarios" });
-      await expect(tabs.getByRole("tab")).toHaveText(workloads.map(([label]) => label!));
-      for (const [label, workload] of workloads) {
-        await tabs.getByRole("tab", { name: label, exact: true }).click();
-        const chart = benchmark.locator(".bench-chart--light:visible");
-        await expect(chart).toHaveAttribute(
-          "src",
-          new RegExp(
-            `/benchmarks/bench-${surface}-${workload}-${operation}\\.svg\\?v=[0-9a-f]{64}$`,
-          ),
-        );
-        await expect
-          .poll(() =>
-            chart.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
-          )
-          .toBe(true);
-      }
+  for (const theme of ["light", "dark"]) {
+    await page.goto(`/?theme=${theme}`);
+    const section = page.locator(".home-performance");
+    await expect(section.locator("select, [role=tab]")).toHaveCount(0);
+    const charts = section.locator("img:visible");
+    await expect(charts).toHaveCount(4);
+    for (const chart of await charts.all()) {
+      await chart.scrollIntoViewIfNeeded();
+      await expect(chart).toHaveAttribute("alt", /ggts core SVG/);
+      await expect(chart).not.toHaveAttribute("alt", /D3/);
+      await expect
+        .poll(() =>
+          chart.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
+        )
+        .toBe(true);
     }
+    await expect(section.getByRole("link", { name: "Benchmarks on GitHub" })).toHaveAttribute(
+      "href",
+      "https://github.com/ggts-sh/ggts/tree/main/benchmarks/competitive",
+    );
+    await expectNoOverflow(page);
   }
-  await expect(page.getByRole("heading", { name: "SVG renderer results" })).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Full browser matrix (earlier run)" }),
-  ).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Server rendering" })).toBeVisible();
-  await expectNoOverflow(page);
+  expect((await request.get("/benchmarks")).status()).toBe(404);
 });
 
 test("gallery React tab exposes the authored inspection example", async ({ page }) => {

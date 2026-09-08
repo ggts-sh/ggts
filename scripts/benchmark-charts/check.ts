@@ -12,7 +12,7 @@ export async function check(): Promise<void> {
     throw new Error("benchmark charts are MISSING. Run: bun scripts/gen-benchmark-charts.ts");
   }
 
-  const { files, cards, versions, bundleKb, generatedAt, snapshot } = build();
+  const { files, cards, bundleKb, generatedAt } = build();
   const wantNames = new Set(files.map((f) => f.filename));
   const haveNames = new Set(readdirSync(OUTPUT_DIR).filter((n) => n.endsWith(".svg")));
   for (const name of wantNames) {
@@ -36,7 +36,7 @@ export async function check(): Promise<void> {
       );
     }
   }
-  const wantProj = await projectionSource(files, cards, versions, bundleKb, generatedAt, snapshot);
+  const wantProj = await projectionSource(files, cards, generatedAt);
   const haveProj = readFileSync(PROJECTION, "utf8");
   if (haveProj !== wantProj) {
     throw new Error("benchmark-charts projection STALE. Run: bun scripts/gen-benchmark-charts.ts");

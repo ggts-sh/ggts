@@ -13,6 +13,24 @@ charts in a sandbox, then use the same spec in React or Svelte.
 [Documentation](https://ggts.sh/) · [Agent setup](https://ggts.sh/guide/agents) ·
 [Examples](https://ggts.sh/examples) · [Framework quickstarts](https://ggts.sh/guide/getting-started)
 
+## The grammar you want. The speed you need
+
+Render thousands of points without hand-writing scales, axes, or legends.
+Selected SVG comparisons using the ggts core renderer; lower is better.
+[Source and full results](benchmarks/competitive).
+
+<!-- framework-benchmark-charts:start -->
+
+![10,000 points. First render · SVG · milliseconds. Lower is better. ggts core SVG: 91.6 ms; LayerCake: 329.4 ms; TanStack: 335.6 ms; Unovis: 427.3 ms; SveltePlot: 3,955.7 ms.](apps/docs/static/benchmarks/bench-core-scatter-10k-mount.svg)
+
+![1,000 points. First render · SVG · milliseconds. Lower is better. ggts core SVG: 11.1 ms; LayerCake: 25.1 ms; TanStack: 31.4 ms; Unovis: 50.6 ms; SveltePlot: 434.1 ms.](apps/docs/static/benchmarks/bench-core-scatter-1k-mount.svg)
+
+![10,000 points. Data update · SVG · milliseconds. Lower is better. ggts core SVG: 64.5 ms; LayerCake: 125.6 ms; TanStack: 206.1 ms; Unovis: 470.6 ms; SveltePlot: 3,157.5 ms.](apps/docs/static/benchmarks/bench-core-scatter-10k-update.svg)
+
+![30,000-point line chart. Data update · SVG · milliseconds. Lower is better. ggts core SVG: 27.3 ms; LayerCake: 31.2 ms; TanStack: 91.3 ms; Unovis: 154.8 ms; SveltePlot: 877.5 ms.](apps/docs/static/benchmarks/bench-core-line-30k-update.svg)
+
+<!-- framework-benchmark-charts:end -->
+
 ## Start in an agent sandbox
 
 ```sh
@@ -91,31 +109,12 @@ checks for callbacks, keyboard use, and hydration.
 | [`@ggts-sh/cli`](packages/cli)         | `ggts check` and `ggts render`                                               |
 | [`@ggts-sh/skill`](packages/skill)     | Versioned agent skill and framework references                               |
 
-## Fast SVG rendering
-
-The TypeScript core behind ggts renders complete SVG charts without a framework
-host. Compare first-mount times against SVG chart libraries below. Each chart
-uses one production run, including paint, with fixed data and dimensions.
-
-[Explore all six SVG workloads, Svelte and React component timings, and methodology](https://ggts.sh/benchmarks).
-Core SVG timings measure the direct renderer, not the framework components.
-First mount excludes network download and module loading.
-
-<!-- framework-benchmark-charts:start -->
-
-![Core SVG · 10,000-point colored scatter. Mount · milliseconds · lower is better. D3: 85 ms; ggts core SVG: 91.6 ms; LayerCake (SVG): 329.4 ms; TanStack Svelte (SVG): 335.6 ms; Unovis (SVG): 427.3 ms; SveltePlot (SVG): 3,955.7 ms.](apps/docs/static/benchmarks/bench-core-scatter-10k-mount.svg)
-
-![Core SVG · 3 × 10,000-point line chart. Mount · milliseconds · lower is better. D3: 37.8 ms; ggts core SVG: 59.8 ms; LayerCake (SVG): 60.7 ms; Unovis (SVG): 94.1 ms; TanStack Svelte (SVG): 153.5 ms; SveltePlot (SVG): 1,230.4 ms.](apps/docs/static/benchmarks/bench-core-line-30k-mount.svg)
-
-<!-- framework-benchmark-charts:end -->
-
 ## Why ggts?
 
 Use ggplot2's grammar in TypeScript, validate portable chart specs, and render
 SVG without a DOM. The same grammar powers React and Svelte components.
 
-Svelte ecosystem capabilities below; [all measured entry points and bundle sizes](https://ggts.sh/benchmarks)
-remain available.
+Compare Svelte ecosystem capabilities:
 
 | Capability                                       | ggts                            | TanStack | SveltePlot | Unovis   | LayerCake |
 | ------------------------------------------------ | ------------------------------- | -------- | ---------- | -------- | --------- |

@@ -3,7 +3,7 @@
 
   import CodeTabs from "$lib/CodeTabs.svelte";
   import { FEATURED_EXAMPLES, galleryCatalog } from "$lib/catalog/gallery";
-  import BenchmarkTabs from "$lib/components/BenchmarkTabs.svelte";
+  import BenchmarkHighlights from "$lib/components/BenchmarkHighlights.svelte";
   import { SANDBOX_INSTALL, SANDBOX_COMMANDS } from "$scripts/agent-quickstart";
   import GrammarDemo from "$lib/components/GrammarDemo.svelte";
   import { EXAMPLES } from "$lib/examples-manifest";
@@ -43,6 +43,20 @@
       <a href={`${base}/guide/getting-started`}>React and Svelte quickstarts</a>
     </p>
   </div>
+</section>
+
+<section class="home-performance" aria-labelledby="benchmark-heading">
+  <h2 id="benchmark-heading">The grammar you want. The speed you need.</h2>
+  <p>
+    Render thousands of points without hand-writing scales, axes, or legends.
+  </p>
+  <BenchmarkHighlights />
+  <p class="benchmark-source">
+    Selected SVG comparisons · lower is better ·
+    <a href="https://github.com/ggts-sh/ggts/tree/main/benchmarks/competitive"
+      >Benchmarks on GitHub</a
+    >
+  </p>
 </section>
 
 <section class="home-featured" aria-label="Examples">
@@ -86,17 +100,6 @@
   <div class="code-path-tabs">
     <CodeTabs {tabs} />
   </div>
-</section>
-
-<section aria-labelledby="benchmark-heading">
-  <h2 id="benchmark-heading">Fast SVG rendering. One shared core.</h2>
-  <p>
-    Render charts with the TypeScript core behind ggts. Compare first-mount
-    times against SVG chart libraries on six fixed workloads. Core SVG measures
-    the direct renderer; Svelte and React component timings are separate.
-  </p>
-  <BenchmarkTabs />
-  <p><a href={`${base}/benchmarks`}>All results and measurement method</a></p>
 </section>
 
 <section class="evidence" aria-labelledby="evidence-heading">
@@ -153,6 +156,19 @@
   .hero-fast {
     color: var(--accent);
     font-style: italic;
+  }
+
+  .home-performance {
+    padding-top: clamp(2rem, 5vw, 4rem);
+  }
+
+  .home-performance h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .benchmark-source {
+    color: var(--muted);
+    font-size: 0.85rem;
   }
 
   .home-featured {

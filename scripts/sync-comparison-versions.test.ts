@@ -9,6 +9,7 @@ import { describe, expect, it } from "bun:test";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { bundleGzipKb, readSnapshot } from "./benchmark-charts/results";
 
 import {
   readLockstepVersion,
@@ -113,18 +114,11 @@ describe("live comparison tables match the published lockstep version", () => {
     }
   });
 
-  it("README bundle-size cell matches the rounded docs projection", () => {
+  it("README bundle-size cell matches the recorded measurements", () => {
     const readme = readFileSync(join(ROOT, "README.md"), "utf8");
-    const proj = readFileSync(
-      join(ROOT, "apps/docs/src/lib/generated/benchmark-charts.ts"),
-      "utf8",
-    );
-    const core = /coreKb:\s*([0-9]+(?:\.[0-9]+)?)/.exec(proj);
-    const svelte = /svelteKb:\s*([0-9]+(?:\.[0-9]+)?)/.exec(proj);
-    expect(core).not.toBeNull();
-    expect(svelte).not.toBeNull();
-    const coreKB = Math.round(Number(core![1]));
-    const svelteKB = Math.round(Number(svelte![1]));
+    const { bundles } = readSnapshot();
+    const coreKB = Math.round(bundleGzipKb(bundles, "ggsvelte-svg", "scatter-color"));
+    const svelteKB = Math.round(bundleGzipKb(bundles, "ggsvelte-ggplot", "scatter-color"));
     expect(readme).toMatch(
       new RegExp(
         String.raw`\|\s*\*\*Bundle size\*\* \(min\+gzip, scatter import graph\)\s*\|\s*${String(coreKB)} KB core SVG / ${String(svelteKB)} KB Svelte\s*\|`,

@@ -1,4 +1,4 @@
-/** Fixed framework workloads, loss-preserving charts, and committed artifact consistency. */
+/** Selected homepage comparisons and committed artifact consistency. */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -9,6 +9,7 @@ import { benchmarkChartSpec, benchmarkChartSvg } from "../apps/docs/src/lib/benc
 import { readmeSource } from "./benchmark-charts/projection";
 import { buildCards } from "./benchmark-charts/cards";
 import {
+  readSnapshot,
   validateSnapshot,
   type BrowserResults,
   type PublishedSnapshot,
@@ -126,21 +127,18 @@ describe("benchmarkChartSrc", () => {
   });
 });
 
-describe("published benchmark workloads", () => {
-  it("publishes six SVG workloads and both framework workloads for each metric", () => {
-    for (const framework of ["core", "react", "svelte"] as const) {
-      for (const metric of ["mount", "update"] as const) {
-        expect(
-          BENCHMARK_CHART_CARDS.filter(
-            (card) => card.framework === framework && card.metric === metric,
-          ).map((card): string => card.id),
-        ).toEqual(
-          (framework === "core"
-            ? ["scatter-10k", "scatter-1k", "line-3k", "line-30k", "area-3k", "bars-stacked"]
-            : ["scatter-10k", "line-30k"]
-          ).map((scenario) => `${framework}-${scenario}-${metric}`),
-        );
-      }
+describe("homepage highlights", () => {
+  it("publishes four winning SVG comparisons without D3", () => {
+    expect(BENCHMARK_CHART_CARDS.map((card) => card.id)).toEqual([
+      "core-scatter-10k-mount",
+      "core-scatter-1k-mount",
+      "core-scatter-10k-update",
+      "core-line-30k-update",
+    ]);
+    for (const card of buildCards(readSnapshot().renderer!)) {
+      expect(card.chart.bars[0]?.kind, card.id).toBe("ggsvelte");
+      expect(card.chart.bars).toHaveLength(5);
+      expect(card.chart.ariaLabel).not.toContain("D3");
     }
   });
 });
@@ -174,9 +172,9 @@ describe("benchmark claim integrity", () => {
       })),
     ),
   };
-  it("retains every featured workload when gg loses", () => {
+  it("does not falsify or reorder measurements when a selected workload regresses", () => {
     const cards = buildCards(browser);
-    expect(cards).toHaveLength(20);
+    expect(cards).toHaveLength(4);
     for (const card of cards) expect(card.chart.bars.at(-1)?.kind).toBe("ggsvelte");
   });
   it("leads the README with core SVG without relabeling full-host measurements", async () => {
@@ -201,7 +199,8 @@ describe("benchmark claim integrity", () => {
     );
     expect(rendered).toContain("# Intro");
     expect(rendered).toContain("bench-core-scatter-10k-mount.svg");
-    expect(rendered).toContain("bench-core-line-30k-mount.svg");
+    expect(rendered).toContain("bench-core-line-30k-update.svg");
+    expect(rendered.match(/!\[/g)).toHaveLength(4);
     expect(rendered).not.toContain("bench-react");
     expect(rendered).not.toContain("bench-svelte");
     expect(rendered).not.toContain("999 KB");
@@ -214,22 +213,13 @@ describe("benchmark claim integrity", () => {
       ...browser,
       results: browser.results.map((cell) => ({ ...cell, mountMedianMs: 7, updateMedianMs: 3 })),
     };
-    const cards = buildCards(browser, renderer);
+    const cards = buildCards(renderer);
     const core = cards.find((card) => card.id === "core-scatter-10k-mount")!;
     expect(core.chart.bars.map((bar) => bar.lib).toSorted()).toEqual(
-      [
-        "ggts core SVG",
-        "D3",
-        "LayerCake (SVG)",
-        "Unovis (SVG)",
-        "TanStack Svelte (SVG)",
-        "SveltePlot (SVG)",
-      ].toSorted(),
+      ["ggts core SVG", "LayerCake", "Unovis", "TanStack", "SveltePlot"].toSorted(),
     );
     expect(core.chart.bars.every((bar) => bar.value === 7)).toBe(true);
-    expect(
-      cards.find((card) => card.id === "svelte-scatter-10k-mount")!.chart.bars.at(-1)?.value,
-    ).toBe(100);
+    expect(cards.every((card) => card.id.startsWith("core-"))).toBe(true);
   });
 
   it("binds published measurements to one clean commit while retaining historical provenance", () => {
