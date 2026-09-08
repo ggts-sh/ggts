@@ -114,7 +114,7 @@
     "prettier-plugin-svelte": "4.1.1",
     "publint": "0.3.24",
     "typescript": "^6.0.3",
-    "wrangler": "4.116.0"
+    "wrangler": "4.127.0"
   },
   "overrides": {
     "vite": "^8.0.0"
