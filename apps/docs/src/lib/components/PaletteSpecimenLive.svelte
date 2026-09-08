@@ -8,8 +8,8 @@
     Labs,
     Scale,
     Theme,
-  } from "@ggsvelte/svelte";
-  import type { CATEGORICAL_SCHEME_NAMES, ThemeName } from "@ggsvelte/spec";
+  } from "@ggts-sh/svelte";
+  import type { CATEGORICAL_SCHEME_NAMES, ThemeName } from "@ggts-sh/spec";
 
   import { paletteSpecimenChart } from "$lib/theme-specimens/palette-bars";
 

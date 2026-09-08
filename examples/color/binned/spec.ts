@@ -1,4 +1,4 @@
-import { aes, gg, guideColorsteps, scaleColorBinned } from "@ggsvelte/spec";
+import { aes, gg, guideColorsteps, scaleColorBinned } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { jevonsTrials } from "./data.js";

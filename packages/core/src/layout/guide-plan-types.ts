@@ -4,7 +4,7 @@
  * Behavior (planning algorithms) lives in temporal-guide.ts and color/legend
  * pipeline modules; this file is pure data shapes only.
  */
-import type { StyleAesthetic, TemporalScaleKind } from "@ggsvelte/spec";
+import type { StyleAesthetic, TemporalScaleKind } from "@ggts-sh/spec";
 
 import type { CellValue } from "../table.js";
 import type { BandLabelMode } from "./band-guide-types.js";

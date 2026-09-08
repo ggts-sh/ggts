@@ -1,11 +1,11 @@
 import type { PointerEvent } from "react";
-import { encodeKey } from "@ggsvelte/core";
-import type { PlotRect, RenderModel } from "@ggsvelte/core";
+import { encodeKey } from "@ggts-sh/core";
+import type { PlotRect, RenderModel } from "@ggts-sh/core";
 import type {
   InteractionSource,
   ReadonlyIntervalDomains,
   SemanticIntervalAxis,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 type Point = { x: number; y: number };
 
 export const rectangle = (a: Point, b: Point): PlotRect => ({
@@ -69,4 +69,18 @@ export function moveKeyboardPoint(
       Math.min(bounds.y1, point.y + (direction === "up" ? -step : direction === "down" ? step : 0)),
     ),
   };
+}
+
+/** Expand the unselected screen axis after mapping the semantic brush mode. */
+export function expandBrushRect(
+  rect: PlotRect,
+  bounds: PlotRect,
+  mode: "x" | "y" | "xy" | undefined,
+  flipped: boolean,
+): PlotRect {
+  if (mode === undefined || mode === "xy") return rect;
+  const horizontal = (mode === "x") !== flipped;
+  return horizontal
+    ? { ...rect, y0: bounds.y0, y1: bounds.y1 }
+    : { ...rect, x0: bounds.x0, x1: bounds.x1 };
 }

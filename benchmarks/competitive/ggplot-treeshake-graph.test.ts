@@ -57,7 +57,7 @@ async function buildFixture(fixtureName: string): Promise<{
         // resolve to dist, matching what measure-bundles.ts records.
         alias: [
           {
-            find: /^@ggsvelte\/svelte$/,
+            find: /^@ggts-sh\/svelte$/,
             replacement: path.join(root, "../../packages/svelte/src/lib/index.ts"),
           },
         ],

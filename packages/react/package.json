@@ -1,7 +1,7 @@
 {
-  "name": "@ggsvelte/react",
-  "version": "0.42.0",
-  "description": "ggsvelte React DOM adapter: ggplot2-named components over the framework-agnostic core pipeline.",
+  "name": "@ggts-sh/react",
+  "version": "0.43.0",
+  "description": "ggts React DOM adapter: ggplot2-named components over the framework-agnostic core pipeline.",
   "keywords": [
     "charts",
     "components",
@@ -11,13 +11,13 @@
     "react",
     "visualization"
   ],
-  "homepage": "https://ggsvelte.sh/",
-  "bugs": "https://github.com/ljodea/ggsvelte/issues",
+  "homepage": "https://ggts.sh/",
+  "bugs": "https://github.com/ggts-sh/ggts/issues",
   "license": "MIT",
   "author": "Liam O'Dea",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ljodea/ggsvelte.git",
+    "url": "git+https://github.com/ggts-sh/ggts.git",
     "directory": "packages/react"
   },
   "files": [
@@ -44,9 +44,9 @@
     "test:ssr": "vitest run --config vitest.ssr.config.ts"
   },
   "dependencies": {
-    "@ggsvelte/compose": "^0.42.0",
-    "@ggsvelte/core": "^0.42.0",
-    "@ggsvelte/spec": "^0.42.0"
+    "@ggts-sh/compose": "^0.43.0",
+    "@ggts-sh/core": "^0.43.0",
+    "@ggts-sh/spec": "^0.43.0"
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.0",

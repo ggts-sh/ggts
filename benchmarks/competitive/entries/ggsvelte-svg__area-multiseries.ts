@@ -1,4 +1,4 @@
-import { registerBasicAreas, registerDefaultOrdinalColor } from "@ggsvelte/core/headless/register";
+import { registerBasicAreas, registerDefaultOrdinalColor } from "@ggts-sh/core/headless/register";
 
 import { bundleAreaSvg } from "../adapters/ggsvelte-svg";
 

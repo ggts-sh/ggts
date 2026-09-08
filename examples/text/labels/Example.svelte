@@ -8,7 +8,7 @@
     ScaleXContinuous,
     ScaleYContinuous,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { langrenLabels } from "./data.js";
 </script>

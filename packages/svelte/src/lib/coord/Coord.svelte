@@ -8,7 +8,7 @@
    * Emits NO markup; registers a live coord layer during component init and
    * unregisters on destroy. Inert without a <GGPlot> ancestor.
    */
-  import type { CoordSpec } from "@ggsvelte/spec";
+  import type { CoordSpec } from "@ggts-sh/spec";
 
   import { createPlotLayer } from "../layers/plot-layer.svelte.js";
 

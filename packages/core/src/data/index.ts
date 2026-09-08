@@ -2,7 +2,7 @@
 /**
  * Bundled teaching datasets — real, cited data for docs, examples and tests.
  *
- * Imported as `@ggsvelte/core/data` so a copy-pasted quickstart file builds
+ * Imported as `@ggts-sh/core/data` so a copy-pasted quickstart file builds
  * in a bare app with nothing but the published packages installed.
  */
 export {

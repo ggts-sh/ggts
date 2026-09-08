@@ -1,5 +1,5 @@
 /** Shared types for the deterministic mock responder (tests/evals). */
-import type { DataProfile, ProfileFieldType } from "@ggsvelte/spec";
+import type { DataProfile, ProfileFieldType } from "@ggts-sh/spec";
 
 import type { FieldPicker } from "./profile.ts";
 

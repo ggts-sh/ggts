@@ -10,4 +10,4 @@ export {
   type PanelIntervalLookupCandidate,
   type RecomputePanelIntervalFromLookupInput,
   recomputePanelIntervalFromLookup,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

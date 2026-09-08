@@ -1,6 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
-  import { guideReferenceList, type GuideReferenceEntry } from "@ggsvelte/spec";
+  import { guideReferenceList, type GuideReferenceEntry } from "@ggts-sh/spec";
 
   let query = $state("");
   const all = guideReferenceList();
@@ -85,7 +85,7 @@
     win over a scale-local <code>guide</code> on the same aesthetic.
   </p>
   <pre class="snippet"><code
-      >{`import { GGPlot, GeomPoint, GuideLegend } from "@ggsvelte/svelte";
+      >{`import { GGPlot, GeomPoint, GuideLegend } from "@ggts-sh/svelte";
 
 <GGPlot data={rows} aes={{ x: "displ", y: "hwy", color: "class" }}>
   <GeomPoint />
@@ -97,7 +97,7 @@
     <code>normalize()</code>:
   </p>
   <pre class="snippet"><code
-      >{`import { guideLegend, guides } from "@ggsvelte/spec";
+      >{`import { guideLegend, guides } from "@ggts-sh/spec";
 
 guides({ color: guideLegend({ position: "bottom" }) })
 // → { guides: { color: { type: "legend", position: "bottom" } } }`}</code

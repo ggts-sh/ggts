@@ -5,9 +5,9 @@ import { fromPartial } from "@total-typescript/shoehorn";
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import type { RenderModel } from "@ggsvelte/core";
-import { encodeKey } from "@ggsvelte/core";
-import { aes, gg, scaleYMonthDay } from "@ggsvelte/spec";
+import type { RenderModel } from "@ggts-sh/core";
+import { encodeKey } from "@ggts-sh/core";
+import { aes, gg, scaleYMonthDay } from "@ggts-sh/spec";
 
 import { reactiveBox } from "../helpers/reactive-box.svelte.js";
 import {

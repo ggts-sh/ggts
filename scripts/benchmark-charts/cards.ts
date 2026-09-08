@@ -18,7 +18,7 @@ const GROUPS = [
   {
     framework: "core",
     libs: [
-      ["ggsvelte-svg", "ggsvelte core SVG"],
+      ["ggsvelte-svg", "ggts core SVG"],
       ["d3", "D3"],
       ["uplot", "uPlot (canvas)"],
       ["chartjs", "Chart.js (canvas)"],
@@ -28,7 +28,7 @@ const GROUPS = [
   {
     framework: "react",
     libs: [
-      ["ggsvelte-react", "ggsvelte React"],
+      ["ggsvelte-react", "ggts React"],
       ["tanstack-react", "TanStack React"],
       ["d3", "D3"],
       ["uplot", "uPlot (canvas)"],
@@ -39,7 +39,7 @@ const GROUPS = [
   {
     framework: "svelte",
     libs: [
-      ["ggsvelte-ggplot", "ggsvelte Svelte"],
+      ["ggsvelte-ggplot", "ggts Svelte"],
       ["tanstack-svelte", "TanStack Svelte"],
       ["svelteplot", "SveltePlot"],
       ["layercake", "LayerCake"],

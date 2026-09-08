@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeVoid,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { britishExports } from "./data.js";
 </script>

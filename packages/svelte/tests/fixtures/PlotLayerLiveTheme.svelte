@@ -4,7 +4,7 @@
    * theme updates with registrationCount unchanged (ADR 0001 live getters).
    */
   import { untrack } from "svelte";
-  import type { ThemeName } from "@ggsvelte/spec";
+  import type { ThemeName } from "@ggts-sh/spec";
 
   import {
     provideRegistry,

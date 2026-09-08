@@ -1,5 +1,5 @@
 import type { PositionTransformName } from "./index.js";
-import { parseTemporal, type TemporalScaleKind } from "@ggsvelte/spec";
+import { parseTemporal, type TemporalScaleKind } from "@ggts-sh/spec";
 
 export type BoundsAxis = "x" | "y";
 export type BoundsAction = "select" | "zoom";

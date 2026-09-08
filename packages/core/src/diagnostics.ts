@@ -1,7 +1,7 @@
 /**
  * The core diagnostics surface — render-time errors, warnings, and advisories
  * (M3 error-catalog audit). Error *prose* for pipeline codes lives in
- * @ggsvelte/spec (`PIPELINE_ERROR_CATALOG`, #987); this package re-exports it
+ * @ggts-sh/spec (`PIPELINE_ERROR_CATALOG`, #987); this package re-exports it
  * and owns warnings, advisories, CLI diagnostics, and every emission site.
  * Catalog completeness is primary via typed emission registries
  * (`diagnostics-emission-registry.ts`, #628). Dual-channel rich diagnostics
@@ -40,7 +40,7 @@ import type { PipelineWarningCode } from "./diagnostics-warning-catalog.js";
  * Advisories (`RenderModel.advisories`, Hadley lesson 12): every heuristic
  * the pipeline takes, as `{ code, path, chosen, howToOverride }` — agents see
  * the guess and can correct it. Distinct from spec-lint advisories
- * (@ggsvelte/spec `lintSpec`), which flag questionable-but-valid SPECS before
+ * (@ggts-sh/spec `lintSpec`), which flag questionable-but-valid SPECS before
  * any pipeline run.
  */
 export const ADVISORY_CATALOG = {
@@ -103,7 +103,7 @@ export const ADVISORY_CATALOG = {
 
 export type AdvisoryCode = keyof typeof ADVISORY_CATALOG;
 
-/** CLI-only diagnostics (`ggsvelte-render` stderr JSON lines, exit codes 1–3). */
+/** CLI-only diagnostics (`ggts render` stderr JSON lines, exit codes 1–3). */
 export const CLI_DIAGNOSTIC_CATALOG = {
   usage: { summary: "Bad flags or arguments (exit 2). --help shows usage." },
   "unreadable-input": { summary: "The spec/data file (or stdin) could not be read (exit 2)." },

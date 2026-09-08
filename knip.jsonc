@@ -61,7 +61,7 @@
       // src/lib/data/data-contract.ts exists only to be type-checked: it
       // asserts every bundled dataset stays assignable to the plot's data
       // prop, which nothing imports at runtime by design.
-      // src/lib/codemod is reached only from bin/ggsvelte-codemod.js, which
+      // src/lib/codemod is reached only from bin/ggts-codemod.js, which
       // imports the BUILT dist path — invisible to knip's source graph.
       "entry": [
         "tests/**/*.test.ts",
@@ -85,10 +85,10 @@
       // measure-*.ts are scripts; entries/fixtures are dynamic Vite entry points.
       "entry": ["measure-*.ts", "entries/**/*.ts", "fixtures/**/*.ts"],
       "project": ["**/*.ts"],
-      // fixtures/ggplot-*/App.svelte imports @ggsvelte/svelte — knip excludes
+      // fixtures/ggplot-*/App.svelte imports @ggts-sh/svelte — knip excludes
       // compiled .svelte from the project graph (hint above), so the import
       // is invisible here.
-      "ignoreDependencies": ["@ggsvelte/svelte", "@ggsvelte/react"],
+      "ignoreDependencies": ["@ggts-sh/svelte", "@ggts-sh/react"],
     },
     "examples": {
       // The corpus: spec.ts/data.ts are consumed by the docs app via the
@@ -105,7 +105,7 @@
       // does not trace. bits-ui is deep-imported only from .svelte.
       // highlight.js: atom-one-dark CSS via app.css + shared scripts/highlight-code
       // (relative import from code-languages.ts). Knip does not follow either.
-      "ignoreDependencies": ["@ggsvelte/examples", "bits-ui", "highlight.js"],
+      "ignoreDependencies": ["@ggts-sh/examples", "bits-ui", "highlight.js"],
     },
   },
 }

@@ -5,7 +5,7 @@
    * registration (no global registerAll). Asserted by
    * ../../ggplot-treeshake-graph.test.ts.
    */
-  import { GeomPoint, GeomSmooth, GGPlot } from "@ggsvelte/svelte";
+  import { GeomPoint, GeomSmooth, GGPlot } from "@ggts-sh/svelte";
 
   const data = [
     { x: 1, y: 10 },

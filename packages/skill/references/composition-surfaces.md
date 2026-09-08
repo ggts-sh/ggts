@@ -126,7 +126,7 @@ channel). `<GuideLegend channel="color" position="bottom"/>` assembles
   per-aesthetic integer placement rank — same word, unrelated concepts.
 - `Labs` takes flat string props: `title`, `subtitle`, `caption`, `x`, `y`,
   `color`, `fill`, `size`, `linewidth`, `alpha`, `shape`, `linetype`. The
-  spec type is re-exported from `@ggsvelte/svelte` as `LabsSpec`.
+  spec type is re-exported from `@ggts-sh/svelte` as `LabsSpec`.
 
 ```svelte fragment
 <GGPlot

@@ -106,10 +106,10 @@ const server = await createServer({
   optimizeDeps: {
     exclude: ["svelte", "svelteplot", "layercake", "@unovis/svelte"],
     include: [
-      "@ggsvelte/core",
-      "@ggsvelte/core/render",
-      "@ggsvelte/core/dom",
-      "@ggsvelte/spec/portable",
+      "@ggts-sh/core",
+      "@ggts-sh/core/render",
+      "@ggts-sh/core/dom",
+      "@ggts-sh/spec/portable",
       "@unovis/ts",
       "d3-scale",
       "d3-selection",

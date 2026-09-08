@@ -1,7 +1,7 @@
 /**
  * Slim theme table: default + void resolve; named catalog themes do not.
  */
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { describe, expect, it } from "bun:test";
 
 import { EDITION_DEFAULTS } from "../src/editions.ts";

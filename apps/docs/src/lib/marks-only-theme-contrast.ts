@@ -6,7 +6,7 @@
  * Other built-ins keep opaque paper, so they stay legible without this path.
  * Role values match the dark-site shell tokens in styles/tokens.css.
  */
-import type { ThemeName, ThemeSpec } from "@ggsvelte/spec";
+import type { ThemeName, ThemeSpec } from "@ggts-sh/spec";
 
 import type { DocsAppearance } from "./docs-appearance.js";
 

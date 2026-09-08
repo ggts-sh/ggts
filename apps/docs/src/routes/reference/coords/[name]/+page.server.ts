@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 
-import { COORD_REFERENCE, KNOWN_COORD_TYPES, type CoordTypeName } from "@ggsvelte/spec";
+import { COORD_REFERENCE, KNOWN_COORD_TYPES, type CoordTypeName } from "@ggts-sh/spec";
 
 import type { EntryGenerator, PageServerLoad } from "./$types";
 

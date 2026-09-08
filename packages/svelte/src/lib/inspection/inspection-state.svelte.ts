@@ -4,7 +4,7 @@
  * public set/toggle/dismiss/close. Reconcile: inspection-reconcile.svelte.ts;
  * traversal: inspection-traversal.svelte.ts; queue: pointer-inspect.ts. #627.
  */
-import type { CandidateFacts, CellValue } from "@ggsvelte/core";
+import type { CandidateFacts, CellValue } from "@ggts-sh/core";
 import { panelBoundsFrom, type PanelBounds } from "../scene/geometry.js";
 import { createInspectionCoordinator } from "./coordinator.js";
 import type { InteractionContext } from "../interaction/interaction-context.svelte.js";

@@ -48,7 +48,7 @@ Two rules worth keeping in working memory:
 - Three equivalent skins:
   JSON `"scales": {"x": {"type": "linear", "transform": "log10"}}` ≡ helper
   functions `scaleXLog10()` / `scale_x_log10()` (binding-identical camelCase,
-  snake_case, and Colour spellings, from `@ggsvelte/spec`) ≡ components
+  snake_case, and Colour spellings, from `@ggts-sh/spec`) ≡ components
   `<ScaleXLog10/>`. The `gg()` builder chains the same names:
   `gg(rows, aes({ x: "flipper", y: "mass" })).geomPoint({ alpha: 0.7 }).scaleXLog10().spec()`.
 - Temporal: ISO dates/date-times, four-digit-year strings, year-months, and

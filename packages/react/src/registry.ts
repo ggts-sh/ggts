@@ -1,7 +1,7 @@
 import { useHostLayoutEffect } from "./host-effect.js";
 import { createContext, useContext, useRef } from "react";
 
-import type { Layer, MarkLayerDescriptor } from "@ggsvelte/compose";
+import type { Layer, MarkLayerDescriptor } from "@ggts-sh/compose";
 
 export type HostCapabilityKind = "inspect";
 

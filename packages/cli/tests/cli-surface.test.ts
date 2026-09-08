@@ -1,8 +1,8 @@
 /**
- * Programmatic surface of @ggsvelte/cli (`src/index.ts`).
+ * Programmatic surface of @ggts-sh/cli (`src/index.ts`).
  *
- * Bin smoke tests only spawn `bin/ggsvelte-render.js`, which imports
- * `@ggsvelte/core` directly — so they never load this package's entry and
+ * Bin smoke tests only spawn `bin/ggts.js`, which imports
+ * `@ggts-sh/core` directly — so they never load this package's entry and
  * never appear under the Codecov `packages-cli` component. Importing the
  * re-export here is what puts `packages/cli/src/**` into unit lcov.
  */
@@ -42,7 +42,33 @@ function makeIO(stdin = ""): { io: CLIIO; out: string[]; err: string[] } {
   };
 }
 
-describe("@ggsvelte/cli surface (src/index.ts)", () => {
+describe("@ggts-sh/cli surface (src/index.ts)", () => {
+  it("preserves prototype IO methods and their receiver when checking", async () => {
+    class IO implements CLIIO {
+      out: string[] = [];
+      err: string[] = [];
+      readStdin() {
+        return Promise.resolve(JSON.stringify(SPEC));
+      }
+      readFile() {
+        return JSON.stringify(SPEC);
+      }
+      writeOut(text: string) {
+        this.out.push(text);
+      }
+      writeErr(line: string) {
+        this.err.push(line);
+      }
+    }
+    const render = new IO();
+    const check = new IO();
+    expect(await runCommand(["render", "--max-marks", "1"], render)).toBe(1);
+    expect(await runCommand(["check", "--max-marks", "1"], check)).toBe(1);
+    expect(check.err).toEqual(render.err);
+    expect(check.err.join("\n")).toContain("max-marks-exceeded");
+    expect(check.out).toEqual([]);
+  });
+
   it("check runs render validation and diagnostics without writing SVG", async () => {
     for (const [input, flags, expected] of [
       [JSON.stringify(SPEC), [], 0],

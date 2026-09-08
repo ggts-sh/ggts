@@ -27,7 +27,7 @@
   let chapterDialog = $state<HTMLDialogElement>();
   const headings = $derived(route.headings ?? []);
   const displayTitle = $derived(
-    route.navigation?.label ?? route.title.replace(" — ggsvelte", ""),
+    route.navigation?.label ?? route.title.replace(" — ggts", ""),
   );
   const reference = $derived(primaryNavigationOwner(route) === "reference");
   const crumbs = $derived(buildDocsCrumbs(path, displayTitle, reference));

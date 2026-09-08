@@ -1,6 +1,6 @@
 <script lang="ts">
   /** Bundle-attribution positive control: a temporal scale installs full Temporal support. */
-  import { GeomPoint, GGPlot, ScaleXDate } from "@ggsvelte/svelte";
+  import { GeomPoint, GGPlot, ScaleXDate } from "@ggts-sh/svelte";
 
   const data = [
     { date: "2026-01-01", value: 10 },

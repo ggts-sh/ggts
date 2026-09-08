@@ -4,7 +4,7 @@
  * Scheme names come from the PortableSpec registries. Scale children pass
  * `scheme` into color/fill scales (or use a family-specific shell).
  */
-import { CATEGORICAL_SCHEME_NAMES, SEQUENTIAL_SCHEME_NAMES } from "@ggsvelte/spec";
+import { CATEGORICAL_SCHEME_NAMES, SEQUENTIAL_SCHEME_NAMES } from "@ggts-sh/spec";
 
 export type PaletteFamily = "categorical" | "sequential";
 

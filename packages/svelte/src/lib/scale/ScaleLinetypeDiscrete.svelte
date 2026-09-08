@@ -4,7 +4,7 @@
     scaleLinetypeDiscrete,
     type DiscreteFiniteStyleScaleOptions,
     type LinetypeName,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

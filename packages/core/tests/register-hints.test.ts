@@ -61,7 +61,7 @@ describe("register hints: drift guards", () => {
     for (const fn of names) {
       expect(
         typeof (coreBarrel as Record<string, unknown>)[fn],
-        `${fn} must be exported from @ggsvelte/core`,
+        `${fn} must be exported from @ggts-sh/core`,
       ).toBe("function");
     }
   });
@@ -130,7 +130,7 @@ describe("register hints: error messages (fresh process)", () => {
     // Specialty stat overrides: name the family function, never registerBasic.
     expect(out.summaryStat).toContain("not registered in this build");
     expect(out.summaryStat).toContain("registerSummary()");
-    expect(out.summaryStat).toContain("@ggsvelte/svelte");
+    expect(out.summaryStat).toContain("@ggts-sh/svelte");
     expect(out.summaryStat).not.toContain("registerBasic()");
     expect(out.summaryBinStat).toContain("registerSummaryBin()");
     expect(out.violinStat).toContain("registerViolin()");

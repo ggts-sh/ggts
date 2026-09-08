@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { useRef } from "react";
 
-import { aes, gg, normalize } from "@ggsvelte/spec";
+import { aes, gg, normalize } from "@ggts-sh/spec";
 
 import {
   FacetWrap,

@@ -1,4 +1,4 @@
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 import cliPackage from "../packages/cli/package.json";
 
 /** One runnable chart shared by sandbox and framework onboarding. */
@@ -17,18 +17,18 @@ export const SANDBOX_SPEC: PortableSpec = {
 };
 
 export const SANDBOX_SPEC_JSON = JSON.stringify(SANDBOX_SPEC, null, 2);
-export const SANDBOX_INSTALL = `npm install --save-dev --save-exact @ggsvelte/cli@${cliPackage.version} @ggsvelte/skill@${cliPackage.version}`;
+export const SANDBOX_INSTALL = `npm install --save-dev --save-exact @ggts-sh/cli@${cliPackage.version} @ggts-sh/skill@${cliPackage.version}`;
 export const SANDBOX_COMMANDS = `npm exec -- ggts check chart.json
 npm exec -- ggts render chart.json > chart.svg`;
 
-export const SANDBOX_PROMPT = `Read node_modules/@ggsvelte/skill/SKILL.md. Make a column chart of annual sales:
+export const SANDBOX_PROMPT = `Read node_modules/@ggts-sh/skill/SKILL.md. Make a column chart of annual sales:
 2023: 12, 2024: 18, 2025: 25. Save the complete PortableSpec to chart.json.
 Run npm exec -- ggts check chart.json, read its diagnostics, and fix any errors.
 Render chart.svg with npm exec -- ggts render chart.json and inspect the chart.`;
 
 export const REACT_QUICKSTART_SOURCE = `"use client";
 
-import { GGPlot, registerAll, type PortableSpec } from "@ggsvelte/react";
+import { GGPlot, registerAll, type PortableSpec } from "@ggts-sh/react";
 
 registerAll();
 const spec: PortableSpec = ${SANDBOX_SPEC_JSON};
@@ -38,7 +38,7 @@ export default function SalesChart() {
 }`;
 
 export const SVELTE_QUICKSTART_SOURCE = `<script lang="ts">
-  import { GGPlot, registerAll, type PortableSpec } from "@ggsvelte/svelte";
+  import { GGPlot, registerAll, type PortableSpec } from "@ggts-sh/svelte";
 
   registerAll();
   const spec: PortableSpec = ${SANDBOX_SPEC_JSON};
@@ -49,7 +49,7 @@ export const SVELTE_QUICKSTART_SOURCE = `<script lang="ts">
 /** Pair this complete host with the gallery's complete Spec JSON as chart.json. */
 export const REACT_SPEC_HOST_SOURCE = `"use client";
 
-import { GGPlot, registerAll, normalize } from "@ggsvelte/react";
+import { GGPlot, registerAll, normalize } from "@ggts-sh/react";
 import input from "./chart.json";
 
 registerAll();
@@ -60,8 +60,8 @@ export default function Chart() {
 }`;
 
 /** A complete framework-free program; redirect stdout to chart.svg. */
-export const TYPESCRIPT_QUICKSTART_SOURCE = `import { registerAll, renderToSVGString } from "@ggsvelte/core";
-import type { PortableSpec } from "@ggsvelte/spec";
+export const TYPESCRIPT_QUICKSTART_SOURCE = `import { registerAll, renderToSVGString } from "@ggts-sh/core";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 registerAll();
 const spec: PortableSpec = ${SANDBOX_SPEC_JSON};

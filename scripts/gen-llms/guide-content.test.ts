@@ -8,8 +8,8 @@ import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { ADVISORY_CATALOG, CLI_DIAGNOSTIC_CATALOG, PIPELINE_WARNING_CATALOG } from "@ggsvelte/core";
-import { ERROR_CATALOG, LINT_CATALOG, PIPELINE_ERROR_CATALOG } from "@ggsvelte/spec";
+import { ADVISORY_CATALOG, CLI_DIAGNOSTIC_CATALOG, PIPELINE_WARNING_CATALOG } from "@ggts-sh/core";
+import { ERROR_CATALOG, LINT_CATALOG, PIPELINE_ERROR_CATALOG } from "@ggts-sh/spec";
 import { INTERACTION_DIAGNOSTIC_CATALOG } from "../../packages/svelte/src/lib/interaction/interaction.ts";
 import { QUICKSTART_PAGE_SVELTE, SAKURA_STEPS } from "../quickstart.ts";
 import {
@@ -96,7 +96,7 @@ describe("guide sections cover their catalogs", () => {
     expect(QUICKSTART_PAGE_SVELTE).toContain("GGPlot");
     expect(QUICKSTART_PAGE_SVELTE).toContain("ScaleXContinuous");
     expect(QUICKSTART_PAGE_SVELTE).toContain("Labs");
-    expect(QUICKSTART_PAGE_SVELTE).toContain('import { kyotoSakura } from "@ggsvelte/core/data"');
+    expect(QUICKSTART_PAGE_SVELTE).toContain('import { kyotoSakura } from "@ggts-sh/core/data"');
     expect(QUICKSTART_PAGE_SVELTE).toContain('aes={{ x: "year", y: "bloomDate" }}');
     // ariaLabel is production polish; the basic plot stays bare.
     expect(QUICKSTART_PAGE_SVELTE).not.toMatch(/ariaLabel=/);

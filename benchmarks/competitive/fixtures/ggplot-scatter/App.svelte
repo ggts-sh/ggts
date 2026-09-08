@@ -5,7 +5,7 @@
    * specialty geom/stat modules (smooth, density_2d, sf, contour, violin,
    * hex, boxplot, …). Asserted by ../../ggplot-treeshake-graph.test.ts.
    */
-  import { GeomLine, GeomPoint, GGPlot } from "@ggsvelte/svelte";
+  import { GeomLine, GeomPoint, GGPlot } from "@ggts-sh/svelte";
 
   const data = [
     { x: 1, y: 10, cls: "a" },

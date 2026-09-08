@@ -1,5 +1,5 @@
 /**
- * Gate G2 — the bundled teaching datasets under `@ggsvelte/core/data` are
+ * Gate G2 — the bundled teaching datasets under `@ggts-sh/core/data` are
  * real, intact, and cover the guide shapes: time series (kyotoSakura),
  * categorical comparison (mpg, beerProduction, fastfoodMenu), continuous
  * distribution + groups (palmerPenguins, coffeeRatings), and dense scatter /
@@ -9,7 +9,7 @@
 import { readFileSync } from "node:fs";
 
 import { describe, expect, it } from "bun:test";
-import * as coreData from "@ggsvelte/core/data";
+import * as coreData from "@ggts-sh/core/data";
 import * as svelteData from "../packages/svelte/src/lib/data/index.ts";
 
 import {

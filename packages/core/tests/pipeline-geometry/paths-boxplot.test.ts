@@ -59,7 +59,7 @@ describe("appendClosedBandEdges — shared closed ribbon vertices", () => {
 
 describe("boxplot body — rendered composite", () => {
   it("emits hinge rects, whiskers, and a 2×-fattened median line", async () => {
-    const { aes, gg } = await import("@ggsvelte/spec");
+    const { aes, gg } = await import("@ggts-sh/spec");
     const { runPipeline } = await import("../../src/pipeline.ts");
     const model = runPipeline(
       gg(

@@ -7,8 +7,8 @@
       "devDependencies": {
         "@arethetypeswrong/cli": "0.18.5",
         "@changesets/cli": "3.0.1",
-        "@ggsvelte/core": "workspace:*",
-        "@ggsvelte/spec": "workspace:*",
+        "@ggts-sh/core": "workspace:*",
+        "@ggts-sh/spec": "workspace:*",
         "@playwright/test": "1.61.1",
         "@total-typescript/shoehorn": "^0.1.2",
         "@types/bun": "^1.4.0",
@@ -30,13 +30,13 @@
       },
     },
     "apps/docs": {
-      "name": "@ggsvelte/docs",
+      "name": "@ggts-sh/docs",
       "version": "0.0.0",
       "dependencies": {
-        "@ggsvelte/core": "workspace:*",
-        "@ggsvelte/examples": "workspace:*",
-        "@ggsvelte/spec": "workspace:*",
-        "@ggsvelte/svelte": "workspace:*",
+        "@ggts-sh/core": "workspace:*",
+        "@ggts-sh/examples": "workspace:*",
+        "@ggts-sh/spec": "workspace:*",
+        "@ggts-sh/svelte": "workspace:*",
         "bits-ui": "^2.18.1",
         "highlight.js": "^11.12.0",
       },
@@ -55,23 +55,23 @@
       },
     },
     "benchmarks": {
-      "name": "@ggsvelte-bench/benchmarks",
+      "name": "@ggts-sh-bench/benchmarks",
       "version": "0.0.0",
       "dependencies": {
-        "@ggsvelte/core": "workspace:*",
-        "@ggsvelte/spec": "workspace:*",
+        "@ggts-sh/core": "workspace:*",
+        "@ggts-sh/spec": "workspace:*",
       },
       "devDependencies": {
         "mitata": "^1.0.34",
       },
     },
     "benchmarks/competitive": {
-      "name": "@ggsvelte-bench/competitive",
+      "name": "@ggts-sh-bench/competitive",
       "dependencies": {
-        "@ggsvelte/core": "workspace:*",
-        "@ggsvelte/react": "workspace:*",
-        "@ggsvelte/spec": "workspace:*",
-        "@ggsvelte/svelte": "workspace:*",
+        "@ggts-sh/core": "workspace:*",
+        "@ggts-sh/react": "workspace:*",
+        "@ggts-sh/spec": "workspace:*",
+        "@ggts-sh/svelte": "workspace:*",
         "@tanstack/charts": "^0.14.0",
         "@unovis/svelte": "1.6.7",
         "@unovis/ts": "1.6.7",
@@ -99,13 +99,13 @@
       },
     },
     "examples": {
-      "name": "@ggsvelte/examples",
+      "name": "@ggts-sh/examples",
       "version": "0.0.0",
       "dependencies": {
-        "@ggsvelte/core": "workspace:*",
-        "@ggsvelte/react": "workspace:*",
-        "@ggsvelte/spec": "workspace:*",
-        "@ggsvelte/svelte": "workspace:*",
+        "@ggts-sh/core": "workspace:*",
+        "@ggts-sh/react": "workspace:*",
+        "@ggts-sh/spec": "workspace:*",
+        "@ggts-sh/svelte": "workspace:*",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
       },
@@ -117,42 +117,42 @@
       },
     },
     "packages/cli": {
-      "name": "@ggsvelte/cli",
+      "name": "@ggts-sh/cli",
       "version": "0.42.0",
       "bin": {
         "ggsvelte-render": "bin/ggsvelte-render.js",
       },
       "dependencies": {
-        "@ggsvelte/core": "^0.22.0",
+        "@ggts-sh/core": "^0.22.0",
       },
     },
     "packages/compose": {
-      "name": "@ggsvelte/compose",
+      "name": "@ggts-sh/compose",
       "version": "0.42.0",
       "dependencies": {
-        "@ggsvelte/spec": "^0.42.0",
+        "@ggts-sh/spec": "^0.42.0",
       },
       "devDependencies": {
         "typescript": "^6.0.3",
       },
     },
     "packages/core": {
-      "name": "@ggsvelte/core",
+      "name": "@ggts-sh/core",
       "version": "0.42.0",
       "dependencies": {
-        "@ggsvelte/spec": "^0.42.0",
+        "@ggts-sh/spec": "^0.42.0",
       },
       "devDependencies": {
         "typescript": "^6.0.3",
       },
     },
     "packages/react": {
-      "name": "@ggsvelte/react",
+      "name": "@ggts-sh/react",
       "version": "0.42.0",
       "dependencies": {
-        "@ggsvelte/compose": "^0.42.0",
-        "@ggsvelte/core": "^0.42.0",
-        "@ggsvelte/spec": "^0.42.0",
+        "@ggts-sh/compose": "^0.42.0",
+        "@ggts-sh/core": "^0.42.0",
+        "@ggts-sh/spec": "^0.42.0",
       },
       "devDependencies": {
         "@testing-library/react": "^16.3.0",
@@ -173,11 +173,11 @@
       },
     },
     "packages/skill": {
-      "name": "@ggsvelte/skill",
+      "name": "@ggts-sh/skill",
       "version": "0.42.0",
     },
     "packages/spec": {
-      "name": "@ggsvelte/spec",
+      "name": "@ggts-sh/spec",
       "version": "0.42.0",
       "dependencies": {
         "@js-temporal/polyfill": "^0.5.1",
@@ -189,15 +189,15 @@
       },
     },
     "packages/svelte": {
-      "name": "@ggsvelte/svelte",
+      "name": "@ggts-sh/svelte",
       "version": "0.42.0",
       "bin": {
-        "ggsvelte-codemod": "bin/ggsvelte-codemod.js",
+        "ggts-codemod": "bin/ggts-codemod.js",
       },
       "dependencies": {
-        "@ggsvelte/compose": "^0.42.0",
-        "@ggsvelte/core": "^0.42.0",
-        "@ggsvelte/spec": "^0.42.0",
+        "@ggts-sh/compose": "^0.42.0",
+        "@ggts-sh/core": "^0.42.0",
+        "@ggts-sh/spec": "^0.42.0",
       },
       "devDependencies": {
         "@sveltejs/package": "^2.5.8",
@@ -218,7 +218,7 @@
       },
     },
     "spikes/browser": {
-      "name": "@ggsvelte-spike/browser",
+      "name": "@ggts-sh-spike/browser",
       "version": "0.0.0",
       "devDependencies": {
         "@sveltejs/vite-plugin-svelte": "^7.3.0",
@@ -233,7 +233,7 @@
       },
     },
     "spikes/pure": {
-      "name": "@ggsvelte-spike/pure",
+      "name": "@ggts-sh-spike/pure",
       "version": "0.0.0",
       "devDependencies": {
         "typescript": "^6.0.3",
@@ -432,31 +432,31 @@
 
     "@floating-ui/utils": ["@floating-ui/utils@0.2.12", "", {}, "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww=="],
 
-    "@ggsvelte-bench/benchmarks": ["@ggsvelte-bench/benchmarks@workspace:benchmarks"],
+    "@ggts-sh-bench/benchmarks": ["@ggts-sh-bench/benchmarks@workspace:benchmarks"],
 
-    "@ggsvelte-bench/competitive": ["@ggsvelte-bench/competitive@workspace:benchmarks/competitive"],
+    "@ggts-sh-bench/competitive": ["@ggts-sh-bench/competitive@workspace:benchmarks/competitive"],
 
-    "@ggsvelte-spike/browser": ["@ggsvelte-spike/browser@workspace:spikes/browser"],
+    "@ggts-sh-spike/browser": ["@ggts-sh-spike/browser@workspace:spikes/browser"],
 
-    "@ggsvelte-spike/pure": ["@ggsvelte-spike/pure@workspace:spikes/pure"],
+    "@ggts-sh-spike/pure": ["@ggts-sh-spike/pure@workspace:spikes/pure"],
 
-    "@ggsvelte/cli": ["@ggsvelte/cli@workspace:packages/cli"],
+    "@ggts-sh/cli": ["@ggts-sh/cli@workspace:packages/cli"],
 
-    "@ggsvelte/compose": ["@ggsvelte/compose@workspace:packages/compose"],
+    "@ggts-sh/compose": ["@ggts-sh/compose@workspace:packages/compose"],
 
-    "@ggsvelte/core": ["@ggsvelte/core@workspace:packages/core"],
+    "@ggts-sh/core": ["@ggts-sh/core@workspace:packages/core"],
 
-    "@ggsvelte/docs": ["@ggsvelte/docs@workspace:apps/docs"],
+    "@ggts-sh/docs": ["@ggts-sh/docs@workspace:apps/docs"],
 
-    "@ggsvelte/examples": ["@ggsvelte/examples@workspace:examples"],
+    "@ggts-sh/examples": ["@ggts-sh/examples@workspace:examples"],
 
-    "@ggsvelte/react": ["@ggsvelte/react@workspace:packages/react"],
+    "@ggts-sh/react": ["@ggts-sh/react@workspace:packages/react"],
 
-    "@ggsvelte/skill": ["@ggsvelte/skill@workspace:packages/skill"],
+    "@ggts-sh/skill": ["@ggts-sh/skill@workspace:packages/skill"],
 
-    "@ggsvelte/spec": ["@ggsvelte/spec@workspace:packages/spec"],
+    "@ggts-sh/spec": ["@ggts-sh/spec@workspace:packages/spec"],
 
-    "@ggsvelte/svelte": ["@ggsvelte/svelte@workspace:packages/svelte"],
+    "@ggts-sh/svelte": ["@ggts-sh/svelte@workspace:packages/svelte"],
 
     "@img/colour": ["@img/colour@1.1.0", "", {}, "sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ=="],
 
@@ -1784,7 +1784,7 @@
 
     "@emotion/babel-plugin/convert-source-map": ["convert-source-map@1.9.0", "", {}, "sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A=="],
 
-    "@ggsvelte/react/@vitejs/plugin-react": ["@vitejs/plugin-react@5.2.0", "", { "dependencies": { "@babel/core": "^7.29.0", "@babel/plugin-transform-react-jsx-self": "^7.27.1", "@babel/plugin-transform-react-jsx-source": "^7.27.1", "@rolldown/pluginutils": "1.0.0-rc.3", "@types/babel__core": "^7.20.5", "react-refresh": "^0.18.0" }, "peerDependencies": { "vite": "^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0" } }, "sha512-YmKkfhOAi3wsB1PhJq5Scj3GXMn3WvtQ/JC0xoopuHoXSdmtdStOpFrYaT1kie2YgFBcIe64ROzMYRjCrYOdYw=="],
+    "@ggts-sh/react/@vitejs/plugin-react": ["@vitejs/plugin-react@5.2.0", "", { "dependencies": { "@babel/core": "^7.29.0", "@babel/plugin-transform-react-jsx-self": "^7.27.1", "@babel/plugin-transform-react-jsx-source": "^7.27.1", "@rolldown/pluginutils": "1.0.0-rc.3", "@types/babel__core": "^7.20.5", "react-refresh": "^0.18.0" }, "peerDependencies": { "vite": "^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0" } }, "sha512-YmKkfhOAi3wsB1PhJq5Scj3GXMn3WvtQ/JC0xoopuHoXSdmtdStOpFrYaT1kie2YgFBcIe64ROzMYRjCrYOdYw=="],
 
     "@poppinss/dumper/@sindresorhus/is": ["@sindresorhus/is@7.2.0", "", {}, "sha512-P1Cz1dWaFfR4IR+U13mqqiGsLFf1KbayybWwdd2vfctdV6hDpUkgCY0nKOLLTMSoRd/jJNjtbqzf13K8DCCXQw=="],
 
@@ -1868,7 +1868,7 @@
 
     "zrender/tslib": ["tslib@2.3.0", "", {}, "sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg=="],
 
-    "@ggsvelte/react/@vitejs/plugin-react/@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.0-rc.3", "", {}, "sha512-eybk3TjzzzV97Dlj5c+XrBFW57eTNhzod66y9HrBlzJ6NsCrWCp/2kaPS3K9wJmurBC0Tdw4yPjXKZqlznim3Q=="],
+    "@ggts-sh/react/@vitejs/plugin-react/@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.0-rc.3", "", {}, "sha512-eybk3TjzzzV97Dlj5c+XrBFW57eTNhzod66y9HrBlzJ6NsCrWCp/2kaPS3K9wJmurBC0Tdw4yPjXKZqlznim3Q=="],
 
     "@sveltejs/package/chokidar/readdirp": ["readdirp@5.0.0", "", {}, "sha512-9u/XQ1pvrQtYyMpZe7DXKv2p5CNvyVwzUB6uhLAnQwHMSgKMBR62lc7AHljaeteeHXn11XTAaLLUVZYVZyuRBQ=="],
 

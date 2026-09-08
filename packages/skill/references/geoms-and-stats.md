@@ -157,7 +157,7 @@ geom and its DEFAULT stat. Spec-driven surfaces — JSON spec, `layers` prop,
 `runPipeline`, `renderToSVGString` — register nothing per layer: call
 `registerAll()` once instead (or the matching `register<Family>()`). Any
 `stat="…"` override below needs the matching family register call once at
-app startup, imported from `@ggsvelte/svelte`:
+app startup, imported from `@ggts-sh/svelte`:
 `stat="summary"` → `registerSummary()`, `stat="summary_bin"` →
 `registerSummaryBin()`, `stat="summary_rolling"` → `registerSummaryRolling()`, `stat="ecdf"` → `registerEcdf()`, `stat="manual"` →
 `registerManual()`, `stat="unique"` → `registerUnique()`, `stat="connect"` →
@@ -166,7 +166,7 @@ app startup, imported from `@ggsvelte/svelte`:
 registration fails loudly: 'Stat "…" is not registered in this build.',
 naming the fix. Lean headless geom families
 (`registerBasicPoints()`, `registerBasicLines()`, …) live on
-`@ggsvelte/core/headless/register`. Full inventory: SKILL.md Registration.
+`@ggts-sh/core/headless/register`. Full inventory: SKILL.md Registration.
 
 ```json fragment
 {

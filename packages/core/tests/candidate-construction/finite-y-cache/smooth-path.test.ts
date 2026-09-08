@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { runPipeline } from "../../../src/pipeline.ts";
 import { size } from "./fixtures.ts";
@@ -15,7 +15,7 @@ describe("finite-y cache: smooth path", () => {
       await import("../../../src/pipeline/candidate-construction/identity-index.ts");
     const { filterAggregateYRows } =
       await import("../../../src/pipeline/candidate-construction/represented-rows.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize({
@@ -61,7 +61,7 @@ describe("finite-y cache: smooth path", () => {
       await import("../../../src/pipeline/candidate-construction/identity-index.ts");
     const { filterRepresentedSourceRows } =
       await import("../../../src/pipeline/candidate-construction/represented-rows.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize({
@@ -127,7 +127,7 @@ describe("finite-y cache: smooth path", () => {
     const { filterRepresentedSourceRows } =
       await import("../../../src/pipeline/candidate-construction/represented-rows.ts");
     const { LineageStore } = await import("../../../src/identity.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const prepared = preparePanels(
       normalize({

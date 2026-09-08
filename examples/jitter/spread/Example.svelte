@@ -7,7 +7,7 @@
     ScaleXDiscrete,
     ScaleYContinuous,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { sparseGroups } from "./data.js";
 </script>

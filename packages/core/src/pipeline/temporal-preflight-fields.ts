@@ -4,7 +4,7 @@ import {
   type PositionScaleSpec,
   type TemporalDecision,
   type TemporalParserName,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

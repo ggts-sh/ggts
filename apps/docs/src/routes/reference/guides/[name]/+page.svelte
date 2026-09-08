@@ -35,7 +35,7 @@
   );
 
   const svelteSnippet = $derived(
-    `import { GGPlot, GeomPoint, ${entry.component} } from "@ggsvelte/svelte";\n\n<GGPlot data={rows} aes={{ x: "displ", y: "hwy", color: "class" }}>
+    `import { GGPlot, GeomPoint, ${entry.component} } from "@ggts-sh/svelte";\n\n<GGPlot data={rows} aes={{ x: "displ", y: "hwy", color: "class" }}>
   <GeomPoint />
   <${entry.component} ${shellAttrs} />
 </GGPlot>`,
@@ -63,8 +63,8 @@
 
   const helperSnippet = $derived(
     entry.name === "none"
-      ? `import { ${entry.helper}, guides } from "@ggsvelte/spec";\n\nguides({ ${primaryChannel}: ${entry.helper}() })\n// → { guides: { ${primaryChannel}: { type: "none" } } }`
-      : `import { ${entry.helper}, guides } from "@ggsvelte/spec";\n\nguides({ ${primaryChannel}: ${entry.helper}(${helperArgs}) })\n// → { guides: { ${primaryChannel}: { type: "${entry.typeLiteral}", … } } }`,
+      ? `import { ${entry.helper}, guides } from "@ggts-sh/spec";\n\nguides({ ${primaryChannel}: ${entry.helper}() })\n// → { guides: { ${primaryChannel}: { type: "none" } } }`
+      : `import { ${entry.helper}, guides } from "@ggts-sh/spec";\n\nguides({ ${primaryChannel}: ${entry.helper}(${helperArgs}) })\n// → { guides: { ${primaryChannel}: { type: "${entry.typeLiteral}", … } } }`,
   );
 
   const jsonSnippet = $derived(

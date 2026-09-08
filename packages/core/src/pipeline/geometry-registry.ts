@@ -1,7 +1,7 @@
 /**
  * Geom → batch builder registry for scene geometry.
  *
- * The full package registers every geom; `@ggsvelte/core/render` registers the
+ * The full package registers every geom; `@ggts-sh/core/render` registers the
  * common identity chart set (point/line/path/col/bar/area/rule/text/…) so
  * specialty geoms (smooth ribbon, violin, hex, sf, …) stay out of lean graphs.
  */

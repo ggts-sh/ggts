@@ -10,9 +10,9 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, scaleXBinned } from "@ggsvelte/spec";
+import { aes, gg, scaleXBinned } from "@ggts-sh/spec";
 
-import { MAX_BINNED_BREAKS as SPEC_MAX_BINNED_BREAKS } from "@ggsvelte/spec";
+import { MAX_BINNED_BREAKS as SPEC_MAX_BINNED_BREAKS } from "@ggts-sh/spec";
 
 import { PipelineError, runPipeline } from "../src/pipeline.ts";
 import { MAX_BINNED_BREAKS, resolveBinnedBoundaries } from "../src/pipeline/binned-scale.ts";

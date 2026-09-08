@@ -8,13 +8,13 @@
 import { EXAMPLES } from "../examples/manifest";
 
 /** Cache-busting path: bump the version segment when the card content changes. */
-export const OG_HOME_FILENAME = "home-v5.png";
+export const OG_HOME_FILENAME = "home-v6.png";
 export const OG_HOME_PATH = `/og/${OG_HOME_FILENAME}`;
 export const OG_HOME_WIDTH = 1200;
 export const OG_HOME_HEIGHT = 630;
 /** Stable alt — no volatile bench timings (those live in the PNG pixels). */
 export const OG_HOME_ALT =
-  "ggsvelte: ggplot2’s grammar for TypeScript, with a sales chart shared by the CLI, React, and Svelte.";
+  "ggts: ggplot2’s grammar for TypeScript, with a sales chart shared by the CLI, React, and Svelte.";
 
 export const DEFAULT_SOCIAL = {
   path: OG_HOME_PATH,

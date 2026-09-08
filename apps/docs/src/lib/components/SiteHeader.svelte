@@ -81,9 +81,7 @@
 
 <header class="site-header site-chrome">
   <div class="site-header__inner">
-    <a class="site-brand" href={`${base}/`} aria-label="ggsvelte home"
-      >ggsvelte</a
-    >
+    <a class="site-brand" href={`${base}/`} aria-label="ggts home">ggts</a>
 
     <nav class="desktop-nav" aria-label="Primary">
       {#each links as link (link.href)}
@@ -104,7 +102,7 @@
       </button>
       <a
         class="github-link"
-        href="https://github.com/ljodea/ggsvelte"
+        href="https://github.com/ggts-sh/ggts"
         rel="external"
         aria-label="GitHub"
         title="GitHub"
@@ -162,7 +160,7 @@
         >
       {/each}
       <a
-        href="https://github.com/ljodea/ggsvelte"
+        href="https://github.com/ggts-sh/ggts"
         rel="external"
         onclick={closeMenu}>GitHub ↗</a
       >

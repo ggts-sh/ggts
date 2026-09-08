@@ -4,7 +4,7 @@
  * Stat output contract:
  *  - required inputs: continuous x. y must NOT be mapped (computed-y-mapped).
  *  - generated columns (one row per kept observation):
- *      `stackpos` — stack position (ggsvelte after_stat name; not a ggplot2
+ *      `stackpos` — stack position (ggts after_stat name; not a ggplot2
  *        after_stat export — y defaults to { stat: "stackpos" })
  *      `count` — occupancy of that (group, bin)
  *      `x` / `xmin` / `xmax` — histodot bin center and edges

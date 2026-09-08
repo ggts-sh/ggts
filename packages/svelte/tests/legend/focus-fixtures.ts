@@ -1,7 +1,7 @@
 /**
  * Shared SceneLegend fixtures for pure legend focus unit suites.
  */
-import type { SceneLegend } from "@ggsvelte/core";
+import type { SceneLegend } from "@ggts-sh/core";
 
 export const discreteFill: SceneLegend = {
   type: "discrete",

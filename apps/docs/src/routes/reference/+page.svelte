@@ -105,7 +105,7 @@
       <span>Stability tags and defaults-edition behavior.</span>
     </a>
     <a href={`${base}/kyoto-sakura.json`}>
-      <strong><code>@ggsvelte/core/data</code></strong>
+      <strong><code>@ggts-sh/core/data</code></strong>
       <span>
         Bundled datasets. <code>kyotoSakura</code>, <code>palmerPenguins</code>,
         <code>mpg</code>, <code>chocolateBars</code>,

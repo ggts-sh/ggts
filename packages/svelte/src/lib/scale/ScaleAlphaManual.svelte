@@ -3,7 +3,7 @@
   import {
     scaleAlphaManual,
     type ManualNumericStyleScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

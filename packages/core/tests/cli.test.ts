@@ -1,5 +1,5 @@
 /**
- * ggsvelte-render CLI: runCLI unit tests (exit codes, stdout purity, JSON-line
+ * ggts render CLI: runCLI unit tests (exit codes, stdout purity, JSON-line
  * diagnostics). Bin smoke tests spawning the workspace bin live in
  * packages/cli/tests/cli-bin.test.ts.
  */
@@ -218,7 +218,7 @@ describe("runCLI", () => {
     const { io, err, out } = makeIO();
     expect(await runCLI(["--help"], io)).toBe(0);
     expect(out).toHaveLength(0);
-    expect(err.join("\n")).toContain("Usage: ggsvelte-render");
+    expect(err.join("\n")).toContain("Usage: ggts render");
   });
 
   it("--help includes --data detail for the named-dataset JSON shape", async () => {

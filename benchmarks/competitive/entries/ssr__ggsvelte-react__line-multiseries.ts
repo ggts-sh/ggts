@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { GGPlot } from "@ggsvelte/react";
+import { GGPlot } from "@ggts-sh/react";
 import { scenarioSpec } from "../adapters/ggsvelte-svg";
 import { makeMultiSeries, PLOT_HEIGHT, PLOT_WIDTH } from "../scenarios";
 

@@ -5,7 +5,7 @@
     GGPlot,
     GuideLegend,
     Labs,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   const FILTER_ROWS = 20_000;
   const FACET_ROWS = 12_000;

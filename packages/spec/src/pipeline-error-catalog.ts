@@ -1,8 +1,8 @@
 /**
  * Pipeline error catalog — structured errors thrown as
- * `PipelineError { code, path, message }`. Pure data owned by @ggsvelte/spec
+ * `PipelineError { code, path, message }`. Pure data owned by @ggts-sh/spec
  * (#987) so docs and agents have one prose source. Re-exported from
- * @ggsvelte/core diagnostics for existing imports.
+ * @ggts-sh/core diagnostics for existing imports.
  *
  * Dual-channel codes (also emitable by validate) pull prose from
  * error-prose-shared.ts — do not inline summary/fix for those keys.
@@ -239,7 +239,7 @@ export const PIPELINE_ERROR_CATALOG = {
   },
   "renderer-failure": {
     summary: "The SVG renderer threw while drawing a scene (never blank output — failure policy).",
-    fix: "This is a ggsvelte bug; the message carries the underlying error. Please report it.",
+    fix: "This is a ggts bug; the message carries the underlying error. Please report it.",
   },
   "max-marks-exceeded": {
     summary: "renderToSVGString refused to render more marks than its maxMarks safety limit.",

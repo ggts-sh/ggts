@@ -2,8 +2,8 @@
  * Shared point-geom model builder for suites that need a discrete color
  * legend at a chosen viewport (modelFor covers the fixed-viewport case).
  */
-import { runPipeline, type RenderModel } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import { runPipeline, type RenderModel } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 const defaultPointAes: Parameters<typeof aes>[0] = { x: "x", y: "y", color: "id" };
 const defaultPointSize = { width: 400, height: 300 };

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "ggsvelte PortableSpec",
-  "description": "A ggsvelte plot specification (schema v0 — UNSTABLE; served from the repo until schema hosting exists).",
+  "title": "ggts PortableSpec",
+  "description": "A ggts plot specification (schema v0 — UNSTABLE; served from the repo until schema hosting exists).",
   "$defs": {
     "CellValue": {
       "anyOf": [
@@ -2060,7 +2060,7 @@
         "seed": {
           "type": "integer",
           "minimum": 0,
-          "description": "JITTER ONLY: RNG seed (a non-negative integer). Default 42. ggsvelte jitter is ALWAYS seeded so renders are reproducible (deliberate divergence from random jitter)."
+          "description": "JITTER ONLY: RNG seed (a non-negative integer). Default 42. ggts jitter is ALWAYS seeded so renders are reproducible (deliberate divergence from random jitter)."
         },
         "x": {
           "type": "number",
@@ -9454,7 +9454,7 @@
         },
         "clip": {
           "type": "boolean",
-          "description": "Clip marks to the panel. ggplot2 coord_radial defaults to clip off; coord_polar defaults to clip on. ggsvelte stores the effective boolean (default false for type \"radial\")."
+          "description": "Clip marks to the panel. ggplot2 coord_radial defaults to clip off; coord_polar defaults to clip on. ggts stores the effective boolean (default false for type \"radial\")."
         },
         "reverse": {
           "anyOf": [
@@ -9527,12 +9527,12 @@
       "properties": {
         "$schema": {
           "type": "string",
-          "description": "URL of the ggsvelte spec JSON Schema version this spec targets."
+          "description": "URL of the ggts spec JSON Schema version this spec targets."
         },
         "edition": {
           "type": "integer",
           "minimum": 1,
-          "description": "Defaults edition this spec was authored against (currently 2). normalize() stamps the current edition when absent, so a spec keeps ITS edition's default look (theme roles, categorical palette) even after ggsvelte's defaults improve in a later edition. Explicit theme/scale settings always win over edition defaults."
+          "description": "Defaults edition this spec was authored against (currently 2). normalize() stamps the current edition when absent, so a spec keeps ITS edition's default look (theme roles, categorical palette) even after ggts's defaults improve in a later edition. Explicit theme/scale settings always win over edition defaults."
         },
         "data": {
           "$ref": "#/$defs/DataRef",
@@ -9611,7 +9611,7 @@
         }
       },
       "additionalProperties": false,
-      "description": "A complete ggsvelte plot specification: data + aesthetic mapping + one or more layers, in layered grammar. Strictly JSON (PortableSpec)."
+      "description": "A complete ggts plot specification: data + aesthetic mapping + one or more layers, in layered grammar. Strictly JSON (PortableSpec)."
     }
   },
   "$ref": "#/$defs/PlotSpec"

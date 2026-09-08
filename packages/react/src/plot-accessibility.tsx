@@ -7,10 +7,10 @@ import {
   defaultTooltipRows,
   formatTooltipCell,
   tooltipTotalPlacement,
-} from "@ggsvelte/core/interaction";
-import type { GeometryBatch, RenderModel, CellValue } from "@ggsvelte/core";
-import type { PlotInspectionChange } from "@ggsvelte/core/interaction";
-import type { PortableSpec } from "@ggsvelte/spec";
+} from "@ggts-sh/core/interaction";
+import type { GeometryBatch, RenderModel, CellValue } from "@ggts-sh/core";
+import type { PlotInspectionChange } from "@ggts-sh/core/interaction";
+import type { PortableSpec } from "@ggts-sh/spec";
 import type { InspectOptions, InteractionSource } from "./interaction.js";
 
 export const visuallyHidden: CSSProperties = {

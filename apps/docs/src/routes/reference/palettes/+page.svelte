@@ -21,7 +21,7 @@
     "    GeomPoint,",
     "    GGPlot,",
     "    ScaleColorDiscrete,",
-    '  } from "@ggsvelte/svelte";',
+    '  } from "@ggts-sh/svelte";',
     "",
     "  const rows = [",
     '    { x: 1, y: 2, species: "a" },',

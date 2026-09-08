@@ -2,7 +2,7 @@
  * Theme registry: catalog completeness, documented ordering, and LEGACY
  * edition-1 inheritance contracts (split from sequential-and-theme).
  */
-import { THEME_NAMES } from "@ggsvelte/spec";
+import { THEME_NAMES } from "@ggts-sh/spec";
 import { describe, expect, it } from "bun:test";
 
 import { BUILTIN_THEMES, LEGACY_BUILTIN_THEMES } from "../../src/theme.ts";

@@ -1,7 +1,7 @@
 /**
  * Train fixed and free positional scales for a pipeline run.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { PositionScale } from "../scales/train.js";
 

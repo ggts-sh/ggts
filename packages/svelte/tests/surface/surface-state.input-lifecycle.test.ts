@@ -4,7 +4,7 @@
 import { flushSync } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 
-import type { CandidateFacts } from "@ggsvelte/core";
+import type { CandidateFacts } from "@ggts-sh/core";
 
 import { TOUCH_INSPECT_CLICK_SUPPRESS_MS } from "../../src/lib/surface/pointer.js";
 import {

@@ -3,7 +3,7 @@
   import {
     scaleColorManual,
     type ManualColorScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

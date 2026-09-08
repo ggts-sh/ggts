@@ -17,7 +17,7 @@
  *
  * All inputs are lazy getters over live engine references — never snapshots.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import {
   assemblePortableSpec,

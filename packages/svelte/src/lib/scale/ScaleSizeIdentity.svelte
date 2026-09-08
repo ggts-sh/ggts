@@ -3,7 +3,7 @@
   import {
     scaleSizeIdentity,
     type IdentityNumericStyleScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

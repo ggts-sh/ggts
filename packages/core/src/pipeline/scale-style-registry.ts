@@ -5,7 +5,7 @@
  * linewidth / alpha, including sequential) and finite (shape / linetype)
  * resolvers stay out of lean graphs that do not map those aesthetics.
  */
-import type { PortableSpec, StyleAesthetic } from "@ggsvelte/spec";
+import type { PortableSpec, StyleAesthetic } from "@ggts-sh/spec";
 
 import type { ScaleState } from "../scales/state.js";
 import type { CellValue } from "../table.js";

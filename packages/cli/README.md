@@ -1,8 +1,8 @@
-# @ggsvelte/cli
+# @ggts-sh/cli
 
-[![codecov](https://codecov.io/gh/ljodea/ggsvelte/branch/main/graph/badge.svg?component=packages-cli)](https://app.codecov.io/gh/ljodea/ggsvelte/tree/main/packages%2Fcli)
+[![codecov](https://codecov.io/gh/ggts-sh/ggts/branch/main/graph/badge.svg?component=packages-cli)](https://app.codecov.io/gh/ggts-sh/ggts/tree/main/packages%2Fcli)
 
-`ggts check` and `ggts render`: validate and render a ggsvelte plot spec (JSON) to SVG from
+`ggts check` and `ggts render`: validate and render a ggts plot spec (JSON) to SVG from
 the command line. This is the feedback loop for agents that author specs — it
 surfaces the validation errors, warnings, and advisories a JSON-only workflow
 never sees.
@@ -10,7 +10,7 @@ never sees.
 ## Why this package exists
 
 An embedded analytics agent writes a spec, the host webapp renders it with
-`@ggsvelte/react` or `@ggsvelte/svelte`. Without this CLI in the agent's sandbox, the agent ships
+`@ggts-sh/react` or `@ggts-sh/svelte`. Without this CLI in the agent's sandbox, the agent ships
 the spec blind: a spec can be schema-valid yet draw a misleading chart, and
 the pipeline's warnings (degenerate stacks, single-observation groups, scale
 inference problems) fire in the webapp where nobody reads them. With the CLI,
@@ -45,12 +45,12 @@ Modes: `auto`, `exact`, `x`, `y`, `xy` (same enum as the host). Without
 stay quiet. Today this path covers bar/col x-guide pure collectors (including
 alias rewrite so `geom: "histogram"` matches host `normalize`); high-cardinality
 and runtime key/lineage diagnostics still need a mounted host. See
-[ADR 0024](https://github.com/ljodea/ggsvelte/blob/main/docs/decisions/0024-cli-interaction-intent.md).
+[ADR 0024](https://github.com/ggts-sh/ggts/blob/main/docs/decisions/0024-cli-interaction-intent.md).
 
 ## Install
 
 ```sh
-npm install --save-dev --save-exact @ggsvelte/cli
+npm install --save-dev --save-exact @ggts-sh/cli
 npm exec -- ggts check spec.json
 npm exec -- ggts render spec.json > out.svg
 ```
@@ -59,12 +59,12 @@ In an agent sandbox image:
 
 ```dockerfile
 FROM node:24-slim
-RUN npm install -g @ggsvelte/cli
+RUN npm install -g @ggts-sh/cli
 # agents can now run: ggts render spec.json > out.svg
 ```
 
 Pin the same version as the framework adapter your webapp renders
-with — all `@ggsvelte/*` packages version in lockstep.
+with — all `@ggts-sh/*` packages version in lockstep.
 
 ## Usage
 
@@ -102,7 +102,7 @@ advisories are chart-quality feedback.
 
 ## Reference
 
-- [CLI reference](https://ggsvelte.sh/reference/cli) — all options and
+- [CLI reference](https://ggts.sh/reference/cli) — all options and
   diagnostics
 - Programmatic use without spawning: `runCommand` accepts `render`/`check`.
   The existing `runCLI` programmatic API remains available.

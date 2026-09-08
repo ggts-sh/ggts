@@ -41,14 +41,15 @@ export function build(snapshot: PublishedSnapshot = readSnapshot()) {
   });
   const measured = browser.provenance.versions;
   const version = (name: string) => {
-    const value = measured[name];
+    // Pre-rename measurements retain their original package identities.
+    const value = measured[name] ?? measured[name.replace("@ggts-sh/", "@ggsvelte/")];
     if (value === undefined || value === "") {
       throw new Error(`Missing measured package version: ${name}`);
     }
     return value;
   };
   const versions = {
-    ggsvelte: version("@ggsvelte/svelte"),
+    ggsvelte: version("@ggts-sh/svelte"),
     svelteplot: version("svelteplot"),
     layercake: version("layercake"),
     unovis: version("@unovis/svelte"),

@@ -6,7 +6,7 @@
     Labs,
     ScaleYContinuous,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { earthDensity } from "./data.js";
 </script>

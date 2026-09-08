@@ -6,7 +6,7 @@ import "../setup-register-all.js";
 import { flushSync } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 
-import type { RenderModel } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
 
 import { createSourceIdentityTracker } from "../../src/lib/runtime/semantic-source-identity.js";
 import { createSemanticKeyService } from "../../src/lib/runtime/semantic-keys.svelte.js";

@@ -1,7 +1,7 @@
 /**
  * Temporal axis guide planning input and evaluation types.
  */
-import type { PositionScaleSpec, TemporalInterval, TemporalScaleKind } from "@ggsvelte/spec";
+import type { PositionScaleSpec, TemporalInterval, TemporalScaleKind } from "@ggts-sh/spec";
 
 import type { CellValue } from "../table.js";
 import type { AxisGuideTick } from "./guide-plan-types.js";

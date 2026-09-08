@@ -8,6 +8,6 @@ export {
   resolvedTarget,
   resolveInspection,
   materializeInspection,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 export { clearInspectionFingerprint } from "./coordinator.js";
 export { createInspectionCoordinator } from "./coordinator.js";

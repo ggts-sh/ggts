@@ -4,7 +4,7 @@
 import { describe, expect, it } from "bun:test";
 import { fromAny } from "@total-typescript/shoehorn";
 
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.js";
 

@@ -55,7 +55,7 @@ describe("assertTemporalConfiguration", () => {
     expect(err.code).toBe("temporal-parse-failed");
     expect(err.path).toBe("/scales/x");
     expect(err.message).toMatch(/explicit temporal parser/i);
-    expect(err.message).toMatch(/@ggsvelte\/core\/temporal|@ggsvelte\/core \(full\)/);
+    expect(err.message).toMatch(/@ggts-sh\/core\/temporal|@ggts-sh\/core \(full\)/);
     expect(err.diagnostic?.documentationUrl).toBe(temporalPreflightDocs("temporal-parse-failed"));
   });
 

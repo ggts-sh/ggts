@@ -1,6 +1,6 @@
-# @ggsvelte/spec
+# @ggts-sh/spec
 
-[![codecov](https://codecov.io/gh/ljodea/ggsvelte/branch/main/graph/badge.svg?component=packages-spec)](https://app.codecov.io/gh/ljodea/ggsvelte/tree/main/packages%2Fspec)
+[![codecov](https://codecov.io/gh/ggts-sh/ggts/branch/main/graph/badge.svg?component=packages-spec)](https://app.codecov.io/gh/ggts-sh/ggts/tree/main/packages%2Fspec)
 
 PortableSpec types, published JSON Schema, `normalize()`, two-tier
 `validate()` with the agent error contract
@@ -8,19 +8,19 @@ PortableSpec types, published JSON Schema, `normalize()`, two-tier
 `gg()` / `aes()` builder. No DOM, no d3. Pre-1.0.
 
 ```sh
-bun add @ggsvelte/spec     # or: npm install @ggsvelte/spec
+bun add @ggts-sh/spec     # or: npm install @ggts-sh/spec
 ```
 
 Install alone for validation and authoring without a renderer.
-[`@ggsvelte/svelte`](https://www.npmjs.com/package/@ggsvelte/svelte)
+[`@ggts-sh/svelte`](https://www.npmjs.com/package/@ggts-sh/svelte)
 re-exports this package.
 
 ## Quick example
 
 ```ts
-import { gg, aes, validate } from "@ggsvelte/spec";
+import { gg, aes, validate } from "@ggts-sh/spec";
 // constrained decoding / tool schemas
-import schema from "@ggsvelte/spec/schema/v0.json";
+import schema from "@ggts-sh/spec/schema/v0.json";
 
 const spec = gg(
   [
@@ -60,16 +60,16 @@ if (!result.ok) {
 
 ## Render
 
-- Headless SVG: [`@ggsvelte/core`](https://www.npmjs.com/package/@ggsvelte/core)
+- Headless SVG: [`@ggts-sh/core`](https://www.npmjs.com/package/@ggts-sh/core)
   (`renderToSVGString`)
 - CLI loop (validation + warnings on stderr):
-  [`@ggsvelte/cli`](https://www.npmjs.com/package/@ggsvelte/cli)
-  (`ggsvelte-render`)
+  [`@ggts-sh/cli`](https://www.npmjs.com/package/@ggts-sh/cli)
+  (`ggts render`)
 - Svelte 5:
-  [`@ggsvelte/svelte`](https://www.npmjs.com/package/@ggsvelte/svelte)
+  [`@ggts-sh/svelte`](https://www.npmjs.com/package/@ggts-sh/svelte)
 
-Schema: [schema/v0.json](https://ggsvelte.sh/schema/v0.json) · Docs:
-[ggsvelte.sh](https://ggsvelte.sh/) · Repo:
-[github.com/ljodea/ggsvelte](https://github.com/ljodea/ggsvelte)
+Schema: [schema/v0.json](https://ggts.sh/schema/v0.json) · Docs:
+[ggts.sh](https://ggts.sh/) · Repo:
+[github.com/ggts-sh/ggts](https://github.com/ggts-sh/ggts)
 
-[MIT](https://github.com/ljodea/ggsvelte/blob/main/LICENSE) © Liam O'Dea
+[MIT](https://github.com/ggts-sh/ggts/blob/main/LICENSE) © Liam O'Dea

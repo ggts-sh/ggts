@@ -1,28 +1,28 @@
-# @ggsvelte/core
+# @ggts-sh/core
 
-[![codecov](https://codecov.io/gh/ljodea/ggsvelte/branch/main/graph/badge.svg?component=packages-core)](https://app.codecov.io/gh/ljodea/ggsvelte/tree/main/packages%2Fcore)
+[![codecov](https://codecov.io/gh/ggts-sh/ggts/branch/main/graph/badge.svg?component=packages-core)](https://app.codecov.io/gh/ggts-sh/ggts/tree/main/packages%2Fcore)
 
 Grammar pipeline (stats, positions, facets, scales, layout) and pure SVG-string
 renderer. The main entry has no DOM — Node, edge runtimes, workers. Canvas and
-hit-testing live under `@ggsvelte/core/dom`. Pre-1.0.
+hit-testing live under `@ggts-sh/core/dom`. Pre-1.0.
 
 ```sh
-bun add @ggsvelte/core     # or: npm install @ggsvelte/core
+bun add @ggts-sh/core     # or: npm install @ggts-sh/core
 ```
 
 For server, CLI, and agent rendering. Svelte apps use
-[`@ggsvelte/svelte`](https://www.npmjs.com/package/@ggsvelte/svelte).
+[`@ggts-sh/svelte`](https://www.npmjs.com/package/@ggts-sh/svelte).
 
 ## Quick example
 
-Author with the builder from `@ggsvelte/spec`, render here:
+Author with the builder from `@ggts-sh/spec`, render here:
 
 ```ts
-import { registerAll, renderToSVGString, runPipeline } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import { registerAll, renderToSVGString, runPipeline } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 // The barrel is side-effect-free: register the grammar explicitly (or import
-// "@ggsvelte/core/render" for identity charts only).
+// "@ggts-sh/core/render" for identity charts only).
 registerAll();
 
 const spec = gg(
@@ -45,8 +45,8 @@ const model = runPipeline(spec, { width: 640, height: 400 });
 For the smallest point-only headless bundle, opt into one geom family:
 
 ```ts
-import { renderToSVGString } from "@ggsvelte/core/headless";
-import { registerBasicPoints } from "@ggsvelte/core/headless/register";
+import { renderToSVGString } from "@ggts-sh/core/headless";
+import { registerBasicPoints } from "@ggts-sh/core/headless/register";
 
 registerBasicPoints();
 ```
@@ -60,7 +60,7 @@ Bare PortableSpec JSON works the same way — channel mappings use
 `{ field: "col" }`, not bare strings:
 
 ```ts
-import { renderToSVGString } from "@ggsvelte/core";
+import { renderToSVGString } from "@ggts-sh/core";
 
 const svg = renderToSVGString(
   {
@@ -83,22 +83,22 @@ const svg = renderToSVGString(
 
 ## Entries
 
-| Import                             | Use                                                 |
-| ---------------------------------- | --------------------------------------------------- |
-| `@ggsvelte/core`                   | Full grammar + temporal + SVG string                |
-| `@ggsvelte/core/render`            | Lean identity-chart surface (auto-registers basics) |
-| `@ggsvelte/core/headless`          | Side-effect-free headless pipeline and SVG renderer |
-| `@ggsvelte/core/headless/register` | Tree-shakeable basic geom/stat family registration  |
-| `@ggsvelte/core/dom`               | Browser canvas draw + hit index                     |
-| `@ggsvelte/core/temporal`          | Temporal polyfill entry                             |
+| Import                            | Use                                                 |
+| --------------------------------- | --------------------------------------------------- |
+| `@ggts-sh/core`                   | Full grammar + temporal + SVG string                |
+| `@ggts-sh/core/render`            | Lean identity-chart surface (auto-registers basics) |
+| `@ggts-sh/core/headless`          | Side-effect-free headless pipeline and SVG renderer |
+| `@ggts-sh/core/headless/register` | Tree-shakeable basic geom/stat family registration  |
+| `@ggts-sh/core/dom`               | Browser canvas draw + hit index                     |
+| `@ggts-sh/core/temporal`          | Temporal polyfill entry                             |
 
 CLI without installing this package as a library:
-[`ggsvelte-render`](https://www.npmjs.com/package/@ggsvelte/cli) (same pipeline,
+[`ggts render`](https://www.npmjs.com/package/@ggts-sh/cli) (same pipeline,
 JSONL diagnostics on stderr).
 
 Specs validate through
-[`@ggsvelte/spec`](https://www.npmjs.com/package/@ggsvelte/spec).
-Docs: [ggsvelte.sh](https://ggsvelte.sh/) · Repo:
-[github.com/ljodea/ggsvelte](https://github.com/ljodea/ggsvelte)
+[`@ggts-sh/spec`](https://www.npmjs.com/package/@ggts-sh/spec).
+Docs: [ggts.sh](https://ggts.sh/) · Repo:
+[github.com/ggts-sh/ggts](https://github.com/ggts-sh/ggts)
 
-[MIT](https://github.com/ljodea/ggsvelte/blob/main/LICENSE) © Liam O'Dea
+[MIT](https://github.com/ggts-sh/ggts/blob/main/LICENSE) © Liam O'Dea

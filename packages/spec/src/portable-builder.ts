@@ -1,5 +1,5 @@
 /**
- * Lean portable builder implementation (values for `@ggsvelte/spec/portable`).
+ * Lean portable builder implementation (values for `@ggts-sh/spec/portable`).
  * Index surface re-exports live in {@link ./portable-entry.ts}.
  */
 import type { AesInput } from "./normalize.js";
@@ -16,7 +16,7 @@ export function aes(mapping: AesInput): AesInput {
 
 /**
  * Portable builder: `.spec()` and `.toPortable()` both normalize only.
- * Full schema validation: import `validate` from `@ggsvelte/spec`.
+ * Full schema validation: import `validate` from `@ggts-sh/spec`.
  */
 export class GGBuilder extends WithBuilderScales(WithBuilderGeoms(GGBuilderCore)) {
   /** Normalize-only finish (TypeBox-free). Alias of {@link toPortable}. */

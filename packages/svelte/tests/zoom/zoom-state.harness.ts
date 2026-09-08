@@ -6,8 +6,8 @@
  * `beforeEach(cleanup)` and would attach component-test lifecycle to pure
  * factory suites that only need the state mount.
  */
-import type { RenderModel } from "@ggsvelte/core";
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import type { RenderModel } from "@ggts-sh/core";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import type {
   PlotInteractionEvent,
@@ -134,5 +134,5 @@ export function mountZoomController(
 
 export { createPlotInteraction, createPlotZoomState, modelFor };
 export type { ContinuousZoomDomains } from "../../src/lib/scene/geometry.js";
-export type { PortableSpec } from "@ggsvelte/spec";
+export type { PortableSpec } from "@ggts-sh/spec";
 export type { PlotInteractionScope, ZoomEvent };

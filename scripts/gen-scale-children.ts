@@ -37,7 +37,7 @@ export function renderShell(spec: ShellSpec): string {
   // Match prettier: single-line import when it fits, multi-line otherwise.
   let importBlock: string;
   if (spec.typeImports.length === 1) {
-    const single = `  import { ${spec.helper}, type ${spec.typeImports[0]} } from "@ggsvelte/spec";`;
+    const single = `  import { ${spec.helper}, type ${spec.typeImports[0]} } from "@ggts-sh/spec";`;
     if (single.length <= 80) {
       importBlock = single;
     } else {
@@ -45,7 +45,7 @@ export function renderShell(spec: ShellSpec): string {
         `  import {`,
         `    ${spec.helper},`,
         `    type ${spec.typeImports[0]},`,
-        `  } from "@ggsvelte/spec";`,
+        `  } from "@ggts-sh/spec";`,
       ].join("\n");
     }
   } else {
@@ -53,11 +53,11 @@ export function renderShell(spec: ShellSpec): string {
       `  import {`,
       `    ${spec.helper},`,
       ...spec.typeImports.map((name) => `    type ${name},`),
-      `  } from "@ggsvelte/spec";`,
+      `  } from "@ggts-sh/spec";`,
     ].join("\n");
   }
   const temporalImport = spec.optionsType.startsWith("Temporal")
-    ? `  import "@ggsvelte/core/temporal";`
+    ? `  import "@ggts-sh/core/temporal";`
     : undefined;
   // Long Omit annotations exceed printWidth; wrap the `= $props()` assignment.
   const propsSingle = `  const props: ${spec.optionsType} = $props();`;

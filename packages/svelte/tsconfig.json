@@ -8,7 +8,7 @@
     // node: the codemod fixture harness walks the fixture tree with node:fs.
     "types": ["node"]
   },
-  // tests/codemod/*.ts only: the fixtures beneath it import "@ggsvelte/svelte",
+  // tests/codemod/*.ts only: the fixtures beneath it import "@ggts-sh/svelte",
   // which the workspace cannot resolve (no self-link), and they are read as
   // text by the harness rather than compiled.
   "include": ["src/**/*", "svelte.config.js", "tests/migrations/**/*", "tests/codemod/*.ts"]

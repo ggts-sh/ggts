@@ -3,7 +3,7 @@
 
   import CopyCode from "$lib/components/CopyCode.svelte";
 
-  const svelteExample = `import { GeomCol, GGPlot, Labs } from "@ggsvelte/svelte";
+  const svelteExample = `import { GeomCol, GGPlot, Labs } from "@ggts-sh/svelte";
 
 <GGPlot data={rows} aes={{ x: "quarter", y: "sales" }}>
   <GeomCol />

@@ -1,7 +1,7 @@
 /**
  * Violin path geometry: mirrored density polygons per (x, group).
  */
-import type { ViolinParams } from "@ggsvelte/spec";
+import type { ViolinParams } from "@ggts-sh/spec";
 
 import { layerPaintFromParams, resolveGlow, resolveGradientPaint } from "../mark-paint.js";
 import type { PathsBatch } from "../scene.js";

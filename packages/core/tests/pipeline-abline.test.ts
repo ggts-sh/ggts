@@ -1,7 +1,7 @@
 /**
  * geom_abline annotation path (#790).
  */
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { describe, expect, it } from "bun:test";
 
 import { runPipeline } from "../src/pipeline.ts";

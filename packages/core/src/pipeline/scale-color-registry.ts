@@ -3,10 +3,10 @@
  *
  * `scale-color.ts` dispatches through this map so unused kinds (sequential,
  * binned, manual, identity) stay out of lean graphs that only register
- * ordinal. `@ggsvelte/core/render` and `registerBasic()` still register every
+ * ordinal. `@ggts-sh/core/render` and `registerBasic()` still register every
  * kind.
  */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions.js";
 import type { ScaleState } from "../scales/state.js";

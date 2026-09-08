@@ -1,5 +1,5 @@
 /**
- * Render the site-wide Open Graph / Twitter large-image card for ggsvelte.sh.
+ * Render the site-wide Open Graph / Twitter large-image card for ggts.sh.
  *
  * Layout mirrors the homepage hero (headline + sandbox example),
  * framed for the standard 1200×630 social card crop used by WhatsApp, Slack,
@@ -17,7 +17,7 @@ import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { chromium } from "@playwright/test";
-import { registerAll, renderToSVGString } from "@ggsvelte/core";
+import { registerAll, renderToSVGString } from "@ggts-sh/core";
 import { SANDBOX_SPEC } from "./agent-quickstart";
 
 import {
@@ -126,9 +126,9 @@ function cardHtml(chartSvg: string): string {
 <body>
   <div class="card">
     <div class="copy">
-      <p class="brand">ggsvelte</p>
+      <p class="brand">ggts</p>
       <h1>ggplot2’s grammar for <span class="fast">TypeScript</span></h1>
-      <p class="url">Built for coding agents.<br>CLI · React · Svelte<br><br>ggsvelte.sh</p>
+      <p class="url">Built for coding agents.<br>CLI · React · Svelte<br><br>ggts.sh</p>
     </div>
     <div class="visual">
       <div class="tabs" aria-hidden="true">

@@ -11,7 +11,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.ts";
 import { PipelineError } from "../src/pipeline/types.ts";

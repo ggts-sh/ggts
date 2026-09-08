@@ -3,7 +3,7 @@
   import {
     scaleFillOrdinal,
     type OrdinalColorScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

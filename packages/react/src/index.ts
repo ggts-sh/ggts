@@ -1,4 +1,4 @@
-// @ggsvelte/react — React DOM adapter. Props-first API; declaration-only
+// @ggts-sh/react — React DOM adapter. Props-first API; declaration-only
 // children are optional sugar. Re-exports spec/core so one install is enough.
 // @lifecycle-default experimental
 
@@ -10,7 +10,7 @@ export { createPlotInteraction } from "./interaction.js";
 export {
   INTERACTION_DIAGNOSTIC_CATALOG,
   normalizeInteractionConfig,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 export type {
   InteractionDiagnosticCode,
   InteractionDiagnostic,
@@ -314,10 +314,10 @@ export {
   isFacetedPlotIntent,
   resolveInteractionScope,
   toLayerInput,
-} from "@ggsvelte/compose";
+} from "@ggts-sh/compose";
 
-export { aes, gg, normalize, validate, lintSpec, toPortable, isPortable } from "@ggsvelte/spec";
-export type { AesInput, LayerInput, PortableSpec, SpecInput } from "@ggsvelte/spec";
+export { aes, gg, normalize, validate, lintSpec, toPortable, isPortable } from "@ggts-sh/spec";
+export type { AesInput, LayerInput, PortableSpec, SpecInput } from "@ggts-sh/spec";
 
 export {
   installTemporal,
@@ -365,5 +365,5 @@ export {
   registerViolin,
   renderToSVGString,
   runPipeline,
-} from "@ggsvelte/core";
-export type { RenderModel, RunOptions, Scene, ScaleState, Stratum } from "@ggsvelte/core";
+} from "@ggts-sh/core";
+export type { RenderModel, RunOptions, Scene, ScaleState, Stratum } from "@ggts-sh/core";

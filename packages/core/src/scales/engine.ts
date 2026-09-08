@@ -8,7 +8,7 @@
  * - palette / ramp precedence
  * - transform registry as the only forward/valid source for sequential color
  */
-import { CYCLIC_SCHEME_NAMES } from "@ggsvelte/spec";
+import { CYCLIC_SCHEME_NAMES } from "@ggts-sh/spec";
 
 import { CATEGORICAL_PALETTE_10, CATEGORICAL_SCHEMES } from "./categorical-palettes.js";
 import { colorBrewerStops } from "./colorbrewer-palettes.js";

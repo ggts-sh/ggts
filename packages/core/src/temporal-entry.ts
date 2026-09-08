@@ -1,8 +1,8 @@
 /**
- * Temporal entry (`@ggsvelte/core/temporal`).
+ * Temporal entry (`@ggts-sh/core/temporal`).
  *
  * Installs the Temporal polyfill parse path and temporal axis planner, then
- * re-exports guide helpers for apps that started from `@ggsvelte/core/render`
+ * re-exports guide helpers for apps that started from `@ggts-sh/core/render`
  * and later need time scales.
  *
  * Lifecycle (Hadley lesson 13; meanings in CONTRIBUTING.md): tags collected
@@ -11,7 +11,7 @@
 // @lifecycle-default experimental
 import { installTemporal } from "./install-temporal.js";
 
-// Side-effect contract of this subpath: importing `@ggsvelte/core/temporal`
+// Side-effect contract of this subpath: importing `@ggts-sh/core/temporal`
 // installs the Temporal polyfill parse path + guide planner.
 installTemporal();
 

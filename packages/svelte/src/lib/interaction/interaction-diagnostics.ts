@@ -6,9 +6,9 @@
  * types and normalizeInteractionConfig.
  *
  * Inspect×geom advisories (bar/col x-guide + high-cardinality) are owned by
- * @ggsvelte/core so the CLI --inspect path reuses the same messages (#1531).
+ * @ggts-sh/core so the CLI --inspect path reuses the same messages (#1531).
  */
-import { INSPECT_GEOM_DIAGNOSTIC_CATALOG } from "@ggsvelte/core";
+import { INSPECT_GEOM_DIAGNOSTIC_CATALOG } from "@ggts-sh/core";
 
 export type InteractionDiagnosticCode =
   | "INTERACTION_INTERVAL_FACET_UNSUPPORTED"
@@ -62,8 +62,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Use faceted interval selection",
       "Zoom a linked detail view",
     ],
-    docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-interval-facet-unsupported",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-interval-facet-unsupported",
   },
   INTERACTION_INVALID_MAX_DISTANCE: {
     severity: "error",
@@ -71,7 +70,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
     message: "inspect.maxDistance must be a finite non-negative CSS-pixel distance.",
     prop: "inspect.maxDistance",
     suggestions: ["Use a finite number greater than or equal to zero"],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-invalid-max-distance",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-invalid-max-distance",
   },
   INTERACTION_POINT_REQUIRES_KEY: {
     severity: "warning",
@@ -82,7 +81,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Ordinary charts omit identity — defaults to an id column or row index",
       'Override with <Inspect identity="id" /> or select={{ type: "point", identity: "id" }}',
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-point-requires-key",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-point-requires-key",
   },
   INTERACTION_INTERVAL_PRESET_REQUIRES_KEY: {
     severity: "warning",
@@ -94,8 +93,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Ordinary charts omit identity — defaults to an id column or row index",
       'Override with select={{ type: "interval", identity: "id", … }} or <Inspect identity="id" />',
     ],
-    docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-interval-preset-requires-key",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-interval-preset-requires-key",
   },
   INTERACTION_INVALID_KEY: {
     severity: "error",
@@ -103,7 +101,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
     message: "A key accessor returned null, undefined, or a non-PropertyKey value.",
     prop: "identity",
     suggestions: ["Return a stable string, number, or symbol for every row"],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-invalid-key",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-invalid-key",
   },
   INTERACTION_DUPLICATE_KEY: {
     severity: "error",
@@ -112,7 +110,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "The key accessor returned a duplicate value; durable interaction is disabled for that value.",
     prop: "identity",
     suggestions: ["Use a field that uniquely identifies each source row"],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-duplicate-key",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-duplicate-key",
   },
   INTERACTION_UNSTABLE_KEY: {
     severity: "error",
@@ -120,7 +118,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
     message: "The key accessor returned a different value for the same source row.",
     prop: "identity",
     suggestions: ["Return an immutable field that uniquely identifies each row"],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-unstable-key",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-unstable-key",
   },
   INTERACTION_MISSING_LINEAGE: {
     severity: "warning",
@@ -128,7 +126,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
     message: "A synthetic or aggregate mark did not expose source-row lineage.",
     prop: "layers",
     suggestions: ["Use a stat that preserves source-row lineage"],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-missing-lineage",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-missing-lineage",
   },
   INTERACTION_LEGEND_REQUIRES_KEY: {
     severity: "warning",
@@ -140,7 +138,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Ordinary charts omit identity — defaults to an id column or row index",
       'Override with <Inspect identity="id" /> or createPlotInteraction({ identity: "id" })',
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-legend-requires-key",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-legend-requires-key",
   },
   INTERACTION_LEGEND_DISCRETE_ONLY: {
     severity: "advisory",
@@ -153,7 +151,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Use a discrete color or fill mapping",
       "Keep the continuous ramp static",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-legend-discrete-only",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-legend-discrete-only",
   },
   INTERACTION_INTERVAL_SCALE_UNSUPPORTED: {
     severity: "warning",
@@ -161,8 +159,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
     message: "Interval domains and brush zoom require continuous linear, log, or time scales.",
     prop: "scales",
     suggestions: ["Use a continuous positional scale", "Use point inspection for band data"],
-    docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-interval-scale-unsupported",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-interval-scale-unsupported",
   },
   INTERACTION_TOOL_UNAVAILABLE: {
     severity: "warning",
@@ -170,7 +167,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
     message: "The requested interaction tool is unavailable for the enabled capabilities.",
     prop: "tool",
     suggestions: ["Enable the matching capability", "Choose an available interaction tool"],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-tool-unavailable",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-tool-unavailable",
   },
   INTERACTION_SCOPE_WITHOUT_CONTROLLER: {
     severity: "advisory",
@@ -182,7 +179,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Pass interaction={createPlotInteraction()} to control this plot",
       "Remove interactionScope from uncontrolled plots",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-scope-without-controller",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-scope-without-controller",
   },
   INTERACTION_HANDLER_WITHOUT_CAPABILITY: {
     severity: "advisory",
@@ -196,8 +193,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Enable the matching capability prop (for example select for onselect)",
       "Remove the unused handler",
     ],
-    docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-handler-without-capability",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-handler-without-capability",
   },
   ...INSPECT_GEOM_DIAGNOSTIC_CATALOG,
   INTERACTION_INSPECT_IDENTITY_DROPPED: {
@@ -210,7 +206,7 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Move identity onto the <Inspect> child",
       "Drop identity from the inspect prop if the default row identity is intended",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-identity-dropped",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-identity-dropped",
   },
   INTERACTION_DUPLICATE_INSPECT_CAPABILITY: {
     severity: "advisory",
@@ -222,7 +218,6 @@ export const INTERACTION_DIAGNOSTIC_CATALOG: Readonly<
       "Keep a single <Inspect> child",
       "Merge options onto one <Inspect> instead of stacking siblings",
     ],
-    docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-duplicate-inspect-capability",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-duplicate-inspect-capability",
   },
 });

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { registerAll, runPipeline } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import { registerAll, runPipeline } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 // Temporal spec-driven suite (#1420): no components to self-register, and
 // the lane setup skips Temporal deliberately — install the full grammar here.

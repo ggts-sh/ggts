@@ -1,4 +1,4 @@
-import type { PortableSpec, StyleAesthetic } from "@ggsvelte/spec";
+import type { PortableSpec, StyleAesthetic } from "@ggts-sh/spec";
 
 import type { GuidePlan } from "../layout/temporal-guide.js";
 import type { LegendInput } from "../legend.js";

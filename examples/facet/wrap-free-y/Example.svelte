@@ -8,7 +8,7 @@
     Labs,
     ScaleXContinuous,
     ThemeFivethirtyeight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { londonBills } from "./data.js";
 </script>

@@ -4,7 +4,7 @@
    * for <GGPlot> (#809 phase 8). Accepts the same options as `coordSf(…)`.
    * Already-projected data only (no CRS reproject in v1). Emits NO markup.
    */
-  import { coordSf, type CoordSfOptions } from "@ggsvelte/spec";
+  import { coordSf, type CoordSfOptions } from "@ggts-sh/spec";
 
   import {
     createPlotLayer,

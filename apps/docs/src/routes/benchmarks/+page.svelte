@@ -37,7 +37,7 @@
   <p>
     Compare the core renderer and the React and Svelte components on fixed
     workloads. Lower times are better. Results include competitors that
-    outperform ggsvelte.
+    outperform ggts.
   </p>
   <BenchmarkTabs />
   <h2>What the measurements cover</h2>
@@ -55,9 +55,10 @@
   </p>
   <p>
     These are measurements on one machine. The committed snapshot records
-    versions and run provenance. Package releases do not rewrite historical
-    timings. Versions identify the workspace build at the recorded source
-    commit, which may include unreleased changes.
+    versions and run provenance. The snapshot predates the ggts rename and
+    records the original @ggsvelte package names. Package releases do not
+    rewrite historical timings. Versions identify the workspace build at the
+    recorded source commit, which may include unreleased changes.
   </p>
   <p>Production browser measurements: {BENCHMARK_MEASURED_AT}</p>
   <details>

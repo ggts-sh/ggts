@@ -65,7 +65,7 @@ describe("docs route inventory", () => {
   it("publishes task-first Docs and one Reference landing with canonical metadata", () => {
     const inventory = createDocsRouteInventory();
     expect(inventory.find((entry) => entry.path === "/docs")).toMatchObject({
-      title: "Documentation — ggsvelte",
+      title: "Documentation — ggts",
       canonicalPath: "/docs",
       kind: "page",
       index: true,
@@ -74,7 +74,7 @@ describe("docs route inventory", () => {
       navigation: { section: "Start", label: "Overview", order: 0 },
     });
     expect(inventory.find((entry) => entry.path === "/reference")).toMatchObject({
-      title: "Reference — ggsvelte",
+      title: "Reference — ggts",
       canonicalPath: "/reference",
       kind: "page",
       index: true,
@@ -99,7 +99,7 @@ describe("docs route inventory", () => {
     const inventory = createDocsRouteInventory();
     const index = inventory.find((entry) => entry.path === "/reference/geoms");
     expect(index).toMatchObject({
-      title: "Geoms — ggsvelte",
+      title: "Geoms — ggts",
       canonicalPath: "/reference/geoms",
       kind: "page",
       index: true,
@@ -111,7 +111,7 @@ describe("docs route inventory", () => {
     expect(details.length).toBe(49);
     expect(details.every((entry) => entry.navigation === undefined)).toBe(true);
     expect(inventory.find((entry) => entry.path === "/reference/geoms/point")?.title).toBe(
-      "GeomPoint — ggsvelte",
+      "GeomPoint — ggts",
     );
   });
 
@@ -119,7 +119,7 @@ describe("docs route inventory", () => {
     const inventory = createDocsRouteInventory();
     const index = inventory.find((entry) => entry.path === "/reference/stats");
     expect(index).toMatchObject({
-      title: "Stats — ggsvelte",
+      title: "Stats — ggts",
       canonicalPath: "/reference/stats",
       kind: "page",
       index: true,
@@ -131,7 +131,7 @@ describe("docs route inventory", () => {
     expect(details.length).toBe(29);
     expect(details.every((entry) => entry.navigation === undefined)).toBe(true);
     expect(inventory.find((entry) => entry.path === "/reference/stats/count")?.title).toBe(
-      "stat count — ggsvelte",
+      "stat count — ggts",
     );
   });
 
@@ -139,7 +139,7 @@ describe("docs route inventory", () => {
     const inventory = createDocsRouteInventory();
     const index = inventory.find((entry) => entry.path === "/reference/positions");
     expect(index).toMatchObject({
-      title: "Positions — ggsvelte",
+      title: "Positions — ggts",
       canonicalPath: "/reference/positions",
       kind: "page",
       index: true,
@@ -151,7 +151,7 @@ describe("docs route inventory", () => {
     expect(details.length).toBe(6);
     expect(details.every((entry) => entry.navigation === undefined)).toBe(true);
     expect(inventory.find((entry) => entry.path === "/reference/positions/stack")?.title).toBe(
-      "position stack — ggsvelte",
+      "position stack — ggts",
     );
   });
 
@@ -159,7 +159,7 @@ describe("docs route inventory", () => {
     const inventory = createDocsRouteInventory();
     const index = inventory.find((entry) => entry.path === "/reference/scales");
     expect(index).toMatchObject({
-      title: "Scales — ggsvelte",
+      title: "Scales — ggts",
       canonicalPath: "/reference/scales",
       kind: "page",
       index: true,
@@ -172,14 +172,14 @@ describe("docs route inventory", () => {
     expect(details.every((entry) => entry.navigation === undefined)).toBe(true);
     expect(
       inventory.find((entry) => entry.path === "/reference/scales/color_continuous")?.title,
-    ).toBe("ScaleColorContinuous — ggsvelte");
+    ).toBe("ScaleColorContinuous — ggts");
   });
 
   it("publishes the coords reference inside the one Reference hierarchy", () => {
     const inventory = createDocsRouteInventory();
     const index = inventory.find((entry) => entry.path === "/reference/coords");
     expect(index).toMatchObject({
-      title: "Coords — ggsvelte",
+      title: "Coords — ggts",
       canonicalPath: "/reference/coords",
       kind: "page",
       index: true,
@@ -191,13 +191,13 @@ describe("docs route inventory", () => {
     expect(details.length).toBe(6);
     expect(details.every((entry) => entry.navigation === undefined)).toBe(true);
     expect(inventory.find((entry) => entry.path === "/reference/coords/flip")?.title).toBe(
-      "CoordFlip — ggsvelte",
+      "CoordFlip — ggts",
     );
     expect(inventory.find((entry) => entry.path === "/reference/coords/transform")?.title).toBe(
-      "CoordTransform — ggsvelte",
+      "CoordTransform — ggts",
     );
     expect(inventory.find((entry) => entry.path === "/reference/coords/radial")?.title).toBe(
-      "CoordRadial — ggsvelte",
+      "CoordRadial — ggts",
     );
   });
 
@@ -205,7 +205,7 @@ describe("docs route inventory", () => {
     const inventory = createDocsRouteInventory();
     const index = inventory.find((entry) => entry.path === "/reference/guides");
     expect(index).toMatchObject({
-      title: "Guides and legends — ggsvelte",
+      title: "Guides and legends — ggts",
       canonicalPath: "/reference/guides",
       kind: "page",
       index: true,
@@ -217,10 +217,10 @@ describe("docs route inventory", () => {
     expect(details.length).toBe(5);
     expect(details.every((entry) => entry.navigation === undefined)).toBe(true);
     expect(inventory.find((entry) => entry.path === "/reference/guides/legend")?.title).toBe(
-      "GuideLegend — ggsvelte",
+      "GuideLegend — ggts",
     );
     expect(inventory.find((entry) => entry.path === "/reference/guides/colorbar")?.title).toBe(
-      "GuideColorbar — ggsvelte",
+      "GuideColorbar — ggts",
     );
   });
 
@@ -267,7 +267,7 @@ describe("docs route inventory", () => {
   it("publishes Labs, axes, and labels reference inside the one Reference hierarchy", () => {
     const inventory = createDocsRouteInventory();
     expect(inventory.find((entry) => entry.path === "/reference/labs")).toMatchObject({
-      title: "Labs — ggsvelte",
+      title: "Labs — ggts",
       canonicalPath: "/reference/labs",
       kind: "page",
       index: true,
@@ -276,12 +276,12 @@ describe("docs route inventory", () => {
       navigation: { section: "Reference", label: "Labs", order: 57 },
     });
     expect(inventory.find((entry) => entry.path === "/reference/axes")).toMatchObject({
-      title: "Axes and ticks — ggsvelte",
+      title: "Axes and ticks — ggts",
       canonicalPath: "/reference/axes",
       navigation: { section: "Reference", label: "Axes and ticks", order: 58 },
     });
     expect(inventory.find((entry) => entry.path === "/reference/labels")).toMatchObject({
-      title: "Labels — ggsvelte",
+      title: "Labels — ggts",
       canonicalPath: "/reference/labels",
       navigation: { section: "Reference", label: "Labels", order: 59 },
     });
@@ -293,7 +293,7 @@ describe("docs route inventory", () => {
   it("publishes themes and palettes reference inside the one Reference hierarchy", () => {
     const inventory = createDocsRouteInventory();
     expect(inventory.find((entry) => entry.path === "/reference/themes")).toMatchObject({
-      title: "Themes — ggsvelte",
+      title: "Themes — ggts",
       canonicalPath: "/reference/themes",
       kind: "page",
       index: true,
@@ -302,7 +302,7 @@ describe("docs route inventory", () => {
       navigation: { section: "Reference", label: "Themes", order: 61 },
     });
     expect(inventory.find((entry) => entry.path === "/reference/palettes")).toMatchObject({
-      title: "Palettes — ggsvelte",
+      title: "Palettes — ggts",
       canonicalPath: "/reference/palettes",
       kind: "page",
       index: true,
@@ -315,7 +315,7 @@ describe("docs route inventory", () => {
   it("publishes the CLI reference inside the one Reference hierarchy", () => {
     const cliRoute = createDocsRouteInventory().find((entry) => entry.path === "/reference/cli");
     expect(cliRoute).toMatchObject({
-      title: "Command-line reference — ggsvelte",
+      title: "Command-line reference — ggts",
       canonicalPath: "/reference/cli",
       kind: "page",
       index: true,
@@ -335,7 +335,7 @@ describe("docs route inventory", () => {
   it("publishes the themes destination with canonical acquisition metadata", () => {
     expect(createDocsRouteInventory().find((entry) => entry.path === "/themes")).toEqual({
       path: "/themes",
-      title: "Chart themes — ggsvelte",
+      title: "Chart themes — ggts",
       description: "Built-in chart themes for paper, grids, axes, and type.",
       canonicalPath: "/themes",
       kind: "page",
@@ -348,7 +348,7 @@ describe("docs route inventory", () => {
   it("publishes the palettes destination with canonical acquisition metadata", () => {
     expect(createDocsRouteInventory().find((entry) => entry.path === "/palettes")).toEqual({
       path: "/palettes",
-      title: "Color palettes — ggsvelte",
+      title: "Color palettes — ggts",
       description:
         "Categorical palettes for discrete series: browse, compare, and preview every scheme.",
       canonicalPath: "/palettes",
@@ -362,7 +362,7 @@ describe("docs route inventory", () => {
   it("publishes the sequential ramps destination alongside /palettes", () => {
     expect(createDocsRouteInventory().find((entry) => entry.path === "/palettes/ramps")).toEqual({
       path: "/palettes/ramps",
-      title: "Sequential color ramps — ggsvelte",
+      title: "Sequential color ramps — ggts",
       description:
         "Sequential color ramps for continuous fill, and how reverse, range, and domain read on a chart.",
       canonicalPath: "/palettes/ramps",
@@ -399,7 +399,7 @@ describe("docs route inventory", () => {
       expect(exposition.index).toBe(true);
       expect(exposition.sitemap).toBe(true);
       expect(exposition.shell).toBe("site");
-      expect(exposition.title.endsWith("— ggsvelte gallery")).toBe(true);
+      expect(exposition.title.endsWith("— ggts gallery")).toBe(true);
       expect(exposition.description.trim().length).toBeGreaterThan(0);
     }
   });
@@ -429,9 +429,7 @@ describe("docs route inventory", () => {
   });
 
   it("builds absolute canonical URLs without leaking the legacy prefix", () => {
-    expect(routeCanonicalUrl(route(), "https://ggsvelte.sh")).toBe(
-      "https://ggsvelte.sh/guide/start",
-    );
+    expect(routeCanonicalUrl(route(), "https://ggts.sh")).toBe("https://ggts.sh/guide/start");
     expect(routeCanonicalUrl(route(), "https://ljodea.github.io/ggsvelte")).toBe(
       "https://ljodea.github.io/ggsvelte/guide/start",
     );

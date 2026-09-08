@@ -5,8 +5,8 @@
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import type { RenderModel } from "@ggsvelte/core";
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import type { RenderModel } from "@ggts-sh/core";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import type {
   InteractionDiagnostic,

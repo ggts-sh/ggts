@@ -5,7 +5,7 @@
  * consumes only the narrow surface below — every lower-level classifier stays
  * module-private.
  */
-import type { TemporalParserSpec } from "@ggsvelte/spec";
+import type { TemporalParserSpec } from "@ggts-sh/spec";
 
 import { cellsToNumeric, cellsToQuantitative } from "./table-coerce.js";
 import { isIsoLikeString, isoHasClock } from "./iso-epoch.js";
@@ -48,7 +48,7 @@ function parseLiteColumn(
 } {
   if (parser !== "auto") {
     throw new Error(
-      `Explicit temporal parser ${JSON.stringify(parser)} requires @ggsvelte/core (full) or @ggsvelte/core/temporal.`,
+      `Explicit temporal parser ${JSON.stringify(parser)} requires @ggts-sh/core (full) or @ggts-sh/core/temporal.`,
     );
   }
   const inferTemporal = options.inferTemporal !== false;

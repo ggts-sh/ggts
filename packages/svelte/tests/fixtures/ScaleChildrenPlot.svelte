@@ -4,7 +4,7 @@
    * Mounts GeomPoint + Scale / ScaleColor* children under GGPlot and optionally
    * captures the plot registry for registrationCount assertions.
    */
-  import type { Scales } from "@ggsvelte/spec";
+  import type { Scales } from "@ggts-sh/spec";
 
   import type { PlotDiagnostic } from "../../src/lib/diagnostics/deprecation.js";
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";

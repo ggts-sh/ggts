@@ -1,7 +1,7 @@
 /**
  * Assemble a non-temporal AxisGuidePlan from measured ticks (continuous or band).
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import type { PositionScale } from "../scales/train.js";
 import type { CellValue } from "../table.js";

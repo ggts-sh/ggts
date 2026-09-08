@@ -204,7 +204,7 @@ export const COORD_REFERENCE_DATA = {
       {
         name: "clip",
         description:
-          'Clip marks to the panel. ggplot2 coord_radial defaults to clip off; coord_polar defaults to clip on. ggsvelte stores the effective boolean (default false for type "radial").',
+          'Clip marks to the panel. ggplot2 coord_radial defaults to clip off; coord_polar defaults to clip on. ggts stores the effective boolean (default false for type "radial").',
         typeSummary: "boolean",
         required: false,
       },

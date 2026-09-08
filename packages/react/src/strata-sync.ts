@@ -1,7 +1,7 @@
-import { groupBatchesByPanel, planStrata, sceneToSVGString } from "@ggsvelte/core";
-import type { BatchInteractionMask, GeometryBatch, Scene } from "@ggsvelte/core";
-import { cssColorResolver, drawStratum, sizeCanvasForDpr } from "@ggsvelte/core/dom";
-import { mountSceneSvg, type LiveSvgHandle } from "@ggsvelte/core/svg-live";
+import { groupBatchesByPanel, planStrata, sceneToSVGString } from "@ggts-sh/core";
+import type { BatchInteractionMask, GeometryBatch, Scene } from "@ggts-sh/core";
+import { cssColorResolver, drawStratum, sizeCanvasForDpr } from "@ggts-sh/core/dom";
+import { mountSceneSvg, type LiveSvgHandle } from "@ggts-sh/core/svg-live";
 
 const STRATUM_STYLE = "position:absolute;inset:0;pointer-events:none";
 type SvgMode = "full" | "chrome-bottom" | "marks" | "chrome-top";

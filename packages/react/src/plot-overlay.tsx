@@ -1,4 +1,4 @@
-import type { CandidateFacts, CellValue, PlotRect, RenderModel } from "@ggsvelte/core";
+import type { CandidateFacts, CellValue, PlotRect, RenderModel } from "@ggts-sh/core";
 import {
   anchorsFromCandidateKeys,
   applyEmphasisRingDensityGate,
@@ -9,8 +9,8 @@ import {
   glyphHoverBox,
   hoverChromeForKind,
   HOVER_CROSSHAIR_GAP_RADIUS,
-} from "@ggsvelte/core/interaction";
-import type { PlotInspectionChange, PresentationAnchor } from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
+import type { PlotInspectionChange, PresentationAnchor } from "@ggts-sh/core/interaction";
 
 function Anchor({
   anchor,

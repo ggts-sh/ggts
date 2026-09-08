@@ -1,7 +1,7 @@
 /**
  * Resolve per-layer render backends from hints, thresholds, and a11y.
  */
-import type { LayerSpec } from "@ggsvelte/spec";
+import type { LayerSpec } from "@ggts-sh/spec";
 
 import type { GeometryBatch } from "../scene.js";
 

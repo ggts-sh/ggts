@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { preparePanels } from "../src/pipeline/prepare-panels.ts";
 import { PipelineError, runPipeline } from "../src/pipeline.ts";

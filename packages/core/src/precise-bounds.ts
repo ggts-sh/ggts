@@ -4,7 +4,7 @@ import {
   type AxisEditModel,
   type PositionTransformName,
 } from "./index.js";
-import type { TemporalScaleKind } from "@ggsvelte/spec";
+import type { TemporalScaleKind } from "@ggts-sh/spec";
 
 import type {
   BoundsAction,

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
-  import { statReferenceList, type StatReferenceEntry } from "@ggsvelte/spec";
+  import { statReferenceList, type StatReferenceEntry } from "@ggts-sh/spec";
 
   let query = $state("");
   const all = statReferenceList();
@@ -78,7 +78,7 @@
     geom default.
   </p>
   <pre class="snippet"><code
-      >{`import { GGPlot, GeomBar } from "@ggsvelte/svelte";
+      >{`import { GGPlot, GeomBar } from "@ggts-sh/svelte";
 
 <GGPlot data={rows} aes={{ x: "category" }}>
   <GeomBar stat="count" />

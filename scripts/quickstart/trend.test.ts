@@ -2,7 +2,7 @@
  * Gate G4 — the rolling-median trend: one window median per observation
  * year, joined linearly, smoother than the raw series it summarizes.
  */
-import { runPipeline } from "@ggsvelte/core";
+import { runPipeline } from "@ggts-sh/core";
 import { describe, expect, it } from "bun:test";
 
 import { foldSakura } from "../quickstart.ts";

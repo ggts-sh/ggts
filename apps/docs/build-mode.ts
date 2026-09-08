@@ -5,7 +5,7 @@ type DocsBuildMode = (typeof DOCS_BUILD_MODES)[number];
 export interface DocsBuildConfig {
   mode: DocsBuildMode;
   base: "";
-  canonicalBase: "https://ggsvelte.sh";
+  canonicalBase: "https://ggts.sh";
   indexable: boolean;
   analytics: boolean;
   analyticsToken: string | null;
@@ -46,7 +46,7 @@ export function resolveDocsBuildConfig(input: DocsBuildInput): DocsBuildConfig {
     return {
       mode,
       base: "",
-      canonicalBase: "https://ggsvelte.sh",
+      canonicalBase: "https://ggts.sh",
       indexable: false,
       analytics: false,
       analyticsToken: null,
@@ -56,7 +56,7 @@ export function resolveDocsBuildConfig(input: DocsBuildInput): DocsBuildConfig {
     return {
       mode,
       base: "",
-      canonicalBase: "https://ggsvelte.sh",
+      canonicalBase: "https://ggts.sh",
       indexable: false,
       analytics: false,
       analyticsToken: null,
@@ -66,7 +66,7 @@ export function resolveDocsBuildConfig(input: DocsBuildInput): DocsBuildConfig {
     return {
       mode,
       base: "",
-      canonicalBase: "https://ggsvelte.sh",
+      canonicalBase: "https://ggts.sh",
       indexable: true,
       analytics: analyticsToken !== undefined,
       analyticsToken: analyticsToken ?? null,

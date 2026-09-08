@@ -6,7 +6,7 @@
     Labs,
     ScaleFillContinuous,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { fijiQuakes } from "./data.js";
 </script>

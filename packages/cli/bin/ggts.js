@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // ggts — check and render portable chart specs.
 //
-// Thin wrapper: all logic lives in @ggsvelte/core's runCLI (pure entry,
+// Thin wrapper: all logic lives in @ggts-sh/core's runCLI (pure entry,
 // tested there). This file only wires process streams and the exit code.
 //
 // Exit codes: 0 rendered · 1 render failed · 2 usage error · 3 invalid spec.
@@ -34,7 +34,7 @@ if (
   !("version" in packageJson) ||
   typeof packageJson.version !== "string"
 ) {
-  throw new Error("@ggsvelte/cli package.json has no string version");
+  throw new Error("@ggts-sh/cli package.json has no string version");
 }
 const packageVersion = packageJson.version;
 

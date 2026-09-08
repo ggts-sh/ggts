@@ -5,7 +5,7 @@
    * string or `{ field, levels?, labels? }`. Keep `strip` nested.
    * Emits NO markup.
    */
-  import type { FacetFieldInput, FacetInput } from "@ggsvelte/spec";
+  import type { FacetFieldInput, FacetInput } from "@ggts-sh/spec";
 
   import {
     createPlotLayer,

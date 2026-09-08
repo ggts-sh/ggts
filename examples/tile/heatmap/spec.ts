@@ -1,4 +1,4 @@
-import { aes, gg, guideColorbar, scaleFillContinuous } from "@ggsvelte/spec";
+import { aes, gg, guideColorbar, scaleFillContinuous } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { cholera1849 } from "./data.js";

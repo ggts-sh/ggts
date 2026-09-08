@@ -13,7 +13,7 @@ import { fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 import { withGrammarAsSpec } from "./helpers/ggplot-input.js";
 
-import { aes, gg, normalize } from "@ggsvelte/spec";
+import { aes, gg, normalize } from "@ggts-sh/spec";
 
 import GGPlot from "../src/lib/GGPlot.svelte";
 import ChildrenPlot from "./fixtures/ChildrenPlot.svelte";

@@ -2,7 +2,7 @@
   {
     "id": "explicit-skill-name",
     "should_trigger": true,
-    "prompt": "Use the ggsvelte skill to build a scatter plot of mass vs flipper length colored by species.",
+    "prompt": "Use the ggts skill to build a scatter plot of mass vs flipper length colored by species.",
     "notes": "Direct skill name invocation must keep working after description rewrites."
   },
   {
@@ -14,25 +14,25 @@
   {
     "id": "import-ggsvelte-svelte",
     "should_trigger": true,
-    "prompt": "I'm importing GeomPoint and GGPlot from @ggsvelte/svelte \u2014 help me add a smooth layer and a minimal theme.",
+    "prompt": "I'm importing GeomPoint and GGPlot from @ggts-sh/svelte \u2014 help me add a smooth layer and a minimal theme.",
     "notes": "Import path is an explicit frontmatter trigger signal."
   },
   {
     "id": "portable-spec-json",
     "should_trigger": true,
-    "prompt": "Emit a ggsvelte PortableSpec JSON for a histogram of latency_ms with 30 bins.",
+    "prompt": "Emit a ggts PortableSpec JSON for a histogram of latency_ms with 30 bins.",
     "notes": "Agent/headless authoring path: JSON specs."
   },
   {
     "id": "validate-debug",
     "should_trigger": true,
-    "prompt": "This ggsvelte plot spec fails validation \u2014 fix the aes and re-validate.",
+    "prompt": "This ggts plot spec fails validation \u2014 fix the aes and re-validate.",
     "notes": "Debugging/validating charts is in the description trigger set."
   },
   {
     "id": "headless-svg",
     "should_trigger": true,
-    "prompt": "Render this chart server-side to SVG with ggsvelte in Node.",
+    "prompt": "Render this chart server-side to SVG with ggts in Node.",
     "notes": "Headless/server-side SVG rendering is a primary agent surface."
   },
   {
@@ -63,13 +63,13 @@
     "id": "negative-recharts",
     "should_trigger": false,
     "prompt": "Add a Recharts line chart to this React dashboard for weekly revenue.",
-    "notes": "Adjacent charting library must not select ggsvelte solely because the word chart appears."
+    "notes": "Adjacent charting library must not select ggts solely because the word chart appears."
   },
   {
     "id": "negative-d3-force",
     "should_trigger": false,
     "prompt": "Build a D3 force-directed network graph of package dependencies.",
-    "notes": "Network layout is outside ggsvelte grammar; description must not claim graphs in the network sense only."
+    "notes": "Network layout is outside ggts grammar; description must not claim graphs in the network sense only."
   },
   {
     "id": "negative-css-layout",
@@ -92,7 +92,7 @@
   {
     "id": "react-component",
     "should_trigger": true,
-    "prompt": "Create a React TSX chart using @ggsvelte/react with points and a trend line.",
+    "prompt": "Create a React TSX chart using @ggts-sh/react with points and a trend line.",
     "notes": "React adapter must route to React instructions and the shared grammar."
   }
 ]

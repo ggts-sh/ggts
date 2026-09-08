@@ -8,7 +8,7 @@
     Labs,
     ScaleFillDiscrete,
     ThemeLight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { SAMPLE_LABELS, SAMPLES, yeastCounts } from "./data.js";
 </script>

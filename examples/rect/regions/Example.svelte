@@ -8,7 +8,7 @@
     ScaleFillDiscrete,
     ScaleXContinuous,
     ThemeEconomist,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { reigns, wheatPrices } from "./data.js";
 </script>

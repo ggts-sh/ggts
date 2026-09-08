@@ -305,7 +305,7 @@ export interface GeomJitterOptions extends PointParams, GeomDataOption {
   width?: number;
   /** Maximum vertical jitter (data units / band-step fraction). */
   height?: number;
-  /** Seeded RNG seed (ggsvelte jitter is always seeded; default 42). */
+  /** Seeded RNG seed (ggts jitter is always seeded; default 42). */
   seed?: number;
   positionParams?: PositionParams;
 }

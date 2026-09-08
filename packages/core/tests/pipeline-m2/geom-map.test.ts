@@ -2,7 +2,7 @@
  * M2 pipeline — geom_map fortified region join (#808).
  */
 import { describe, expect, it, spyOn } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import { buildMapFrame, resolveMapJoinIndex } from "../../src/pipeline/frame-stats-map.ts";
 import type { PathsBatch } from "../../src/scene.ts";

@@ -1,5 +1,5 @@
 // Shared pure behavior used by React and Svelte.
-export { type PlotRect } from "@ggsvelte/core";
+export { type PlotRect } from "@ggts-sh/core";
 export {
   type PanelBounds,
   panelBoundsFrom,
@@ -22,4 +22,4 @@ export {
   type GlyphObstacleBatch,
   type GlyphObstaclePanel,
   crosshairGlyphObstacles,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

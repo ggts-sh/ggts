@@ -6,8 +6,8 @@
     Labs,
     Scale,
     Theme,
-  } from "@ggsvelte/svelte";
-  import type { ColorScaleSpec } from "@ggsvelte/spec";
+  } from "@ggts-sh/svelte";
+  import type { ColorScaleSpec } from "@ggts-sh/spec";
 
   import { grid } from "$lib/theme-specimens/data";
 

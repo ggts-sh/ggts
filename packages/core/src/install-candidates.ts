@@ -2,7 +2,7 @@
  * Explicit candidate install (#1421, made call-site-explicit in #1420):
  * wire candidate-store construction into the pipeline so
  * `RenderModel.candidates` resolves. Called by GGPlot's runtime and the test
- * preload; the lean `@ggsvelte/core/render` entry omits it and never carries
+ * preload; the lean `@ggts-sh/core/render` entry omits it and never carries
  * the candidate-store graph.
  */
 import { installCandidateRuntime, getCandidateRuntime } from "./candidate-runtime.js";

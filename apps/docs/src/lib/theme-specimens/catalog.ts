@@ -1,5 +1,5 @@
-import type { ThemeName } from "@ggsvelte/spec";
-import { CATEGORICAL_SCHEME_NAMES } from "@ggsvelte/spec";
+import type { ThemeName } from "@ggts-sh/spec";
+import { CATEGORICAL_SCHEME_NAMES } from "@ggts-sh/spec";
 
 // Relative import so bun unit tests (scripts/themes-page.test.ts) resolve without
 // the SvelteKit `$lib` alias.

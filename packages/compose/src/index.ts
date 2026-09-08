@@ -1,4 +1,4 @@
-// @ggsvelte/compose — framework-free PortableSpec assembly.
+// @ggts-sh/compose — framework-free PortableSpec assembly.
 // @lifecycle-default experimental
 export {
   assemblePortableSpec,

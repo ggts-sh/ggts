@@ -1,7 +1,7 @@
 import "./setup-register-all.js";
 import { describe, expect, it, vi } from "vitest";
 
-import type { RenderModel } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
 import type { IntervalSelection, ZoomEvent } from "../src/lib/interaction/interaction.js";
 
 import GGPlot from "../src/lib/GGPlot.svelte";

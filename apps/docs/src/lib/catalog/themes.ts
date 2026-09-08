@@ -1,10 +1,10 @@
-import type { ThemeName } from "@ggsvelte/spec";
+import type { ThemeName } from "@ggts-sh/spec";
 
 import { CATEGORICAL_SCHEMES, VIRIDIS_RAMP_10 } from "./palette-tables.js";
 
 /**
  * Docs-local mirror of package aliases (grey/gray → ggplot2). Kept as a plain
- * object so this module never value-imports `@ggsvelte/spec` / TypeBox — that
+ * object so this module never value-imports `@ggts-sh/spec` / TypeBox — that
  * barrel lands in the chart mega-chunk and was modulepreloaded on /themes.
  */
 const THEME_NAME_ALIASES = {
@@ -150,7 +150,7 @@ const THEME_DEMO_SCHEMES = {
 
 /**
  * Picker/specimen themes only. Built from THEME_LABELS (not THEME_NAMES from
- * `@ggsvelte/spec`) so the client never loads the TypeBox schema graph.
+ * `@ggts-sh/spec`) so the client never loads the TypeBox schema graph.
  */
 export const THEME_OPTIONS = (Object.keys(THEME_LABELS) as ThemeOptionName[]).map((name) => ({
   name,

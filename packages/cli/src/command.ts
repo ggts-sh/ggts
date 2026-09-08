@@ -1,5 +1,5 @@
-import { runCLI } from "@ggsvelte/core";
-import type { CLIIO } from "@ggsvelte/core";
+import { runCLI } from "@ggts-sh/core";
+import type { CLIIO } from "@ggts-sh/core";
 
 /** Run the installed ggts command with explicit render/check subcommands. */
 export function runCommand(

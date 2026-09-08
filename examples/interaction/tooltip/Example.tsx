@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { GGPlot, GeomPoint, Inspect, Labs, ThemeLight } from "@ggsvelte/react";
-import { palmerPenguins } from "@ggsvelte/core/data";
+import { GGPlot, GeomPoint, Inspect, Labs, ThemeLight } from "@ggts-sh/react";
+import { palmerPenguins } from "@ggts-sh/core/data";
 
 export default function PenguinInspection() {
   const [remembered, setRemembered] = useState<string | null>(null);

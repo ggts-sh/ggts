@@ -1,4 +1,4 @@
-import { aes, gg, scaleFillContinuous } from "@ggsvelte/spec";
+import { aes, gg, scaleFillContinuous } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { oldFaithful } from "./data.js";

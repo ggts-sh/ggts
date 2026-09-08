@@ -3,7 +3,7 @@
     BatchInteractionMask,
     GeometryBatch,
     ThemeTokens,
-  } from "@ggsvelte/core";
+  } from "@ggts-sh/core";
 
   import Batch from "../../src/lib/scene/Batch.svelte";
 

@@ -1,14 +1,14 @@
-import type { CompositionDiagnostic } from "@ggsvelte/compose";
+import type { CompositionDiagnostic } from "@ggts-sh/compose";
 import type { ReactNode } from "react";
 
-import type { CellValue, RenderModel } from "@ggsvelte/core";
+import type { CellValue, RenderModel } from "@ggts-sh/core";
 import type {
   InteractionDiagnostic,
   LegendFocusEvent,
   LegendFocusInput,
   LegendFilterEvent,
   LegendFilterInput,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 import type {
   A11yMode,
   AesInput,
@@ -16,7 +16,7 @@ import type {
   LayerInput,
   PortableSpec,
   SpecInput,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import type {
   InspectInput,

@@ -37,7 +37,7 @@ export function createDocsRouteInventory(): DocsRouteRecord[] {
   const guideCatalog: readonly GuideCatalogEntry[] = GUIDE_CATALOG;
   const guides: DocsRouteRecord[] = guideCatalog.map((entry) => ({
     path: `/guide/${entry.slug}`,
-    title: `${entry.title} — ggsvelte`,
+    title: `${entry.title} — ggts`,
     description: entry.description,
     canonicalPath: `/guide/${entry.slug}`,
     kind: "page",
@@ -62,7 +62,7 @@ export function createDocsRouteInventory(): DocsRouteRecord[] {
   // /examples/*; gallery listing still excludes expositions separately.
   const examples: DocsRouteRecord[] = EXAMPLES.map((entry) => ({
     path: `/examples/${entry.id}`,
-    title: `${entry.title} — ggsvelte gallery`,
+    title: `${entry.title} — ggts gallery`,
     description: exampleSeoDescription(entry),
     canonicalPath: `/examples/${entry.id}`,
     kind: "page",
@@ -74,10 +74,10 @@ export function createDocsRouteInventory(): DocsRouteRecord[] {
     const target = EXAMPLES.find((entry) => entry.id === canonical);
     return {
       path: `/examples/${alias}`,
-      title: `${target?.title ?? "Example"} — ggsvelte gallery`,
+      title: `${target?.title ?? "Example"} — ggts gallery`,
       description: target
         ? exampleSeoDescription(target)
-        : "A legacy ggsvelte example route preserved for compatibility.",
+        : "A legacy ggts example route preserved for compatibility.",
       canonicalPath: `/examples/${canonical}`,
       kind: "alias" as const,
       index: false,

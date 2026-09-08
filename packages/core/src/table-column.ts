@@ -1,11 +1,11 @@
 /**
  * ColumnTable — the pipeline's columnar data container.
  *
- * Temporal meaning is owned by @ggsvelte/spec's strict parser registry. A
+ * Temporal meaning is owned by @ggts-sh/spec's strict parser registry. A
  * ColumnTable caches immutable parsed views by field + parser semantics;
  * subsets gather parent views so filters/facets never reclassify or reparse.
  */
-import type { TemporalParserSpec } from "@ggsvelte/spec";
+import type { TemporalParserSpec } from "@ggts-sh/spec";
 
 import {
   COLUMN_TRANSFORM_EVENT,

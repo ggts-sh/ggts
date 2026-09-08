@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { GGPlot } from "@ggsvelte/svelte";
-  import type { SpecInput } from "@ggsvelte/spec/portable";
+  import { GGPlot } from "@ggts-sh/svelte";
+  import type { SpecInput } from "@ggts-sh/spec/portable";
   import { scenarioSpec } from "../../adapters/ggsvelte-svg";
   import type { ScenarioId, UpdateColumns } from "../../scenarios";
 

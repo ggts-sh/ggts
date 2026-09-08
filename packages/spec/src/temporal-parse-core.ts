@@ -217,7 +217,7 @@ export function temporalImplementation(): TemporalNamespace {
   if (nativeTemporal !== undefined) return nativeTemporal;
   if (registeredPolyfill !== null) return registeredPolyfill;
   throw new Error(
-    "Temporal is not available. Import @ggsvelte/core (full) or @ggsvelte/core/temporal, or call ensureTemporalPolyfill() from @ggsvelte/spec.",
+    "Temporal is not available. Import @ggts-sh/core (full) or @ggts-sh/core/temporal, or call ensureTemporalPolyfill() from @ggts-sh/spec.",
   );
 }
 
@@ -247,7 +247,7 @@ export function timezoneValidationFailure(
   // register later in the same process (tests / late install).
   if (!hasTemporalImplementation()) {
     return temporalParseFailure(
-      `timezone ${JSON.stringify(timezone)} requires Temporal (import @ggsvelte/core or @ggsvelte/core/temporal)`,
+      `timezone ${JSON.stringify(timezone)} requires Temporal (import @ggts-sh/core or @ggts-sh/core/temporal)`,
     );
   }
   const cached = TIMEZONE_VALIDITY_CACHE.get(timezone);

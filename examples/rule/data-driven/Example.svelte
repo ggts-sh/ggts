@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { coffeeRatings } from "./data.js";
 </script>

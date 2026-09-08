@@ -28,7 +28,7 @@ export function perfMark(name: string): void {
   perf?.mark(name);
 }
 
-/** measure `ggsvelte:<stage>` between two prior marks; never throws. */
+/** measure `ggts:<stage>` between two prior marks; never throws. */
 export function perfMeasure(name: string, startMark: string, endMark: string): void {
   try {
     perf?.measure(name, startMark, endMark);

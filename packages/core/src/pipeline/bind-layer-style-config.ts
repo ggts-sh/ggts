@@ -1,5 +1,5 @@
 /** Attach authored family intent used by pre-stat default grouping. */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

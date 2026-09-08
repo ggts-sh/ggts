@@ -1,7 +1,7 @@
 /**
  * Bin (histogram) stat → LayerFrame with shared or free break grids.
  */
-import type { BarParams } from "@ggsvelte/spec";
+import type { BarParams } from "@ggts-sh/spec";
 
 import { statBin } from "../stats/bin.js";
 import type { ColumnTable } from "../table.js";

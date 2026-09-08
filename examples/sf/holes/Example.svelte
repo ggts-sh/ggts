@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { slopeBands } from "./data.js";
 </script>

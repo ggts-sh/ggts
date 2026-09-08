@@ -1,7 +1,7 @@
 /**
  * Resolve theme tokens for a pipeline run (structured unknown-theme errors).
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions-resolve.js";
 import type { ThemeTokens } from "../theme-construct.js";

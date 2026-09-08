@@ -22,7 +22,7 @@
 
 <section class="home-hero" aria-labelledby="home-heading">
   <h1 id="home-heading">
-    ggsvelte: ggplot2’s grammar for <span class="hero-fast">TypeScript</span>
+    ggts: ggplot2’s grammar for <span class="hero-fast">TypeScript</span>
   </h1>
   <div>
     <p>

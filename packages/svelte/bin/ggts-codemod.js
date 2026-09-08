@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-// ggsvelte-codemod — migrate deprecated <GGPlot> grammar props to child layers.
+// ggts-codemod — migrate deprecated <GGPlot> grammar props to child layers.
 //
 // Thin wrapper: all logic lives in runCodemodCLI (pure entry, tested in
-// tests/codemod/), mirroring @ggsvelte/cli's bin/ggsvelte-render.js. This file only wires the
+// tests/codemod/), mirroring @ggts-sh/cli's bin/ggsvelte-render.js. This file only wires the
 // filesystem, process streams, and the exit code.
 //
 // Dry-run by default (ADR 0013) — writes only with --write.

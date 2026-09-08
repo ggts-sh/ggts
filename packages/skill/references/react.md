@@ -2,11 +2,11 @@
 
 Read this reference for a React target. The shared [grammar](grammar.md) and
 [validation loop](../SKILL.md#the-validation-contract-use-it) apply unchanged.
-Use React DOM 18.2 or 19 and install `@ggsvelte/react`.
-For the bundled dataset example below, also install `@ggsvelte/core`:
+Use React DOM 18.2 or 19 and install `@ggts-sh/react`.
+For the bundled dataset example below, also install `@ggts-sh/core`:
 
 ````sh fragment
-npm install @ggsvelte/react @ggsvelte/core
+npm install @ggts-sh/react @ggts-sh/core
 ``` In a server-component
 application, place interactive charts behind a client component boundary.
 
@@ -18,7 +18,7 @@ registration because no geom children self-register.
 ```tsx complete
 "use client";
 
-import { GGPlot, registerAll, type PortableSpec } from "@ggsvelte/react";
+import { GGPlot, registerAll, type PortableSpec } from "@ggts-sh/react";
 
 registerAll();
 
@@ -57,8 +57,8 @@ import {
   GeomSmooth,
   Labs,
   ThemeMinimal,
-} from "@ggsvelte/react";
-import { palmerPenguins } from "@ggsvelte/core/data";
+} from "@ggts-sh/react";
+import { palmerPenguins } from "@ggts-sh/core/data";
 
 export default function PenguinChart() {
   return (

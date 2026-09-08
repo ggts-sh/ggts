@@ -10,7 +10,7 @@
  *    `./temporal.js` imports stay stable.
  *
  * Public parse helpers here register the Temporal polyfill so a bundler that
- * tree-shakes `@ggsvelte/spec` for `parseTemporal` / column helpers still gets
+ * tree-shakes `@ggts-sh/spec` for `parseTemporal` / column helpers still gets
  * non-UTC zones. Lean render never imports this facade (only portable + core
  * render, which stay free of the polyfill).
  */

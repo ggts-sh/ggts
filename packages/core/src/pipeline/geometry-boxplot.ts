@@ -1,7 +1,7 @@
 /**
  * Boxplot composite geometry from rects, segments, and outlier points.
  */
-import type { BoxplotParams } from "@ggsvelte/spec";
+import type { BoxplotParams } from "@ggts-sh/spec";
 
 import type { GeometryBatch, PointsBatch, RectsBatch, SegmentsBatch } from "../scene.js";
 import { linetypeIndex, type Linetype } from "../scales/style.js";

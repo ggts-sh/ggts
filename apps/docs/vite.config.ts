@@ -7,13 +7,13 @@ import { defineConfig } from "vite";
  * Vite 8 uses Rolldown. Prefer `output.codeSplitting.groups` over deprecated
  * `manualChunks` (which SvelteKit's own codeSplitting config can ignore).
  *
- * Without this, layout chrome co-chunks with `@ggsvelte/core` / GGPlot
+ * Without this, layout chrome co-chunks with `@ggts-sh/core` / GGPlot
  * (~120–340KB decoded on every page). Chart pages still load these groups via
  * their own imports.
  *
  * Named package groups put *every* matching module into one shared chunk. A
  * tiny static import of palette hex tables (`catalog/themes`) or teaching
- * datasets (`@ggsvelte/core/data`) then modulepreloads the full ~1MB chart
+ * datasets (`@ggts-sh/core/data`) then modulepreloads the full ~1MB chart
  * stack on intent-only pages. Higher-priority carve-outs keep pure data in
  * their own small chunks so those pages stay light until live charts load.
  */
@@ -38,7 +38,7 @@ export default defineConfig({
             // Pure teaching datasets — not the GGPlot runtime.
             {
               name: "ggsvelte-data",
-              test: /(?:[\\/]node_modules[\\/]@ggsvelte[\\/]core[\\/](?:src[\\/]|dist[\\/])?data[\\/]|[\\/]packages[\\/]core[\\/](?:src[\\/]|dist[\\/])data[\\/])/,
+              test: /(?:[\\/]node_modules[\\/]@ggts-sh[\\/]core[\\/](?:src[\\/]|dist[\\/])?data[\\/]|[\\/]packages[\\/]core[\\/](?:src[\\/]|dist[\\/])data[\\/])/,
               priority: 40,
             },
             // Pure palette / ramp tables — not pipeline, render, or scales engine.
@@ -49,12 +49,12 @@ export default defineConfig({
             },
             {
               name: "ggsvelte-core",
-              test: /(?:[\\/]node_modules[\\/]@ggsvelte[\\/]core[\\/]|[\\/]packages[\\/]core[\\/])/,
+              test: /(?:[\\/]node_modules[\\/]@ggts-sh[\\/]core[\\/]|[\\/]packages[\\/]core[\\/])/,
               priority: 20,
             },
             {
               name: "ggsvelte-svelte",
-              test: /(?:[\\/]node_modules[\\/]@ggsvelte[\\/]svelte[\\/]|[\\/]packages[\\/]svelte[\\/])/,
+              test: /(?:[\\/]node_modules[\\/]@ggts-sh[\\/]svelte[\\/]|[\\/]packages[\\/]svelte[\\/])/,
               priority: 20,
             },
             // API reference prose and generated parameter catalogs are docs data.
@@ -63,18 +63,18 @@ export default defineConfig({
             // or core imports of GEOM_DEFAULTS would pull the reference catalogs.
             {
               name: "ggsvelte-spec-capabilities",
-              test: /(?:packages[\\/]spec[\\/](?:src|dist)[\\/]|@ggsvelte[\\/]spec[\\/](?:dist[\\/])?)(?:schema-catalog|capabilities(?:-data)?)\.[cm]?[jt]s$/,
+              test: /(?:packages[\\/]spec[\\/](?:src|dist)[\\/]|@ggts-sh[\\/]spec[\\/](?:dist[\\/])?)(?:schema-catalog|capabilities(?:-data)?)\.[cm]?[jt]s$/,
               priority: 50,
             },
             {
               name: "ggsvelte-spec-reference",
-              test: /(?:packages[\\/]spec[\\/](?:src|dist)[\\/]|@ggsvelte[\\/]spec[\\/](?:dist[\\/])?)(?:generated[\\/])?(?:geom|stat|position|coord|scale|guide)-reference(?:-data)?\.[cm]?[jt]s$/,
+              test: /(?:packages[\\/]spec[\\/](?:src|dist)[\\/]|@ggts-sh[\\/]spec[\\/](?:dist[\\/])?)(?:generated[\\/])?(?:geom|stat|position|coord|scale|guide)-reference(?:-data)?\.[cm]?[jt]s$/,
               priority: 40,
             },
             // Only the schema endpoint needs the published JSON artifact.
             {
               name: "ggsvelte-spec-schema-artifact",
-              test: /(?:packages[\\/]spec[\\/]|@ggsvelte[\\/]spec[\\/])schema[\\/]v0\.json$/,
+              test: /(?:packages[\\/]spec[\\/]|@ggts-sh[\\/]spec[\\/])schema[\\/]v0\.json$/,
               priority: 40,
             },
             // TypeBox schema + validate/lint/artifact — agent/LLM path.
@@ -87,12 +87,12 @@ export default defineConfig({
               // Excludes validate-structure* (TypeBox-free structuralGate for render).
               // Excludes schema-catalog / schema-names (runtime name lists).
               // Excludes precomputed docs catalogs (no TypeBox at runtime).
-              test: /(?:packages[\\/]spec[\\/](?:src|dist)[\\/]|@ggsvelte[\\/]spec[\\/](?:dist[\\/])?)(?:validate(?:\.[cm]?[jt]s$|-(?:data|map|schema))|schema(?:\.[cm]?[jt]s$|-declarations|-name-schemas)|temporal-(?:parse|interval)-schema|artifact\.|lint(?:\.|-))/,
+              test: /(?:packages[\\/]spec[\\/](?:src|dist)[\\/]|@ggts-sh[\\/]spec[\\/](?:dist[\\/])?)(?:validate(?:\.[cm]?[jt]s$|-(?:data|map|schema))|schema(?:\.[cm]?[jt]s$|-declarations|-name-schemas)|temporal-(?:parse|interval)-schema|artifact\.|lint(?:\.|-))/,
               priority: 40,
             },
             {
               name: "ggsvelte-spec",
-              test: /(?:[\\/]node_modules[\\/]@ggsvelte[\\/]spec[\\/]|[\\/]packages[\\/]spec[\\/])/,
+              test: /(?:[\\/]node_modules[\\/]@ggts-sh[\\/]spec[\\/]|[\\/]packages[\\/]spec[\\/])/,
               priority: 20,
             },
           ],

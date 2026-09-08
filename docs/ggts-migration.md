@@ -1,16 +1,19 @@
 # Move ggsvelte to ggts
 
 This runbook moves the existing repository to `ggts-sh/ggts`, publishes the
-renamed packages under `@ggts`, and serves the docs at `https://ggts.sh`.
+renamed packages under `@ggts-sh`, and serves the docs at `https://ggts.sh`.
 The GitHub transfer preserves stars, issues, pull requests, releases and commit
 history. Keep the old npm packages and domain available for existing consumers.
+
+GitHub organization `ggts-sh` and npm organization `ggts-sh` are claimed.
+The npm name `ggts` was unavailable.
 
 ## 1. Claim the names and prepare the release
 
 - Create the **GitHub Free** organization `ggts-sh` at
   <https://github.com/organizations/plan>. Do not create a destination repository:
   the transfer creates it from the existing repository.
-- Create the **public/free** npm organization `ggts` at
+- Create the **public/free** npm organization `ggts-sh` at
   <https://www.npmjs.com/org/create>. GitHub and npm names are separate. A 404 or
   empty package search does not prove that a registry will grant a name.
 - Confirm ownership of both organizations before changing the package scope.
@@ -26,19 +29,18 @@ history. Keep the old npm packages and domain available for existing consumers.
 
 ## Consumer changes after the renamed release
 
-Install the adapter for your application under the claimed scope (`@ggts` below;
-use `@ggts-sh` if that is the registered fallback). All seven packages keep the
+Install the adapter for your application under the claimed scope (`@ggts-sh`). All seven packages keep the
 same version: `spec`, `core`, `compose`, `react`, `svelte`, `cli`, and `skill`.
 
-| Existing import or command                              | Replacement                                        |
-| ------------------------------------------------------- | -------------------------------------------------- |
-| `@ggsvelte/spec`, `@ggsvelte/core`, `@ggsvelte/compose` | Matching `@ggts/*` package                         |
-| `@ggsvelte/react`, `@ggsvelte/svelte`                   | Matching `@ggts/*` adapter                         |
-| `@ggsvelte/svelte/data`                                 | `@ggts/core/data` (install core when importing it) |
-| `ggsvelte-render chart.json`                            | `ggts render chart.json`                           |
-| Validation before rendering                             | `ggts check chart.json`                            |
-| `ggsvelte-codemod`                                      | `ggts-codemod`                                     |
-| `@ggsvelte/skill`                                       | `@ggts/skill`; refresh any project-local copy      |
+| Existing import or command                              | Replacement                                           |
+| ------------------------------------------------------- | ----------------------------------------------------- |
+| `@ggsvelte/spec`, `@ggsvelte/core`, `@ggsvelte/compose` | Matching `@ggts-sh/*` package                         |
+| `@ggsvelte/react`, `@ggsvelte/svelte`                   | Matching `@ggts-sh/*` adapter                         |
+| `@ggsvelte/svelte/data`                                 | `@ggts-sh/core/data` (install core when importing it) |
+| `ggsvelte-render chart.json`                            | `ggts render chart.json`                              |
+| Validation before rendering                             | `ggts check chart.json`                               |
+| `ggsvelte-codemod`                                      | `ggts-codemod`                                        |
+| `@ggsvelte/skill`                                       | `@ggts-sh/skill`; refresh any project-local copy      |
 
 PortableSpec JSON and chart appearance editions do not change with the package
 names. Keep the application lockfile. After installing the new packages, change
@@ -63,9 +65,9 @@ interactions in a browser. The new CLI preserves JSONL diagnostics on stderr;
    the star count and branch rules. Do not recreate `ljodea/ggsvelte`: that
    removes GitHub's redirect.
 5. Verify organization Actions permissions, Codecov and review-app access,
-   deployment environments and secret/variable names. Re-register or grant
-   organization access to the self-hosted runners used by benchmark, eval and
-   nightly jobs. Keep their `ggsvelte` label until the replacement pool is ready.
+   deployment environments and secret/variable names. The source repository had no
+   registered self-hosted runners at cutover, and its nightly job was pending.
+   Benchmark, eval and nightly workflows now use standard GitHub-hosted runners.
 6. Trigger the destination CI image publisher with a reviewed change to
    `.github/workflows/build-ci-image.yml` on main. It has no manual dispatch
    trigger by design. Confirm the new package is public and can be pulled

@@ -51,11 +51,11 @@ export interface PropSkip {
 }
 
 /** The module specifier a consumer imports `GGPlot` from. */
-export const PACKAGE_SPECIFIER = "@ggsvelte/svelte";
+export const PACKAGE_SPECIFIER = "@ggts-sh/svelte";
 
 export interface MigrateOptions {
   /**
-   * Extra module specifiers that also count as ggsvelte, on top of
+   * Extra module specifiers that also count as ggts, on top of
    * {@link PACKAGE_SPECIFIER}. Exists for this repo's own sources, which
    * import through relative paths; consumers never need it.
    */

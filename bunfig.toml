@@ -4,7 +4,7 @@ exact = false
 
 # Core unit tests import modules without going through a registering entry;
 # install full temporal + grammar so ColumnTable/pipeline BC tests see the
-# complete runtime (lean `@ggsvelte/core/render` still omits this side effect).
+# complete runtime (lean `@ggts-sh/core/render` still omits this side effect).
 [test]
 preload = [
   # Spec-src graph: unit tests import packages/spec/src/*.ts directly.

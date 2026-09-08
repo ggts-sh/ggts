@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 
-import { GEOM_REFERENCE, type GeomName, KNOWN_GEOMS } from "@ggsvelte/spec";
+import { GEOM_REFERENCE, type GeomName, KNOWN_GEOMS } from "@ggts-sh/spec";
 
 import { EXAMPLES } from "$lib/examples-manifest";
 import { illustrationForGeom } from "$lib/geom-thumbnails";

@@ -1,7 +1,7 @@
 /**
  * Collect x-axis training evidence from a single layer frame.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import type { AxisCollectAcc } from "./scale-axis-collect-acc.js";
 import { collectBinnedXEvidence } from "./scale-axis-collect-x-binned.js";

@@ -11,4 +11,4 @@ export {
   tooltipDisplayPayloadToken,
   selectHoverDisplayMembers,
   collapseIdenticalDisplayMembers,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

@@ -2,11 +2,11 @@
  * Temporal-scales guide section (docs pages + llms surfaces).
  */
 
-import { SCALE_CAPABILITIES, TEMPORAL_PARSER_NAMES } from "@ggsvelte/spec";
+import { SCALE_CAPABILITIES, TEMPORAL_PARSER_NAMES } from "@ggts-sh/spec";
 
 export const TEMPORAL_SCALES_MD = `# Dates without preprocessing
 
-ggsvelte infers strict ISO dates/date-times, four-digit year strings,
+ggts infers strict ISO dates/date-times, four-digit year strings,
 year-months, month-years, year-quarters, and runtime \`Date\` values from data.
 Classification inspects at most the first and last 32 non-null values; after it
 selects one parser family, every non-null value must validate. A partially valid
@@ -19,7 +19,7 @@ three equally spaced categories. Numeric \`1835\` stays quantitative.
 
 \`\`\`svelte fragment
 <script lang="ts">
-  import { GGPlot, GeomLine } from "@ggsvelte/svelte";
+  import { GGPlot, GeomLine } from "@ggts-sh/svelte";
   const rows = [
     { year: "1835", value: 12 },
     { year: "1900", value: 19 },

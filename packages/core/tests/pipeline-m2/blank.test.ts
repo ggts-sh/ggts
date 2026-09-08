@@ -2,7 +2,7 @@
  * M2 pipeline — geom blank (#791): trains scales, emits no marks / candidates.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import { size } from "./fixtures.ts";
 

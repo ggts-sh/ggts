@@ -89,8 +89,8 @@ export function renderComment(decision: Decision): string {
       "",
       "Docs site, examples, scripts, tests, and CI-only paths must not carry a",
       "changeset — they pollute the next Version Packages PR and bump",
-      "`@ggsvelte/core` / `@ggsvelte/spec` / `@ggsvelte/svelte` /",
-      "`@ggsvelte/cli` / `@ggsvelte/skill` (fixed lockstep) with notes that do",
+      "`@ggts-sh/core` / `@ggts-sh/spec` / `@ggts-sh/svelte` /",
+      "`@ggts-sh/cli` / `@ggts-sh/skill` (fixed lockstep) with notes that do",
       "not change what consumers install.",
       "",
       "**Fix:** delete the `.changeset/*.md` file(s) from this PR.",
@@ -185,7 +185,7 @@ function isShippedPath(path: string, pkg: PublishedPackage): boolean {
   // surface a changelog entry describes.
   if (/\.(test|spec)\.[jt]sx?$/.test(path)) return false;
   // `files` mixes directories (dist, references) and root-level files
-  // (@ggsvelte/skill: files=["SKILL.md","references"]). Match both: exact
+  // (@ggts-sh/skill: files=["SKILL.md","references"]). Match both: exact
   // file entries, and directory entries as path prefixes.
   if (
     pkg.shipped.some(
@@ -197,7 +197,7 @@ function isShippedPath(path: string, pkg: PublishedPackage): boolean {
   // Packages that publish compiled dist (not source) still change consumers
   // via src/. dist/ is usually gitignored, so git diffs never list it —
   // map src/ → shipped surface when files lists dist but not src.
-  // (@ggsvelte/svelte: files=["dist","bin"]; build = svelte-package
+  // (@ggts-sh/svelte: files=["dist","bin"]; build = svelte-package
   // -i src/lib -o dist.)
   if (
     pkg.shipped.includes("dist") &&

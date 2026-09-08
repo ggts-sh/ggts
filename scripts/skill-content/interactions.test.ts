@@ -164,7 +164,7 @@ describe("skill teaches inspect mode selection and hit hygiene (#1530)", () => {
   });
 
   it("records keep-single skill (no split) decision for #1530", () => {
-    // Default remains one @ggsvelte/skill until progressive disclosure fails.
+    // Default remains one @ggts-sh/skill until progressive disclosure fails.
     // Recorded in interactions.md so the decision travels with the package.
     const section = interactions!.markdown.match(
       /## CLI cannot catch host inspect behaviour[\s\S]*?(?=\n## )/,

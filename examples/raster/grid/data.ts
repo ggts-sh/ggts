@@ -2,7 +2,7 @@
  * Cocoa percent × rating counts for chocolate bar reviews (60–80% cocoa,
  * ratings 1.5–4.0). Complete regular grid for geom_raster: empty cells are 0.
  *
- * Aggregated from chocolateBars in @ggsvelte/core/data (Flavors of Cacao via
+ * Aggregated from chocolateBars in @ggts-sh/core/data (Flavors of Cacao via
  * TidyTuesday 2022-01-18; see NOTICE and CHOCOLATE_BARS_CITATION).
  */
 export const chocolateRatingGrid: { cocoaPercent: number; rating: number; bars: number }[] = [

@@ -6,7 +6,7 @@
  * Maps). Re-homes under legend/ so runtime/semantic-keys has zero legend
  * imports (S16 ownership goal).
  */
-import type { RenderModel } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
 
 import { buildLegendEntryKeyIndexForPlot } from "./entry-key-index.js";
 import { keysForLegendEntry } from "./focus.js";

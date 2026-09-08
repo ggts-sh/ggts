@@ -1,7 +1,7 @@
 /**
- * Keep the "Why ggsvelte?" comparison tables on the released package version.
+ * Keep the "Why ggts?" comparison tables on the released package version.
  *
- * Source of truth: packages/svelte/package.json (lockstep with all @ggsvelte/*).
+ * Source of truth: packages/svelte/package.json (lockstep with all @ggts-sh/*).
  * Consumers:
  *   - README.md API-stability cell (GitHub front door)
  * Measured benchmark versions are pinned to their published run.
@@ -23,7 +23,7 @@ const ROOT = resolve(import.meta.dir, "..");
 
 const SEMVER = /^\d+\.\d+\.\d+$/;
 
-/** API-stability row: ggsvelte cell is the first version cell after the label. */
+/** API-stability row: ggts cell is the first version cell after the label. */
 const README_API_STABILITY_ROW = /^(\|\s*\*\*API stability\*\*\s*\|)\s*⚠️ v[\d.]+(\s*\|)/m;
 
 export function assertSemver(version: string): void {
@@ -47,7 +47,7 @@ export function readLockstepVersion(root: string = ROOT): string {
 }
 
 /**
- * Rewrite the README "API stability" ggsvelte cell to `⚠️ v{version}`.
+ * Rewrite the README "API stability" ggts cell to `⚠️ v{version}`.
  * Peer cells (SveltePlot / LayerCake / Unovis) are left alone.
  *
  * Does not re-pad the markdown table: a version string of a different width
@@ -57,7 +57,7 @@ export function syncReadmeApiStability(markdown: string, version: string): strin
   assertSemver(version);
   if (!README_API_STABILITY_ROW.test(markdown)) {
     throw new Error(
-      "README.md is missing a recognizable **API stability** row with a ggsvelte ⚠️ v… cell. " +
+      "README.md is missing a recognizable **API stability** row with a ggts ⚠️ v… cell. " +
         "Restore the comparison table or update the sync pattern.",
     );
   }
@@ -129,7 +129,7 @@ function main(argv: readonly string[]): void {
   const check = argv.includes("--check");
   if (check) {
     checkComparisonVersions(ROOT);
-    console.log(`comparison versions current (ggsvelte v${readLockstepVersion(ROOT)} in README).`);
+    console.log(`comparison versions current (ggts v${readLockstepVersion(ROOT)} in README).`);
     return;
   }
   const result = syncComparisonVersions(ROOT);

@@ -3,7 +3,7 @@
   import {
     scaleColorIdentity,
     type IdentityColorScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

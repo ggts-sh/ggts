@@ -1,7 +1,7 @@
 /**
  * Boxplot box body: hinge rects, whisker segments, and fattened median.
  */
-import type { BoxplotParams } from "@ggsvelte/spec";
+import type { BoxplotParams } from "@ggts-sh/spec";
 
 import type { GeometryBatch, RectsBatch } from "../scene.js";
 

@@ -9,15 +9,15 @@ const svelteReadme = readFileSync(join(root, "packages/svelte/README.md"), "utf8
 
 describe("README front door", () => {
   it("stays short: no embedded gallery examples or theme image grid", () => {
-    // Full examples and theme previews live on ggsvelte.sh. Copying them into
+    // Full examples and theme previews live on ggts.sh. Copying them into
     // the root README drifts from the API and is a liability — link out only.
     expect(readme).not.toContain("## Examples");
     expect(readme).not.toContain("## Themes");
     expect(readme).not.toContain("<!-- example-source:");
     expect(readme).not.toContain("apps/docs/static/previews/");
     expect(readme).not.toContain("artifacts/theme-equivalence/");
-    expect(readme).toContain("https://ggsvelte.sh/examples");
-    expect(readme).toContain("https://ggsvelte.sh/themes");
+    expect(readme).toContain("https://ggts.sh/examples");
+    expect(readme).toContain("https://ggts.sh/themes");
   });
 
   it("starts with a runnable JSON and CLI sandbox workflow", () => {
@@ -46,7 +46,7 @@ describe("README front door", () => {
         (language) => language === "" || language === "svelte" || language === "sh",
       ),
     ).toBe(true);
-    expect(svelteReadme).toContain('from "@ggsvelte/svelte"');
+    expect(svelteReadme).toContain('from "@ggts-sh/svelte"');
     expect(svelteReadme).toContain("<GGPlot");
     expect(svelteReadme).not.toContain("const spec =");
     expect(svelteReadme).not.toContain("const built =");

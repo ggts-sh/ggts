@@ -1,5 +1,5 @@
 /** Semantic numeric view for size/linewidth/alpha sequential and binned scales. */
-import type { GuideSpec, StyleAesthetic, TemporalKind, TemporalParserSpec } from "@ggsvelte/spec";
+import type { GuideSpec, StyleAesthetic, TemporalKind, TemporalParserSpec } from "@ggts-sh/spec";
 
 import { encodeKey } from "../scales/state.js";
 import type { CellValue } from "../table.js";

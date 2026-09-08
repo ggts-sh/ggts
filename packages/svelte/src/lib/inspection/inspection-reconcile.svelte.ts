@@ -11,7 +11,7 @@
  * through the live ports. The plan/apply split stays in teardown.ts (pure) —
  * this module is the $effect shell: plan + bag wiring.
  */
-import type { RenderModel } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
 
 import type { InspectionHostState } from "./frame.js";
 import {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 
 import { renderToSVGString } from "../src/render-svg-full.ts";
-import type { SpecInput } from "@ggsvelte/spec";
+import type { SpecInput } from "@ggts-sh/spec";
 
 const rows = [
   { category: "Resolución", count: 9000 },

@@ -1,4 +1,4 @@
-import { FONT_METRICS, MetricsTableMeasurer, planTemporalAxis, runPipeline } from "@ggsvelte/core";
+import { FONT_METRICS, MetricsTableMeasurer, planTemporalAxis, runPipeline } from "@ggts-sh/core";
 
 import { temporalFreeFacetSpec, temporalLineSpec } from "../workload-specs";
 import { fmtK, opts, type Workload } from "./shared";

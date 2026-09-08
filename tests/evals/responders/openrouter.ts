@@ -24,7 +24,7 @@ import type { Responder } from "./types.ts";
 export const DEFAULT_MODEL = "openai/gpt-5.5";
 export const CALL_TIMEOUT_MS = 60_000;
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const REPO_URL = "https://github.com/ljodea/ggsvelte";
+const REPO_URL = "https://github.com/ggts-sh/ggts";
 
 interface ChatCompletionsResponse {
   choices?: Array<{ message?: { content?: string | null } }>;
@@ -54,7 +54,7 @@ export class OpenRouterResponder implements Responder {
           "content-type": "application/json",
           // OpenRouter attribution headers (optional but recommended).
           "http-referer": REPO_URL,
-          "x-title": "ggsvelte evals",
+          "x-title": "ggts evals",
         },
         body: JSON.stringify({
           model: this.name,

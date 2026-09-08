@@ -20,15 +20,15 @@ import {
 describe("generated docs SEO", () => {
   it("describes the canonical home page and repository with truthful structured data", () => {
     const home = createDocsRouteInventory().find((route) => route.path === "/")!;
-    const seo = buildSeoDocument(home, "https://ggsvelte.sh");
+    const seo = buildSeoDocument(home, "https://ggts.sh");
 
     expect(seo).toMatchObject({
-      title: "ggsvelte — ggplot2’s grammar for TypeScript",
+      title: "ggts — ggplot2’s grammar for TypeScript",
       description:
         "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
-      canonical: "https://ggsvelte.sh/",
+      canonical: "https://ggts.sh/",
       image: {
-        url: `https://ggsvelte.sh${OG_HOME_PATH}`,
+        url: `https://ggts.sh${OG_HOME_PATH}`,
         width: OG_HOME_WIDTH,
         height: OG_HOME_HEIGHT,
         alt: OG_HOME_ALT,
@@ -46,20 +46,20 @@ describe("generated docs SEO", () => {
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "ggsvelte",
-        url: "https://ggsvelte.sh/",
+        name: "ggts",
+        url: "https://ggts.sh/",
         description:
           "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
       },
       {
         "@context": "https://schema.org",
         "@type": "SoftwareSourceCode",
-        name: "ggsvelte",
-        codeRepository: "https://github.com/ljodea/ggsvelte",
+        name: "ggts",
+        codeRepository: "https://github.com/ggts-sh/ggts",
         programmingLanguage: ["TypeScript", "Svelte"],
         license: "https://spdx.org/licenses/MIT.html",
         runtimePlatform: "Node.js 22 or newer",
-        url: "https://ggsvelte.sh/",
+        url: "https://ggts.sh/",
         version: sveltePackage.version,
       },
     ]);
@@ -68,9 +68,9 @@ describe("generated docs SEO", () => {
   it("uses each gallery example's preview as its social card image", () => {
     const routes = createDocsRouteInventory();
     const tooltip = routes.find((route) => route.path === "/examples/interaction/tooltip")!;
-    const seo = buildSeoDocument(tooltip, "https://ggsvelte.sh");
+    const seo = buildSeoDocument(tooltip, "https://ggts.sh");
 
-    expect(seo.image.url).toBe("https://ggsvelte.sh/previews/interaction-tooltip-light.png");
+    expect(seo.image.url).toBe("https://ggts.sh/previews/interaction-tooltip-light.png");
     expect(seo.image.alt).toBe("Inspect and pin data");
     // interaction/tooltip declares vrHeight: 740 in the example manifest.
     expect(seo.image.width).toBe(640);
@@ -81,15 +81,15 @@ describe("generated docs SEO", () => {
     const alias = createDocsRouteInventory().find(
       (route) => route.path === "/examples/interactions/inspection",
     )!;
-    const seo = buildSeoDocument(alias, "https://ggsvelte.sh");
+    const seo = buildSeoDocument(alias, "https://ggts.sh");
     expect(alias.canonicalPath).toBe("/examples/interaction/tooltip");
-    expect(seo.image.url).toBe("https://ggsvelte.sh/previews/interaction-tooltip-light.png");
+    expect(seo.image.url).toBe("https://ggts.sh/previews/interaction-tooltip-light.png");
   });
 
   it("falls back to the home social card for non-example routes", () => {
     const docs = createDocsRouteInventory().find((route) => route.path === "/docs")!;
-    const seo = buildSeoDocument(docs, "https://ggsvelte.sh");
-    expect(seo.image.url).toBe(`https://ggsvelte.sh${OG_HOME_PATH}`);
+    const seo = buildSeoDocument(docs, "https://ggts.sh");
+    expect(seo.image.url).toBe(`https://ggts.sh${OG_HOME_PATH}`);
     expect(seo.image.width).toBe(OG_HOME_WIDTH);
     expect(seo.image.height).toBe(OG_HOME_HEIGHT);
   });
@@ -112,7 +112,7 @@ describe("generated docs SEO", () => {
     const scaleDetail = routes.find((route) => route.path === "/reference/scales/fill_distiller")!;
     const scaleIndex = routes.find((route) => route.path === "/reference/scales")!;
 
-    expect(buildSeoDocument(guide, "https://ggsvelte.sh").structuredData).toEqual([
+    expect(buildSeoDocument(guide, "https://ggts.sh").structuredData).toEqual([
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -121,22 +121,22 @@ describe("generated docs SEO", () => {
             "@type": "ListItem",
             position: 1,
             name: "Docs",
-            item: "https://ggsvelte.sh/docs",
+            item: "https://ggts.sh/docs",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Getting started",
-            item: "https://ggsvelte.sh/guide/getting-started",
+            item: "https://ggts.sh/guide/getting-started",
           },
         ],
       },
     ]);
-    expect(buildSeoDocument(docs, "https://ggsvelte.sh").structuredData).toEqual([]);
-    expect(buildSeoDocument(gallery, "https://ggsvelte.sh").structuredData).toEqual([]);
+    expect(buildSeoDocument(docs, "https://ggts.sh").structuredData).toEqual([]);
+    expect(buildSeoDocument(gallery, "https://ggts.sh").structuredData).toEqual([]);
 
     // Scale detail: Reference / Scales / ScaleFillDistiller (middle section linked)
-    expect(buildSeoDocument(scaleDetail, "https://ggsvelte.sh").structuredData).toEqual([
+    expect(buildSeoDocument(scaleDetail, "https://ggts.sh").structuredData).toEqual([
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -145,25 +145,25 @@ describe("generated docs SEO", () => {
             "@type": "ListItem",
             position: 1,
             name: "Reference",
-            item: "https://ggsvelte.sh/reference",
+            item: "https://ggts.sh/reference",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Scales",
-            item: "https://ggsvelte.sh/reference/scales",
+            item: "https://ggts.sh/reference/scales",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: scaleDetail.navigation?.label ?? "ScaleFillDistiller",
-            item: "https://ggsvelte.sh/reference/scales/fill_distiller",
+            item: "https://ggts.sh/reference/scales/fill_distiller",
           },
         ],
       },
     ]);
     // Section index stays two-level (no duplicate "Scales" under itself).
-    expect(buildSeoDocument(scaleIndex, "https://ggsvelte.sh").structuredData).toEqual([
+    expect(buildSeoDocument(scaleIndex, "https://ggts.sh").structuredData).toEqual([
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -172,13 +172,13 @@ describe("generated docs SEO", () => {
             "@type": "ListItem",
             position: 1,
             name: "Reference",
-            item: "https://ggsvelte.sh/reference",
+            item: "https://ggts.sh/reference",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Scales",
-            item: "https://ggsvelte.sh/reference/scales",
+            item: "https://ggts.sh/reference/scales",
           },
         ],
       },

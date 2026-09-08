@@ -2,7 +2,7 @@
  * Shared fixtures for component-level interaction integration suites.
  * Per-suite helpers (drag, pointerMoveAt) stay local to their files.
  */
-import type { RenderModel } from "@ggsvelte/core";
+import type { RenderModel } from "@ggts-sh/core";
 
 export const rows = [
   { x: 1, y: 10, cls: "a" },

@@ -2,7 +2,7 @@
  * M2 pipeline — line/point + stat summary_rolling.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import type { PathsBatch, PointsBatch } from "../../src/scene.ts";
 import { size } from "./fixtures.ts";

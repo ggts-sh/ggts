@@ -52,7 +52,7 @@ function routeId(path: string): string {
 }
 
 function cleanTitle(title: string): string {
-  return title.replace(/ — ggsvelte(?: gallery)?$/, "");
+  return title.replace(/ — ggts(?: gallery)?$/, "");
 }
 
 function lifecycleAnchor(packageName: string, entry: string): string {

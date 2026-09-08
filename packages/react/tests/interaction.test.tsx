@@ -57,6 +57,56 @@ describe("createPlotInteraction", () => {
 });
 
 describe("inspect + select host", () => {
+  it.each(["pointerCancel", "lostPointerCapture"] as const)(
+    "abandons a touch interval on %s and accepts the next gesture",
+    (cancelEvent) => {
+      const controller = createPlotInteraction();
+      const scope = { keys: "plot", x: "x", y: "y" };
+      const { container } = render(
+        <GGPlot
+          data={rows}
+          aes={{ x: "x", y: "y" }}
+          width={480}
+          height={320}
+          select="interval"
+          tool="select-area"
+          interaction={controller}
+          interactionScope={scope}
+        >
+          <GeomPoint />
+        </GGPlot>,
+      );
+      const capture = container.querySelector(".gg-capture")!;
+      const box = container.querySelector(".gg-points circle")!.getBoundingClientRect();
+      const pointer = {
+        pointerId: 1,
+        pointerType: "touch",
+        isPrimary: true,
+        button: 0,
+      };
+      const start = { ...pointer, clientX: box.left - 5, clientY: box.top - 5 };
+      const end = {
+        ...pointer,
+        clientX: box.right + 5,
+        clientY: box.bottom + 5,
+      };
+      fireEvent.pointerDown(capture, start);
+      fireEvent.pointerMove(capture, end);
+      expect(container.querySelector(".gg-brush")).not.toBeNull();
+      fireEvent[cancelEvent](capture, end);
+      fireEvent.pointerUp(capture, end);
+      expect(container.querySelector(".gg-brush")).toBeNull();
+      expect(controller.intervals(scope)).toEqual([]);
+      expect(controller.selected(scope)).toEqual([]);
+
+      fireEvent.pointerDown(capture, start);
+      fireEvent.pointerMove(capture, end);
+      fireEvent.pointerUp(capture, end);
+      expect(controller.intervals(scope)).toHaveLength(1);
+      expect(container.querySelector(".gg-brush")).not.toBeNull();
+    },
+  );
+
   it("enables inspect via <Inspect /> without crashing", () => {
     const oninspect = vi.fn(() => {});
     const { container } = render(

@@ -1,7 +1,7 @@
 /**
  * Facet grid partition: rows × cols combinations (empty combos kept).
  */
-import type { FacetFieldRef } from "@ggsvelte/spec";
+import type { FacetFieldRef } from "@ggts-sh/spec";
 
 import { createFacetPanelIdentity } from "../facet-identity.js";
 import { encodeKey } from "../scales/state.js";

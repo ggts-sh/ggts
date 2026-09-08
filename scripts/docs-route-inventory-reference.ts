@@ -49,7 +49,7 @@ export function geomDetailRoutes(): DocsRouteRecord[] {
     }
     return {
       path: `/reference/geoms/${entry.slug}`,
-      title: `${entry.component} — ggsvelte`,
+      title: `${entry.component} — ggts`,
       // Prefix with component so indexable descriptions stay unique when layer
       // summaries share phrasing across aliases or related marks.
       description: `${entry.component}: ${entry.summary}`,
@@ -92,7 +92,7 @@ export function statDetailRoutes(): DocsRouteRecord[] {
     }
     return {
       path: `/reference/stats/${entry.slug}`,
-      title: `stat ${entry.name} — ggsvelte`,
+      title: `stat ${entry.name} — ggts`,
       description: `stat "${entry.name}": ${entry.summary}`,
       canonicalPath: `/reference/stats/${entry.slug}`,
       kind: "page" as const,
@@ -129,7 +129,7 @@ export function positionDetailRoutes(): DocsRouteRecord[] {
     }
     return {
       path: `/reference/positions/${entry.slug}`,
-      title: `position ${entry.name} — ggsvelte`,
+      title: `position ${entry.name} — ggts`,
       description: `position "${entry.name}": ${entry.summary}`,
       canonicalPath: `/reference/positions/${entry.slug}`,
       kind: "page" as const,
@@ -185,7 +185,7 @@ export function scaleDetailRoutes(): DocsRouteRecord[] {
     }
     return {
       path: `/reference/scales/${entry.slug}`,
-      title: `${entry.component} — ggsvelte`,
+      title: `${entry.component} — ggts`,
       description: `${entry.component}: ${entry.summary}`,
       canonicalPath: `/reference/scales/${entry.slug}`,
       kind: "page" as const,
@@ -211,7 +211,7 @@ export function guideDetailRoutes(): DocsRouteRecord[] {
     }
     return {
       path: `/reference/guides/${entry.slug}`,
-      title: `${entry.component} — ggsvelte`,
+      title: `${entry.component} — ggts`,
       description: `${entry.component}: ${entry.summary}`,
       canonicalPath: `/reference/guides/${entry.slug}`,
       kind: "page" as const,
@@ -240,7 +240,7 @@ export function coordDetailRoutes(): DocsRouteRecord[] {
     headings.push({ id: "related", title: "Related", level: 2 });
     return {
       path: `/reference/coords/${entry.slug}`,
-      title: `${entry.component} — ggsvelte`,
+      title: `${entry.component} — ggts`,
       description: `${entry.component}: ${entry.summary}`,
       canonicalPath: `/reference/coords/${entry.slug}`,
       kind: "page" as const,

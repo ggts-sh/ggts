@@ -1,5 +1,5 @@
 /** Training and semantic guide planning for mapped size/linewidth/alpha/shape/linetype. */
-import type { PortableSpec, StyleAesthetic } from "@ggsvelte/spec";
+import type { PortableSpec, StyleAesthetic } from "@ggts-sh/spec";
 
 import type { ScaleState } from "../scales/state.js";
 import type { ColumnTable } from "../table.js";
@@ -56,7 +56,7 @@ export function resolveStyleScale(input: {
     throw new PipelineError(
       "unsupported-param",
       `/scales/${aesthetic}`,
-      `Style scale family "${family}" is not registered in this build. Call ${register}() from @ggsvelte/core/headless/register once at startup, or registerBasic() from @ggsvelte/core.`,
+      `Style scale family "${family}" is not registered in this build. Call ${register}() from @ggts-sh/core/headless/register once at startup, or registerBasic() from @ggts-sh/core.`,
     );
   }
   const resolved: StyleScaleResolveInput = {

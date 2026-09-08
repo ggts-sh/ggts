@@ -1,5 +1,5 @@
 import type { ReactElement, RefAttributes } from "react";
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 import { forwardRef, useMemo } from "react";
 
 import type { GGPlotHandle, GGPlotProps } from "./plot-props.js";

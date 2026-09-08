@@ -14,7 +14,7 @@
  * in sibling modules here; this file concatenates them in fixed order so
  * mitata group order and budget ids stay byte-stable.
  */
-import { registerAll } from "@ggsvelte/core";
+import { registerAll } from "@ggts-sh/core";
 
 // Headless full-grammar benchmarks (#1420): explicit opt-in before the
 // workload table builds stats/temporal fixtures.

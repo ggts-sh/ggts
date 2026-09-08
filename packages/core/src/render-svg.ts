@@ -24,7 +24,7 @@
  * - render-svg-legend.ts — discrete / steps / ramp legend SVG
  * - render-svg-scene.ts — sceneLabel + sceneToSVGString assembly
  */
-import type { GGBuilder, SpecInput } from "@ggsvelte/spec";
+import type { GGBuilder, SpecInput } from "@ggts-sh/spec";
 
 import type { RunOptions } from "./pipeline/public-api.js";
 import { PipelineError } from "./pipeline/public-api.js";

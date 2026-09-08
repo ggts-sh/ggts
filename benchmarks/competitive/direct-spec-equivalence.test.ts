@@ -7,7 +7,7 @@ import {
   registerBasicPoints,
   registerBandGuide,
   registerOrdinalColor,
-} from "@ggsvelte/core/headless/register";
+} from "@ggts-sh/core/headless/register";
 import {
   bundleAreaCanvas,
   bundleLineCanvas,
@@ -19,7 +19,7 @@ import {
   bundleLineSvg,
   bundleScatterSvg,
 } from "./adapters/ggsvelte-svg";
-import { aes, gg } from "@ggsvelte/spec/portable";
+import { aes, gg } from "@ggts-sh/spec/portable";
 import {
   COLORS,
   makeMultiSeries,
@@ -28,7 +28,7 @@ import {
   PLOT_HEIGHT,
   PLOT_WIDTH,
 } from "./scenarios";
-import { renderToSVGString, runPipeline } from "@ggsvelte/core/headless";
+import { renderToSVGString, runPipeline } from "@ggts-sh/core/headless";
 
 beforeAll(() => {
   registerBasicPoints();

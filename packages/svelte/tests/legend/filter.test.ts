@@ -1,4 +1,4 @@
-import { encodeKey } from "@ggsvelte/core";
+import { encodeKey } from "@ggts-sh/core";
 import { describe, expect, test } from "vitest";
 
 import {

@@ -77,17 +77,17 @@ describe("GRAMMAR_FAMILIES completeness", () => {
 
   it("docUrls match the pre-#785 runtime advisory catalog list", () => {
     const expected = [
-      "https://ggsvelte.sh/guide/upgrading#compose-scales-as-child-layers",
-      "https://ggsvelte.sh/guide/upgrading#compose-the-theme-as-a-child-layer",
-      "https://ggsvelte.sh/guide/upgrading#compose-coord-as-a-child-layer",
-      "https://ggsvelte.sh/guide/upgrading#compose-facet-as-a-child-layer",
-      "https://ggsvelte.sh/guide/upgrading#compose-labs-as-a-child-layer",
-      "https://ggsvelte.sh/guide/upgrading#compose-guides-as-child-layers",
-      "https://ggsvelte.sh/guide/upgrading#compose-legend-as-a-child-layer",
+      "https://ggts.sh/guide/upgrading#compose-scales-as-child-layers",
+      "https://ggts.sh/guide/upgrading#compose-the-theme-as-a-child-layer",
+      "https://ggts.sh/guide/upgrading#compose-coord-as-a-child-layer",
+      "https://ggts.sh/guide/upgrading#compose-facet-as-a-child-layer",
+      "https://ggts.sh/guide/upgrading#compose-labs-as-a-child-layer",
+      "https://ggts.sh/guide/upgrading#compose-guides-as-child-layers",
+      "https://ggts.sh/guide/upgrading#compose-legend-as-a-child-layer",
     ];
     expect(new Set(GRAMMAR_DOC_URLS)).toEqual(new Set(expected));
     expect(grammarDocUrl("theme")).toBe(
-      "https://ggsvelte.sh/guide/upgrading#compose-the-theme-as-a-child-layer",
+      "https://ggts.sh/guide/upgrading#compose-the-theme-as-a-child-layer",
     );
   });
 
@@ -97,7 +97,7 @@ describe("GRAMMAR_FAMILIES completeness", () => {
     expect(rules.coord).toEqual({
       component: "Coord",
       form: "value",
-      docUrl: "https://ggsvelte.sh/guide/upgrading#compose-coord-as-a-child-layer",
+      docUrl: "https://ggts.sh/guide/upgrading#compose-coord-as-a-child-layer",
     });
     expect(rules.theme?.form).toBe("theme");
     expect(rules.facet?.form).toBe("spread");

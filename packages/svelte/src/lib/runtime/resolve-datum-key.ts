@@ -12,7 +12,7 @@
  * selection. Custom durable identity across reorders or non-`id` natural keys
  * belongs on Inspect / Select / createPlotInteraction — not plot grammar.
  */
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 
 export type DatumKey =
   | PropertyKey

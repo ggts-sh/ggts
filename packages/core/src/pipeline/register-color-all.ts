@@ -12,7 +12,7 @@ let registered = false;
 /**
  * Register every color/fill scale kind. Idempotent.
  *
- * Imports the resolvers directly so `@ggsvelte/core/render` / `registerBasic()`
+ * Imports the resolvers directly so `@ggts-sh/core/render` / `registerBasic()`
  * do not also pull the per-kind `register*Color` wrapper modules.
  */
 export function registerAllColorKinds(): void {

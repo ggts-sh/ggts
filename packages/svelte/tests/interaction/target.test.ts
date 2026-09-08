@@ -4,8 +4,8 @@ import "../setup-register-all.js";
  * panel-scoped so faceted probes cannot seed a neighbouring facet (#787).
  */
 import { describe, expect, it } from "vitest";
-import { runPipeline, type RenderModel } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import { runPipeline, type RenderModel } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 import {
   POINT_SELECT_NEAREST_MAX_DISTANCE_PX,

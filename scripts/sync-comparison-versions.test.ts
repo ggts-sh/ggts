@@ -1,7 +1,7 @@
 /**
  * Comparison-table version lockstep (README + docs homepage).
  *
- * Package manifests are the version source of truth. The "Why ggsvelte?"
+ * Package manifests are the version source of truth. The "Why ggts?"
  * tables cite that version; after every Version Packages PR they must match
  * the just-bumped package.json, not a hand-edited leftover.
  */
@@ -19,11 +19,11 @@ import {
 
 const ROOT = join(import.meta.dir, "..");
 
-const SAMPLE_README = `# ggsvelte
+const SAMPLE_README = `# ggts
 
-## Why ggsvelte?
+## Why ggts?
 
-| Capability                                 | ggsvelte  | SveltePlot           | LayerCake            |
+| Capability                                 | ggts  | SveltePlot           | LayerCake            |
 | ------------------------------------------ | --------- | -------------------- | -------------------- |
 | **Bundle size** (min+gzip, 1k scatter app) | ⚠️ 138 KB | ✅ 109 KB            | ✅ 41 KB             |
 | **API stability**                          | ⚠️ v0.30  | ⚠️ v0.14             | ✅ v10               |
@@ -31,7 +31,7 @@ const SAMPLE_README = `# ggsvelte
 `;
 
 describe("syncReadmeApiStability", () => {
-  it("replaces only the ggsvelte API-stability cell with the full released version", () => {
+  it("replaces only the ggts API-stability cell with the full released version", () => {
     const out = syncReadmeApiStability(SAMPLE_README, "0.32.0");
     // Preserve trailing padding before the next column pipe.
     expect(out).toContain(
@@ -74,7 +74,7 @@ describe("live comparison tables match the published lockstep version", () => {
       const manifest = JSON.parse(
         readFileSync(join(ROOT, "packages", pkg, "package.json"), "utf8"),
       ) as { version: string };
-      expect(manifest.version, `@ggsvelte/${pkg}`).toBe(version);
+      expect(manifest.version, `@ggts-sh/${pkg}`).toBe(version);
     }
   });
 
@@ -101,7 +101,7 @@ describe("live comparison tables match the published lockstep version", () => {
       );
       writeFileSync(join(root, "README.md"), syncReadmeApiStability(SAMPLE_README, "1.0.0"));
       const projection = join(root, "apps/docs/src/lib/generated/benchmark-charts.ts");
-      const old = 'export const BENCHMARK_VERSIONS = { ggsvelte: "0.42.0" };';
+      const old = 'export const BENCHMARK_VERSIONS = { ggts: "0.42.0" };';
       writeFileSync(projection, old);
       expect(syncComparisonVersions(root).readmeChanged).toBe(false);
       expect(() => {

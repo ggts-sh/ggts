@@ -3,7 +3,7 @@
   import {
     scaleColorFermenter,
     type ColorFermenterScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

@@ -2,7 +2,7 @@
  * Geometry characterization — run-pipeline-regression.
  */
 import { describe, expect, it } from "bun:test";
-import { gg, aes } from "@ggsvelte/spec";
+import { gg, aes } from "@ggts-sh/spec";
 import { batchMarkCount, runPipeline } from "../../src/pipeline.ts";
 import type { PathsBatch, PointsBatch } from "../../src/scene.ts";
 import { size } from "./fixtures.ts";

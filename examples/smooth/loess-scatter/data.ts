@@ -3,10 +3,10 @@
  *
  * A ~400-row deterministic subsample of chocolateBars keeps loess interactive
  * on the gallery page while still looking dense. The full 2,530-row table
- * stays on `@ggsvelte/core/data` for consumers who want every review.
+ * stays on `@ggts-sh/core/data` for consumers who want every review.
  *
  * Source: Flavors of Cacao via TidyTuesday 2022-01-18 (CC0 curation). See
- * NOTICE and CHOCOLATE_BARS_CITATION in @ggsvelte/core/data.
+ * NOTICE and CHOCOLATE_BARS_CITATION in @ggts-sh/core/data.
  */
 import { chocolateBars } from "../../../packages/core/src/data/chocolate-bars.js";
 

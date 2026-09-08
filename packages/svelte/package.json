@@ -1,7 +1,7 @@
 {
-  "name": "@ggsvelte/svelte",
-  "version": "0.42.0",
-  "description": "ggsvelte: a layered grammar of graphics for Svelte 5 — ggplot2 semantics, JSON-serializable specs, agent-friendly validation, and hybrid SVG/canvas rendering. The ggsvelte-render CLI ships separately as @ggsvelte/cli.",
+  "name": "@ggts-sh/svelte",
+  "version": "0.43.0",
+  "description": "ggts: a layered grammar of graphics for Svelte 5 — ggplot2 semantics, JSON-serializable specs, agent-friendly validation, and hybrid SVG/canvas rendering. The ggts render CLI ships separately as @ggts-sh/cli.",
   "keywords": [
     "charts",
     "components",
@@ -14,17 +14,17 @@
     "svelte5",
     "visualization"
   ],
-  "homepage": "https://ggsvelte.sh/",
-  "bugs": "https://github.com/ljodea/ggsvelte/issues",
+  "homepage": "https://ggts.sh/",
+  "bugs": "https://github.com/ggts-sh/ggts/issues",
   "license": "MIT",
   "author": "Liam O'Dea",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ljodea/ggsvelte.git",
+    "url": "git+https://github.com/ggts-sh/ggts.git",
     "directory": "packages/svelte"
   },
   "bin": {
-    "ggsvelte-codemod": "bin/ggsvelte-codemod.js"
+    "ggts-codemod": "bin/ggts-codemod.js"
   },
   "files": [
     "dist",
@@ -56,9 +56,9 @@
     "test:coverage": "vitest run --coverage --project chromium && vitest run --coverage --config vitest.ssr.config.ts"
   },
   "dependencies": {
-    "@ggsvelte/compose": "^0.42.0",
-    "@ggsvelte/core": "^0.42.0",
-    "@ggsvelte/spec": "^0.42.0"
+    "@ggts-sh/compose": "^0.43.0",
+    "@ggts-sh/core": "^0.43.0",
+    "@ggts-sh/spec": "^0.43.0"
   },
   "devDependencies": {
     "@sveltejs/package": "^2.5.8",

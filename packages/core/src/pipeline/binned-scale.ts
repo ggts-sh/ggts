@@ -21,7 +21,7 @@
  * Stats that need CONTINUOUS inputs (bin/density/smooth/summary/boxplot)
  * ignore the boundaries entirely and read transformed SOURCE values.
  */
-import { MAX_BINNED_BREAKS } from "@ggsvelte/spec";
+import { MAX_BINNED_BREAKS } from "@ggts-sh/spec";
 
 import { tickStep } from "../layout/ticks.js";
 import type { ScaleTransform } from "../scales/transform.js";
@@ -29,7 +29,7 @@ import type { ScaleTransform } from "../scales/transform.js";
 import { PipelineError } from "./types.js";
 
 /**
- * Hard cap on automatic/explicit binned bins — re-exported from `@ggsvelte/spec`
+ * Hard cap on automatic/explicit binned bins — re-exported from `@ggts-sh/spec`
  * so the TypeBox schema (`breaks` maxItems), this runtime resolver, and the
  * `binned-scale-break-limit` error share one source of truth (no dependency
  * cycle: spec never imports core).

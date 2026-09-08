@@ -1,7 +1,7 @@
 /**
  * Pipeline run options and named data contract.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import type { RuntimeRowFilterClause } from "../runtime-filter.js";
 import type { ScaleState } from "../scales/state.js";

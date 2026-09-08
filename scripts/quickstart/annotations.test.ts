@@ -4,7 +4,7 @@
  * weight are all layout claims.
  */
 import { describe, expect, it } from "bun:test";
-import { renderToSVGString, runPipeline } from "@ggsvelte/core";
+import { renderToSVGString, runPipeline } from "@ggts-sh/core";
 import {
   SAKURA_BASELINE,
   SAKURA_FINISHED_SVELTE,

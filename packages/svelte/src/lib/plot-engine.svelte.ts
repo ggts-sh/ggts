@@ -36,8 +36,8 @@
  * registers in the component effect tree. No `$props`, `$props.id()`, or
  * context calls live here.
  */
-import type { BatchInteractionMask } from "@ggsvelte/core";
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { BatchInteractionMask } from "@ggts-sh/core";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import {
   canPublishPointSelection,

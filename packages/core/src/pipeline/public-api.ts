@@ -1,6 +1,6 @@
 /**
  * Public pipeline contract re-exports (import path stability for consumers
- * of @ggsvelte/core via ./pipeline.ts).
+ * of @ggts-sh/core via ./pipeline.ts).
  */
 export type {
   Advisory,

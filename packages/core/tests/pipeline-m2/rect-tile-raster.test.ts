@@ -2,7 +2,7 @@
  * geom rect / tile / raster — geometry, scales, diagnostics (#586).
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import { renderToSVGString } from "../../src/render-svg-full.ts";
 import type { RectsBatch } from "../../src/scene.ts";

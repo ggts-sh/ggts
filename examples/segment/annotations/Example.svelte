@@ -7,7 +7,7 @@
     Labs,
     ScaleColorDiscrete,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { darwinMaize } from "./data.js";
 </script>

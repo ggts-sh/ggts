@@ -1,7 +1,7 @@
 import { fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it, vi } from "vitest";
 
-import type { CandidateFacts, SemanticViewportPanel } from "@ggsvelte/core";
+import type { CandidateFacts, SemanticViewportPanel } from "@ggts-sh/core";
 
 import { resolveIntervalQueryParts } from "../../src/lib/interval/query.js";
 import { scene } from "./query-fixtures.js";

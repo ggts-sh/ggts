@@ -4,7 +4,7 @@
  *
  * Width for crossbar reuses makeErrorbarXSpan (resolution-based continuous x).
  */
-import type { CrossbarParams, ErrorbarParams, PointrangeParams } from "@ggsvelte/spec";
+import type { CrossbarParams, ErrorbarParams, PointrangeParams } from "@ggts-sh/spec";
 
 import type { GeometryBatch, PointsBatch, RectsBatch, SegmentsBatch } from "../scene.js";
 import { linetypeIndex, pointShapeIndex, type Linetype, type PointShape } from "../scales/style.js";

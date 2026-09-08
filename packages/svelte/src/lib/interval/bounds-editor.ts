@@ -12,4 +12,4 @@ export {
   type BoundsDraftValidation,
   formatBoundsDraft,
   validateBoundsDraft,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

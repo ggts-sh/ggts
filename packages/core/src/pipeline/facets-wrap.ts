@@ -1,7 +1,7 @@
 /**
  * Facet wrap partition: one panel per distinct value, near-square ncol default.
  */
-import type { FacetFieldRef } from "@ggsvelte/spec";
+import type { FacetFieldRef } from "@ggts-sh/spec";
 
 import { createFacetPanelIdentity } from "../facet-identity.js";
 import { encodeKey } from "../scales/state.js";

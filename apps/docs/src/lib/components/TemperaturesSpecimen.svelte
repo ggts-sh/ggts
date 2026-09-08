@@ -9,8 +9,8 @@
     ScaleColorDiscrete,
     ScaleXContinuous,
     Theme,
-  } from "@ggsvelte/svelte";
-  import type { ThemeName } from "@ggsvelte/spec";
+  } from "@ggts-sh/svelte";
+  import type { ThemeName } from "@ggts-sh/spec";
 
   import { docsAppearance } from "$lib/docs-appearance-state.svelte";
   import { marksOnlyThemeRoles } from "$lib/marks-only-theme-contrast";

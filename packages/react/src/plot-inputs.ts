@@ -1,23 +1,23 @@
-import { encodeKey, type CandidateFacts } from "@ggsvelte/core";
+import { encodeKey, type CandidateFacts } from "@ggts-sh/core";
 import {
   semanticAxisFromBounds,
   recomputePanelIntervalProjection,
   type PreciseBoundsApplyEvent,
   type PlotInteractionInterval,
   type IntervalSelection,
-} from "@ggsvelte/core/interaction";
-import { boundsEditorInputForScale, type BoundsEditorInput } from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
+import { boundsEditorInputForScale, type BoundsEditorInput } from "@ggts-sh/core/interaction";
 import { useMemo, useCallback, useSyncExternalStore } from "react";
 import type { ForwardedRef } from "react";
-import { isFacetedPlotIntent, resolveInteractionScope } from "@ggsvelte/compose";
-import { sceneLabel } from "@ggsvelte/core";
-import type { RenderModel, PlotRect } from "@ggsvelte/core";
+import { isFacetedPlotIntent, resolveInteractionScope } from "@ggts-sh/compose";
+import { sceneLabel } from "@ggts-sh/core";
+import type { RenderModel, PlotRect } from "@ggts-sh/core";
 import {
   normalizeInteractionConfig,
   applyZoomToSpec,
   filterZoomDomainsByMode,
-} from "@ggsvelte/core/interaction";
-import type { ReadonlyIntervalDomains, ZoomDomains } from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
+import type { ReadonlyIntervalDomains, ZoomDomains } from "@ggts-sh/core/interaction";
 import { assembleFromProps } from "./plot-assemble.js";
 import { hostDatumKey } from "./plot-host-identity.js";
 import type { usePlotInteractions } from "./plot-interactions.js";

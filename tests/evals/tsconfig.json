@@ -1,7 +1,7 @@
 {
   // Type context for the held-out eval harness (bun runs the TS directly;
   // NOT part of the tsc -b build graph). tests/evals is not a workspace, so
-  // "@ggsvelte/spec" / "@ggsvelte/core" resolve through these paths — Bun
+  // "@ggts-sh/spec" / "@ggts-sh/core" resolve through these paths — Bun
   // honors tsconfig paths at runtime and maps the .d.ts entries onto the
   // sibling built dist/*.js (run `bun run check` first if dist/ is missing).
   "extends": "../../tsconfig.base.json",
@@ -11,8 +11,8 @@
     "resolveJsonModule": true,
     "types": ["bun"],
     "paths": {
-      "@ggsvelte/spec": ["../../packages/spec/dist/index.d.ts"],
-      "@ggsvelte/core": ["../../packages/core/dist/index.d.ts"]
+      "@ggts-sh/spec": ["../../packages/spec/dist/index.d.ts"],
+      "@ggts-sh/core": ["../../packages/core/dist/index.d.ts"]
     }
   },
   "include": ["./**/*.ts"]

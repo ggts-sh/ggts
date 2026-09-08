@@ -7,7 +7,7 @@
     Labs,
     ScaleFillContinuous,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { heightRings } from "./data.js";
 </script>

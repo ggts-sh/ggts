@@ -1,7 +1,7 @@
 /**
  * Shared fixtures for facets / render integration characterization.
  */
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 export const size = { width: 640, height: 400 };
 

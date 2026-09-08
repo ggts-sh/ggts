@@ -1,17 +1,17 @@
-# @ggsvelte/skill
+# @ggts-sh/skill
 
-The ggsvelte agent skill: `SKILL.md` plus deep-dive `references/` that teach a
+The ggts agent skill: `SKILL.md` plus deep-dive `references/` that teach a
 coding agent the shared grammar of graphics — TypeScript builders, React
 and Svelte components, PortableSpec JSON, and the `ggts check` /
 `ggts render` feedback loop.
 
 This package is the one published home of the skill. It versions in lock-step
-with [`@ggsvelte/spec`](https://www.npmjs.com/package/@ggsvelte/spec),
-[`@ggsvelte/core`](https://www.npmjs.com/package/@ggsvelte/core),
-[`@ggsvelte/compose`](https://www.npmjs.com/package/@ggsvelte/compose),
-[`@ggsvelte/react`](https://www.npmjs.com/package/@ggsvelte/react),
-[`@ggsvelte/svelte`](https://www.npmjs.com/package/@ggsvelte/svelte), and
-[`@ggsvelte/cli`](https://www.npmjs.com/package/@ggsvelte/cli): a given version
+with [`@ggts-sh/spec`](https://www.npmjs.com/package/@ggts-sh/spec),
+[`@ggts-sh/core`](https://www.npmjs.com/package/@ggts-sh/core),
+[`@ggts-sh/compose`](https://www.npmjs.com/package/@ggts-sh/compose),
+[`@ggts-sh/react`](https://www.npmjs.com/package/@ggts-sh/react),
+[`@ggts-sh/svelte`](https://www.npmjs.com/package/@ggts-sh/svelte), and
+[`@ggts-sh/cli`](https://www.npmjs.com/package/@ggts-sh/cli): a given version
 number describes the spec, the renderers, and this skill as of the same
 release. Pin it like any other dependency and let dependabot (or
 npm-check-updates) tell you when the bundled skill in your repo is stale.
@@ -19,34 +19,34 @@ npm-check-updates) tell you when the bundled skill in your repo is stale.
 ## Install
 
 ```sh
-npm install --save-dev --save-exact @ggsvelte/skill @ggsvelte/cli
+npm install --save-dev --save-exact @ggts-sh/skill @ggts-sh/cli
 ```
 
 The package root **is** the skill directory: `SKILL.md` sits next to this
-README. Skill loaders key off the frontmatter (`name: ggsvelte`), not the
+README. Skill loaders key off the frontmatter (`name: ggts`), not the
 directory name.
 
 ## Use
 
 Point your agent at the skill, or copy/symlink it into your agent's skills
-directory under the name `ggsvelte`:
+directory under the name `ggts`:
 
 ```sh
 # Claude Code
-cp -R node_modules/@ggsvelte/skill .claude/skills/ggsvelte
+cp -R node_modules/@ggts-sh/skill .claude/skills/ggts
 
 # pi
-cp -R node_modules/@ggsvelte/skill .pi/agent/skills/ggsvelte
+cp -R node_modules/@ggts-sh/skill .pi/agent/skills/ggts
 
 # or reference it in place
-node_modules/@ggsvelte/skill/SKILL.md
+node_modules/@ggts-sh/skill/SKILL.md
 ```
 
 Re-run the copy on every version bump (a two-line `postinstall` or a sync
 script works); the dependabot PR is the signal that the skill changed.
 
 The skill assumes the agent can also run
-[`@ggsvelte/cli`](https://www.npmjs.com/package/@ggsvelte/cli)
+[`@ggts-sh/cli`](https://www.npmjs.com/package/@ggts-sh/cli)
 (`ggts check` and `ggts render`) for spec validation and headless SVG rendering — install it
 in every sandbox where an agent authors specs.
 

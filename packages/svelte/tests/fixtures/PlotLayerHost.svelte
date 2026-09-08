@@ -6,7 +6,7 @@
    * asserted against registry marks while non-mark layers still apply.
    */
   import type { ComponentProps } from "svelte";
-  import type { AesInput, LayerInput } from "@ggsvelte/spec";
+  import type { AesInput, LayerInput } from "@ggts-sh/spec";
 
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";

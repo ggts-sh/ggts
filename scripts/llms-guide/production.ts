@@ -36,7 +36,7 @@ For a real-data scatter surface, see [scatter color](/examples/point/scatter-col
 One PortableSpec: React or Svelte SSR, pure \`renderToSVGString\`, CLI.
 
 \`\`\`ts fragment
-import { registerAll, renderToSVGString } from "@ggsvelte/core";
+import { registerAll, renderToSVGString } from "@ggts-sh/core";
 
 // Headless full-grammar rendering (#1420): explicit opt-in.
 registerAll();
@@ -45,7 +45,7 @@ const svg = renderToSVGString(spec, { width: 640, height: 400 });
 \`\`\`
 
 \`\`\`sh fragment
-# npm install -g @ggsvelte/cli
+# npm install -g @ggts-sh/cli
 ggts check spec.json
 ggts render spec.json > chart.svg
 \`\`\`
@@ -67,6 +67,6 @@ type-check, client build, server render, pure Node render, and the
 - Ubuntu and Windows in CI; macOS nightly
 
 Exact machine-checked rows live in
-[support-matrix.json](https://github.com/ljodea/ggsvelte/blob/main/support-matrix.json).
+[support-matrix.json](https://github.com/ggts-sh/ggts/blob/main/support-matrix.json).
 Bun is the contributor toolchain only; consumers can use any installer above.
 `;

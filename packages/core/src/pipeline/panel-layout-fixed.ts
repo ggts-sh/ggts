@@ -1,4 +1,4 @@
-import type { CoordFixedSpec, CoordSfSpec, Scales } from "@ggsvelte/spec";
+import type { CoordFixedSpec, CoordSfSpec, Scales } from "@ggts-sh/spec";
 
 import type { Tick } from "../layout/layout-types.js";
 import type { AxisGuidePlan } from "../layout/temporal-guide.js";

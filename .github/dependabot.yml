@@ -13,7 +13,7 @@
 #     (asserted in CI; see CONTRIBUTING.md tool roster)
 #   - pnpm — root pin must match support-matrix.json packageManagers.pnpm
 #     (asserted in scripts/support-matrix.test.ts)
-#   - @ggsvelte/* — publish-range deps in packages/* are owned by Changesets,
+#   - @ggts-sh/* — publish-range deps in packages/* are owned by Changesets,
 #     not Dependabot registry bumps
 #
 # Majors for svelte / vite / @sveltejs/* / typescript / vitest / @types/* are
@@ -86,7 +86,7 @@ updates:
           - "playwright"
           - "@playwright/test"
           - "pnpm"
-          - "@ggsvelte/*"
+          - "@ggts-sh/*"
         group-by: dependency-name
     ignore:
       - dependency-name: "svelte"
@@ -113,7 +113,7 @@ updates:
       # support-matrix.json packageManagers.pnpm lockstep (support-matrix.test.ts).
       - dependency-name: "pnpm"
       # Internal publish ranges are Changesets-owned, not registry bumps.
-      - dependency-name: "@ggsvelte/*"
+      - dependency-name: "@ggts-sh/*"
 
   # GitHub Actions — Tuesday 09:00 UTC
   # directory: "/" covers .github/workflows (+ root action.yml if present).

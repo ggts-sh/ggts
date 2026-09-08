@@ -1,9 +1,9 @@
 ---
-name: ggsvelte
-description: Build data visualizations with ggsvelte, a grammar-of-graphics charting library (ggplot2 semantics, React and Svelte 5 components, TypeScript builders, JSON specs, headless SVG rendering). Use whenever creating, editing, validating, or debugging charts, plots, graphs, scatter plots, bar charts, histograms, line charts, boxplots, density plots, violins, heatmaps, maps, faceted/small-multiple charts, or data visualization in a JavaScript/TypeScript/React/Svelte project; when code imports from "@ggsvelte/react", "@ggsvelte/svelte", "@ggsvelte/spec", or "@ggsvelte/core"; when composing GGPlot with Geom*/Scale*/Theme*/Facet*/Coord*/Guide*/Labs children; when emitting a ggsvelte plot spec JSON; or when rendering charts server-side/headless to SVG.
+name: ggts
+description: Build data visualizations with ggts, a grammar-of-graphics charting library (ggplot2 semantics, React and Svelte 5 components, TypeScript builders, JSON specs, headless SVG rendering). Use whenever creating, editing, validating, or debugging charts, plots, graphs, scatter plots, bar charts, histograms, line charts, boxplots, density plots, violins, heatmaps, maps, faceted/small-multiple charts, or data visualization in a JavaScript/TypeScript/React/Svelte project; when code imports from "@ggts-sh/react", "@ggts-sh/svelte", "@ggts-sh/spec", or "@ggts-sh/core"; when composing GGPlot with Geom*/Scale*/Theme*/Facet*/Coord*/Guide*/Labs children; when emitting a ggts plot spec JSON; or when rendering charts server-side/headless to SVG.
 ---
 
-# ggsvelte
+# ggts
 
 ggplot2’s layered grammar for TypeScript, with headless rendering and React
 and Svelte adapters. A chart spec carries the same grammar between surfaces.
@@ -18,7 +18,7 @@ and Svelte adapters. A chart spec carries the same grammar between surfaces.
 3. For React, read [React](references/react.md). For Svelte, read
    [Svelte](references/svelte.md). Keep framework callbacks and host-only
    interactions in that adapter; PortableSpec holds the portable grammar.
-4. In every agent sandbox, install `@ggsvelte/cli` and `@ggsvelte/skill`
+4. In every agent sandbox, install `@ggts-sh/cli` and `@ggts-sh/skill`
    at matching local versions and keep the lockfile. Expose
    the installed skill to the agent, refreshing any copied skill on upgrades.
    Run `ggts check chart.json`, apply relevant diagnostics, then
@@ -27,7 +27,7 @@ and Svelte adapters. A chart spec carries the same grammar between surfaces.
 
 ## Registration (call these)
 
-The `@ggsvelte/core` barrel is side-effect-free. Call `registerAll()` once
+The `@ggts-sh/core` barrel is side-effect-free. Call `registerAll()` once
 at startup for every agent-authored JSON, builder, `layers`, or `<GGPlot spec>`
 path. It installs the full grammar; both `ggts render` and `ggts check` do
 this for you. Missing opt-ins throw `not registered in this build` and name
@@ -122,9 +122,9 @@ is the standalone equivalent. Advisories never block; fix them when they match
 intent. `normalize(input)` canonicalizes
 authoring sugar into a `PortableSpec`; `isPortable`/`toPortable` check and
 strip runtime-only fields. CLIs: `ggts render spec.json > out.svg`
-(from `@ggsvelte/cli`; JSON-line diagnostics on stderr — exit 3 means
+(from `@ggts-sh/cli`; JSON-line diagnostics on stderr — exit 3 means
 validation errors, exit 0 with stderr output means quality warnings worth
-fixing) and `ggsvelte-codemod [--write] src` (ships with `@ggsvelte/svelte`).
+fixing) and `ggts-codemod [--write] src` (ships with `@ggts-sh/svelte`).
 
 **CLI coverage for interaction:** the CLI always covers PortableSpec validation,
 pipeline warnings/advisories, scale diagnostics (`source: "scale"`), and
@@ -172,7 +172,7 @@ or linked-view code.
 
 - JSON Schema (constrained decoding): `packages/spec/schema/v0.json` in the
   repo, `/schema/v0.json` on the docs site, or
-  `import schema from "@ggsvelte/spec/schema/v0.json"`.
+  `import schema from "@ggts-sh/spec/schema/v0.json"`.
 - Full corpus for models: `/llms-full.txt` on the docs site (all guide prose
   plus every example with spec JSON and Svelte source); index at `/llms.txt`.
 - Error catalog: `/guide/errors`; advisories: `/guide/advisories`;

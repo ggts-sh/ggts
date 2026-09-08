@@ -49,7 +49,7 @@ describe("renderMarkdown", () => {
     for (const fence of [
       '```json fragment copy\n{"x": 1}\n```',
       "```svelte complete\n<script></script>\n```",
-      "```sh complete\nbun add @ggsvelte/svelte\n```",
+      "```sh complete\nbun add @ggts-sh/svelte\n```",
       "```ts\nconst x = 1;\n```",
     ]) {
       const html = renderMarkdown(fence);
@@ -64,4 +64,10 @@ describe("renderMarkdown", () => {
     expect(html).toContain('<h2 id="onselect-event"><code>onselect</code> event</h2>');
     expect(html).toContain('<h2 id="onselect-event-2"><code>onselect</code> event</h2>');
   });
+});
+
+it("preserves pre-rename lifecycle package anchors", () => {
+  const html = renderMarkdown("## @ggts-sh/svelte");
+  expect(html).toContain('id="ggts-sh-svelte"');
+  expect(html).toContain('id="ggsvelte-svelte"');
 });

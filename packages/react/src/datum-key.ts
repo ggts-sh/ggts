@@ -1,4 +1,4 @@
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 
 export type DatumKey =
   | PropertyKey

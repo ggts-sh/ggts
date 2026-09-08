@@ -1,7 +1,7 @@
 "use client";
 
-import { GeomPoint, GeomSmooth, GGPlot, Inspect, Labs, ThemeTufte } from "@ggsvelte/react";
-import { chocolateBars } from "@ggsvelte/core/data";
+import { GeomPoint, GeomSmooth, GGPlot, Inspect, Labs, ThemeTufte } from "@ggts-sh/react";
+import { chocolateBars } from "@ggts-sh/core/data";
 
 // Keep the gallery responsive while retaining the dataset's original order.
 const reviews = chocolateBars.filter((_, index) => index % 6 === 0);

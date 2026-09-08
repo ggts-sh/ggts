@@ -1,7 +1,7 @@
 /**
  * Layer binding contract: aes field resolution result for one layer.
  */
-import type { NormalizedLayerSpec, TemporalParserSpec } from "@ggsvelte/spec";
+import type { NormalizedLayerSpec, TemporalParserSpec } from "@ggts-sh/spec";
 
 import type { CellValue } from "../table.js";
 import type { ColumnTransformConfig } from "../scales/transform.js";

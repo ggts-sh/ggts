@@ -5,8 +5,8 @@
  * garbage, and the default export is always a canonical PortableSpec — the
  * exact JSON the docs "spec" tab shows and agents would emit.
  */
-import type { PortableSpec, SpecInput } from "@ggsvelte/spec";
-import { normalize, SpecValidationError, validate } from "@ggsvelte/spec";
+import type { PortableSpec, SpecInput } from "@ggts-sh/spec";
+import { normalize, SpecValidationError, validate } from "@ggts-sh/spec";
 
 export function defineExample(input: SpecInput | PortableSpec): PortableSpec {
   const spec = normalize(input);

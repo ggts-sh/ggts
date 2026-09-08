@@ -1,4 +1,4 @@
-import { aes, gg, scaleXContinuous, scaleYContinuous } from "@ggsvelte/spec";
+import { aes, gg, scaleXContinuous, scaleYContinuous } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { langrenLabels } from "./data.js";

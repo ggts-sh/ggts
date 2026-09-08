@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, normalize } from "@ggsvelte/spec";
+import { aes, gg, normalize } from "@ggts-sh/spec";
 
 import { PipelineError } from "../src/pipeline.ts";
 import { renderToSVGString } from "../src/render-svg-full.ts";

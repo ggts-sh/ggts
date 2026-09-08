@@ -4,7 +4,7 @@
    * (#659 slice 6). Binned-legend presentation for one aesthetic.
    * Emits NO markup.
    */
-  import { guideColorsteps, type ColorstepsGuideOptions } from "@ggsvelte/spec";
+  import { guideColorsteps, type ColorstepsGuideOptions } from "@ggts-sh/spec";
 
   import { createPlotLayer } from "../layers/plot-layer.svelte.js";
   import {

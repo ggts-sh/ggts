@@ -11,7 +11,7 @@
  * transformed space. Source limits/domain values stay semantic for OOB and for
  * the public inverse-projected domain.
  */
-import type { PositionScaleSpec, ScaleExpansion } from "@ggsvelte/spec";
+import type { PositionScaleSpec, ScaleExpansion } from "@ggts-sh/spec";
 
 import {
   getScaleTransform,

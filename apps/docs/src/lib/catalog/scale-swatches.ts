@@ -5,7 +5,7 @@
  * (same deep paths as /palettes); ColorBrewer sequential Blues and gradient
  * stop defaults are mirrored here so docs never import core trainers.
  */
-import type { ScaleReferenceEntry } from "@ggsvelte/spec";
+import type { ScaleReferenceEntry } from "@ggts-sh/spec";
 
 import { CATEGORICAL_SCHEMES, VIRIDIS_RAMP_10 } from "./palette-tables.js";
 

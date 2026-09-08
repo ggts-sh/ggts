@@ -1,7 +1,7 @@
 /**
  * default + void token tables (both editions). No full named-theme catalog.
  */
-import type { ThemeName } from "@ggsvelte/spec";
+import type { ThemeName } from "@ggts-sh/spec";
 
 import { LEGACY_BASE_FOUNDATION, themed, type ThemeTokens } from "./theme-construct.js";
 

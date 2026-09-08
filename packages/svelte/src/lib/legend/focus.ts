@@ -11,4 +11,4 @@ export {
   keysForLegendEntry,
   clampLegendRovingIndex,
   moveLegendRovingIndex,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

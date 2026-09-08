@@ -1,5 +1,5 @@
 /** Resolve all mapped non-color style scales for one pipeline run. */
-import type { PortableSpec, StyleAesthetic } from "@ggsvelte/spec";
+import type { PortableSpec, StyleAesthetic } from "@ggts-sh/spec";
 
 import { humanizeFieldTitle } from "../humanize-field.js";
 import type { ColumnTable } from "../table.js";

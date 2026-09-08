@@ -10,7 +10,7 @@
     ScaleXDiscrete,
     ScaleYDiscrete,
     ThemeLight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { cholera1849 } from "./data.js";
 </script>

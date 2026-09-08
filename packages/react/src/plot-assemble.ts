@@ -1,5 +1,5 @@
-import { assemblePortableSpec, isHostPlotLayer, toLayerInput } from "@ggsvelte/compose";
-import type { PortableSpec } from "@ggsvelte/spec";
+import { assemblePortableSpec, isHostPlotLayer, toLayerInput } from "@ggts-sh/compose";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { GGPlotProps } from "./plot-props.js";
 import type { LayerRegistry } from "./registry.js";

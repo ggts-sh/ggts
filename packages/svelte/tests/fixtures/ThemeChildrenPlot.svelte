@@ -4,7 +4,7 @@
    * Mounts GeomPoint + Theme/ThemeDark children under GGPlot and optionally
    * captures the plot registry for registrationCount assertions.
    */
-  import type { ThemeName } from "@ggsvelte/spec";
+  import type { ThemeName } from "@ggts-sh/spec";
 
   import type { PlotDiagnostic } from "../../src/lib/diagnostics/deprecation.js";
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";

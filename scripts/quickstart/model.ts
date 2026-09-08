@@ -6,7 +6,7 @@
  * accumulates both.
  */
 
-import type { GuidesSpec, Labs, LayerSpec, Scales, ThemeName } from "@ggsvelte/spec";
+import type { GuidesSpec, Labs, LayerSpec, Scales, ThemeName } from "@ggts-sh/spec";
 
 export interface SakuraSpecDelta {
   /** Layers keyed by name; a repeated key replaces that layer. */
@@ -20,10 +20,10 @@ export interface SakuraSpecDelta {
 }
 
 export interface SakuraSourceDelta {
-  /** Components added to the `@ggsvelte/svelte` import. */
+  /** Components added to the `@ggts-sh/svelte` import. */
   readonly components?: readonly string[];
   /**
-   * Register functions added to the `@ggsvelte/svelte` import and called in
+   * Register functions added to the `@ggts-sh/svelte` import and called in
    * the script body. A `stat="…"` override on a basic shell needs its family
    * registered — the shell registers only its default stat (#1420).
    */

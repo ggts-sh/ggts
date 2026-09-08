@@ -33,7 +33,7 @@ import {
   KNOWN_STATS,
   SEQUENTIAL_SCHEME_NAMES,
   THEME_NAMES,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 import { ROOT, SKILL_DIR, tableCellNames } from "./test-helpers.ts";
 
 /**

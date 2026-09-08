@@ -15,16 +15,16 @@ const root = join(import.meta.dir, "..");
 
 /** Fixture mirroring the real published workspace shape (see discovery test). */
 const PACKAGES = [
-  { dir: "packages/cli", name: "@ggsvelte/cli", shipped: ["dist", "bin", "src"] },
-  { dir: "packages/compose", name: "@ggsvelte/compose", shipped: ["dist", "src"] },
-  { dir: "packages/core", name: "@ggsvelte/core", shipped: ["dist", "src", "NOTICE"] },
-  { dir: "packages/react", name: "@ggsvelte/react", shipped: ["dist"] },
-  // @ggsvelte/skill ships root-level files, not only directories: SKILL.md is
+  { dir: "packages/cli", name: "@ggts-sh/cli", shipped: ["dist", "bin", "src"] },
+  { dir: "packages/compose", name: "@ggts-sh/compose", shipped: ["dist", "src"] },
+  { dir: "packages/core", name: "@ggts-sh/core", shipped: ["dist", "src", "NOTICE"] },
+  { dir: "packages/react", name: "@ggts-sh/react", shipped: ["dist"] },
+  // @ggts-sh/skill ships root-level files, not only directories: SKILL.md is
   // a `files` entry that is not a path prefix (the isShippedPath file-entry
   // regression guard below keys off this). Sorted by dir: skill < spec.
-  { dir: "packages/skill", name: "@ggsvelte/skill", shipped: ["SKILL.md", "references"] },
-  { dir: "packages/spec", name: "@ggsvelte/spec", shipped: ["dist", "schema", "src"] },
-  { dir: "packages/svelte", name: "@ggsvelte/svelte", shipped: ["dist", "bin"] },
+  { dir: "packages/skill", name: "@ggts-sh/skill", shipped: ["SKILL.md", "references"] },
+  { dir: "packages/spec", name: "@ggts-sh/spec", shipped: ["dist", "schema", "src"] },
+  { dir: "packages/svelte", name: "@ggts-sh/svelte", shipped: ["dist", "bin"] },
 ];
 
 describe("decideChangesetComment", () => {
@@ -65,14 +65,11 @@ describe("decideChangesetComment", () => {
 
   it("reports missing when shipped package code changes without a changeset", () => {
     const decision = decideChangesetComment(
-      ["packages/core/src/scales.ts", "packages/cli/bin/ggsvelte-render.js", "README.md"],
+      ["packages/core/src/scales.ts", "packages/cli/bin/ggts.js", "README.md"],
       PACKAGES,
     );
     expect(decision.verdict).toBe("missing");
-    expect(decision.touched).toEqual([
-      "packages/core/src/scales.ts",
-      "packages/cli/bin/ggsvelte-render.js",
-    ]);
+    expect(decision.touched).toEqual(["packages/core/src/scales.ts", "packages/cli/bin/ggts.js"]);
   });
 
   it("treats a published package.json change as shipped surface", () => {
@@ -104,7 +101,7 @@ describe("decideChangesetComment", () => {
     expect(without.touched).toEqual(["packages/skill/SKILL.md"]);
   });
 
-  // Regression: Devin review on #1132 — @ggsvelte/svelte publishes compiled
+  // Regression: Devin review on #1132 — @ggts-sh/svelte publishes compiled
   // dist/ (gitignored), so files is [dist, bin] with no src. Without
   // mapping src → shipped surface, real svelte fixes + changesets got
   // unwarranted and the new gate blocked them.

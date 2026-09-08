@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SCALE_REFERENCE } from "@ggsvelte/spec";
+import { SCALE_REFERENCE } from "@ggts-sh/spec";
 
 import { scaleSwatchFor } from "../src/lib/catalog/scale-swatches";
 

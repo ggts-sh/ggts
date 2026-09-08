@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
-import { GGPlot } from "@ggsvelte/react";
+import { GGPlot } from "@ggts-sh/react";
 import { scenarioSpec } from "./ggsvelte-svg";
 import { PLOT_HEIGHT, PLOT_WIDTH, type ScenarioId, type UpdateColumns } from "../scenarios";
 

@@ -58,7 +58,7 @@ export function sceneLabel(scene: Scene): string {
   const x = scene.axes.x.title;
   const y = scene.axes.y.title;
   if (x !== "" && y !== "") return `Plot of ${y} by ${x}`;
-  return "ggsvelte plot";
+  return "ggts plot";
 }
 
 /** Optional paint rendering controls for pure SVG export (#591). */

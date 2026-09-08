@@ -35,7 +35,7 @@ export function buildForPosition(
     const build = getDiscreteLegendBuilder();
     if (build === undefined) {
       throw new Error(
-        `Discrete legend is not registered in this build. Call registerDiscreteLegend() or registerOrdinalColor() from @ggsvelte/core/headless/register, or registerBasic() from @ggsvelte/core.`,
+        `Discrete legend is not registered in this build. Call registerDiscreteLegend() or registerOrdinalColor() from @ggts-sh/core/headless/register, or registerBasic() from @ggts-sh/core.`,
       );
     }
     return build(input, order, measurer, maxWidth, position);
@@ -43,7 +43,7 @@ export function buildForPosition(
   const builders = getContinuousLegendBuilders();
   if (builders === undefined) {
     throw new Error(
-      `Continuous legend is not registered in this build. Call registerContinuousLegend() or registerSequentialColor() from @ggsvelte/core/headless/register, or registerBasic() from @ggsvelte/core.`,
+      `Continuous legend is not registered in this build. Call registerContinuousLegend() or registerSequentialColor() from @ggts-sh/core/headless/register, or registerBasic() from @ggts-sh/core.`,
     );
   }
   if (input.kind === "steps") return builders.steps(input, measurer, maxWidth, position);

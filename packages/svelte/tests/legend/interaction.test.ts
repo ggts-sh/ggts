@@ -2,7 +2,7 @@ import { fromPartial } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 import { withGrammarAsSpec } from "../helpers/ggplot-input.js";
 
-import type { SceneLegend, ThemeTokens } from "@ggsvelte/core";
+import type { SceneLegend, ThemeTokens } from "@ggts-sh/core";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
 import LegendHarness from "../fixtures/LegendHarness.svelte";

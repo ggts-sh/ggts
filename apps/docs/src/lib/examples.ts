@@ -7,7 +7,7 @@
  * Metadata-only consumers should import `$lib/examples-manifest` instead so
  * they do not register the Example.svelte globs (and their chart deps).
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 import type { Component } from "svelte";
 
 import { indexExampleModulesById, requireExampleModule } from "./example-module-index.js";

@@ -10,7 +10,7 @@ import {
   registerBasicPoints,
   registerBandGuide,
   registerOrdinalColor,
-} from "@ggsvelte/core/headless/register";
+} from "@ggts-sh/core/headless/register";
 
 import { mountChartJs } from "../adapters/chartjs";
 import { mountD3 } from "../adapters/d3";

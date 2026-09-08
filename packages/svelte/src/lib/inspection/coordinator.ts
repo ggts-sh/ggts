@@ -5,7 +5,7 @@
  * Snapshot materialization lives in `./resolver.ts`. This module owns identity
  * tokens, cache keys, and the mutable coordinator factory only.
  */
-import type { CandidateFacts, CanonicalAxisToken, CellValue, RenderModel } from "@ggsvelte/core";
+import type { CandidateFacts, CanonicalAxisToken, CellValue, RenderModel } from "@ggts-sh/core";
 
 import type {
   InteractionSource,

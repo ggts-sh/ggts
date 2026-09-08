@@ -1,6 +1,6 @@
 {
-  "name": "@ggsvelte/skill",
-  "version": "0.42.0",
+  "name": "@ggts-sh/skill",
+  "version": "0.43.0",
   "description": "Agent skill for the shared grammar of graphics: TypeScript, React, Svelte, portable JSON, and the ggts check/render feedback loop. Versions with all framework adapters.",
   "keywords": [
     "agent-skill",
@@ -18,13 +18,13 @@
     "typescript",
     "visualization"
   ],
-  "homepage": "https://ggsvelte.sh/",
-  "bugs": "https://github.com/ljodea/ggsvelte/issues",
+  "homepage": "https://ggts.sh/",
+  "bugs": "https://github.com/ggts-sh/ggts/issues",
   "license": "MIT",
   "author": "Liam O'Dea",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ljodea/ggsvelte.git",
+    "url": "git+https://github.com/ggts-sh/ggts.git",
     "directory": "packages/skill"
   },
   "files": [

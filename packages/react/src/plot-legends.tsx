@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { encodeKey } from "@ggsvelte/core";
+import { encodeKey } from "@ggts-sh/core";
 import {
   buildInteractiveLegendEntries,
   buildLegendEntryKeyIndexForPlot,
@@ -7,15 +7,15 @@ import {
   legendIdentityKey,
   nextLegendFilterValues,
   samePropertyKeySet,
-} from "@ggsvelte/core/interaction";
-import type { CellValue, RenderModel } from "@ggsvelte/core";
+} from "@ggts-sh/core/interaction";
+import type { CellValue, RenderModel } from "@ggts-sh/core";
 import type {
   InteractiveLegendEntry,
   InteractionSource,
   LegendFilterClause,
   LegendFocusEvent,
   PlotInteractionScope,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 import type { GGPlotProps } from "./plot-props.js";
 import type { LayerRegistry } from "./registry.js";
 
@@ -197,6 +197,23 @@ export function usePlotLegends(input: {
     setPreview(null);
     setCommitted(null);
   }, [focusEnabled]);
+  useEffect(() => {
+    if (
+      filters.every((clause) => capability.filter.has(clause.scale) || Boolean(props.legendFilter))
+    )
+      return;
+    // Reset atomically, matching the Svelte host: removed controls cannot
+    // leave hidden row filters behind, including when another guide remains.
+    input.setFilters([]);
+    const event = {
+      type: "legend-filter" as const,
+      phase: "clear" as const,
+      source: "programmatic" as const,
+      clause: null,
+    };
+    props.onlegendfilter?.(event);
+    props.oninteraction?.(event);
+  }, [capability.filter, props.legendFilter, filters]);
   return {
     emphasis,
     entries,

@@ -5,7 +5,7 @@
     Inspect,
     Labs,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { shortSample } from "./data.js";
 </script>

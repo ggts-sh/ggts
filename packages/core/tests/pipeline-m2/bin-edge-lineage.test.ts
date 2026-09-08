@@ -9,7 +9,7 @@
  * `summary_bin`.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import type { RenderModel } from "../../src/pipeline/types-render-model.ts";
 import { size } from "./fixtures.ts";

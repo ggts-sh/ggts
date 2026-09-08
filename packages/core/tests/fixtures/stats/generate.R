@@ -8,7 +8,7 @@
 # Loess parity targets (decision 0010 / #1422): case 22 pins ggplot2's DEFAULT
 # loess path (surface = "interpolate", statistics = "approximate") on small n;
 # case 23 pins the exact/direct path (loess.control(surface = "direct",
-# statistics = "exact")) that ggsvelte uses for n ≤ INTERPOLATE_DIRECT_LIMIT;
+# statistics = "exact")) that ggts uses for n ≤ INTERPOLATE_DIRECT_LIMIT;
 # case 25 pins the large-n interpolate path (n=1200) vs R defaults.
 #
 # Run from anywhere:  Rscript packages/core/tests/fixtures/stats/generate.R
@@ -191,7 +191,7 @@ emit(24, "smooth-loess-degree1-span04",
      "geom_smooth(method = 'loess', n = 60, span = 0.4, method.args = list(degree = 1, control = ...))",
      df_json(df_smooth), smooth_expected(layer_data(p)))
 
-# Large-n loess: R defaults (interpolate/approximate). ggsvelte switches to its
+# Large-n loess: R defaults (interpolate/approximate). ggts switches to its
 # interpolate surface above INTERPOLATE_DIRECT_LIMIT (500) — see issue #1422.
 set.seed(4213)
 n_large <- 1200
@@ -200,7 +200,7 @@ ys_large <- round(3 + 1.5 * xs_large - 0.12 * xs_large^2 + rnorm(n_large, 0, 1.2
 df_smooth_large <- data.frame(x = xs_large, y = ys_large)
 p <- ggplot(df_smooth_large, aes(x, y)) + geom_smooth(method = "loess", n = 80, span = 0.75)
 emit(25, "smooth-loess-interpolate-large",
-     "Large-n loess (n=1200) with R DEFAULT surface=interpolate / statistics=approximate — pins the ggsvelte interpolate path (#1422).",
+     "Large-n loess (n=1200) with R DEFAULT surface=interpolate / statistics=approximate — pins the ggts interpolate path (#1422).",
      "ggplot(df, aes(x, y)) + geom_smooth(method = 'loess', n = 80, span = 0.75)  # n_data=1200",
      df_json(df_smooth_large), smooth_expected(layer_data(p)),
      list(nData = n_large, surface = "interpolate"))
@@ -258,7 +258,7 @@ emit(41, "summary-median-min-max",
 
 # --------------------------------------------------------- density cases ---
 # Reference: stats::density() directly (bw.nrd0, gaussian, n = 512, cut = 3)
-# — ggsvelte keeps R's cut*bw grid tails, where ggplot2 truncates the grid at
+# — ggts keeps R's cut*bw grid tails, where ggplot2 truncates the grid at
 # the scale range (documented divergence, decision 0010). count/scaled follow
 # ggplot2's definitions (density * n, density / max).
 

@@ -1,1 +1,1 @@
-export { GGPlot as out } from "@ggsvelte/react";
+export { GGPlot as out } from "@ggts-sh/react";

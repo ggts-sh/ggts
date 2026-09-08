@@ -3,7 +3,7 @@
 ## Report a vulnerability privately
 
 Do not open a public issue or Discussion for a suspected vulnerability. Use
-[GitHub's private vulnerability reporting form](https://github.com/ljodea/ggsvelte/security/advisories/new).
+[GitHub's private vulnerability reporting form](https://github.com/ggts-sh/ggts/security/advisories/new).
 Include the affected version or commit, impact, minimal reproduction, and any
 known mitigations. Remove credentials, private datasets, personal information,
 and unrelated exploit material.

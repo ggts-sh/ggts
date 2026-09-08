@@ -17,14 +17,14 @@ afterEach(() => {
 const config: DocsBuildConfig = {
   mode: "cloudflare-production",
   base: "",
-  canonicalBase: "https://ggsvelte.sh",
+  canonicalBase: "https://ggts.sh",
   indexable: true,
   analytics: true,
   analyticsToken: "0123456789abcdef0123456789abcdef",
 };
 const route: DocsRouteRecord = {
   path: "/",
-  title: "Home — ggsvelte",
+  title: "Home — ggts",
   description: "A distinct description.",
   canonicalPath: "/",
   kind: "page",
@@ -39,17 +39,17 @@ function fixture(html: string): string {
   writeFileSync(join(root, "index.html"), html);
   writeFileSync(
     join(root, "sitemap.xml"),
-    '<?xml version="1.0"?><urlset><url><loc>https://ggsvelte.sh/</loc></url></urlset>',
+    '<?xml version="1.0"?><urlset><url><loc>https://ggts.sh/</loc></url></urlset>',
   );
   writeFileSync(
     join(root, "robots.txt"),
-    "User-agent: *\nAllow: /\nSitemap: https://ggsvelte.sh/sitemap.xml\n",
+    "User-agent: *\nAllow: /\nSitemap: https://ggts.sh/sitemap.xml\n",
   );
   const facts = [
     `Package version: ${sveltePackage.version}`,
     "Defaults edition: 2",
     "Registered chart themes (33): default, light, dark, minimal, ggplot2, classic, bw, hrbr, few, clean, fivethirtyeight, economist, tufte, linedraw, void, stata, stata_s1color, solarized, solarizeddark, economist_white, solarized_2, solarized_2dark, wsj, hc, hcdark, pander, base, igray, map, solid, grey, gray, test",
-    "[Docs](https://ggsvelte.sh/docs)",
+    "[Docs](https://ggts.sh/docs)",
   ].join("\n");
   writeFileSync(join(root, "llms.txt"), facts);
   writeFileSync(join(root, "llms-full.txt"), facts);
@@ -61,39 +61,39 @@ function socialHead(structured = true): string {
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "ggsvelte",
-      url: "https://ggsvelte.sh/",
+      name: "ggts",
+      url: "https://ggts.sh/",
       description: "A distinct description.",
     },
     {
       "@context": "https://schema.org",
       "@type": "SoftwareSourceCode",
-      name: "ggsvelte",
-      codeRepository: "https://github.com/ljodea/ggsvelte",
+      name: "ggts",
+      codeRepository: "https://github.com/ggts-sh/ggts",
       programmingLanguage: ["TypeScript", "Svelte"],
       license: "https://spdx.org/licenses/MIT.html",
       runtimePlatform: "Node.js 22 or newer",
-      url: "https://ggsvelte.sh/",
+      url: "https://ggts.sh/",
       version: sveltePackage.version,
     },
   ]);
   return [
-    "<title>Home — ggsvelte</title>",
+    "<title>Home — ggts</title>",
     '<meta name="description" content="A distinct description."/>',
-    '<link rel="canonical" href="https://ggsvelte.sh/"/>',
-    '<meta property="og:site_name" content="ggsvelte"/>',
+    '<link rel="canonical" href="https://ggts.sh/"/>',
+    '<meta property="og:site_name" content="ggts"/>',
     '<meta property="og:type" content="website"/>',
-    '<meta property="og:title" content="Home — ggsvelte"/>',
+    '<meta property="og:title" content="Home — ggts"/>',
     '<meta property="og:description" content="A distinct description."/>',
-    '<meta property="og:url" content="https://ggsvelte.sh/"/>',
-    `<meta property="og:image" content="https://ggsvelte.sh${OG_HOME_PATH}"/>`,
+    '<meta property="og:url" content="https://ggts.sh/"/>',
+    `<meta property="og:image" content="https://ggts.sh${OG_HOME_PATH}"/>`,
     `<meta property="og:image:width" content="${String(OG_HOME_WIDTH)}"/>`,
     `<meta property="og:image:height" content="${String(OG_HOME_HEIGHT)}"/>`,
     `<meta property="og:image:alt" content="${OG_HOME_ALT.replaceAll('"', "&quot;")}"/>`,
     '<meta name="twitter:card" content="summary_large_image"/>',
-    '<meta name="twitter:title" content="Home — ggsvelte"/>',
+    '<meta name="twitter:title" content="Home — ggts"/>',
     '<meta name="twitter:description" content="A distinct description."/>',
-    `<meta name="twitter:image" content="https://ggsvelte.sh${OG_HOME_PATH}"/>`,
+    `<meta name="twitter:image" content="https://ggts.sh${OG_HOME_PATH}"/>`,
     `<meta name="twitter:image:alt" content="${OG_HOME_ALT.replaceAll('"', "&quot;")}"/>`,
     structured ? `<script type="application/ld+json">${data}</script>` : "",
   ].join("");
@@ -144,7 +144,7 @@ describe("built docs metadata", () => {
 
   it("rejects a public page that omits social metadata", () => {
     const root = fixture(
-      '<html><head><title>Home — ggsvelte</title><meta name="description" content="A distinct description."/><link rel="canonical" href="https://ggsvelte.sh/"/></head><body></body></html>',
+      '<html><head><title>Home — ggts</title><meta name="description" content="A distinct description."/><link rel="canonical" href="https://ggts.sh/"/></head><body></body></html>',
     );
 
     expect(() => {

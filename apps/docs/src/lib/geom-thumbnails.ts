@@ -5,8 +5,8 @@
  * /previews/ (see GALLERY_PREVIEWS). Prefer a chart that makes the mark
  * itself obvious over multi-layer demos.
  */
-import type { GeomName } from "@ggsvelte/spec";
-import { KNOWN_GEOMS } from "@ggsvelte/spec";
+import type { GeomName } from "@ggts-sh/spec";
+import { KNOWN_GEOMS } from "@ggts-sh/spec";
 
 import { GALLERY_PREVIEWS } from "./generated/gallery-previews.js";
 

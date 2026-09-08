@@ -55,17 +55,17 @@ const LIBS: {
 }[] = [
   {
     id: "ggsvelte",
-    label: "ggsvelte (headless)",
-    note: "gg() -> renderToSVGString (@ggsvelte/core/render lean entry; no DOM, no Svelte runtime)",
+    label: "ggts (headless)",
+    note: "gg() -> renderToSVGString (@ggts-sh/core/render lean entry; no DOM, no Svelte runtime)",
   },
   {
     id: "ggsvelte-react",
-    label: "ggsvelte React (SSR)",
+    label: "ggts React (SSR)",
     note: "react-dom/server renderToString() of shipped GGPlot with spec prop and SVG marks",
   },
   {
     id: "ggsvelte-ggplot",
-    label: "ggsvelte Svelte (SSR)",
+    label: "ggts Svelte (SSR)",
     note: "svelte/server render() of shipped GGPlot with spec prop and SVG marks",
   },
   {

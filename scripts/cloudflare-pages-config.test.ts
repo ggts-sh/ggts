@@ -50,7 +50,7 @@ describe("Cloudflare Pages project contract", () => {
     expect(config.externalRedirects).toEqual([
       {
         source: "https://ggsvelte.pages.dev",
-        target: "https://ggsvelte.sh",
+        target: "https://ggts.sh",
         status: 301,
         preserveQueryString: true,
         subpathMatching: true,
@@ -58,8 +58,8 @@ describe("Cloudflare Pages project contract", () => {
         includeSubdomains: false,
       },
       {
-        source: "https://www.ggsvelte.sh",
-        target: "https://ggsvelte.sh",
+        source: "https://www.ggts.sh",
+        target: "https://ggts.sh",
         status: 301,
         preserveQueryString: true,
         subpathMatching: true,

@@ -7,7 +7,7 @@
  * (reducer, coordinator, queue, field writes) — no $effect registration.
  */
 
-import type { CandidateFacts, CellValue, RenderModel } from "@ggsvelte/core";
+import type { CandidateFacts, CellValue, RenderModel } from "@ggts-sh/core";
 
 import type { InteractionSource, PlotInspectionChange } from "../interaction/interaction.js";
 import { clearInspectionFingerprint } from "./coordinator.js";

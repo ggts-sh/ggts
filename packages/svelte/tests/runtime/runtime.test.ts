@@ -5,7 +5,7 @@
 import { flushSync } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
 import { createPlotRuntime } from "../../src/lib/runtime/runtime.svelte.js";

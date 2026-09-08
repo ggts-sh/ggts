@@ -20,9 +20,9 @@ export function writeReactConsumerFixture(
   mkdirSync(directory, { recursive: true });
   const localPackages = Object.fromEntries(
     ["spec", "core", "compose", "react", "cli", "skill"].map((name) => {
-      const tarball = tarballs.find((path) => path.includes(`ggsvelte-${name}-`));
+      const tarball = tarballs.find((path) => path.includes(`ggts-sh-${name}-`));
       if (tarball === undefined) throw new Error(`consumer fixture missing ${name} tarball`);
-      return [`@ggsvelte/${name}`, `file:${relative(directory, tarball).replaceAll("\\", "/")}`];
+      return [`@ggts-sh/${name}`, `file:${relative(directory, tarball).replaceAll("\\", "/")}`];
     }),
   );
   const write = (file: string, source: string) => {
@@ -65,14 +65,14 @@ export function writeReactConsumerFixture(
     "index.html",
     '<!doctype html><html lang="en"><head><title>Packed React chart</title></head><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>\n',
   );
-  assertRecipeImports(REACT_QUICKSTART_SOURCE, ["@ggsvelte/react"], "React quickstart");
+  assertRecipeImports(REACT_QUICKSTART_SOURCE, ["@ggts-sh/react"], "React quickstart");
   write("Quickstart.tsx", REACT_QUICKSTART_SOURCE + "\n");
   write("chart.ts", TYPESCRIPT_QUICKSTART_SOURCE + "\n");
   write(
     "main.tsx",
     `import { createRoot } from "react-dom/client";
 import SalesChart from "./Quickstart.js";
-import { GGPlot, GeomPoint, type PortableSpec } from "@ggsvelte/react";
+import { GGPlot, GeomPoint, type PortableSpec } from "@ggts-sh/react";
 const spec: PortableSpec = ${JSON.stringify(consumerPlotSpec)};
 createRoot(document.getElementById("root")!).render(<>
   <SalesChart />
@@ -88,7 +88,7 @@ createRoot(document.getElementById("root")!).render(<>
     `import { build } from "vite";
 await build();
 await build({
-  ssr: { noExternal: ["@ggsvelte/react", "@ggsvelte/core", "@ggsvelte/compose", "@ggsvelte/spec"] },
+  ssr: { noExternal: ["@ggts-sh/react", "@ggts-sh/core", "@ggts-sh/compose", "@ggts-sh/spec"] },
   build: {
     ssr: "ssr-probe.mjs",
     outDir: "dist-ssr",
@@ -102,7 +102,7 @@ await build({
     `import { strict as assert } from "node:assert";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { GGPlot, GeomPoint, GeomLine } from "@ggsvelte/react";
+import { GGPlot, GeomPoint, GeomLine } from "@ggts-sh/react";
 const data = [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "A" }, { x: 3, y: 4, group: "B" }];
 const aes = { x: "x", y: "y", color: "group" };
 for (const geom of [GeomPoint, GeomLine]) {
@@ -118,7 +118,7 @@ console.log("bundled React SSR passed");
   write(
     "headless.mjs",
     `import { strict as assert } from "node:assert";
-import { renderToSVGString } from "@ggsvelte/core/render";
+import { renderToSVGString } from "@ggts-sh/core/render";
 assert.match(renderToSVGString(${JSON.stringify(consumerPlotSpec)}, { width: 480, height: 320 }), /<svg/);
 `,
   );
@@ -129,12 +129,12 @@ import { readFileSync, existsSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { GGPlot, GeomPoint } from "@ggsvelte/react";
+import { GGPlot, GeomPoint } from "@ggts-sh/react";
 const spec = ${JSON.stringify(consumerPlotSpec)};
 const sandboxSpec = ${JSON.stringify(SANDBOX_SPEC)};
 assert.match(renderToString(createElement(GGPlot, { spec: sandboxSpec, width: 480, height: 320 })), /Annual sales/);
-assert.equal(existsSync("node_modules/@ggsvelte/svelte"), false);
-assert.match(readFileSync("node_modules/@ggsvelte/skill/SKILL.md", "utf8"), /name:/);
+assert.equal(existsSync("node_modules/@ggts-sh/svelte"), false);
+assert.match(readFileSync("node_modules/@ggts-sh/skill/SKILL.md", "utf8"), /name:/);
 assert.match(readFileSync("dist/index.html", "utf8"), /assets\\//);
 for (const plot of [
   createElement(GGPlot, { spec, width: 480, height: 320 }),

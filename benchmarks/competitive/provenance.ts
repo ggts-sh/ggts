@@ -14,7 +14,7 @@ export function measurementProvenance(browser?: string) {
   };
   const versions = Object.fromEntries(
     Object.keys(manifest.dependencies).map((name) => {
-      const file = name.startsWith("@ggsvelte/")
+      const file = name.startsWith("@ggts-sh/")
         ? resolve(root, "packages", name.split("/")[1]!, "package.json")
         : require.resolve(`${name}/package.json`);
       const pkg = JSON.parse(readFileSync(file, "utf8")) as { version: string };

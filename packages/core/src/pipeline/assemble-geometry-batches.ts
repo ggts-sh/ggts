@@ -1,7 +1,7 @@
 /**
  * Layer-major geometry batch construction across facet panels.
  */
-import type { NormalizedGeomName } from "@ggsvelte/spec";
+import type { NormalizedGeomName } from "@ggts-sh/spec";
 
 import { scalesForCoordExpand, type PanelCoordProjector } from "../coord-projector.js";
 import type { GeometryBatch } from "../scene.js";

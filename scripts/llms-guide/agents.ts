@@ -23,7 +23,7 @@ Keep package.json and the lockfile with the project. Install dependencies
 when preparing a sandbox, before disconnecting it from the network. Rendering
 local JSON requires no model service, browser, or framework installation.
 
-Point the agent at \`node_modules/@ggsvelte/skill/SKILL.md\`. Add that instruction
+Point the agent at \`node_modules/@ggts-sh/skill/SKILL.md\`. Add that instruction
 to the project's agent instructions, or copy the package directory into the
 skill directory used by your agent. Refresh copied files after each package
 upgrade; updating a dependency alone does not refresh a copy. The package has

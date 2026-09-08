@@ -11,7 +11,7 @@ import {
   scaleColorIdentity,
   scaleShapeDiscrete,
   scaleSizeIdentity,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.js";
 

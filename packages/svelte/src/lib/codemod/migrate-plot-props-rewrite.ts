@@ -244,7 +244,7 @@ export interface ImportSite {
 }
 
 /**
- * The named-import statement that brought ggsvelte's `GGPlot` into scope.
+ * The named-import statement that brought ggts's `GGPlot` into scope.
  *
  * Scoped by module specifier on purpose: a `GGPlot` imported from a consumer's
  * own `./local.js` is somebody else's component, and rewriting its props would

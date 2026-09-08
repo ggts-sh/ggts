@@ -39,7 +39,7 @@ import {
   scaleColorGradient,
   scale_color_gradient2,
   scale_fill_gradientn,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 const camel = scaleXLog10({ domain: [1, 10_000] });
 const alias = scale_x_log10({ limits: [1, 10_000] });
@@ -151,7 +151,7 @@ ggplot2-shaped discrete helpers (portable named schemes, not bake-only):
 \`\`\`
 
 \`\`\`ts fragment
-import { scaleColorHue, scaleColorGrey, scaleColorOrdinal } from "@ggsvelte/spec";
+import { scaleColorHue, scaleColorGrey, scaleColorOrdinal } from "@ggts-sh/spec";
 
 scaleColorHue(); // { color: { type: "ordinal", scheme: "hue" } }
 scaleColorGrey(); // bakes a 10-stop greyscale range (US gray is a binding-identical alias)
@@ -178,7 +178,7 @@ import {
   scaleColorLog10,
   scaleColorViridisD,
   scaleFillViridisC,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 const color = scaleColorLog10({ domain: [1, 1000] });
 const fill = scaleFillViridisC({ option: "plasma" });
@@ -213,7 +213,7 @@ import {
   scaleContinuousIdentity,
   scaleDiscreteManual,
   scaleType,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 const linked = scaleDiscreteManual({
   aesthetics: ["colour", "fill"],
@@ -258,7 +258,7 @@ import {
   scaleAlphaDate,
   scaleShapeManual,
   scaleLinetypeDiscrete,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 const scales = {
   ...scaleSizeContinuous({ range: [2, 10] }),
@@ -308,7 +308,7 @@ band label layout are catalogued under [Axes and ticks](/reference/axes);
 plot titles stay on [Labs](/reference/labs).
 
 \`\`\`ts fragment
-import { guideAxis, guideColorsteps } from "@ggsvelte/spec";
+import { guideAxis, guideColorsteps } from "@ggts-sh/spec";
 
 const guides = {
   x: guideAxis({ title: "Hour", showTicks: false }),

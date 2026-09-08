@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { RenderModel } from "@ggsvelte/core";
+  import type { RenderModel } from "@ggts-sh/core";
   import GGPlot from "../../src/lib/GGPlot.svelte";
 
   let plot: {

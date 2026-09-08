@@ -1,4 +1,4 @@
-import { gg } from "@ggsvelte/spec";
+import { gg } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { callouts, nationalDebt, warYears } from "./data.js";

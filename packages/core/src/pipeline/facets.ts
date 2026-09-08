@@ -2,7 +2,7 @@
  * Facet partition (BEFORE stats/positions — plan round-2 consensus).
  * Counts, bins, stacks, and dodges are panel-local, exactly like ggplot2.
  */
-import type { FacetSpec } from "@ggsvelte/spec";
+import type { FacetSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

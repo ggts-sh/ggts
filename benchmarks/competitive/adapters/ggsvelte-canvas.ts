@@ -1,15 +1,15 @@
 /**
  * Canvas-mark ggsvelte mounts (pipeline + planStrata + drawStratum).
- * All imports stay on the lean graph (@ggsvelte/core/render + /dom) so canvas
+ * All imports stay on the lean graph (@ggts-sh/core/render + /dom) so canvas
  * charts never install the Temporal polyfill.
  *
  * Spec uses a named data ref (`{ name: "main" }`) so mount/update feed columns
  * via RunOptions.data without snapshotting 30k cells through toPortable each
  * draw (same data path product code uses for live updates).
  */
-import { cssColorResolver, drawStratum, sizeCanvasForDpr } from "@ggsvelte/core/dom";
-import { planStrata, runPipeline } from "@ggsvelte/core/headless";
-import type { SpecInput } from "@ggsvelte/spec/portable";
+import { cssColorResolver, drawStratum, sizeCanvasForDpr } from "@ggts-sh/core/dom";
+import { planStrata, runPipeline } from "@ggts-sh/core/headless";
+import type { SpecInput } from "@ggts-sh/spec/portable";
 
 import {
   PLOT_HEIGHT,

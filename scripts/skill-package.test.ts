@@ -1,9 +1,9 @@
 /**
- * Pack-shape contract for @ggsvelte/skill (packages/skill/).
+ * Pack-shape contract for @ggts-sh/skill (packages/skill/).
  *
  * The package root IS the skill directory: SKILL.md + references/ ship as the
  * whole consumer surface, and the package versions in lock-step with the other
- * four @ggsvelte/* packages (changesets fixed group). Guards:
+ * four @ggts-sh/* packages (changesets fixed group). Guards:
  *
  * 1. Identity — name, publishConfig (access public + provenance, required for
  *    OIDC trusted publishing after the one-time hand-publish; see decision
@@ -14,7 +14,7 @@
  * 3. Pack completeness — `files` covers SKILL.md and references/, and every
  *    skill source file under the package dir is reachable through a `files`
  *    entry (no silently unpackaged reference doc).
- * 4. SKILL.md frontmatter — `name: ggsvelte` present; NO version key. The
+ * 4. SKILL.md frontmatter — `name: ggts` present; NO version key. The
  *    package.json version is the single version source (dependabot reads it);
  *    a frontmatter stamp would drift on every changesets Version Packages PR.
  */
@@ -50,9 +50,9 @@ function walk(dir: string, base: string): string[] {
   });
 }
 
-describe("@ggsvelte/skill package identity", () => {
-  it("is named @ggsvelte/skill with public OIDC publish config", () => {
-    expect(manifest.name).toBe("@ggsvelte/skill");
+describe("@ggts-sh/skill package identity", () => {
+  it("is named @ggts-sh/skill with public OIDC publish config", () => {
+    expect(manifest.name).toBe("@ggts-sh/skill");
     expect(manifest.publishConfig).toEqual({ access: "public", provenance: true });
     expect(manifest.repository?.directory).toBe("packages/skill");
   });
@@ -64,7 +64,7 @@ describe("@ggsvelte/skill package identity", () => {
   });
 });
 
-describe("@ggsvelte/skill pack completeness", () => {
+describe("@ggts-sh/skill pack completeness", () => {
   const files = manifest.files ?? [];
 
   it("lists SKILL.md and references/ in files", () => {
@@ -84,12 +84,12 @@ describe("@ggsvelte/skill pack completeness", () => {
   });
 });
 
-describe("@ggsvelte/skill SKILL.md frontmatter", () => {
+describe("@ggts-sh/skill SKILL.md frontmatter", () => {
   const skill = readFileSync(join(PKG_DIR, "SKILL.md"), "utf8");
   const frontmatter = skill.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? "";
 
-  it("names the skill ggsvelte", () => {
-    expect(frontmatter).toMatch(/^name: ggsvelte$/m);
+  it("names the skill ggts", () => {
+    expect(frontmatter).toMatch(/^name: ggts$/m);
   });
 
   it("carries no version stamp (package.json is the single version source)", () => {

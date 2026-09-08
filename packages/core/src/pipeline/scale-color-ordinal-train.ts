@@ -1,7 +1,7 @@
 /**
  * Train ordinal color scale with palette-exhaust handling.
  */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import type { ScaleState } from "../scales/state.js";
 import { PaletteExhaustedError } from "../scales/state.js";

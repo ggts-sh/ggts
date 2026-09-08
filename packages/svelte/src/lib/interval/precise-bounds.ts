@@ -3,4 +3,4 @@ export {
   type BoundsEditorInputForScaleOptions,
   boundsEditorInputForScale,
   semanticAxisFromBounds,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

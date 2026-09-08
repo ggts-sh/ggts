@@ -21,6 +21,6 @@ describe("deprecation diagnostic docUrl shape", () => {
       suggestions: ["use <ThemeDark />"],
       anchor: "compose-the-theme-as-a-child-layer",
     });
-    expect(d.docUrl).toBe("https://ggsvelte.sh/guide/upgrading#compose-the-theme-as-a-child-layer");
+    expect(d.docUrl).toBe("https://ggts.sh/guide/upgrading#compose-the-theme-as-a-child-layer");
   });
 });

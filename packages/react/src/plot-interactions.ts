@@ -1,4 +1,10 @@
-import { rectangle, sourceOf, semanticDomainsForRect, moveKeyboardPoint } from "./plot-gesture.js";
+import {
+  rectangle,
+  expandBrushRect,
+  sourceOf,
+  semanticDomainsForRect,
+  moveKeyboardPoint,
+} from "./plot-gesture.js";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent, PointerEvent, RefObject } from "react";
 import {
@@ -13,8 +19,8 @@ import {
   resolveBrushZoomDomains,
   resolvedTarget,
   uniqueKeysFromRowIndexes,
-} from "@ggsvelte/core/interaction";
-import type { CandidateFacts, CellValue, PlotRect, RenderModel } from "@ggsvelte/core";
+} from "@ggts-sh/core/interaction";
+import type { CandidateFacts, CellValue, PlotRect, RenderModel } from "@ggts-sh/core";
 import type {
   InteractionSource,
   InteractionTool,
@@ -23,7 +29,7 @@ import type {
   PlotInteractionScope,
   ReadonlyIntervalDomains,
   ZoomDomains,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 import type { GGPlotProps } from "./plot-props.js";
 import type { PlotInspectionChange, ResolvedInteractionConfig } from "./interaction.js";
 
@@ -31,6 +37,7 @@ type Point = { x: number; y: number };
 type Inspection = PlotInspectionChange<Record<string, CellValue>, PropertyKey>;
 type Brush = { start: Point; end: Point; panelId: string; source: InteractionSource };
 export function usePlotInteractions(input: {
+  flipped: boolean;
   model: RenderModel | null;
   config: ResolvedInteractionConfig;
   props: GGPlotProps;
@@ -184,11 +191,8 @@ export function usePlotInteractions(input: {
     const rect = rectangle(value.start, value.end);
     const panel = model?.viewport.panel(value.panelId);
     const mode = activeTool === "zoom-area" ? config.zoom?.mode : config.select?.mode;
-    if (panel !== null && panel !== undefined) {
-      if (mode === "x") return { ...rect, y0: panel.bounds.y0, y1: panel.bounds.y1 };
-      if (mode === "y") return { ...rect, x0: panel.bounds.x0, x1: panel.bounds.x1 };
-    }
-    return rect;
+    if (panel === null || panel === undefined) return rect;
+    return expandBrushRect(rect, panel.bounds, mode, input.flipped);
   };
   const publishBrush = (value: Brush, phase: "start" | "change") => {
     if (model === null || activeTool !== "select-area" || config.select?.type !== "interval")

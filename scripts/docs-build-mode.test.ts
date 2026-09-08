@@ -7,7 +7,7 @@ describe("docs build modes", () => {
     expect(resolveDocsBuildConfig({})).toEqual({
       mode: "dev",
       base: "",
-      canonicalBase: "https://ggsvelte.sh",
+      canonicalBase: "https://ggts.sh",
       indexable: false,
       analytics: false,
       analyticsToken: null,
@@ -17,7 +17,7 @@ describe("docs build modes", () => {
   it("resolves Cloudflare publication modes only", () => {
     expect(resolveDocsBuildConfig({ mode: "cloudflare-preview" })).toMatchObject({
       base: "",
-      canonicalBase: "https://ggsvelte.sh",
+      canonicalBase: "https://ggts.sh",
       indexable: false,
       analytics: false,
     });
@@ -28,7 +28,7 @@ describe("docs build modes", () => {
       }),
     ).toMatchObject({
       base: "",
-      canonicalBase: "https://ggsvelte.sh",
+      canonicalBase: "https://ggts.sh",
       indexable: true,
       analytics: true,
       analyticsToken: "0123456789abcdef0123456789abcdef",

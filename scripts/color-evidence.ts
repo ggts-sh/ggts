@@ -1,8 +1,8 @@
-import { PipelineError, registerAll, runPipeline } from "@ggsvelte/core";
+import { PipelineError, registerAll, runPipeline } from "@ggts-sh/core";
 
 // Headless full-grammar rendering (#1420): explicit opt-in.
 registerAll();
-import { validate, type PortableSpec } from "@ggsvelte/spec";
+import { validate, type PortableSpec } from "@ggts-sh/spec";
 
 export interface ColorBehaviorEvidence {
   incompatible: {

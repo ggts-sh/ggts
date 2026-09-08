@@ -1,7 +1,7 @@
 /**
  * Boxplot stat → LayerFrame (hinges, whiskers, outliers).
  */
-import type { BoxplotParams } from "@ggsvelte/spec";
+import type { BoxplotParams } from "@ggts-sh/spec";
 
 import { statBoxplot } from "../stats/boxplot.js";
 import type { ColumnTable } from "../table.js";

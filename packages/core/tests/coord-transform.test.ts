@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import type { CoordTransformAxisSpec } from "@ggsvelte/spec";
+import type { CoordTransformAxisSpec } from "@ggts-sh/spec";
 
 import { buildCoordAxisProjector, buildPanelCoordProjector } from "../src/coord-projector.ts";
 import {

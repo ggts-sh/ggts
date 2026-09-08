@@ -1,9 +1,9 @@
 /**
- * Lean SVG-only ggsvelte mounts (keeps @ggsvelte/core/dom and planStrata out of the graph).
+ * Lean SVG-only ggsvelte mounts (keeps @ggts-sh/core/dom and planStrata out of the graph).
  */
-import { countMarks, renderToSVGString, runScene } from "@ggsvelte/core/headless";
-import { mountSceneSvg } from "@ggsvelte/core/svg-live";
-import type { SpecInput } from "@ggsvelte/spec/portable";
+import { countMarks, renderToSVGString, runScene } from "@ggts-sh/core/headless";
+import { mountSceneSvg } from "@ggts-sh/core/svg-live";
+import type { SpecInput } from "@ggts-sh/spec/portable";
 
 import {
   COLORS,

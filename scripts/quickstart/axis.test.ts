@@ -3,7 +3,7 @@
  * rests on, so it is asserted against a real render (earlier dates must sit
  * ABOVE later ones), not against the spec that requested it.
  */
-import { runPipeline } from "@ggsvelte/core";
+import { runPipeline } from "@ggts-sh/core";
 import { describe, expect, it } from "bun:test";
 
 import { foldSakura } from "../quickstart.ts";

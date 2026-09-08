@@ -9,7 +9,7 @@
     ScaleColorDiscrete,
     ScaleXContinuous,
     ThemeEconomist,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { wheatAndWages } from "./data.js";
 </script>

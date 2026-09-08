@@ -3,7 +3,7 @@
  *
  * Re-exported from the bundled coffeeRatings table so the example, the package
  * data export, and the docs JSON asset stay one table. Import the source
- * module (not `@ggsvelte/core/data`) so `check:scripts` typechecks before
+ * module (not `@ggts-sh/core/data`) so `check:scripts` typechecks before
  * packages/svelte dist is built.
  *
  * Source: Coffee Quality Institute scores compiled by James LeDoux, via

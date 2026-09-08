@@ -1,8 +1,8 @@
 <script lang="ts">
   /** One panel's axis ticks (mirrors renderToSVGString's renderPanelAxes).
    *  Axis TITLES are plot-level and render in SceneView. */
-  import type { SceneTick, ScenePanel, ThemeTokens } from "@ggsvelte/core";
-  import { themeVar } from "@ggsvelte/core";
+  import type { SceneTick, ScenePanel, ThemeTokens } from "@ggts-sh/core";
+  import { themeVar } from "@ggts-sh/core";
 
   const {
     ticks,

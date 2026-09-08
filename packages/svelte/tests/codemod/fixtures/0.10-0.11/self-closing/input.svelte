@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GGPlot } from "@ggsvelte/svelte";
+  import { GGPlot } from "@ggts-sh/svelte";
 
   const spec = { layers: [{ geom: "point" as const }] };
 </script>

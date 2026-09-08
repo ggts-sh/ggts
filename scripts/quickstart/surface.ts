@@ -5,15 +5,15 @@
  * file, PortableSpec, and headless/CLI snippets cannot drift from the fold.
  */
 
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import { foldSakura } from "./fold";
 import { SAKURA_STEPS, SAKURA_TREND_WINDOW } from "./steps";
 
 // --- the agent surface -----------------------------------------------------
 
-export const QUICKSTART_BUILDER_FRAGMENT = `import { aes, gg } from "@ggsvelte/svelte";
-import { kyotoSakura } from "@ggsvelte/core/data";
+export const QUICKSTART_BUILDER_FRAGMENT = `import { aes, gg } from "@ggts-sh/svelte";
+import { kyotoSakura } from "@ggts-sh/core/data";
 
 const spec = gg(kyotoSakura, aes({ x: "year", y: "bloomDate" }))
   .geomPoint()
@@ -31,7 +31,7 @@ const spec = gg(kyotoSakura, aes({ x: "year", y: "bloomDate" }))
  * Derived from `foldSakura(SAKURA_STEPS.length)` so layers, scales, theme, and
  * guides cannot drift from the finished Svelte file or the live chart. Plot
  * data is a named ref (`kyotoSakura`) — hosts resolve it from
- * `@ggsvelte/core/data`. Small annotation tables (epochs, records) stay as
+ * `@ggts-sh/core/data`. Small annotation tables (epochs, records) stay as
  * inline `values` because they are chart decoration, not the 838-row series.
  * `key` and `<Inspect>` are host-only; not PortableSpec fields.
  */
@@ -53,7 +53,7 @@ export const QUICKSTART_PORTABLE_SPEC_FRAGMENT = `${JSON.stringify(
   2,
 )}\n`;
 
-export const QUICKSTART_HEADLESS_FRAGMENT = `import { registerAll, renderToSVGString } from "@ggsvelte/core";
+export const QUICKSTART_HEADLESS_FRAGMENT = `import { registerAll, renderToSVGString } from "@ggts-sh/core";
 
 // Headless/spec-driven rendering opts into the full grammar explicitly (#1420).
 registerAll();

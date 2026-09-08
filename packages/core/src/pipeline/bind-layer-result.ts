@@ -1,7 +1,7 @@
 /**
  * Assemble LayerBinding from resolved channel fields and extras.
  */
-import type { NormalizedLayerSpec } from "@ggsvelte/spec";
+import type { NormalizedLayerSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

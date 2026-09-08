@@ -14,7 +14,7 @@ import { PlotSpecSchema } from "../packages/spec/src/schema.ts";
 
 import { defineArtifact, formatGeneratedSource } from "./artifact.ts";
 
-// typebox is a @ggsvelte/spec dependency, not a root one — resolve through
+// typebox is a @ggts-sh/spec dependency, not a root one — resolve through
 // the package so this script works regardless of hoisting. Typed locally so
 // the scripts tsconfig never resolves typebox's declarations.
 const specRequire = createRequire(join(import.meta.dir, "../packages/spec/package.json"));

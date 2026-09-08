@@ -8,7 +8,7 @@
     ScaleFillDiscrete,
     ScaleXDiscrete,
     ThemeLight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { pyxTrial } from "./data.js";
 </script>

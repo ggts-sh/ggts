@@ -2,7 +2,7 @@
  * gen-builder-scales — generates packages/spec/src/builder-scales.ts from
  * SCALE_CAPABILITIES (#1081).
  *
- * Helper names come from `builderScaleHelperNames()` in @ggsvelte/spec so the
+ * Helper names come from `builderScaleHelperNames()` in @ggts-sh/spec so the
  * ledger (plus style ordinal aliases) is the single source of truth.
  *
  * Usage:
@@ -11,7 +11,7 @@
  */
 import { join } from "node:path";
 
-import { builderScaleHelperNames } from "@ggsvelte/spec";
+import { builderScaleHelperNames } from "@ggts-sh/spec";
 
 import { defineArtifact, formatGeneratedSource } from "./artifact.ts";
 

@@ -1,4 +1,4 @@
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { ZoomDomains } from "./interaction.js";
 

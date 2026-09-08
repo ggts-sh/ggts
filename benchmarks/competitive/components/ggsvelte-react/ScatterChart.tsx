@@ -1,5 +1,5 @@
-import { GGPlot } from "@ggsvelte/react";
-import type { SpecInput } from "@ggsvelte/spec/portable";
+import { GGPlot } from "@ggts-sh/react";
+import type { SpecInput } from "@ggts-sh/spec/portable";
 
 import { COLORS, type ScatterColumns } from "../../scenarios";
 

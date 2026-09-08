@@ -6,7 +6,7 @@
  * never published to docs — so measured scores reflect generalization, not
  * memorized documentation.
  */
-import type { DataProfile, PortableSpec, SpecError } from "@ggsvelte/spec";
+import type { DataProfile, PortableSpec, SpecError } from "@ggts-sh/spec";
 
 /** What a case probes. */
 export type CaseKind =

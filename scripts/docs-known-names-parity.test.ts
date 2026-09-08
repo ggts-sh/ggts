@@ -1,8 +1,8 @@
 /**
- * Docs-local known-name lists must match @ggsvelte/spec (ReferenceLede links).
+ * Docs-local known-name lists must match @ggts-sh/spec (ReferenceLede links).
  */
 import { describe, expect, it } from "bun:test";
-import { KNOWN_GEOMS as SpecGeoms, KNOWN_STATS as SpecStats } from "@ggsvelte/spec";
+import { KNOWN_GEOMS as SpecGeoms, KNOWN_STATS as SpecStats } from "@ggts-sh/spec";
 
 import {
   KNOWN_GEOMS as DocsGeoms,

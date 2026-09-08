@@ -5,7 +5,7 @@
  * examples come from import.meta.glob over the corpus, prose from the same
  * generators the guide pages render.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { LlmsFullExample } from "$scripts/gen-llms";
 import { buildLlmsFull, docsDiscoveryFacts, pruneSpecData } from "$scripts/gen-llms";

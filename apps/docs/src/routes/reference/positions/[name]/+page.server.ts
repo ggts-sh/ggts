@@ -6,7 +6,7 @@ import {
   type GeomName,
   type PositionName,
   KNOWN_POSITIONS,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { EXAMPLES } from "$lib/examples-manifest";
 

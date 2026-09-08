@@ -23,8 +23,8 @@
     ScaleXDate,
     scaleXLog10,
     Theme,
-  } from "@ggsvelte/svelte";
-  import type { ThemeName } from "@ggsvelte/spec";
+  } from "@ggts-sh/svelte";
+  import type { ThemeName } from "@ggts-sh/spec";
 
   import TemperaturesSpecimen from "$lib/components/TemperaturesSpecimen.svelte";
   import { docsAppearance } from "$lib/docs-appearance-state.svelte";

@@ -2,7 +2,7 @@
  * Position transform — detached-values.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, scaleXLog10, scaleYLog10 } from "@ggsvelte/spec";
+import { aes, gg, scaleXLog10, scaleYLog10 } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import { size, xScale } from "./fixtures.ts";
 

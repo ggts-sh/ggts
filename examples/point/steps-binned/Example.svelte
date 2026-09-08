@@ -6,7 +6,7 @@
     Labs,
     ScaleColorSteps,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { londonDistricts } from "./data.js";
 </script>

@@ -5,7 +5,7 @@
    * reset-focus microtask, and fieldset-scoped styles (root layout margins
    * stay on the plot root).
    */
-  import { encodeKey } from "@ggsvelte/core";
+  import { encodeKey } from "@ggts-sh/core";
 
   import type {
     FilterableLegendEntry,

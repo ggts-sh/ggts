@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-  <title>{data.route?.title ?? "ggsvelte"}</title>
+  <title>{data.route?.title ?? "ggts"}</title>
   {#if data.route !== undefined}
     <meta name="description" content={data.route.description} />
   {/if}
@@ -22,7 +22,7 @@
     <link rel="canonical" href={data.canonical} />
   {/if}
   {#if data.seo !== undefined}
-    <meta property="og:site_name" content="ggsvelte" />
+    <meta property="og:site_name" content="ggts" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={data.seo.title} />
     <meta property="og:description" content={data.seo.description} />

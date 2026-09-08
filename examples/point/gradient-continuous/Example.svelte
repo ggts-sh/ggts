@@ -7,7 +7,7 @@
     ScaleColorGradient,
     ScaleXContinuous,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { parisRegister } from "./data.js";
 </script>

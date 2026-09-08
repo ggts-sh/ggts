@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
-import { planStrata, runPipeline } from "@ggsvelte/core";
-import type { RenderModel, RuntimeRowFilterClause, ScaleState } from "@ggsvelte/core";
-import type { PortableSpec } from "@ggsvelte/spec";
+import { planStrata, runPipeline } from "@ggts-sh/core";
+import type { RenderModel, RuntimeRowFilterClause, ScaleState } from "@ggts-sh/core";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import { useHostLayoutEffect } from "./host-effect.js";
 

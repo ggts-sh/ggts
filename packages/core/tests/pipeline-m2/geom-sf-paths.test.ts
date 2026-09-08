@@ -4,7 +4,7 @@
  * ring-cutting contract shared by every paths-batch consumer.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import { pathData } from "../../src/render-svg-marks.ts";
 import type { PathsBatch, PointsBatch } from "../../src/scene.ts";

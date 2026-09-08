@@ -1,17 +1,17 @@
-# @ggsvelte/svelte
+# @ggts-sh/svelte
 
-[![codecov](https://codecov.io/gh/ljodea/ggsvelte/branch/main/graph/badge.svg?component=packages-svelte)](https://app.codecov.io/gh/ljodea/ggsvelte/tree/main/packages%2Fsvelte)
+[![codecov](https://codecov.io/gh/ggts-sh/ggts/branch/main/graph/badge.svg?component=packages-svelte)](https://app.codecov.io/gh/ggts-sh/ggts/tree/main/packages%2Fsvelte)
 
-Svelte 5 components for ggsvelte. Re-exports `@ggsvelte/spec` and
-`@ggsvelte/core`. The agent skill ships separately as
-[`@ggsvelte/skill`](https://www.npmjs.com/package/@ggsvelte/skill), and the
-`ggsvelte-render` CLI as
-[`@ggsvelte/cli`](https://www.npmjs.com/package/@ggsvelte/cli) — install both in
+Svelte 5 components for ggts. Re-exports `@ggts-sh/spec` and
+`@ggts-sh/core`. The agent skill ships separately as
+[`@ggts-sh/skill`](https://www.npmjs.com/package/@ggts-sh/skill), and the
+`ggts render` CLI as
+[`@ggts-sh/cli`](https://www.npmjs.com/package/@ggts-sh/cli) — install both in
 every sandbox where an agent authors specs.
 
 ```sh
-bun add @ggsvelte/svelte
-# or: npm install @ggsvelte/svelte
+bun add @ggts-sh/svelte
+# or: npm install @ggts-sh/svelte
 ```
 
 Requires Node.js 22+ and Svelte 5.33.1+.
@@ -30,8 +30,8 @@ Compose with declaration-only children (theme, scales, labs, geoms). Do not put
     GGPlot,
     Labs,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
-  import { kyotoSakura } from "@ggsvelte/core/data";
+  } from "@ggts-sh/svelte";
+  import { kyotoSakura } from "@ggts-sh/core/data";
 </script>
 
 <GGPlot data={kyotoSakura} aes={{ x: "year", y: "bloomDoy" }}>
@@ -57,14 +57,14 @@ stay in the DOM. Prefer `<Inspect />` and `<GuideLegend channel focus>` /
 ## Agent skill
 
 Published separately as
-[`@ggsvelte/skill`](https://www.npmjs.com/package/@ggsvelte/skill):
-`node_modules/@ggsvelte/skill/SKILL.md`. Copy it into your agent's skills
-directory as `ggsvelte/` and re-copy on version bumps — dependabot surfaces
+[`@ggts-sh/skill`](https://www.npmjs.com/package/@ggts-sh/skill):
+`node_modules/@ggts-sh/skill/SKILL.md`. Copy it into your agent's skills
+directory as `ggts/` and re-copy on version bumps — dependabot surfaces
 those. (Removed from this package in 0.27.0.)
 
 Emit PortableSpec JSON, run `validate()`, apply `fix.example` at `path`,
 re-validate, then render with `<GGPlot spec={…} />`, `renderToSVGString`, or
-`ggsvelte-render`. Schema: [schema/v0.json](https://ggsvelte.sh/schema/v0.json).
+`ggts render`. Schema: [schema/v0.json](https://ggts.sh/schema/v0.json).
 
 ## Migrating old code
 
@@ -72,24 +72,24 @@ If you still have pre-0.13 sources with grammar props on `<GGPlot>`, the
 codemod rewrites them to children:
 
 ```sh
-npx ggsvelte-codemod src          # show what would change
-npx ggsvelte-codemod --write src  # apply
+npx ggts-codemod src          # show what would change
+npx ggts-codemod --write src  # apply
 ```
 
 Shapes it will not rewrite mechanically are printed as `manual change
 required` with a link to the [upgrading
-guide](https://ggsvelte.sh/guide/upgrading), never half-migrated.
+guide](https://ggts.sh/guide/upgrading), never half-migrated.
 
 ## Links
 
-- [Documentation](https://ggsvelte.sh/)
-- [Getting started](https://ggsvelte.sh/guide/getting-started)
-- [Example gallery](https://ggsvelte.sh/examples)
-- [Interactions](https://ggsvelte.sh/reference/interactions)
-- [Upgrading](https://ggsvelte.sh/guide/upgrading)
-- [CLI (`@ggsvelte/cli`)](https://www.npmjs.com/package/@ggsvelte/cli)
-- [Repository](https://github.com/ljodea/ggsvelte)
+- [Documentation](https://ggts.sh/)
+- [Getting started](https://ggts.sh/guide/getting-started)
+- [Example gallery](https://ggts.sh/examples)
+- [Interactions](https://ggts.sh/reference/interactions)
+- [Upgrading](https://ggts.sh/guide/upgrading)
+- [CLI (`@ggts-sh/cli`)](https://www.npmjs.com/package/@ggts-sh/cli)
+- [Repository](https://github.com/ggts-sh/ggts)
 
 Pre-1.0. Lifecycle and compatibility contracts are on the docs site.
 
-[MIT](https://github.com/ljodea/ggsvelte/blob/main/LICENSE) © Liam O'Dea
+[MIT](https://github.com/ggts-sh/ggts/blob/main/LICENSE) © Liam O'Dea

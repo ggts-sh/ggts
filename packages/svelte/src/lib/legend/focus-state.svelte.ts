@@ -9,7 +9,7 @@
  * Those are methods/effects registered after the host declares the later
  * bindings.
  */
-import type { CellValue, RenderModel } from "@ggsvelte/core";
+import type { CellValue, RenderModel } from "@ggts-sh/core";
 
 import type { PlotInteractionController } from "../interaction/controller.svelte.js";
 import type {

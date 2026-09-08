@@ -9,7 +9,7 @@
     Labs,
     ScaleXContinuous,
     ThemeFew,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { rows } from "./data.js";
 

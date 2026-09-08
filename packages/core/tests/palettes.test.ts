@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, SpecValidationError, type PortableSpec } from "@ggsvelte/spec";
+import { aes, gg, SpecValidationError, type PortableSpec } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.ts";
 import { renderToSVGString } from "../src/render-svg-full.ts";

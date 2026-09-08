@@ -2,7 +2,7 @@ import "./setup-register-all.js";
 import { tick } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 
-import { runPipeline } from "@ggsvelte/core";
+import { runPipeline } from "@ggts-sh/core";
 
 import GGPlot from "../src/lib/GGPlot.svelte";
 import { resolveInspection } from "../src/lib/inspection/resolver.js";

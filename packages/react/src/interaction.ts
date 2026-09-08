@@ -1,12 +1,12 @@
-import type { CellValue } from "@ggsvelte/core";
+import type { CellValue } from "@ggts-sh/core";
 import type {
   InspectOptions as CoreInspectOptions,
   PlotInspectionChange,
   ResolvedInteractionConfig as CoreResolvedInteractionConfig,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 import type { ReactNode } from "react";
-export type * from "@ggsvelte/core/interaction";
-export { createPlotInteraction } from "@ggsvelte/core/interaction";
+export type * from "@ggts-sh/core/interaction";
+export { createPlotInteraction } from "@ggts-sh/core/interaction";
 
 export type InspectOptions<Row = Record<string, CellValue>, Key = PropertyKey> = CoreInspectOptions<
   Row,

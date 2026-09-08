@@ -6,7 +6,7 @@
     scaleReferenceList,
     type ScaleFamily,
     type ScaleReferenceEntry,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
 
   let query = $state("");
   /** Full catalog (primaries + Colour/Ordinal aliases) for search. */
@@ -71,7 +71,7 @@
   <h1 id="reference-heading">Scales</h1>
   <p class="lede">
     Every public <code>Scale*</code> component: position, color/fill, and style
-    channels. Props match the fluent helpers on <code>@ggsvelte/spec</code> and
+    channels. Props match the fluent helpers on <code>@ggts-sh/spec</code> and
     the PortableSpec <code>scales</code> object. For palette specimens, see
     <a href={`${base}/palettes`}>Palettes</a>; for guide behavior, see
     <a href={`${base}/guide/scales-guides`}>Scales and guides</a>.
@@ -135,7 +135,7 @@
   GeomPoint,
   ScaleColorContinuous,
   ScaleXContinuous,
-} from "@ggsvelte/svelte";
+} from "@ggts-sh/svelte";
 
 <GGPlot data={rows} aes={{ x: "year", y: "value", color: "temp" }}>
   <GeomPoint />

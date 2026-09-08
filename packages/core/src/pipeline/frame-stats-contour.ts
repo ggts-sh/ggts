@@ -5,7 +5,7 @@
  * level is carried for after_stat / tooltips (color-by-level deferred — ColorBinding
  * has no statColumn yet).
  */
-import type { ContourParams } from "@ggsvelte/spec";
+import type { ContourParams } from "@ggts-sh/spec";
 
 import { statContour } from "../stats/contour.js";
 import type { ColumnTable } from "../table.js";

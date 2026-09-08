@@ -92,7 +92,7 @@ plot tool rail must stay synchronized:
 
 \`\`\`svelte fragment
 <script lang="ts">
-  import { GGPlot, Inspect, type InteractionTool } from "@ggsvelte/svelte";
+  import { GGPlot, Inspect, type InteractionTool } from "@ggts-sh/svelte";
 
   let activeTool = $state<InteractionTool>("inspect");
 </script>

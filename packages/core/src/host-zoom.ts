@@ -1,5 +1,5 @@
 import type { RenderModel, SemanticViewportPanel } from "./index.js";
-import type { CoordTransformAxisSpec, PortableSpec, Scales } from "@ggsvelte/spec";
+import type { CoordTransformAxisSpec, PortableSpec, Scales } from "@ggts-sh/spec";
 
 import type { InteractionSource, PlotInteractionScope, ZoomEvent } from "./interaction-types.js";
 import { frozenZoomDomains, type ContinuousZoomDomains, type PlotRect } from "./host-geometry.js";

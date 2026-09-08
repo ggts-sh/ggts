@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { SceneLegend, ThemeTokens } from "@ggsvelte/core";
-  import { LEGEND_ROW_HEIGHT, LINETYPE_DASHES, themeVar } from "@ggsvelte/core";
-  import { LINETYPE_NAMES } from "@ggsvelte/spec";
+  import type { SceneLegend, ThemeTokens } from "@ggts-sh/core";
+  import { LEGEND_ROW_HEIGHT, LINETYPE_DASHES, themeVar } from "@ggts-sh/core";
+  import { LINETYPE_NAMES } from "@ggts-sh/spec";
 
   const { legend, theme }: { legend: SceneLegend; theme: ThemeTokens } =
     $props();

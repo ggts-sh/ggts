@@ -5,7 +5,7 @@
  * (ggplot2 unit(0.03, "npc") analogue). Sides are panel-edge-relative and
  * do not flip with reversed scales.
  */
-import type { RugParams } from "@ggsvelte/spec";
+import type { RugParams } from "@ggts-sh/spec";
 
 import type { SegmentsBatch } from "../scene.js";
 

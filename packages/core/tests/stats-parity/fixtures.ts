@@ -7,13 +7,13 @@
  *  - qt / lm / loess(surface="direct", statistics="exact"): float noise —
  *    asserted at 1e-9 (measured ≤ ~2e-13 abs).
  *  - loess vs ggplot2's DEFAULT loess (surface="interpolate",
- *    statistics="approximate"), small n (still on ggsvelte direct/exact):
+ *    statistics="approximate"), small n (still on ggts direct/exact):
  *    measured max relative deviation 0.53% (fit), 0.94% (band), 3.4% (se);
  *    asserted at 1% / 1.5% / 4% relative.
  *  - loess large-n interpolate path (n > INTERPOLATE_DIRECT_LIMIT, fixture
  *    25, n=1200): fit ≤ ~6e-5 rel vs R default; band ≤ ~0.35%; se ≤ ~10%
  *    (approximate δ + blended ‖l‖). Asserted at 0.1% / 1% / 12%.
- *  - density vs R's binned-FFT stats::density(): ggsvelte sums the kernel
+ *  - density vs R's binned-FFT stats::density(): ggts sums the kernel
  *    directly (exact); measured max relative deviation ~2.6e-4; asserted at
  *    5e-4 relative. Bandwidth (bw.nrd0) and grid endpoints are exact (1e-9).
  *  - bin / boxplot / summary: exact algorithms — 1e-9.

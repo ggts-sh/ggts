@@ -1,7 +1,7 @@
 /**
  * Summary stat → LayerFrame (y/ymin/ymax for errorbars and related geoms).
  */
-import type { ErrorbarParams } from "@ggsvelte/spec";
+import type { ErrorbarParams } from "@ggts-sh/spec";
 
 import { statSummary } from "../stats/summary.js";
 import type { CellValue, ColumnTable } from "../table.js";

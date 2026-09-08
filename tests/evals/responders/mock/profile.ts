@@ -1,5 +1,5 @@
 /** Profile parsing and field selection for the mock responder. */
-import type { DataProfile, ProfileFieldType } from "@ggsvelte/spec";
+import type { DataProfile, ProfileFieldType } from "@ggts-sh/spec";
 
 import { PROFILE_MARKER } from "../../prompt.ts";
 import type { Mention } from "./types.ts";

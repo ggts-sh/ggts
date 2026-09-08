@@ -4,7 +4,7 @@ import {
   type BatchInteractionMask,
   type CandidateFacts,
   type RenderModel,
-} from "@ggsvelte/core";
+} from "@ggts-sh/core";
 
 import type { PlotInteractionInterval } from "../interaction/interaction.js";
 import type { IntervalConsumptionCandidate } from "../interval/consumption.js";

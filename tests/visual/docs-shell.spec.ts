@@ -53,7 +53,7 @@ test("getting started presents install, a complete file, then PortableSpec", asy
 
   const completeFile = article.locator("pre code").filter({ hasText: "GeomPoint" }).first();
   await expect(completeFile).toContainText("GGPlot");
-  await expect(completeFile).toContainText('from "@ggsvelte/core/data"');
+  await expect(completeFile).toContainText('from "@ggts-sh/core/data"');
   // Width follows the container and height defaults; neither belongs in the
   // file a reader copies.
   await expect(completeFile).not.toContainText("width=");
@@ -215,9 +215,9 @@ test("appearance control remains usable when browser storage is unavailable", as
 test("route metadata is canonical, singular, and aliases are noindex", async ({ page }) => {
   // Search index is lazy-loaded (#948); journeys project budget is 60s (#944).
   await page.goto(GUIDE_ROUTE);
-  await expect(page).toHaveTitle("Getting started — ggsvelte");
+  await expect(page).toHaveTitle("Getting started — ggts");
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
-  const canonicalBase = "https://ggsvelte.sh";
+  const canonicalBase = "https://ggts.sh";
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
     `${canonicalBase}/guide/getting-started`,
@@ -240,7 +240,7 @@ test("public metadata exposes social cards and truthful route-local structured d
   page,
 }) => {
   await page.goto("/");
-  const canonicalBase = "https://ggsvelte.sh";
+  const canonicalBase = "https://ggts.sh";
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
     "content",
     `${canonicalBase}/`,

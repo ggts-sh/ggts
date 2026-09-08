@@ -1,4 +1,4 @@
-import { aes, gg, scaleXDiscrete } from "@ggsvelte/spec";
+import { aes, gg, scaleXDiscrete } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { pyxTrial } from "./data.js";

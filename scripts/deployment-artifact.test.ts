@@ -44,8 +44,8 @@ const S_MAXAGE_HEADERS = `/*
   Cache-Control: public, max-age=0, s-maxage=86400, must-revalidate
 `;
 
-const PRODUCTION_REDIRECTS = `/ggsvelte https://ggsvelte.sh/ 301
-/ggsvelte/* https://ggsvelte.sh/:splat 301
+const PRODUCTION_REDIRECTS = `/ggsvelte https://ggts.sh/ 301
+/ggsvelte/* https://ggts.sh/:splat 301
 `;
 
 const CSP_META = `<meta http-equiv="content-security-policy" content="default-src 'self'; base-uri 'self'; connect-src 'self' https://cloudflareinsights.com; font-src 'self'; form-action 'self'; frame-src 'none'; img-src 'self' data:; manifest-src 'self'; media-src 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com; script-src-attr 'none'; style-src 'self'; style-src-attr 'unsafe-inline'; upgrade-insecure-requests">`;
@@ -82,7 +82,7 @@ const expectedArtifact = (buildMode: "cloudflare-preview" | "cloudflare-producti
 function makeCompleteArtifact(buildMode: "cloudflare-preview" | "cloudflare-production") {
   const buildDirectory = mkdtempSync(join(tmpdir(), "ggsvelte-cloudflare-artifact-"));
   for (const [path, contents] of [
-    ["index.html", `${CSP_META}<link rel="canonical" href="https://ggsvelte.sh/">`],
+    ["index.html", `${CSP_META}<link rel="canonical" href="https://ggts.sh/">`],
     [
       "404.html",
       `${NOT_FOUND_CSP_META}<meta name="robots" content="noindex,follow"><main><h1>Not found</h1></main>`,
@@ -94,8 +94,8 @@ function makeCompleteArtifact(buildMode: "cloudflare-preview" | "cloudflare-prod
         : REQUIRED_HEADERS,
     ],
     ["_redirects", buildMode === "cloudflare-preview" ? PREVIEW_REDIRECTS : PRODUCTION_REDIRECTS],
-    ["robots.txt", "Sitemap: https://ggsvelte.sh/sitemap.xml"],
-    ["sitemap.xml", "<loc>https://ggsvelte.sh/</loc>"],
+    ["robots.txt", "Sitemap: https://ggts.sh/sitemap.xml"],
+    ["sitemap.xml", "<loc>https://ggts.sh/</loc>"],
     ["artifact.json", `${JSON.stringify(buildDeploymentIdentity(expectedArtifact(buildMode)))}\n`],
   ] as const) {
     writeFileSync(join(buildDirectory, path), contents);
@@ -182,7 +182,7 @@ describe("deployment artifact identity", () => {
       const html = readFileSync(join(buildDirectory, "404.html"), "utf8");
       expect(html).toContain('<meta name="robots" content="noindex,follow" />');
       expect(html).toContain("<main><h1>Not found</h1>");
-      expect(html).toContain('<a href="/">Go to the ggsvelte documentation</a>');
+      expect(html).toContain('<a href="/">Go to the ggts documentation</a>');
       expect(html).not.toContain("<script");
     } finally {
       rmSync(buildDirectory, { recursive: true, force: true });
@@ -266,10 +266,7 @@ describe("deployment artifact identity", () => {
   it("requires the exact bare /ggsvelte absolute cleanup on production, not only the wildcard", () => {
     const buildDirectory = makeCompleteArtifact("cloudflare-production");
     try {
-      writeFileSync(
-        join(buildDirectory, "_redirects"),
-        `/ggsvelte/* https://ggsvelte.sh/:splat 301\n`,
-      );
+      writeFileSync(join(buildDirectory, "_redirects"), `/ggsvelte/* https://ggts.sh/:splat 301\n`);
       expect(
         validateDeploymentArtifact(buildDirectory, expectedArtifact("cloudflare-production")),
       ).toContain("_redirects is missing the absolute /ggsvelte cleanup redirect");
@@ -283,8 +280,8 @@ describe("deployment artifact identity", () => {
     try {
       writeFileSync(
         join(buildDirectory, "_redirects"),
-        `/old/ggsvelte https://ggsvelte.sh/ 301
-/ggsvelte/* https://ggsvelte.sh/:splat 301
+        `/old/ggsvelte https://ggts.sh/ 301
+/ggsvelte/* https://ggts.sh/:splat 301
 `,
       );
       expect(
@@ -380,8 +377,8 @@ describe("deployment artifact identity", () => {
       writeFileSync(
         join(buildDirectory, "_redirects"),
         `/bench/* https://ljodea.github.io/ggsvelte/bench/:splat 302
-/ggsvelte https://ggsvelte.sh/ 301
-/ggsvelte/* https://ggsvelte.sh/:splat 301
+/ggsvelte https://ggts.sh/ 301
+/ggsvelte/* https://ggts.sh/:splat 301
 `,
       );
       const problems = validateDeploymentArtifact(
@@ -402,7 +399,7 @@ describe("deployment artifact identity", () => {
     try {
       writeFileSync(
         join(buildDirectory, "_redirects"),
-        `https://ggsvelte.pages.dev/* https://ggsvelte.sh/:splat 301\n${PRODUCTION_REDIRECTS}`,
+        `https://ggsvelte.pages.dev/* https://ggts.sh/:splat 301\n${PRODUCTION_REDIRECTS}`,
       );
       expect(
         validateDeploymentArtifact(buildDirectory, expectedArtifact("cloudflare-production")),

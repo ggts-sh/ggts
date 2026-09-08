@@ -2,7 +2,7 @@
  * Stat/geom name → family register function name, for "not registered in
  * this build" error hints (#1420). Pure strings by design: importing the
  * actual register functions here would pull the whole registration graph
- * into the lean `@ggsvelte/core/render` bundle and undo tree-shaking.
+ * into the lean `@ggts-sh/core/render` bundle and undo tree-shaking.
  *
  * Coverage mirrors the register-*.ts family modules one-for-one; the drift
  * guards in tests/register-hints.test.ts fail if a family module lands
@@ -11,7 +11,7 @@
  * registerBasic()/registerAll().
  */
 
-/** Specialty stat name → family register function (from @ggsvelte/core or @ggsvelte/svelte). */
+/** Specialty stat name → family register function (from @ggts-sh/core or @ggts-sh/svelte). */
 export const STAT_REGISTER_HINTS: Readonly<Record<string, string>> = {
   count: "registerBasicPoints",
   sum: "registerBasicBars",
@@ -43,7 +43,7 @@ export const STAT_REGISTER_HINTS: Readonly<Record<string, string>> = {
   ydensity: "registerViolin",
 };
 
-/** Specialty geom name → family register function (from @ggsvelte/core or @ggsvelte/svelte). */
+/** Specialty geom name → family register function (from @ggts-sh/core or @ggts-sh/svelte). */
 export const GEOM_REGISTER_HINTS: Readonly<Record<string, string>> = {
   area: "registerBasicAreas",
   bar: "registerBasicBars",

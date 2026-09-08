@@ -1,7 +1,7 @@
 /**
  * Train fixed/free positional scales and global color/fill scales for a run.
  */
-import type { GuideSpec, PortableSpec, StyleAesthetic } from "@ggsvelte/spec";
+import type { GuideSpec, PortableSpec, StyleAesthetic } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions.js";
 import type { PositionScale } from "../scales/train.js";

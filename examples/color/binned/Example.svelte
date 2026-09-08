@@ -7,7 +7,7 @@
     Labs,
     ScaleColorBinned,
     ThemeBw,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { jevonsTrials } from "./data.js";
 </script>

@@ -10,7 +10,7 @@ import {
   Labs,
   ScaleXContinuous,
   ThemeFivethirtyeight,
-} from "@ggsvelte/react";
+} from "@ggts-sh/react";
 
 // HistData::Playfair1824 national finances, in Playfair's index units.
 const finances = [

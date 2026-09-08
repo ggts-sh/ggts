@@ -6,9 +6,9 @@
  * Construction-time deriveds must NOT read `model` (declared later;
  * construction-order DAG — model is used only from late catalog effects).
  */
-import type { CellValue, RenderModel, SceneDiscreteLegend, SceneLegendEntry } from "@ggsvelte/core";
-import { encodeKey } from "@ggsvelte/core";
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { CellValue, RenderModel, SceneDiscreteLegend, SceneLegendEntry } from "@ggts-sh/core";
+import { encodeKey } from "@ggts-sh/core";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import {
   isLegendValueKeyVisible,

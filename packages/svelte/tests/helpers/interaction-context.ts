@@ -6,7 +6,7 @@
  * take static defaults for the rest. Per-controller ports (reducer, sibling
  * getters, commitZoom, …) stay in each factory's options.
  */
-import type { CandidateFacts } from "@ggsvelte/core";
+import type { CandidateFacts } from "@ggts-sh/core";
 
 import type { InteractionContext } from "../../src/lib/interaction/interaction-context.svelte.js";
 import type { PlotInteractionScope } from "../../src/lib/interaction/interaction.js";

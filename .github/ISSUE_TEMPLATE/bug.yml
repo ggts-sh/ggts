@@ -5,17 +5,18 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping improve ggsvelte. Use synthetic or public data only; remove credentials, private records, and identifying information.
+        Thanks for helping improve ggts. Use synthetic or public data only; remove credentials, private records, and identifying information.
   - type: dropdown
     id: surface
     attributes:
       label: Affected surface
       options:
+        - React components
         - Svelte components
         - Fluent builder
         - Portable JSON spec
         - Headless SVG renderer
-        - ggsvelte-render CLI
+        - ggts CLI
         - Documentation or examples
         - Packaging or installation
     validations:
@@ -48,8 +49,8 @@ body:
     id: versions
     attributes:
       label: Versions
-      description: Include ggsvelte, Svelte, browser/runtime, and package-manager versions where relevant.
-      placeholder: ggsvelte 0.x, Svelte 5.x, Chromium 1xx, Node 24, pnpm 11
+      description: Include ggts, React/Svelte, browser/runtime, and package-manager versions where relevant.
+      placeholder: ggts 0.x, Svelte 5.x, Chromium 1xx, Node 24, pnpm 11
     validations:
       required: true
   - type: input

@@ -1,7 +1,7 @@
 /**
  * Per-panel free_x / free_y positional scale training.
  */
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { PositionScale } from "../scales/train.js";
 

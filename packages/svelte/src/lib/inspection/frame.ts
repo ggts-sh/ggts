@@ -5,7 +5,7 @@
  * these tables stay pure routing helpers.
  */
 
-import type { CandidateFacts, CandidateMatch } from "@ggsvelte/core";
+import type { CandidateFacts, CandidateMatch } from "@ggts-sh/core";
 
 import type { InteractionSource } from "../interaction/interaction.js";
 import type { InteractionCandidateRef } from "../interaction/reducer.js";

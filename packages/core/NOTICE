@@ -1,4 +1,4 @@
-ggsvelte — third-party attribution notices
+ggts — third-party attribution notices
 
 LOESS reference implementation
 ------------------------------
@@ -15,7 +15,7 @@ SveltePlot contributors), which is itself adapted from:
     Data Lab (BSD-3-Clause License)
     https://github.com/vega/vega
 
-The ggsvelte implementation is substantially rewritten for parity with R's
+The ggts implementation is substantially rewritten for parity with R's
 stats::loess (span-based neighborhoods, configurable polynomial degree,
 prediction at arbitrary points, and exact operator statistics for the
 confidence band); no verbatim code from the above projects remains, but the
@@ -47,7 +47,7 @@ Mason University peak-bloom-prediction competition
 (https://github.com/GMU-CherryBlossomCompetition/peak-bloom-prediction,
 data/kyoto.csv), whose repository content is CC BY-NC-SA 4.0, with the most
 recent years checked against Katata's table; the Kyoto observations
-themselves carry Aono's copyright notice above. ggsvelte
+themselves carry Aono's copyright notice above. ggts
 redistributes the observation dates — factual measurements, reproduced
 without the mirror's editorial content — with the attribution required by
 the source. Anyone publishing charts made from this data should cite Aono
@@ -70,7 +70,7 @@ The underlying tables are digitizations of works published before 1930 —
 among them Halley (1693), Playfair (1821, 1824), Quetelet (1846), Farr
 (1852), Snow (1855), Nightingale (1858), Minard (1869), Guerry (1833),
 Darwin (1876), Michelson (1879), Galton (1886) and Herschel (1833) — whose
-originals are long out of copyright. ggsvelte makes no public-domain claim
+originals are long out of copyright. ggts makes no public-domain claim
 about the HistData package itself; this notice credits HistData and its
 maintainer as the proximate source of the transcriptions.
 
@@ -121,7 +121,7 @@ measurements (Adelie, Chinstrap, Gentoo) from Palmer Station, Antarctica,
   Source package: https://allisonhorst.github.io/palmerpenguins/
   License: CC0 1.0 Universal (public domain dedication).
 
-ggsvelte redistributes the complete-cases rows (11 incomplete of 344 dropped)
+ggts redistributes the complete-cases rows (11 incomplete of 344 dropped)
 with the LTER acknowledgement the package authors request. Anyone publishing
 charts made from this data should cite the package authors and acknowledge
 Palmer LTER (see the PALMER_PENGUINS_CITATION export).
@@ -138,7 +138,7 @@ and 2008.
   Popular-model subset and column layout: ggplot2::mpg
   (https://ggplot2.tidyverse.org/reference/mpg.html), MIT License.
 
-ggsvelte redistributes the same popular-model subset used as ggplot2's classic
+ggts redistributes the same popular-model subset used as ggplot2's classic
 teaching table. Cite the EPA source for the measurements and ggplot2 for the
 subset definition when publishing charts (see the MPG_CITATION export).
 
@@ -148,7 +148,7 @@ Four additional teaching tables under packages/core/src/data/ and the
 matching apps/docs/static/*.json assets are curated subsets of TidyTuesday
 weekly datasets (https://github.com/rfordatascience/tidytuesday). The
 TidyTuesday project releases its curated tables under CC0 1.0 Universal.
-ggsvelte redistributes the rows below with that dedication and with credit to
+ggts redistributes the rows below with that dedication and with credit to
 each table's original measurement source. Cite the primary source when
 publishing charts (see each *_CITATION export).
 

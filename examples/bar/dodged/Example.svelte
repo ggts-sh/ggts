@@ -7,7 +7,7 @@
     Labs,
     ScaleFillDiscrete,
     ThemeFew,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { beerProduction } from "./data.js";
 </script>

@@ -7,7 +7,7 @@ import {
   type NormalizedGeomName,
   type StatName,
   type StyleAesthetic,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

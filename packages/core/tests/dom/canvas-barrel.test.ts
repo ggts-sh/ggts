@@ -5,11 +5,11 @@ import { drawClippedToPanel, sizeCanvasForDpr } from "../../src/dom/canvas-dom.t
 import { recordingContext } from "./canvas-fixtures.ts";
 
 /**
- * Locks the published `@ggsvelte/core/dom` barrel surface used by
+ * Locks the published `@ggts-sh/core/dom` barrel surface used by
  * packages/svelte stratum-paint (cssColorResolver / drawStratum / sizeCanvasForDpr)
  * plus the other documented barrel exports.
  */
-describe("@ggsvelte/core/dom barrel surface", () => {
+describe("@ggts-sh/core/dom barrel surface", () => {
   it("exports the contracted value symbols", () => {
     expect(typeof dom.cssColorResolver).toBe("function");
     expect(typeof dom.sizeCanvasForDpr).toBe("function");

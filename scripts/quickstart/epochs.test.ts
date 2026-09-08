@@ -3,7 +3,7 @@
  * record; they never capture inspection (#1068); and they still encompass
  * every observation.
  */
-import { runPipeline } from "@ggsvelte/core";
+import { runPipeline } from "@ggts-sh/core";
 import { describe, expect, it } from "bun:test";
 
 import { SAKURA_EPOCHS, SAKURA_STEPS, foldSakura } from "../quickstart.ts";

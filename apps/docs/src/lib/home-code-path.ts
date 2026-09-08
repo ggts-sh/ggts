@@ -6,7 +6,7 @@
  * never dump every row into a mile-tall panel. Matches the interactive
  * grammar chart above the code tabs on the homepage.
  *
- * Data: bundled `palmerPenguins` from `@ggsvelte/core/data` (333 complete
+ * Data: bundled `palmerPenguins` from `@ggts-sh/core/data` (333 complete
  * cases). Field names match the published dataset, not the short theme-specimen
  * aliases.
  *
@@ -20,8 +20,8 @@
  */
 
 const HOME_CODE_PATH_SVELTE = `<script lang="ts">
-  import { GeomJitter, GeomSmooth, GGPlot, GuideLegend, Inspect, Labs } from "@ggsvelte/svelte";
-  import { palmerPenguins } from "@ggsvelte/core/data";
+  import { GeomJitter, GeomSmooth, GGPlot, GuideLegend, Inspect, Labs } from "@ggts-sh/svelte";
+  import { palmerPenguins } from "@ggts-sh/core/data";
 </script>
 
 <GGPlot
@@ -97,8 +97,8 @@ const HOME_CODE_PATH_SPEC_JSON = `{
 
 const HOME_CODE_PATH_REACT = `"use client";
 
-import { GeomJitter, GeomSmooth, GGPlot, GuideLegend, Inspect, Labs } from "@ggsvelte/react";
-import { palmerPenguins } from "@ggsvelte/core/data";
+import { GeomJitter, GeomSmooth, GGPlot, GuideLegend, Inspect, Labs } from "@ggts-sh/react";
+import { palmerPenguins } from "@ggts-sh/core/data";
 
 export default function PenguinChart() {
   return (

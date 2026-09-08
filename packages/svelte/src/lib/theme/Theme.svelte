@@ -12,7 +12,7 @@
    * Canonical PortableSpec form: no role overrides → ThemeName string; any
    * role override → ThemeSpec object with only defined keys.
    */
-  import type { ThemeName, ThemeSpec } from "@ggsvelte/spec";
+  import type { ThemeName, ThemeSpec } from "@ggts-sh/spec";
 
   import { createThemeLayer, type ThemeRoleKey } from "./factory.svelte.js";
 

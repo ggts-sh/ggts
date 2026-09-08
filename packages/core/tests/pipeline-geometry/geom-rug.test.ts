@@ -2,7 +2,7 @@
  * geom_rug — marginal ticks along panel edges (#806).
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, validate } from "@ggsvelte/spec";
+import { aes, gg, validate } from "@ggts-sh/spec";
 
 import { runPipeline } from "../../src/pipeline.ts";
 import type { SegmentsBatch } from "../../src/scene.ts";

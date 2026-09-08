@@ -1,7 +1,7 @@
 /**
  * Color/fill scale resolution (ordinal value-stable + sequential ramps).
  */
-import { configuredColorScaleType, type ColorScaleSpec } from "@ggsvelte/spec";
+import { configuredColorScaleType, type ColorScaleSpec } from "@ggts-sh/spec";
 
 import type { ScaleState } from "../scales/state.js";
 import type { ColumnTable } from "../table.js";
@@ -38,7 +38,7 @@ function resolveRegistered(type: ColorScaleKind, input: ColorScaleResolveInput):
     throw new PipelineError(
       "unsupported-param",
       `/scales/${input.name}`,
-      `Color scale type "${type}" is not registered in this build. Call ${COLOR_KIND_REGISTER[type]}() from @ggsvelte/core/headless/register once at startup, or registerBasic() from @ggsvelte/core.`,
+      `Color scale type "${type}" is not registered in this build. Call ${COLOR_KIND_REGISTER[type]}() from @ggts-sh/core/headless/register once at startup, or registerBasic() from @ggts-sh/core.`,
     );
   }
   return resolve(input);

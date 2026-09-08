@@ -19,7 +19,7 @@ import {
   type PositionParams,
   type RenderBackend,
   type StatName,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { registerLayer } from "./registry.svelte.js";
 

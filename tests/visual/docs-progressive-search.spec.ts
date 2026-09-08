@@ -15,9 +15,9 @@ test("Getting started is a markdown guide with install and a complete file", asy
   await expect(
     guide.getByRole("heading", { level: 2, name: "A complete Svelte file" }),
   ).toBeVisible();
-  await expect(guide.locator("pre code").first()).toContainText("npm install @ggsvelte/react");
+  await expect(guide.locator("pre code").first()).toContainText("npm install @ggts-sh/react");
   await expect(guide.locator("pre code").filter({ hasText: "kyotoSakura" }).first()).toContainText(
-    'import { kyotoSakura } from "@ggsvelte/core/data"',
+    'import { kyotoSakura } from "@ggts-sh/core/data"',
   );
   await expectNoDocumentOverflow(page);
 });
@@ -81,9 +81,9 @@ test("prerendered Docs and getting-started remain useful without JavaScript", as
   );
   await page.goto("/guide/getting-started?theme=light");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Getting started");
-  await expect(page.locator("pre code").first()).toContainText("npm install @ggsvelte/react");
+  await expect(page.locator("pre code").first()).toContainText("npm install @ggts-sh/react");
   await expect(page.locator("pre code").filter({ hasText: "kyotoSakura" }).first()).toContainText(
-    'import { kyotoSakura } from "@ggsvelte/core/data"',
+    'import { kyotoSakura } from "@ggts-sh/core/data"',
   );
   await context.close();
 });

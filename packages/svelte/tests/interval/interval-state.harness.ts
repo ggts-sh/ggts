@@ -2,8 +2,8 @@
  * Shared harness for createIntervalState composite tests.
  * Factories own deriveds + effects — instantiate under `$effect.root` and destroy.
  */
-import type { CandidateFacts, RenderModel } from "@ggsvelte/core";
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import type { CandidateFacts, RenderModel } from "@ggts-sh/core";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import type {
   InteractionSource,

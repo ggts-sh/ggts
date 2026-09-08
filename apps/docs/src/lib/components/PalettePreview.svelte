@@ -1,7 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { onMount } from "svelte";
-  import type { CATEGORICAL_SCHEME_NAMES, ThemeName } from "@ggsvelte/spec";
+  import type { CATEGORICAL_SCHEME_NAMES, ThemeName } from "@ggts-sh/spec";
 
   import { paletteSpecimenChart } from "$lib/theme-specimens/palette-bars";
 

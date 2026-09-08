@@ -1,5 +1,5 @@
 /** Binned color/fill scale family (colorsteps over transformed semantic bins). */
-import type { ColorScaleSpec } from "@ggsvelte/spec";
+import type { ColorScaleSpec } from "@ggts-sh/spec";
 
 import type { EditionDefaults } from "../editions.js";
 import { normalizeColor, rampColor, VIRIDIS_RAMP_10 } from "../scales/color.js";

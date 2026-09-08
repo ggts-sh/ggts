@@ -1,4 +1,4 @@
-import { aes, gg, scaleYSqrt } from "@ggsvelte/spec";
+import { aes, gg, scaleYSqrt } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { breslauBurials } from "./data.js";

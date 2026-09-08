@@ -4,4 +4,4 @@ export {
   mappedChannelField,
   resolveInteractionScope,
   toLayerInput,
-} from "@ggsvelte/compose";
+} from "@ggts-sh/compose";

@@ -11,7 +11,7 @@
  * during Svelte SSR, and the factory's $effect registrations are no-ops on
  * the server path anyway.
  */
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 import { describe, expect, it } from "vitest";
 
 import { createPlotRuntime } from "../../src/lib/runtime/runtime.svelte.js";

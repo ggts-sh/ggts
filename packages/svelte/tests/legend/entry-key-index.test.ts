@@ -8,7 +8,7 @@ import "../setup-register-all.js";
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import { type RenderModel } from "@ggsvelte/core";
+import { type RenderModel } from "@ggts-sh/core";
 
 import { createLegendEntryKeyIndex } from "../../src/lib/legend/entry-key-index.svelte.js";
 import { withFlushedEffectRoot } from "../helpers/effect-root.svelte.js";

@@ -27,9 +27,9 @@ describe("deployment HTTP smoke assertions", () => {
       evaluateSmokeResponse(
         {
           name: "legacy-base cleanup redirect",
-          url: "https://ggsvelte.sh/ggsvelte/guide/getting-started?from=legacy-base",
+          url: "https://ggts.sh/ggsvelte/guide/getting-started?from=legacy-base",
           status: 301,
-          redirectTo: "https://ggsvelte.sh/guide/getting-started?from=legacy-base",
+          redirectTo: "https://ggts.sh/guide/getting-started?from=legacy-base",
         },
         {
           status: 301,
@@ -65,8 +65,8 @@ describe("deployment HTTP smoke assertions", () => {
 
   it("covers the apex, exact redirects, and /ggsvelte cleanup without GitHub Pages", () => {
     const plan = cutoverSmokePlan({
-      apexOrigin: "https://ggsvelte.sh",
-      wwwOrigin: "https://www.ggsvelte.sh",
+      apexOrigin: "https://ggts.sh",
+      wwwOrigin: "https://www.ggts.sh",
       productionPagesOrigin: "https://ggsvelte.pages.dev",
       sourceCommit: "0123456789abcdef0123456789abcdef01234567",
     });
@@ -82,14 +82,26 @@ describe("deployment HTTP smoke assertions", () => {
       "apex artifact identity",
       "www path and query redirect",
       "production pages.dev path and query redirect",
+      "old apex path and query redirect",
+      "old www path and query redirect",
       "legacy-base cleanup redirect",
     ]);
     expect(plan.find(({ name }) => name === "www path and query redirect")?.redirectTo).toBe(
-      "https://ggsvelte.sh/guide/getting-started?from=www",
+      "https://ggts.sh/guide/getting-started?from=www",
     );
     expect(
       plan.find(({ name }) => name === "production pages.dev path and query redirect")?.redirectTo,
-    ).toBe("https://ggsvelte.sh/guide/getting-started?from=pages");
+    ).toBe("https://ggts.sh/guide/getting-started?from=pages");
+    expect(plan.find(({ name }) => name === "old apex path and query redirect")).toMatchObject({
+      url: "https://ggsvelte.sh/guide/getting-started?from=old-apex",
+      status: 301,
+      redirectTo: "https://ggts.sh/guide/getting-started?from=old-apex",
+    });
+    expect(plan.find(({ name }) => name === "old www path and query redirect")).toMatchObject({
+      url: "https://www.ggsvelte.sh/schema/v0.json?from=old-www",
+      status: 301,
+      redirectTo: "https://ggts.sh/schema/v0.json?from=old-www",
+    });
     expect(plan.some(({ name }) => name.includes("legacy") && name.includes("benchmark"))).toBe(
       false,
     );

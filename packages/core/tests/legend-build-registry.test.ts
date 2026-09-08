@@ -28,7 +28,7 @@ describe("continuous-legend registration (Seam B)", () => {
     const script = `
       import { renderToSVGString } from ${JSON.stringify(path.join(coreRoot, "src", "headless-entry.ts"))};
       import { registerBasicPoints, registerOrdinalColor, registerSequentialColor } from ${JSON.stringify(path.join(coreRoot, "src", "headless-register-entry.ts"))};
-      import { aes, gg } from "@ggsvelte/spec/portable";
+      import { aes, gg } from "@ggts-sh/spec/portable";
 
       const discrete = [
         { x: 1, y: 2, g: "a" },

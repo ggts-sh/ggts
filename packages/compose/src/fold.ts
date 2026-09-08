@@ -15,7 +15,7 @@ import type {
   Scales,
   ThemeName,
   ThemeSpec,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { GRAMMAR_FAMILIES, type GrammarFamilyMeta } from "./grammar-families.js";
 import type { PlotLayerLike } from "./types.js";
@@ -30,7 +30,7 @@ export type AssembleDraft = {
   layers: LayerInput[];
   facet?: FacetInput;
   coord?: CoordSpec | "flip";
-  a11y?: import("@ggsvelte/spec").A11yMode;
+  a11y?: import("@ggts-sh/spec").A11yMode;
   scales?: Scales;
   guides?: GuidesSpec;
   legend?: LegendSpec;

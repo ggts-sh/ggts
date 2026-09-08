@@ -1,5 +1,5 @@
 /**
- * Ordered TypeBox named `$defs` for the ggsvelte PortableSpec graph.
+ * Ordered TypeBox named `$defs` for the ggts PortableSpec graph.
  *
  * Key **insertion order** is load-bearing: `Type.Cyclic` / the published
  * `schema/v0.json` serialize `$defs` in this order. The bag is split into

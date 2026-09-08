@@ -14,7 +14,7 @@ describe("R0 release wiring — CI lanes", () => {
     expect(ci).toContain("flags: svelte");
     expect(read("codecov.yml")).toContain("component_id: packages-spec");
     // packages-cli badge goes "unknown" when no unit test loads packages/cli/src
-    // (bin smoke tests spawn a subprocess that imports @ggsvelte/core only).
+    // (bin smoke tests spawn a subprocess that imports @ggts-sh/core only).
     expect(read("codecov.yml")).toContain("component_id: packages-cli");
     expect(read("packages/cli/tests/cli-surface.test.ts")).toContain('from "../src/index.ts"');
     expect(read(".pre-commit-config.yaml")).not.toContain("bun test packages/spec");

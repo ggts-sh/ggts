@@ -8,7 +8,7 @@ body:
     id: example
     attributes:
       label: What did you make?
-      description: Explain the chart's question, encoding, and useful ggsvelte features.
+      description: Explain the chart's question, encoding, and useful ggts features.
     validations:
       required: true
   - type: textarea

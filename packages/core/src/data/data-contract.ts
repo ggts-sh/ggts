@@ -11,7 +11,7 @@
  * and svelte-check fails the package build if a bundled dataset stops
  * satisfying the plot's data input.
  */
-import type { DataInput } from "@ggsvelte/spec";
+import type { DataInput } from "@ggts-sh/spec";
 
 import { beerProduction } from "./beer-production.js";
 import { chocolateBars } from "./chocolate-bars.js";

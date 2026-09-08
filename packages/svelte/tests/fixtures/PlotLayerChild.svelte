@@ -13,7 +13,7 @@
     Scales,
     ThemeName,
     ThemeSpec,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import { untrack } from "svelte";
 
   import { registerPlotLayer } from "../../src/lib/index.js";

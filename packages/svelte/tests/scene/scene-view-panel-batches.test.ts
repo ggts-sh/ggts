@@ -6,7 +6,7 @@
 import { fromAny } from "@total-typescript/shoehorn";
 import { describe, expect, it } from "vitest";
 
-import type { GeometryBatch, Scene } from "@ggsvelte/core";
+import type { GeometryBatch, Scene } from "@ggts-sh/core";
 
 import SceneView from "../../src/lib/scene/SceneView.svelte";
 import { render } from "../helpers/render.js";

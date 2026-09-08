@@ -3,7 +3,7 @@
  * Segment/rule/spoke packing + SVG: #1112.
  */
 import { describe, expect, it } from "bun:test";
-import { aes, fillPaintLinear, gg, glow, strokePaintLinear } from "@ggsvelte/spec";
+import { aes, fillPaintLinear, gg, glow, strokePaintLinear } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.ts";
 import { renderToSVGString } from "../src/render-svg-full.ts";

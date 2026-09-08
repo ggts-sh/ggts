@@ -5,9 +5,9 @@ import "../setup-register-all.js";
  */
 import { describe, expect, it, vi } from "vitest";
 
-import type { CandidateFacts } from "@ggsvelte/core";
-import { runPipeline } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import type { CandidateFacts } from "@ggts-sh/core";
+import { runPipeline } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { createPointerInspectQueue } from "../../src/lib/inspection/pointer-inspect.js";
 import type {

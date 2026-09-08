@@ -25,7 +25,7 @@
 import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
 
-import { aes, gg, scaleXLog10 } from "@ggsvelte/spec";
+import { aes, gg, scaleXLog10 } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.ts";
 

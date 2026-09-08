@@ -1,6 +1,6 @@
-import { resolveInspection } from "@ggsvelte/core/interaction";
-import type { RenderModel } from "@ggsvelte/core";
-import type { InspectMode } from "@ggsvelte/core/interaction";
+import { resolveInspection } from "@ggts-sh/core/interaction";
+import type { RenderModel } from "@ggts-sh/core";
+import type { InspectMode } from "@ggts-sh/core/interaction";
 
 import { applyDatumKey, type DatumKey } from "./datum-key.js";
 import type { PlotInspectionChange, ZoomDomains } from "./interaction.js";

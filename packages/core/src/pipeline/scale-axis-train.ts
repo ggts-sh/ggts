@@ -1,7 +1,7 @@
 /**
  * Positional axis training: type inference, band/continuous training, zero forcing.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import { trainBandAxis } from "./scale-axis-train-band.js";
 import { trainContinuousAxis } from "./scale-axis-train-continuous.js";

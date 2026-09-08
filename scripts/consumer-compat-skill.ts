@@ -11,7 +11,7 @@ export function assertRecipeImports(
   label: string,
 ): void {
   for (const match of source.matchAll(
-    /\b(?:from\s+|import\s*\(\s*|import\s*)["'](@ggsvelte\/[^"'/]+)(?:\/[^"']*)?["']/g,
+    /\b(?:from\s+|import\s*\(\s*|import\s*)["'](@ggts-sh\/[^"'/]+)(?:\/[^"']*)?["']/g,
   )) {
     const name = match[1]!;
     if (!packages.includes(name)) {
@@ -24,7 +24,7 @@ export function writeInstalledSkillExamples(
   directory: string,
   framework: "react" | "svelte",
 ): void {
-  const skill = join(directory, "node_modules", "@ggsvelte", "skill");
+  const skill = join(directory, "node_modules", "@ggts-sh", "skill");
   const files = [
     "SKILL.md",
     ...readdirSync(join(skill, "references"), { recursive: true, encoding: "utf8" })
@@ -44,7 +44,7 @@ export function writeInstalledSkillExamples(
       if (!included) continue;
       assertRecipeImports(
         block.source,
-        framework === "react" ? ["@ggsvelte/react", "@ggsvelte/core"] : ["@ggsvelte/svelte"],
+        framework === "react" ? ["@ggts-sh/react", "@ggts-sh/core"] : ["@ggts-sh/svelte"],
         `installed skill ${file}`,
       );
       writeFileSync(join(destination, `Example${count++}.${extension}`), block.source + "\n");

@@ -12,7 +12,7 @@ import type { LifecycleDoc } from "./gen-llms.ts";
 import { guidePages, renderMarkdown } from "./gen-llms.ts";
 
 const ROOT = join(import.meta.dir, "..");
-const GUIDE_URL_BASE = "https://ggsvelte.sh/guide/";
+const GUIDE_URL_BASE = "https://ggts.sh/guide/";
 
 const lifecycle = JSON.parse(readFileSync(join(ROOT, "lifecycle.json"), "utf8")) as LifecycleDoc;
 

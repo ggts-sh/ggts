@@ -1,11 +1,5 @@
 <script lang="ts">
-  import {
-    GeomQq,
-    GGPlot,
-    Inspect,
-    Labs,
-    ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  import { GeomQq, GGPlot, Inspect, Labs, ThemeMinimal } from "@ggts-sh/svelte";
 
   import { shortSample } from "./data.js";
 </script>

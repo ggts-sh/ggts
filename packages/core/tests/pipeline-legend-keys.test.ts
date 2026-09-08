@@ -7,7 +7,7 @@ import {
   scaleColorDiscrete,
   scaleFillDiscrete,
   scaleShapeDiscrete,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.js";
 

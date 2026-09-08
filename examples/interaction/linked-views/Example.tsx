@@ -8,7 +8,7 @@ import {
   Inspect,
   Labs,
   ThemeMinimal,
-} from "@ggsvelte/react";
+} from "@ggts-sh/react";
 
 // The same fifteen Palmer penguins shown in the Svelte gallery example.
 const penguins = [

@@ -6,7 +6,7 @@
       "peer": "layercake-canvas",
       "caseId": "line-3x10k",
       "kind": "mount",
-      "issue": "https://github.com/ljodea/ggsvelte/issues/1468",
+      "issue": "https://github.com/ggts-sh/ggts/issues/1468",
       "note": "~55–58ms vs ~44–49ms after one-pass line geometry + ordinal color skip + solid stroke hot path + named-data void adapter (#1468). Relative thr often ~peer+5–7ms still short; self-destructs when the gap closes."
     },
     {
@@ -14,7 +14,7 @@
       "peer": "layercake",
       "caseId": "line-3x1k",
       "kind": "update",
-      "issue": "https://github.com/ljodea/ggsvelte/issues/1471",
+      "issue": "https://github.com/ggts-sh/ggts/issues/1471",
       "note": "REAL short-cell gap after the truthful update repair: five fresh processes measured median-of-medians 8.9ms vs LayerCake 6.4ms. The absolute gap is ~2.5ms but exceeded the gate in all five runs; keep tracked until a runtime angle closes it."
     },
     {
@@ -22,7 +22,7 @@
       "peer": "layercake",
       "caseId": "bars-stacked-50x4",
       "kind": "update",
-      "issue": "https://github.com/ljodea/ggsvelte/issues/1471",
+      "issue": "https://github.com/ggts-sh/ggts/issues/1471",
       "note": "REAL short-cell gap after the truthful update repair: current full-matrix medians are 7.1ms vs LayerCake 4.2ms. Both paths visibly mutate and reach fresh-final parity."
     }
   ],

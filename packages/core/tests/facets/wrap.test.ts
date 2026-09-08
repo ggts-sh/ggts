@@ -2,7 +2,7 @@
  * facet wrap — panel grid
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { pointFills } from "../../src/mark-style.ts";
 import { PipelineError, runPipeline } from "../../src/pipeline.ts";
 import type { PointsBatch, RectsBatch } from "../../src/scene.ts";

@@ -1,4 +1,4 @@
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import type { DiagnosticCode } from "../diagnostics.js";
 

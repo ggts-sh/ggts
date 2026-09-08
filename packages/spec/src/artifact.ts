@@ -68,9 +68,9 @@ export function buildSchemaArtifact(): Record<string, unknown> {
   const transformed = transform(raw, defNames) as Record<string, unknown>;
   return {
     $schema: "https://json-schema.org/draft/2020-12/schema",
-    title: "ggsvelte PortableSpec",
+    title: "ggts PortableSpec",
     description:
-      "A ggsvelte plot specification (schema v0 — UNSTABLE; served from the repo until schema hosting exists).",
+      "A ggts plot specification (schema v0 — UNSTABLE; served from the repo until schema hosting exists).",
     ...transformed,
   };
 }

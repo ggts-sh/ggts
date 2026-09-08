@@ -6,7 +6,7 @@
  * first headless render.
  */
 
-import { registerAll } from "@ggsvelte/core";
+import { registerAll } from "@ggts-sh/core";
 
 import { kyotoSakura } from "../../packages/core/src/data/index.ts";
 

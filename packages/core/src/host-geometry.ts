@@ -283,7 +283,7 @@ export function gappedCrosshairSegments(
 
 /**
  * Minimal batch surface for crosshair obstacle collection.
- * Structural (not core Scene types) so geometry stays free of @ggsvelte/core.
+ * Structural (not core Scene types) so geometry stays free of @ggts-sh/core.
  * Wide enough to accept GeometryBatch[] (rects may carry a different `anchor`
  * vocabulary — only `kind === "glyphs"` is read).
  * Walk scene batches, not the candidate store: uninspectable layers (#1065)

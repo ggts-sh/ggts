@@ -10,7 +10,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { renderToSVGString } from "../src/render-svg-full.ts";
 

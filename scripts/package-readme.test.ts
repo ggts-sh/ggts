@@ -98,24 +98,24 @@ describe("package README npm front doors", () => {
     );
   });
 
-  it("svelte: points at @ggsvelte/cli with an absolute npm URL", () => {
+  it("svelte: points at @ggts-sh/cli with an absolute npm URL", () => {
     const svelte = readmes.find((r) => r.name === "svelte")!;
-    expect(svelte.markdown).toContain("https://www.npmjs.com/package/@ggsvelte/cli");
+    expect(svelte.markdown).toContain("https://www.npmjs.com/package/@ggts-sh/cli");
   });
 });
 
 describe("package README TypeScript fences run", () => {
   /**
-   * Rewrite bare @ggsvelte/* imports to local dist file URLs so the fence
+   * Rewrite bare @ggts-sh/* imports to local dist file URLs so the fence
    * executes without a workspace install in /tmp.
    */
   function rewriteImports(source: string): string {
     const dist = {
-      "@ggsvelte/spec/schema/v0.json": join(ROOT, "packages/spec/schema/v0.json"),
-      "@ggsvelte/spec": join(ROOT, "packages/spec/dist/index.js"),
-      "@ggsvelte/core/dom": join(ROOT, "packages/core/dist/dom/index.js"),
-      "@ggsvelte/core": join(ROOT, "packages/core/dist/index.js"),
-      "@ggsvelte/cli": join(ROOT, "packages/cli/dist/index.js"),
+      "@ggts-sh/spec/schema/v0.json": join(ROOT, "packages/spec/schema/v0.json"),
+      "@ggts-sh/spec": join(ROOT, "packages/spec/dist/index.js"),
+      "@ggts-sh/core/dom": join(ROOT, "packages/core/dist/dom/index.js"),
+      "@ggts-sh/core": join(ROOT, "packages/core/dist/index.js"),
+      "@ggts-sh/cli": join(ROOT, "packages/cli/dist/index.js"),
     } as const;
     let out = source;
     // Longer prefixes first so /schema wins over the package root.

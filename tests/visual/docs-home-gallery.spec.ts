@@ -17,7 +17,7 @@ test("homepage leads with the agent sandbox and links to both framework quicksta
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/?theme=light");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "ggsvelte: ggplot2’s grammar for TypeScript",
+    "ggts: ggplot2’s grammar for TypeScript",
   );
   const hero = page.locator(".home-hero");
   await expect(hero.getByRole("tab", { name: "Agent sandbox" })).toHaveAttribute(

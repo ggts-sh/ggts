@@ -8,7 +8,7 @@
   ],
   "surfaces": [
     {
-      "package": "@ggsvelte/spec",
+      "package": "@ggts-sh/spec",
       "entry": ".",
       "source": "packages/spec/src/index.ts",
       "exports": {
@@ -3755,7 +3755,7 @@
       }
     },
     {
-      "package": "@ggsvelte/spec",
+      "package": "@ggts-sh/spec",
       "entry": "./portable",
       "source": "packages/spec/src/portable-entry.ts",
       "exports": {
@@ -3846,7 +3846,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": ".",
       "source": "packages/core/src/index.ts",
       "exports": {
@@ -5461,7 +5461,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./interaction",
       "source": "packages/core/src/interaction-entry.ts",
       "exports": {
@@ -6320,7 +6320,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./data",
       "source": "packages/core/src/data/index.ts",
       "exports": {
@@ -6411,7 +6411,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./render",
       "source": "packages/core/src/render-entry.ts",
       "exports": {
@@ -6590,7 +6590,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./headless",
       "source": "packages/core/src/headless-entry.ts",
       "exports": {
@@ -6765,7 +6765,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./headless/register",
       "source": "packages/core/src/headless-register-entry.ts",
       "exports": {
@@ -6852,7 +6852,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./temporal",
       "source": "packages/core/src/temporal-entry.ts",
       "exports": {
@@ -6903,7 +6903,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./dom",
       "source": "packages/core/src/dom/index.ts",
       "exports": {
@@ -6946,7 +6946,7 @@
       }
     },
     {
-      "package": "@ggsvelte/core",
+      "package": "@ggts-sh/core",
       "entry": "./svg-live",
       "source": "packages/core/src/svg-live/index.ts",
       "exports": {
@@ -6969,7 +6969,7 @@
       }
     },
     {
-      "package": "@ggsvelte/compose",
+      "package": "@ggts-sh/compose",
       "entry": ".",
       "source": "packages/compose/src/index.ts",
       "exports": {
@@ -7176,7 +7176,7 @@
       }
     },
     {
-      "package": "@ggsvelte/svelte",
+      "package": "@ggts-sh/svelte",
       "entry": ".",
       "source": "packages/svelte/src/lib/index.ts",
       "exports": {
@@ -10247,7 +10247,7 @@
       }
     },
     {
-      "package": "@ggsvelte/react",
+      "package": "@ggts-sh/react",
       "entry": ".",
       "source": "packages/react/src/index.ts",
       "exports": {
@@ -11670,7 +11670,7 @@
       }
     },
     {
-      "package": "@ggsvelte/cli",
+      "package": "@ggts-sh/cli",
       "entry": ".",
       "source": "packages/cli/src/index.ts",
       "exports": {

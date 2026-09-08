@@ -15,14 +15,14 @@
  * Data-dependent transform/OOB events belong to the pipeline warning path, not
  * here; this stage only rejects impossible configurations.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import { getScaleTransform } from "../scales/transform.js";
 
 import { PipelineError } from "./types.js";
 
 function docs(code: string): string {
-  return `https://ggsvelte.sh/guide/errors#${code}`;
+  return `https://ggts.sh/guide/errors#${code}`;
 }
 
 export function assertScaleConfiguration(

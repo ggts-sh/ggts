@@ -5,8 +5,8 @@
  */
 import { describe, expect, it, spyOn } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
-import type { PortableSpec } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import {
   layoutPanels,

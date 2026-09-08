@@ -20,8 +20,8 @@
 
   <h2 id="install">Install</h2>
   <p>
-    The CLI ships as its own package, <code>@ggsvelte/cli</code> — it does not
-    arrive with <code>@ggsvelte/svelte</code>. If an agent authors specs in a
+    The CLI ships as its own package, <code>@ggts-sh/cli</code> — it does not
+    arrive with <code>@ggts-sh/svelte</code>. If an agent authors specs in a
     sandbox, install the CLI in that sandbox: it is how the agent sees
     validation errors and chart-quality warnings before a chart ships.
   </p>
@@ -29,7 +29,7 @@
     class="cli-command"
     language="bash"
     accessibleLabel="Copy command"
-    code="npm install -g @ggsvelte/cli"
+    code="npm install -g @ggts-sh/cli"
   />
 
   <h2 id="input-and-output">Input and output</h2>

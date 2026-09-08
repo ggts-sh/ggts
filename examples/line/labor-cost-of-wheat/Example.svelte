@@ -7,7 +7,7 @@
     Labs,
     ScaleXContinuous,
     ThemeEconomist,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { laborCostOfWheat } from "./data.js";
 </script>

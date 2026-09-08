@@ -5,7 +5,7 @@
    * prefer the keyed shells (<GuideLegend channel="color"/>, …) when the shape
    * is known at authoring time. Emits NO markup.
    */
-  import type { GuidesSpec } from "@ggsvelte/spec";
+  import type { GuidesSpec } from "@ggts-sh/spec";
 
   import { createPlotLayer } from "../layers/plot-layer.svelte.js";
 

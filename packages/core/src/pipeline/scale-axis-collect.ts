@@ -1,7 +1,7 @@
 /**
  * Collect per-axis training evidence across layer frames.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import type { AxisInputs } from "./scale-axis-train.js";
 import { collectAxisInputsX, type AxisCollectAcc } from "./scale-axis-collect-x.js";

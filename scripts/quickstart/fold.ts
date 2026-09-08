@@ -5,7 +5,7 @@
  * docs site, llms surfaces, and the packed consumer-compat fixture.
  */
 
-import type { GuidesSpec, Labs, LayerSpec, PortableSpec, Scales, ThemeName } from "@ggsvelte/spec";
+import type { GuidesSpec, Labs, LayerSpec, PortableSpec, Scales, ThemeName } from "@ggts-sh/spec";
 
 import { SAKURA_STEPS, SAKURA_Y_LAB } from "./steps";
 
@@ -161,8 +161,8 @@ function buildSakuraSource(state: SakuraFoldState): string {
       ? `{\n${imported.map((name) => `    ${name},`).join("\n")}\n  }`
       : `{ ${imported.join(", ")} }`;
   const script = [
-    `  import ${imports} from "@ggsvelte/svelte";`,
-    `  import { kyotoSakura } from "@ggsvelte/core/data";`,
+    `  import ${imports} from "@ggts-sh/svelte";`,
+    `  import { kyotoSakura } from "@ggts-sh/core/data";`,
     ...(state.registers.size > 0
       ? [
           "",

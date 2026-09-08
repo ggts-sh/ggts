@@ -24,7 +24,7 @@ jobs:
     concurrency:
       group: bench-label-${{ github.ref }}
       cancel-in-progress: true
-    runs-on: [self-hosted, ggsvelte]
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     container:
       image: ghcr.io/ljodea/ggsvelte/ci-runner:v1.61.1-noble

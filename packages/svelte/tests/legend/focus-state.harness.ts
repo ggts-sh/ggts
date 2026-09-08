@@ -6,8 +6,8 @@
  * `beforeEach(cleanup)` and would attach component-test lifecycle to pure
  * factory suites that only need the state mount.
  */
-import type { RenderModel } from "@ggsvelte/core";
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import type { RenderModel } from "@ggts-sh/core";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import type {
   LegendFocusEvent,

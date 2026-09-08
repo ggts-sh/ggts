@@ -1,5 +1,5 @@
 /** Aesthetic and style-channel mapping helpers for the mock responder. */
-import type { DataProfile } from "@ggsvelte/spec";
+import type { DataProfile } from "@ggts-sh/spec";
 
 import type { Channel, MockAes, MockContext } from "./types.ts";
 

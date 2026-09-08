@@ -225,9 +225,7 @@ describe("definedProps + composition diagnostics", () => {
     expect(advisory.severity).toBe("advisory");
     // Parity with the sibling PlotDiagnostic variants: a consumer rendering
     // docUrl/suggestions over the union must not hit undefined here.
-    expect(advisory.docUrl).toBe(
-      "https://ggsvelte.sh/guide/upgrading#compose-scales-as-child-layers",
-    );
+    expect(advisory.docUrl).toBe("https://ggts.sh/guide/upgrading#compose-scales-as-child-layers");
     expect(advisory.suggestions.length).toBeGreaterThan(0);
   });
 

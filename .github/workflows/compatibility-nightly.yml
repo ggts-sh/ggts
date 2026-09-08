@@ -17,7 +17,7 @@ concurrency:
 jobs:
   matrix:
     name: compatibility matrix (required + nightly)
-    runs-on: [self-hosted, ggsvelte]
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: read
@@ -41,8 +41,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
-    # Linux rows use self-hosted ggsvelte pool; Windows/macOS stay GitHub-hosted.
-    runs-on: ${{ startsWith(matrix.os, 'ubuntu') && fromJSON('["self-hosted","ggsvelte"]') || matrix.os }}
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     permissions:
       contents: read

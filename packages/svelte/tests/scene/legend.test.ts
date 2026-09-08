@@ -3,7 +3,7 @@ import {
   type SceneDiscreteLegend,
   type SceneRampLegend,
   type SceneStepsLegend,
-} from "@ggsvelte/core";
+} from "@ggts-sh/core";
 import { describe, expect, it } from "vitest";
 
 import Legend from "../../src/lib/scene/Legend.svelte";

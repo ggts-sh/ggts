@@ -8,7 +8,7 @@
     Labs,
     ScaleColorDiscrete,
     ThemeMap,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { choleraDeaths, waterPumps } from "./data.js";
 </script>

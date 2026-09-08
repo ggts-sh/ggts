@@ -1,13 +1,13 @@
 /**
  * PR 3 (gap 4.2) — cross-root helper identity. The capability ledger proves
- * every claimed scale helper is a real export at the `@ggsvelte/spec` root; this
- * suite extends that guarantee to the `@ggsvelte/svelte` root, asserting each
+ * every claimed scale helper is a real export at the `@ggts-sh/spec` root; this
+ * suite extends that guarantee to the `@ggts-sh/svelte` root, asserting each
  * helper (and its ggplot2 snake_case alias) is the SAME binding re-exported from
  * spec — not a shadowing re-implementation that could silently drift.
  */
 import { describe, expect, it } from "vitest";
 
-import * as spec from "@ggsvelte/spec";
+import * as spec from "@ggts-sh/spec";
 
 import * as svelteRoot from "../src/lib/index.js";
 
@@ -32,7 +32,7 @@ const snakeAliases = [
   "scale_y_reverse",
 ];
 
-describe("@ggsvelte/svelte re-exports the identical spec scale helpers", () => {
+describe("@ggts-sh/svelte re-exports the identical spec scale helpers", () => {
   for (const name of positionHelpers) {
     it(`svelte.${name} === spec.${name} (same binding)`, () => {
       expect(typeof specNs[name]).toBe("function");

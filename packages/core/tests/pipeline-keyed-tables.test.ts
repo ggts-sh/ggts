@@ -6,7 +6,7 @@
  * flag but a stale build would not.
  */
 import { describe, expect, it } from "bun:test";
-import { ALIAS_GEOMS, KNOWN_GEOMS, KNOWN_STATS } from "@ggsvelte/spec";
+import { ALIAS_GEOMS, KNOWN_GEOMS, KNOWN_STATS } from "@ggts-sh/spec";
 
 import { PATH_LIKE_GEOMS } from "../src/pipeline/assemble-geometry-batches.ts";
 import { STAT_COLOR_COLUMNS, STAT_Y_COLUMNS } from "../src/pipeline/bind-layer-stat-columns.ts";

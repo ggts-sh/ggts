@@ -13,12 +13,12 @@ The first competitive harness measured **one** colored scatter (SVG) at 1k/10k a
 
 This suite expands:
 
-| Axis    | Coverage                                                                                                                                                            |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Geoms   | scatter, multi-series line, multi-series area, stacked bars                                                                                                         |
-| Sizes   | 1k → 10k default; full matrix adds 100k scatter, uPlot-scale 3×55.5k line, 10×10k line                                                                              |
-| Libs    | ggsvelte SVG, ggsvelte canvas, D3, **uPlot**, **Chart.js**, **ECharts**, **TanStack Charts (React)**, plus SveltePlot/LayerCake/Unovis/**TanStack Charts (Svelte)** |
-| Metrics | gzip bundle per lib×scenario; browser cold mount + in-place update, each with paint-inclusive total and synchronous medians                                         |
+| Axis    | Coverage                                                                                                                                                              |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Geoms   | scatter, multi-series line, multi-series area, stacked bars                                                                                                           |
+| Sizes   | 1k → 10k default; full matrix adds 100k scatter, uPlot-scale 3×55.5k line, 10×10k line                                                                                |
+| Libs    | ggts core SVG, ggts core canvas, D3, **uPlot**, **Chart.js**, **ECharts**, **TanStack Charts (React)**, plus SveltePlot/LayerCake/Unovis/**TanStack Charts (Svelte)** |
+| Metrics | gzip bundle per lib×scenario; browser cold mount + in-place update, each with paint-inclusive total and synchronous medians                                           |
 
 Internal mitata workloads in `benchmarks/` remain the self-regression gate. This package is the **external** comparison.
 
@@ -82,18 +82,18 @@ the committed snapshot. `measure:browser:100k-peers` remains a separate report.
 
 ## Fairness notes (read before optimising)
 
-1. **Apples and oranges by design.** uPlot is a lean canvas time-series painter with almost no grammar. ggsvelte runs a ggplot-like pipeline (scales, stats hooks, guides, candidates). Beating uPlot on raw line paint is a long game; the matrix shows the gap honestly.
+1. **Apples and oranges by design.** uPlot is a lean canvas time-series painter with almost no grammar. ggts runs a ggplot-like pipeline (scales, stats hooks, guides, candidates). Beating uPlot on raw line paint is a long game; the matrix shows the gap honestly.
 2. **ggsvelte-canvas harness draws mark strata only** (no axis/legend SVG chrome). That isolates mark cost; production `GGPlot` still composites SVG chrome.
 3. **ggsvelte-svg** mounts one full chart (including axes) and patches compatible scenes in place. The core adapter uses direct `SpecInput` objects rather than fluent builder sugar so bundle cells measure the renderer graph, not an optional authoring API; output-equivalence tests lock the same normalized chart.
 4. **`replace` is a full remount**, not in-place `setData`. The browser harness therefore **does not re-sample** replace (it mirrors mount stats) until a real in-place update metric lands (LightningChart's streaming score).
-5. **`area-multiseries` is overlaid (identity), not stacked.** ggsvelte `geomArea` defaults to `stack`; adapters pass `position: "identity"` so ggsvelte matches D3/Chart.js/ECharts/uPlot overlays. `bars-stacked` remains the stack fairness cell.
+5. **`area-multiseries` is overlaid (identity), not stacked.** ggts `geomArea` defaults to `stack`; adapters pass `position: "identity"` so ggts matches D3/Chart.js/ECharts/uPlot overlays. `bars-stacked` remains the stack fairness cell.
 6. **No interaction (mousemove) or max-capacity sweep yet.** uPlot's table and LC's capacity/stream metrics are the next expansion targets.
 7. **Svelte peers** (SveltePlot, LayerCake, Unovis, TanStack Charts Svelte) mount real component fixtures in Playwright for browser + bundle; SSR is measured separately. TanStack Charts React is a React comparator (same `defineChart` grammar, `@tanstack/charts/react` host), not a Svelte-peer gate.
 8. Compare **within one machine and one run**. Absolute ms are host-sensitive (same as internal budgets).
 9. **Each library×case cell gets a fresh page.** Chromium and the production preview server stay alive, but page-local framework state, detached DOM, and garbage-collection pressure do not leak from one peer into the next.
-10. **Browser timing reports both total and sync medians from the same samples.** Total time includes the existing double animation-frame wait. Sync time stops when the adapter returns, excluding deterministic data generation and the frame wait; it separates pipeline/draw work from compositor and host scheduling. The relative CI gate requires both metrics to corroborate a loss, preventing frame-scheduling noise from failing a cell; deferred-render peers still keep total honest because their tiny sync return cannot rescue ggsvelte.
+10. **Browser timing reports both total and sync medians from the same samples.** Total time includes the existing double animation-frame wait. Sync time stops when the adapter returns, excluding deterministic data generation and the frame wait; it separates pipeline/draw work from compositor and host scheduling. The relative CI gate requires both metrics to corroborate a loss, preventing frame-scheduling noise from failing a cell; deferred-render peers still keep total honest because their tiny sync return cannot rescue ggts.
 11. **Paint-inclusive timing** can still be noisy on small cases. Use denser cases (`line-3x10k`, `scatter-color-10k`, full matrix) to rank libraries, and use the paired sync result to attribute a total-time gap before changing runtime code.
-12. **SSR throughput (`measure:ssr`) is reported, not cherry-picked.** Each lib renders data -> SVG string with no browser: ggsvelte via the headless SVG renderer, peers via Svelte 5 `render()` of the same fixture components (LayerCake with its documented `ssr` prop). Honest findings: **LayerCake out-renders ggsvelte at 1k** (plain string concat beats the full grammar pipeline at small N — the cell is kept, not hidden); **SveltePlot and Unovis server-render empty shells** (marks live in client-side `$effect` / `onMount`), recorded as `ssrCapable: false` — never a 0 bar. Any _other_ lib regressing to an empty shell fails the run loudly (`minMarks`).
+12. **SSR throughput (`measure:ssr`) is reported, not cherry-picked.** Each lib renders data -> SVG string with no browser: ggts via the headless SVG renderer, peers via Svelte 5 `render()` of the same fixture components (LayerCake with its documented `ssr` prop). Honest findings: **LayerCake out-renders ggts at 1k** (plain string concat beats the full grammar pipeline at small N — the cell is kept, not hidden); **SveltePlot and Unovis server-render empty shells** (marks live in client-side `$effect` / `onMount`), recorded as `ssrCapable: false` — never a 0 bar. Any _other_ lib regressing to an empty shell fails the run loudly (`minMarks`).
 13. **uPlot scatter** sorts x ascending before paint (uPlot requires monotonic `data[0]`); that sort is inside the timed path for this adapter.
 14. **Every timed update proves it changed visible output and reached fresh-final parity.** Update variants include an index-dependent wave because an affine-only transform disappears when a chart retrains a linear scale. SVG output is compared after canonicalizing generated ids/references; canvas output uses exact pixel-buffer hashes.
 

@@ -15,7 +15,7 @@ Use this reference for a Svelte target. Shared grammar and validation live in
     Labs,
     ScaleColorDiscrete,
     ThemeMinimal,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   const cars = [
     { displ: 1.8, hwy: 29, class: "compact" },
@@ -75,5 +75,5 @@ in
 **Removed in 0.13.0** (deprecated since 0.11.0): the seven `<GGPlot>` grammar
 props `facet`, `coord`, `scales`, `guides`, `legend`, `theme`, `labs`. Compose
 them as children instead; `spec`, `data`, `aes`, and `layers` stay first-class.
-Migrate old sources with `npx ggsvelte-codemod --write src` (dry-run without
+Migrate old sources with `npx ggts-codemod --write src` (dry-run without
 `--write`).

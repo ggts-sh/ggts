@@ -1,4 +1,4 @@
-import type { PortableSpec, SpecInput } from "@ggsvelte/spec";
+import type { PortableSpec, SpecInput } from "@ggts-sh/spec";
 
 import {
   needsUncensoredBaselinePass,
@@ -29,23 +29,23 @@ export function preparePipelineRun(
 
   let runOptions = options;
   if (needsUncensoredBaselinePass(options, normalized.scales)) {
-    perfMark("ggsvelte:baseline:start");
+    perfMark("ggts:baseline:start");
     const baselineDomains = trainUncensoredBaselineDomains({
       normalized,
       options,
       editionDefaults,
     });
     runOptions = { ...options, baselineDomains };
-    perfMark("ggsvelte:baseline:end");
-    perfMeasure("ggsvelte:baseline", "ggsvelte:baseline:start", "ggsvelte:baseline:end");
+    perfMark("ggts:baseline:end");
+    perfMeasure("ggts:baseline", "ggts:baseline:start", "ggts:baseline:end");
   }
 
-  perfMark("ggsvelte:bind:start");
+  perfMark("ggts:bind:start");
   const prepared = preparePanels(normalized, runOptions, warnings, advisories);
-  perfMark("ggsvelte:bind:end");
-  perfMeasure("ggsvelte:bind", "ggsvelte:bind:start", "ggsvelte:bind:end");
+  perfMark("ggts:bind:end");
+  perfMeasure("ggts:bind", "ggts:bind:start", "ggts:bind:end");
 
-  perfMark("ggsvelte:scales:start");
+  perfMark("ggts:scales:start");
   const trained = trainPipelineScales({
     normalized,
     options: runOptions,
@@ -62,8 +62,8 @@ export function preparePipelineRun(
     warnings,
     advisories,
   });
-  perfMark("ggsvelte:scales:end");
-  perfMeasure("ggsvelte:scales", "ggsvelte:scales:start", "ggsvelte:scales:end");
+  perfMark("ggts:scales:end");
+  perfMeasure("ggts:scales", "ggts:scales:start", "ggts:scales:end");
 
   return {
     runId,

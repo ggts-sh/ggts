@@ -10,7 +10,7 @@
  *
  * Not yet on statLayerFrame (#1077): join expansion is a different shape.
  */
-import type { DataRef, PortableSpec } from "@ggsvelte/spec";
+import type { DataRef, PortableSpec } from "@ggts-sh/spec";
 
 import { encodeKey } from "../scales/state.js";
 import { ColumnTable, type CellValue } from "../table.js";

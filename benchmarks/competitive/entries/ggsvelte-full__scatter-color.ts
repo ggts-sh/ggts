@@ -1,5 +1,5 @@
-import { registerAll, renderToSVGString } from "@ggsvelte/core";
-import { aes, gg } from "@ggsvelte/spec";
+import { registerAll, renderToSVGString } from "@ggts-sh/core";
+import { aes, gg } from "@ggts-sh/spec";
 import { makeScatter } from "../scenarios";
 
 // Size-ceiling row: the full barrel now registers explicitly (#1420).

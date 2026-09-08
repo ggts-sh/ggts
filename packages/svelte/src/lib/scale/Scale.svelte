@@ -13,7 +13,7 @@
    * through a helper, so migrating `scales={{color:{scheme:"x"}}}` →
    * `<Scale value={{color:{scheme:"x"}}}/>` keeps PortableSpec bytes identical.
    */
-  import type { Scales } from "@ggsvelte/spec";
+  import type { Scales } from "@ggts-sh/spec";
 
   import { createPlotLayer } from "../layers/plot-layer.svelte.js";
 

@@ -67,7 +67,7 @@ describe("skill teaches the opt-in registration contract", () => {
     ];
     const missing = extras.filter((name) => !section!.includes(`${name}()`));
     expect(missing).toEqual([]);
-    expect(section!).toContain("@ggsvelte/core/headless/register");
+    expect(section!).toContain("@ggts-sh/core/headless/register");
   });
 
   it("splits categorical vs sequential named-scheme registration", () => {
@@ -89,7 +89,7 @@ describe("skill teaches the opt-in registration contract", () => {
     expect(section).toBeDefined();
     expect(section!).toMatch(/Named themes/);
     expect(section!).toMatch(/`default` and `void`/);
-    expect(section!).toMatch(/@ggsvelte\/core\/headless/);
+    expect(section!).toMatch(/@ggts-sh\/core\/headless/);
   });
 
   it("references restate the family that belongs on that page", () => {
@@ -100,7 +100,7 @@ describe("skill teaches the opt-in registration contract", () => {
     expect(scales).toMatch(/registerNumericStyle\(\)/);
     expect(scales).toMatch(/registerBandGuide\(\)/);
     expect(scales).toMatch(/installTemporal\(\)/);
-    expect(themes).toMatch(/@ggsvelte\/core\/headless/);
+    expect(themes).toMatch(/@ggts-sh\/core\/headless/);
     expect(themes).toMatch(/`default`[\s\S]*`void`|only `default` and `void`/);
   });
 });

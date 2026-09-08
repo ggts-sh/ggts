@@ -1,5 +1,5 @@
 /** Runtime contracts and canonical tables for mapped non-color styles. */
-import { LINETYPE_NAMES, POINT_SHAPE_NAMES, type StyleAesthetic } from "@ggsvelte/spec";
+import { LINETYPE_NAMES, POINT_SHAPE_NAMES, type StyleAesthetic } from "@ggts-sh/spec";
 
 import type { CellValue } from "../table.js";
 

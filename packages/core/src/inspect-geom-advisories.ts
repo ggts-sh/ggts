@@ -7,7 +7,7 @@
  * (#1528); plus high-cardinality discrete color/fill + inspect (#1274).
  *
  * Host inspect mode is intentionally not a PortableSpec field. Agents declare
- * the host's intended mode via `ggsvelte-render --inspect <mode>` so the same
+ * the host's intended mode via `ggts render --inspect <mode>` so the same
  * codes reach the CLI/agent JSONL loop (#1531).
  *
  * Auto/exact modes never fire the axis-guide codes: auto already picks exact
@@ -15,7 +15,7 @@
  */
 // @lifecycle experimental
 
-import { GEOM_ALIASES } from "@ggsvelte/spec";
+import { GEOM_ALIASES } from "@ggts-sh/spec";
 
 /** Codes owned by this pure collector surface (subset of host interaction codes). */
 export type InspectGeomAdvisoryCode =
@@ -58,7 +58,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") for GeomCol',
       "Prefer muteSiblings for sibling de-emphasis instead of an axis guide",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-x-on-col",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-x-on-col",
   },
   INTERACTION_INSPECT_X_ON_BAR: {
     severity: "advisory",
@@ -70,7 +70,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") for GeomBar',
       "Prefer muteSiblings for sibling de-emphasis instead of an axis guide",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-x-on-bar",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-x-on-bar",
   },
   INTERACTION_INSPECT_X_BISECTS_COL_LABELS: {
     severity: "warning",
@@ -82,8 +82,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") when columns have value labels',
       "Keep value labels; drop the x/xy guide rather than dropping the labels",
     ],
-    docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-x-bisects-col-labels",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-x-bisects-col-labels",
   },
   INTERACTION_INSPECT_X_BISECTS_BAR_LABELS: {
     severity: "warning",
@@ -95,8 +94,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") when bars have value labels',
       "Keep value labels; drop the x/xy guide rather than dropping the labels",
     ],
-    docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-x-bisects-bar-labels",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-x-bisects-bar-labels",
   },
   INTERACTION_INSPECT_AXIS_ON_VIOLIN: {
     severity: "advisory",
@@ -108,7 +106,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") for GeomViolin',
       "Prefer muteSiblings for sibling de-emphasis instead of an axis guide",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-axis-on-violin",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-axis-on-violin",
   },
   INTERACTION_INSPECT_AXIS_ON_BOXPLOT: {
     severity: "advisory",
@@ -120,7 +118,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") for GeomBoxplot',
       "Prefer muteSiblings for sibling de-emphasis instead of an axis guide",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-axis-on-boxplot",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-axis-on-boxplot",
   },
   INTERACTION_INSPECT_AXIS_ON_ERRORBAR: {
     severity: "advisory",
@@ -132,7 +130,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") for GeomErrorbar',
       "Prefer muteSiblings for sibling de-emphasis instead of an axis guide",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-axis-on-errorbar",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-axis-on-errorbar",
   },
   INTERACTION_INSPECT_AXIS_ON_LINERANGE: {
     severity: "advisory",
@@ -144,7 +142,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") for GeomLinerange',
       "Prefer muteSiblings for sibling de-emphasis instead of an axis guide",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-axis-on-linerange",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-axis-on-linerange",
   },
   INTERACTION_INSPECT_AXIS_ON_POINTRANGE: {
     severity: "advisory",
@@ -156,8 +154,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") for GeomPointrange',
       "Prefer muteSiblings for sibling de-emphasis instead of an axis guide",
     ],
-    docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-axis-on-pointrange",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-axis-on-pointrange",
   },
   INTERACTION_INSPECT_AXIS_ON_CROSSBAR: {
     severity: "advisory",
@@ -169,7 +166,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       'Use inspect={{ mode: "exact" }} (or leave mode as "auto") for GeomCrossbar',
       "Prefer muteSiblings for sibling de-emphasis instead of an axis guide",
     ],
-    docUrl: "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-axis-on-crossbar",
+    docUrl: "https://ggts.sh/guide/interaction-reference#interaction-inspect-axis-on-crossbar",
   },
   INTERACTION_INSPECT_HIGH_CARDINALITY_DISCRETE: {
     severity: "advisory",
@@ -183,7 +180,7 @@ export const INSPECT_GEOM_DIAGNOSTIC_CATALOG: Readonly<
       "Pin the tooltip to scroll the full group when every series must be readable",
     ],
     docUrl:
-      "https://ggsvelte.sh/guide/interaction-reference#interaction-inspect-high-cardinality-discrete",
+      "https://ggts.sh/guide/interaction-reference#interaction-inspect-high-cardinality-discrete",
   },
 });
 
@@ -235,7 +232,7 @@ export type InspectAxisOnDistributionOptions = {
   readonly discreteBandAxis?: boolean;
 };
 
-/** Host inspect modes accepted by `ggsvelte-render --inspect`. */
+/** Host inspect modes accepted by `ggts render --inspect`. */
 export const INSPECT_INTENT_MODES = ["auto", "exact", "x", "y", "xy"] as const;
 export type InspectIntentMode = (typeof INSPECT_INTENT_MODES)[number];
 

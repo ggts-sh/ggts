@@ -59,14 +59,14 @@ export function previewSmokePlan(baseUrl: string, sourceCommit: string): SmokeEx
       url: `${base}/llms.txt`,
       status: 200,
       headers: noindex,
-      bodyIncludes: ["# ggsvelte"],
+      bodyIncludes: ["# ggts"],
     },
     {
       name: "preview sitemap",
       url: `${base}/sitemap.xml`,
       status: 200,
       headers: noindex,
-      bodyIncludes: ["https://ggsvelte.sh/"],
+      bodyIncludes: ["https://ggts.sh/"],
     },
     {
       name: "preview robots",
@@ -116,7 +116,7 @@ export function cutoverSmokePlan(input: CutoverSmokeInput): SmokeExpectation[] {
       status: 200,
       headers: { "x-content-type-options": "nosniff" },
     },
-    { name: "apex llms", url: `${apex}/llms.txt`, status: 200, bodyIncludes: ["# ggsvelte"] },
+    { name: "apex llms", url: `${apex}/llms.txt`, status: 200, bodyIncludes: ["# ggts"] },
     {
       name: "apex sitemap",
       url: `${apex}/sitemap.xml`,
@@ -152,6 +152,18 @@ export function cutoverSmokePlan(input: CutoverSmokeInput): SmokeExpectation[] {
       url: `${pages}/guide/getting-started?from=pages`,
       status: 301,
       redirectTo: `${apex}/guide/getting-started?from=pages`,
+    },
+    {
+      name: "old apex path and query redirect",
+      url: "https://ggsvelte.sh/guide/getting-started?from=old-apex",
+      status: 301,
+      redirectTo: `${apex}/guide/getting-started?from=old-apex`,
+    },
+    {
+      name: "old www path and query redirect",
+      url: "https://www.ggsvelte.sh/schema/v0.json?from=old-www",
+      status: 301,
+      redirectTo: `${apex}/schema/v0.json?from=old-www`,
     },
     {
       name: "legacy-base cleanup redirect",

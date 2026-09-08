@@ -1,7 +1,7 @@
 /**
  * Resolve y field vs stat-column mapping for bindLayer.
  */
-import type { Aes, StatName } from "@ggsvelte/spec";
+import type { Aes, StatName } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

@@ -1,7 +1,7 @@
 /**
  * Shared LegendKeyIndexAdapter fixture builder for pure legend entry-key-index suites.
  */
-import type { SceneLegend } from "@ggsvelte/core";
+import type { SceneLegend } from "@ggts-sh/core";
 
 import type { LegendKeyIndexAdapter } from "../../src/lib/legend/entry-key-index.js";
 import { discreteFill } from "./focus-fixtures.js";

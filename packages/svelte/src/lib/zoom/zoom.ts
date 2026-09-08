@@ -13,4 +13,4 @@ export {
   resolveBrushZoomDomains,
   type BrushZoomModel,
   resolveBrushZoomFromModel,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

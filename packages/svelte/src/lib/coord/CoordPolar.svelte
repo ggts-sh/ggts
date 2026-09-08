@@ -4,7 +4,7 @@
    * Emits `{ type: "radial", clip: true, … }` via `coordPolar(…)`.
    * Prefer <CoordRadial> for new work (partial arcs, inner radius, reverse).
    */
-  import { coordPolar, type CoordPolarOptions } from "@ggsvelte/spec";
+  import { coordPolar, type CoordPolarOptions } from "@ggts-sh/spec";
 
   import {
     createPlotLayer,

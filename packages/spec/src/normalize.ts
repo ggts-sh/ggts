@@ -21,7 +21,7 @@
  *  5. Theme names stay strings; theme objects are cloned (both canonical).
  *  6. Deterministic key order for every object it constructs.
  *
- * Scale-type inference needs data, so it lives in @ggsvelte/core (pipeline);
+ * Scale-type inference needs data, so it lives in @ggts-sh/core (pipeline);
  * normalize only fills structural defaults. Normalized output is itself a
  * valid PortableSpec, and normalize(normalize(s)) deep-equals normalize(s).
  *

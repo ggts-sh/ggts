@@ -1,7 +1,7 @@
 /**
  * Per-layer aes channel resolution and structural geom/stat validation.
  */
-import type { Aes, NormalizedLayerSpec } from "@ggsvelte/spec";
+import type { Aes, NormalizedLayerSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

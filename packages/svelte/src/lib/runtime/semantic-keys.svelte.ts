@@ -5,8 +5,8 @@
  * delivery. Pure helpers: semantic-keys-resolve.ts, semantic-keys-projection.ts,
  * semantic-data-identity.ts, semantic-source-identity.ts.
  */
-import type { CandidateFacts, CellValue, RenderModel } from "@ggsvelte/core";
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { CandidateFacts, CellValue, RenderModel } from "@ggts-sh/core";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { InteractionDiagnostic } from "../interaction/interaction.js";
 import {

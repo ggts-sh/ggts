@@ -1,8 +1,8 @@
 /**
  * Field presence / all-null checks for aes channel resolution.
  */
-import type { ChannelValue, NormalizedGeomName } from "@ggsvelte/spec";
-import { didYouMean } from "@ggsvelte/spec";
+import type { ChannelValue, NormalizedGeomName } from "@ggts-sh/spec";
+import { didYouMean } from "@ggts-sh/spec";
 
 import type { CellValue } from "../table.js";
 import type { ColumnTable } from "../table.js";

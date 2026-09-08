@@ -10,7 +10,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg, scaleXContinuous } from "@ggsvelte/spec";
+import { aes, gg, scaleXContinuous } from "@ggts-sh/spec";
 
 import { runPipeline } from "../src/pipeline.ts";
 

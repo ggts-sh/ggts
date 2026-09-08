@@ -19,7 +19,7 @@ describe("llms surfaces", () => {
 
   it("publishes absolute canonical links and implementation-derived release facts", () => {
     const txt = buildLlmsIndex(pages.slice(0, 1), EXAMPLES.slice(0, 1), {
-      canonicalBase: "https://ggsvelte.sh",
+      canonicalBase: "https://ggts.sh",
       packageVersion: "0.4.0",
       currentEdition: 2,
       themeNames: ["light", "dark"],
@@ -28,20 +28,20 @@ describe("llms surfaces", () => {
     expect(txt).toContain("Package version: 0.4.0");
     expect(txt).toContain("Defaults edition: 2");
     expect(txt).toContain("Registered chart themes (2): light, dark");
-    expect(txt).toContain("(https://ggsvelte.sh/guide/agents)");
-    expect(txt).toContain("(https://ggsvelte.sh/examples/");
+    expect(txt).toContain("(https://ggts.sh/guide/agents)");
+    expect(txt).toContain("(https://ggts.sh/examples/");
     expect(txt).not.toMatch(/\]\(\//);
   });
 
   it("llms.txt lists every guide page and every manifest example", () => {
     const txt = buildLlmsIndex(pages, EXAMPLES);
-    expect(txt.startsWith("# ggsvelte\n")).toBe(true);
-    for (const page of pages) expect(txt).toContain(`(https://ggsvelte.sh/guide/${page.slug})`);
-    expect(txt).toContain("(https://ggsvelte.sh/schema/v0.json)");
-    expect(txt).not.toContain("(https://ggsvelte.sh/playground)");
-    expect(txt).toContain("(https://ggsvelte.sh/reference/interactions)");
+    expect(txt.startsWith("# ggts\n")).toBe(true);
+    for (const page of pages) expect(txt).toContain(`(https://ggts.sh/guide/${page.slug})`);
+    expect(txt).toContain("(https://ggts.sh/schema/v0.json)");
+    expect(txt).not.toContain("(https://ggts.sh/playground)");
+    expect(txt).toContain("(https://ggts.sh/reference/interactions)");
     for (const ex of EXAMPLES) {
-      expect(txt).toContain(`(https://ggsvelte.sh/examples/${ex.id})`);
+      expect(txt).toContain(`(https://ggts.sh/examples/${ex.id})`);
     }
     expect(pages.map((page) => page.slug)).toContain("interactions");
     expect(pages.map((page) => page.slug)).toContain("interaction-reference");

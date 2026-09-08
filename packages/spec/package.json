@@ -1,7 +1,7 @@
 {
-  "name": "@ggsvelte/spec",
-  "version": "0.42.0",
-  "description": "ggsvelte plot spec: TypeBox schemas, PortableSpec types, normalize(), validate() with agent errors, fluent builder, JSON Schema artifact.",
+  "name": "@ggts-sh/spec",
+  "version": "0.43.0",
+  "description": "ggts plot spec: TypeBox schemas, PortableSpec types, normalize(), validate() with agent errors, fluent builder, JSON Schema artifact.",
   "keywords": [
     "agents",
     "charts",
@@ -14,13 +14,13 @@
     "validation",
     "visualization"
   ],
-  "homepage": "https://ggsvelte.sh/",
-  "bugs": "https://github.com/ljodea/ggsvelte/issues",
+  "homepage": "https://ggts.sh/",
+  "bugs": "https://github.com/ggts-sh/ggts/issues",
   "license": "MIT",
   "author": "Liam O'Dea",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ljodea/ggsvelte.git",
+    "url": "git+https://github.com/ggts-sh/ggts.git",
     "directory": "packages/spec"
   },
   "files": [

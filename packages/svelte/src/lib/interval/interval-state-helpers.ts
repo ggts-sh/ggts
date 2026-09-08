@@ -4,7 +4,7 @@
  * No factory capture: every function takes its inputs as arguments and reads
  * no reactive state. Consumed by interval-state.svelte.ts.
  */
-import { decodeKey, type SemanticViewportSelection } from "@ggsvelte/core";
+import { decodeKey, type SemanticViewportSelection } from "@ggts-sh/core";
 
 import type { ReadonlyIntervalDomains, SemanticIntervalAxis } from "../interaction/interaction.js";
 

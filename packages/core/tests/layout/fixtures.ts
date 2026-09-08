@@ -1,7 +1,7 @@
 /**
  * Shared fixtures for two-pass layout characterization tests.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import {
   DEFAULT_LAYOUT_THEME,

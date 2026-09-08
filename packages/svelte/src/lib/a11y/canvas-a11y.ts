@@ -4,4 +4,4 @@ export {
   collectCanvasRowIndexes,
   a11yMarkCount,
   a11yRows,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

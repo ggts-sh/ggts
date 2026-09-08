@@ -34,7 +34,7 @@
   const kb = (value: number): string => `${String(Math.round(value))} KB`;
 
   /*
-   * Column order ggsvelte → TanStack → SveltePlot → Unovis → LayerCake.
+   * Column order ggts → TanStack → SveltePlot → Unovis → LayerCake.
    * Bun's homepage table leads with its flaw before the wins; same here:
    * bundle size and pre-1.0 up top. Claims verified against svelteplot@0.14
    * / @tanstack/charts@0.14 / @unovis/svelte@1.6 / layercake@10 sources.
@@ -141,7 +141,7 @@
       <thead>
         <tr>
           <th scope="col">Capability</th>
-          <th scope="col">ggsvelte</th>
+          <th scope="col">ggts</th>
           <th scope="col">TanStack</th>
           <th scope="col">SveltePlot</th>
           <th scope="col">Unovis</th>

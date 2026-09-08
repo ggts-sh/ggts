@@ -1,7 +1,7 @@
 import { fromAny } from "@total-typescript/shoehorn";
 import { describe, expect, it, vi } from "vitest";
 
-import type { GeometryBatch, RenderModel } from "@ggsvelte/core";
+import type { GeometryBatch, RenderModel } from "@ggts-sh/core";
 
 import { A11Y_TABLE_CAP, a11yRows } from "../../src/lib/a11y/canvas-a11y.js";
 import CanvasA11y from "../../src/lib/a11y/CanvasA11y.svelte";

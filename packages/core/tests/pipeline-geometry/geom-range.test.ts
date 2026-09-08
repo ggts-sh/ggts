@@ -2,7 +2,7 @@
  * Range geoms: linerange, pointrange, crossbar (#793).
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg, validate } from "@ggsvelte/spec";
+import { aes, gg, validate } from "@ggts-sh/spec";
 
 import { runPipeline } from "../../src/pipeline.ts";
 import type { PointsBatch, RectsBatch, SegmentsBatch } from "../../src/scene.ts";

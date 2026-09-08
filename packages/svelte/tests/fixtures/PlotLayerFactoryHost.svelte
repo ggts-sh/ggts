@@ -12,7 +12,7 @@
     Scales,
     ThemeName,
     ThemeSpec,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import { untrack } from "svelte";
 
   import type { LayerRegistry } from "../../src/lib/geoms/registry.svelte.js";

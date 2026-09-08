@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import { GEOM_PARAM_KEYS, type GeomName } from "@ggsvelte/spec";
+import { GEOM_PARAM_KEYS, type GeomName } from "@ggts-sh/spec";
 import type {
   AesInput,
   DataInput,
@@ -8,8 +8,8 @@ import type {
   PositionParams,
   RenderBackend,
   StatName,
-} from "@ggsvelte/spec";
-import type { Layer } from "@ggsvelte/compose";
+} from "@ggts-sh/spec";
+import type { Layer } from "@ggts-sh/compose";
 
 import { useRegisterLayer } from "./registry.js";
 

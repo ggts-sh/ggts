@@ -15,7 +15,7 @@ import type {
   CandidateMatch,
   RenderModel,
   ResolvedCandidateInspectMode,
-} from "@ggsvelte/core";
+} from "@ggts-sh/core";
 
 import { panelBoundsFrom, type PanelBounds } from "../scene/geometry.js";
 import type { PlotPoint } from "../surface/area-brush.js";

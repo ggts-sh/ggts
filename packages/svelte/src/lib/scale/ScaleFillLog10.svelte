@@ -3,7 +3,7 @@
   import {
     scaleFillLog10,
     type TransformedColorScaleOptions,
-  } from "@ggsvelte/spec";
+  } from "@ggts-sh/spec";
   import {
     createPlotLayer,
     definedProps,

@@ -1,4 +1,4 @@
-import { aes, gg, scaleColorGradient } from "@ggsvelte/spec";
+import { aes, gg, scaleColorGradient } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { parisRegister } from "./data.js";

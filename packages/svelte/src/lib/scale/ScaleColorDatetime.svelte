@@ -3,8 +3,8 @@
   import {
     scaleColorDatetime,
     type TemporalColorScaleOptions,
-  } from "@ggsvelte/spec";
-  import "@ggsvelte/core/temporal";
+  } from "@ggts-sh/spec";
+  import "@ggts-sh/core/temporal";
   import {
     createPlotLayer,
     definedProps,

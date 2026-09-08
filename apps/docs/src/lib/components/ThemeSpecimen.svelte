@@ -1,7 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { onMount } from "svelte";
-  import type { ThemeName } from "@ggsvelte/spec";
+  import type { ThemeName } from "@ggts-sh/spec";
 
   import { observeUserIntent } from "$lib/load-on-intent";
   import {

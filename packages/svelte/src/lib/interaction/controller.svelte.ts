@@ -1,8 +1,8 @@
-import { createPlotInteraction as createController } from "@ggsvelte/core/interaction";
+import { createPlotInteraction as createController } from "@ggts-sh/core/interaction";
 import type {
   CreatePlotInteractionOptions,
   PlotInteractionController,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 
 export type {
   ControllerDatumIdentity,
@@ -10,7 +10,7 @@ export type {
   PlotInteractionController,
   PlotInteractionMutationOptions,
   PlotInteractionZoomOptions,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 
 /** Svelte reactivity over the shared framework-independent controller. */
 export function createPlotInteraction<Key extends PropertyKey = PropertyKey>(

@@ -1,4 +1,4 @@
-import { installCandidates, registerBasic } from "@ggsvelte/core";
+import { installCandidates, registerBasic } from "@ggts-sh/core";
 
 registerBasic();
 installCandidates();

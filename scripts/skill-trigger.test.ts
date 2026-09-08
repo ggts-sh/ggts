@@ -1,5 +1,5 @@
 /**
- * Trigger-surface and progressive-disclosure contracts for @ggsvelte/skill.
+ * Trigger-surface and progressive-disclosure contracts for @ggts-sh/skill.
  *
  * August 2026 skill-eval practice (OpenAI eval-skills, Anthropic skill-creator,
  * philschmid testing-skills) splits work into two layers:
@@ -98,7 +98,7 @@ describe("SKILL.md frontmatter description (trigger surface)", () => {
   });
 
   it("names the product and the two authoring skins agents must choose", () => {
-    expect(description.toLowerCase()).toMatch(/ggsvelte/);
+    expect(description.toLowerCase()).toMatch(/ggts/);
     expect(description).toMatch(/grammar-of-graphics|grammar of graphics/i);
     expect(description).toMatch(/Svelte/);
     expect(description).toMatch(/React/);
@@ -107,10 +107,10 @@ describe("SKILL.md frontmatter description (trigger surface)", () => {
 
   it("lists package import paths agents already have in code", () => {
     // Import-path triggers are high-precision; losing them is a silent regression.
-    expect(description).toContain("@ggsvelte/svelte");
-    expect(description).toContain("@ggsvelte/react");
-    expect(description).toContain("@ggsvelte/spec");
-    expect(description).toContain("@ggsvelte/core");
+    expect(description).toContain("@ggts-sh/svelte");
+    expect(description).toContain("@ggts-sh/react");
+    expect(description).toContain("@ggts-sh/spec");
+    expect(description).toContain("@ggts-sh/core");
   });
 
   it("lists concrete chart kinds and composition hooks, not only abstract nouns", () => {
@@ -146,7 +146,7 @@ describe("SKILL.md frontmatter description (trigger surface)", () => {
     const descLower = description.toLowerCase();
     // Tokens that are intentionally in the description and useful for routing.
     const vocab = [
-      "ggsvelte",
+      "ggts",
       "chart",
       "plot",
       "scatter",
@@ -164,9 +164,9 @@ describe("SKILL.md frontmatter description (trigger surface)", () => {
       "validate",
       "geom",
       "ggplot",
-      "@ggsvelte/svelte",
-      "@ggsvelte/spec",
-      "@ggsvelte/core",
+      "@ggts-sh/svelte",
+      "@ggts-sh/spec",
+      "@ggts-sh/core",
     ];
     const positives = cases.filter((c) => c.should_trigger);
     for (const c of positives) {
@@ -222,8 +222,8 @@ describe("skill body uses directives for the validation feedback loop", () => {
   });
 
   it("states the CLI install contract for agent sandboxes", () => {
-    expect(skillMd).toMatch(/@ggsvelte\/cli/);
-    expect(skillMd).toMatch(/install `@ggsvelte\/cli`|npm i -g @ggsvelte\/cli/);
+    expect(skillMd).toMatch(/@ggts-sh\/cli/);
+    expect(skillMd).toMatch(/install `@ggts-sh\/cli`|npm i -g @ggts-sh\/cli/);
   });
 
   it("documents registerAll for headless / spec-driven surfaces", () => {

@@ -21,7 +21,7 @@
  * Semantic diagnostics retain their later effect-registration position
  * through the service's phased `registerEffects()` API (#165).
  */
-import { encodeKey, type ScenePanel } from "@ggsvelte/core";
+import { encodeKey, type ScenePanel } from "@ggts-sh/core";
 
 import type { InteractionContext } from "../interaction/interaction-context.svelte.js";
 import type {

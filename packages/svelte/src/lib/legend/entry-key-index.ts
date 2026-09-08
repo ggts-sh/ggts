@@ -4,4 +4,4 @@ export {
   type LegendKeyIndexPlotModel,
   buildLegendEntryKeyIndexForPlot,
   buildLegendEntryKeyIndex,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

@@ -1,5 +1,5 @@
 {
-  "name": "@ggsvelte-bench/competitive",
+  "name": "@ggts-sh-bench/competitive",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,10 +14,10 @@
     "test": "bun test scenarios.test.ts"
   },
   "dependencies": {
-    "@ggsvelte/core": "workspace:*",
-    "@ggsvelte/react": "workspace:*",
-    "@ggsvelte/spec": "workspace:*",
-    "@ggsvelte/svelte": "workspace:*",
+    "@ggts-sh/core": "workspace:*",
+    "@ggts-sh/react": "workspace:*",
+    "@ggts-sh/spec": "workspace:*",
+    "@ggts-sh/svelte": "workspace:*",
     "@tanstack/charts": "^0.14.0",
     "@unovis/svelte": "1.6.7",
     "@unovis/ts": "1.6.7",

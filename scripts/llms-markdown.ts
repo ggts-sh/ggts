@@ -129,9 +129,12 @@ export function renderMarkdown(md: string, base = ""): string {
       flushParagraph();
       flushList();
       const level = heading[1]!.length;
-      html.push(
-        `<h${level} id="${headingId(heading[2]!)}">${inline(heading[2]!, base)}</h${level}>`,
-      );
+      const id = headingId(heading[2]!);
+      // Keep links from pre-rename package documentation usable.
+      if (id.startsWith("ggts-sh-")) {
+        html.push(`<span id="${id.replace("ggts-sh-", "ggsvelte-")}"></span>`);
+      }
+      html.push(`<h${level} id="${id}">${inline(heading[2]!, base)}</h${level}>`);
       continue;
     }
     if (line.startsWith("- ")) {

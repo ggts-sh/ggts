@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GeomCol, GGPlot } from "@ggsvelte/svelte";
+  import { GeomCol, GGPlot } from "@ggts-sh/svelte";
 
   const rows = [{ q: "Q1", v: 10 }];
 </script>

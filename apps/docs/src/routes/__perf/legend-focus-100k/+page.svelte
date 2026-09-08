@@ -4,7 +4,7 @@
     GGPlot,
     GuideLegend,
     Labs,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   const navigationData = Array.from({ length: 100_000 }, (_, id) => ({
     id,

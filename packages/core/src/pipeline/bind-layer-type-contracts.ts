@@ -1,7 +1,7 @@
 /**
  * Geom/stat channel type mismatch and computed-y contracts for bindLayer.
  */
-import type { LayerSpec } from "@ggsvelte/spec";
+import type { LayerSpec } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

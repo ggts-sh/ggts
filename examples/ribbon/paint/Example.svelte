@@ -1,12 +1,6 @@
 <script lang="ts">
-  import { fillPaintLinear, glow, strokePaintLinear } from "@ggsvelte/spec";
-  import {
-    GeomLine,
-    GeomRibbon,
-    GGPlot,
-    Inspect,
-    Labs,
-  } from "@ggsvelte/svelte";
+  import { fillPaintLinear, glow, strokePaintLinear } from "@ggts-sh/spec";
+  import { GeomLine, GeomRibbon, GGPlot, Inspect, Labs } from "@ggts-sh/svelte";
 
   import { series } from "./data.js";
 </script>

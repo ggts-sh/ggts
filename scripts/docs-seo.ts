@@ -3,7 +3,7 @@ import sveltePackage from "../packages/svelte/package.json";
 import { buildDocsCrumbs } from "./docs-breadcrumbs";
 import { socialImageForRoute } from "./docs-seo-image";
 
-const REPOSITORY_URL = "https://github.com/ljodea/ggsvelte";
+const REPOSITORY_URL = "https://github.com/ggts-sh/ggts";
 
 export interface SeoRoute {
   path: string;
@@ -55,14 +55,14 @@ export function buildSeoDocument(route: SeoRoute, canonicalBase: string): SeoDoc
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "ggsvelte",
+        name: "ggts",
         url: canonical,
         description: route.description,
       },
       {
         "@context": "https://schema.org",
         "@type": "SoftwareSourceCode",
-        name: "ggsvelte",
+        name: "ggts",
         codeRepository: REPOSITORY_URL,
         programmingLanguage: ["TypeScript", "Svelte"],
         license: "https://spdx.org/licenses/MIT.html",
@@ -77,7 +77,7 @@ export function buildSeoDocument(route: SeoRoute, canonicalBase: string): SeoDoc
       route.primaryNavigationOwner === "reference" ||
       route.path.startsWith("/reference") ||
       route.navigation?.section === "Reference";
-    const title = route.navigation?.label ?? route.title.replace(" — ggsvelte", "");
+    const title = route.navigation?.label ?? route.title.replace(" — ggts", "");
     const crumbs = buildDocsCrumbs(route.path, title, reference);
     // Single-crumb pages (e.g. /reference alone) skip BreadcrumbList.
     if (crumbs.length > 1) {

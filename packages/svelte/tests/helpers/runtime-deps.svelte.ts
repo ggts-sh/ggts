@@ -3,8 +3,8 @@
  * to `$derived` inside createPlotRuntime; host state must be `$state` so
  * setter writes invalidate the model derived.
  */
-import type { RenderModel } from "@ggsvelte/core";
-import type { PortableSpec } from "@ggsvelte/spec";
+import type { RenderModel } from "@ggts-sh/core";
+import type { PortableSpec } from "@ggts-sh/spec";
 
 import type { ReadonlyZoomDomains } from "../../src/lib/interaction/interaction.js";
 import type { LegendFilterClause } from "../../src/lib/legend/filter.js";

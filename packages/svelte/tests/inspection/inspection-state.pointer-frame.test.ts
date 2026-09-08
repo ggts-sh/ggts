@@ -4,7 +4,7 @@
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import type { CandidateFacts } from "@ggsvelte/core";
+import type { CandidateFacts } from "@ggts-sh/core";
 
 import { reactiveBox } from "../helpers/reactive-box.svelte.js";
 import {

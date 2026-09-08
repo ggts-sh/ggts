@@ -2,8 +2,8 @@
  * Shared harness for createInspectionState composite tests.
  * Factories own deriveds + effects — instantiate under `$effect.root` and destroy.
  */
-import type { CandidateFacts, CellValue, RenderModel } from "@ggsvelte/core";
-import { aes, gg, type PortableSpec } from "@ggsvelte/spec";
+import type { CandidateFacts, CellValue, RenderModel } from "@ggts-sh/core";
+import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import type {
   PlotInspection,

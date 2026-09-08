@@ -3,13 +3,13 @@
  * The generator reads a committed measurement snapshot. Every result is
  * retained regardless of winner; bars sort by measured time, fastest first.
  */
-import { registerAll, renderToSVGString } from "@ggsvelte/core";
+import { registerAll, renderToSVGString } from "@ggts-sh/core";
 
 // Headless full-grammar rendering (#1420): explicit opt-in.
 registerAll();
 
-import type { PortableSpec, ThemeSpec } from "@ggsvelte/spec";
-import { validate } from "@ggsvelte/spec";
+import type { PortableSpec, ThemeSpec } from "@ggts-sh/spec";
+import { validate } from "@ggts-sh/spec";
 
 /** Docs site accent (app.css --accent, light site) — the ggsvelte bar. */
 export const BENCH_GGSVELTE_FILL = "#4269d0";

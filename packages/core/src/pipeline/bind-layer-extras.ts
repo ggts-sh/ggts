@@ -1,7 +1,7 @@
 /**
  * Label, weight, and color/fill resolution after required-channel checks.
  */
-import type { Aes, NormalizedGeomName, StatName } from "@ggsvelte/spec";
+import type { Aes, NormalizedGeomName, StatName } from "@ggts-sh/spec";
 
 import type { ColumnTable } from "../table.js";
 

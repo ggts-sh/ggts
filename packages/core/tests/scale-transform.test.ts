@@ -62,12 +62,12 @@ describe("transform registry — keys and lookup", () => {
   });
 });
 
-describe("@ggsvelte/core root export identity", () => {
+describe("@ggts-sh/core root export identity", () => {
   it("re-exports the transform registry through the package root with the same stable-reference guarantee", async () => {
     // Package-boundary import (dist), not the relative ../src import the rest
-    // of this file uses — proves @ggsvelte/svelte consumers see the same
+    // of this file uses — proves @ggts-sh/svelte consumers see the same
     // singleton registry contract as core's own internals.
-    const root = await import("@ggsvelte/core");
+    const root = await import("@ggts-sh/core");
     expect([...root.POSITION_TRANSFORM_NAMES]).toEqual(["identity", "log10", "sqrt"]);
     expect(root.scaleTransform("log10")).toBe(root.scaleTransform("log10"));
     expect(root.getScaleTransform("sqrt")).toBe(root.scaleTransform("sqrt"));

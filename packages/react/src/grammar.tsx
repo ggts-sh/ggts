@@ -22,7 +22,7 @@ import {
   type Scales,
   type ThemeName,
   type ThemeSpec,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { definedProps } from "./defined-props.js";
 import { usePlotLayerValue } from "./geom-factory.js";

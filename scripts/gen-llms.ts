@@ -14,7 +14,7 @@
  * scripts/gen-llms/*.test.ts; apps/docs imports it via the `$scripts` alias
  * for its prerendered endpoints and guide pages.
  */
-import { CURRENT_EDITION, THEME_NAMES } from "@ggsvelte/spec";
+import { CURRENT_EDITION, THEME_NAMES } from "@ggts-sh/spec";
 import { REACT_SPEC_HOST_SOURCE } from "./agent-quickstart";
 import sveltePackage from "../packages/svelte/package.json";
 import { GUIDE_CATALOG, type GuideSlug } from "../apps/docs/src/lib/catalog/guide";
@@ -154,10 +154,10 @@ function absoluteMarkdownLinks(markdown: string, canonicalBase: string): string 
 export function buildLlmsIndex(
   pages: readonly GuidePage[],
   examples: readonly LlmsExampleEntry[],
-  facts: DocsDiscoveryFacts = docsDiscoveryFacts("https://ggsvelte.sh"),
+  facts: DocsDiscoveryFacts = docsDiscoveryFacts("https://ggts.sh"),
 ): string {
   const lines = [
-    "# ggsvelte",
+    "# ggts",
     "",
     "> A layered grammar of graphics for JavaScript: ggplot2 semantics (aes/geom/stat/scale/coord/facet/theme/position), a strictly-JSON PortableSpec that agents emit (published JSON Schema for constrained decoding), a TypeScript builder, React and Svelte 5 components, hybrid SVG/canvas rendering, and value-stable color scales. validate() returns { code, path, message, fix } errors whose fix.example is machine-applicable.",
     "",
@@ -256,10 +256,10 @@ export function pruneSpecData(spec: unknown, maxRows = 20): { spec: unknown; pru
 export function buildLlmsFull(
   pages: readonly GuidePage[],
   examples: readonly LlmsFullExample[],
-  facts: DocsDiscoveryFacts = docsDiscoveryFacts("https://ggsvelte.sh"),
+  facts: DocsDiscoveryFacts = docsDiscoveryFacts("https://ggts.sh"),
 ): string {
   const parts = [
-    "# ggsvelte — full docs corpus for language models",
+    "# ggts — full docs corpus for language models",
     "",
     "Generated from the shared guide sources and example manifest. Each example supplies PortableSpec JSON for every framework and authored Svelte usage. The React host below renders the same grammar; host-only interactions require adapter callbacks and components.",
     "",

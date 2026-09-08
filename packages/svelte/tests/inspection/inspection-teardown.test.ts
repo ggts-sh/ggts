@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "vitest";
 
-import type { CandidateFacts, RenderModel } from "@ggsvelte/core";
+import type { CandidateFacts, RenderModel } from "@ggts-sh/core";
 
 import {
   applySceneInspectReconcile,

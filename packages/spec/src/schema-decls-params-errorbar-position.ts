@@ -421,7 +421,7 @@ export const ParamsErrorbarPositionDecls = {
         Type.Integer({
           minimum: 0,
           description:
-            "JITTER ONLY: RNG seed (a non-negative integer). Default 42. ggsvelte jitter is ALWAYS seeded so renders are reproducible (deliberate divergence from random jitter).",
+            "JITTER ONLY: RNG seed (a non-negative integer). Default 42. ggts jitter is ALWAYS seeded so renders are reproducible (deliberate divergence from random jitter).",
         }),
       ),
       x: Type.Optional(

@@ -2,7 +2,7 @@
  * SVG renderer — panels, clipping, strips
  */
 import { describe, expect, it } from "bun:test";
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
 import { sceneToSVGString } from "../../src/render-svg.ts";
 import { size, wrapRows, wrapSpec } from "./fixtures.ts";

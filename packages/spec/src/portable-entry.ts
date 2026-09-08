@@ -1,9 +1,9 @@
 /**
- * Lean portable builder entry (`@ggsvelte/spec/portable`).
+ * Lean portable builder entry (`@ggts-sh/spec/portable`).
  *
  * Exports the fluent builder without TypeBox: `.spec()` is an alias of
  * `.toPortable()` (normalize only). Use this from chart render bundles;
- * keep `@ggsvelte/spec` + `.spec()` / `validate()` for agent authoring.
+ * keep `@ggts-sh/spec` + `.spec()` / `validate()` for agent authoring.
  *
  * Lifecycle (Hadley lesson 13; meanings in CONTRIBUTING.md): tags collected
  * into lifecycle.json by scripts/gen-lifecycle.ts.

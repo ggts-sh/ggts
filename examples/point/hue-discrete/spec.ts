@@ -1,4 +1,4 @@
-import { aes, gg, scaleColorHue } from "@ggsvelte/spec";
+import { aes, gg, scaleColorHue } from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { armadaSquadrons } from "./data.js";

@@ -8,7 +8,7 @@
     ScaleXContinuous,
     ScaleYContinuous,
     ThemeClassic,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { halleyLifeTable } from "./data.js";
 </script>

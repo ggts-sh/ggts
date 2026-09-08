@@ -7,7 +7,7 @@
  */
 import { describe, expect, it, spyOn } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { ColumnTable } from "../../src/table.ts";
 import { size, countColumnReads } from "./fixtures.ts";
@@ -22,7 +22,7 @@ describe("aggregate lineage x-key hoist (#1307)", () => {
     const { aggregateLineageXKey, resolveAggregateLineageXView } =
       await import("../../src/pipeline/candidate-construction/identity-buckets.ts");
     const { bandKey } = await import("../../src/scales/train.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const values = Array.from({ length: ROW_COUNT }, (_, i) => ({
       x: (i % 5) + 1,
@@ -62,7 +62,7 @@ describe("aggregate lineage x-key hoist (#1307)", () => {
     const { aggregateLineageXKey, resolveAggregateLineageXView } =
       await import("../../src/pipeline/candidate-construction/identity-buckets.ts");
     const { bandKey } = await import("../../src/scales/train.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const values = [
       { when: "1/2/2025", value: 1 },
@@ -106,7 +106,7 @@ describe("aggregate lineage x-key hoist (#1307)", () => {
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
     const { aggregateLineageXKey, resolveAggregateLineageXView } =
       await import("../../src/pipeline/candidate-construction/identity-buckets.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const values = Array.from({ length: 12 }, (_, i) => ({ x: i }));
     const prepared = preparePanels(
@@ -146,7 +146,7 @@ describe("aggregate lineage x-key hoist (#1307)", () => {
     const { preparePanels } = await import("../../src/pipeline/prepare-panels.ts");
     const { buildCandidateIdentityIndex } =
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const values = Array.from({ length: ROW_COUNT }, (_, i) => ({ x: (i % 5) + 1 }));
     const prepared = preparePanels(
@@ -172,7 +172,7 @@ describe("aggregate lineage x-key hoist (#1307)", () => {
     const { preparePanels } = await import("../../src/pipeline/prepare-panels.ts");
     const { buildCandidateIdentityIndex } =
       await import("../../src/pipeline/candidate-construction/identity-index.ts");
-    const { normalize } = await import("@ggsvelte/spec");
+    const { normalize } = await import("@ggts-sh/spec");
 
     const values = Array.from({ length: ROW_COUNT }, (_, i) => ({
       when: `${String((i % 28) + 1).padStart(2, "0")}/02/2025`,

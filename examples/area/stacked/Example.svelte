@@ -8,7 +8,7 @@
     ScaleFillDiscrete,
     ScaleXDate,
     ThemeEconomist,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { crimeanMortality } from "./data.js";
 </script>

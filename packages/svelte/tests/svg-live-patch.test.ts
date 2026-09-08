@@ -1,5 +1,5 @@
 /**
- * Browser DOM behavior tests for the @ggsvelte/core/svg-live positional
+ * Browser DOM behavior tests for the @ggts-sh/core/svg-live positional
  * patcher (#1471 Angle 1). Real browser semantics (setAttribute,
  * MutationObserver) across chromium/firefox/webkit.
  *
@@ -12,7 +12,7 @@
  */
 import { beforeAll, describe, expect, test } from "vitest";
 
-import { runScene, sceneToSVGString, type Scene } from "@ggsvelte/core/headless";
+import { runScene, sceneToSVGString, type Scene } from "@ggts-sh/core/headless";
 import {
   registerBasicAreas,
   registerBasicBars,
@@ -21,9 +21,9 @@ import {
   registerFiniteStyle,
   registerNumericStyle,
   registerOrdinalColor,
-} from "@ggsvelte/core/headless/register";
-import { mountSceneSvg } from "@ggsvelte/core/svg-live";
-import type { SpecInput } from "@ggsvelte/spec/portable";
+} from "@ggts-sh/core/headless/register";
+import { mountSceneSvg } from "@ggts-sh/core/svg-live";
+import type { SpecInput } from "@ggts-sh/spec/portable";
 
 const W = 800;
 const H = 500;

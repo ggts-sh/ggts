@@ -1,13 +1,13 @@
 import { useEffect, useId, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
-import { formatBoundsDraft, validateBoundsDraft } from "@ggsvelte/core/interaction";
+import { formatBoundsDraft, validateBoundsDraft } from "@ggts-sh/core/interaction";
 import type {
   BoundsDraftErrors,
   BoundsEditorInput,
   InteractionTool,
   PreciseBoundsApplyEvent,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";
 
 interface PlotControlsProps {
   tools: readonly InteractionTool[];

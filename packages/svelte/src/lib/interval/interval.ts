@@ -14,4 +14,4 @@ export {
   lineageRowIndexesFromCandidates,
   type IntervalSelectionFromRowsInput,
   intervalSelectionFromRows,
-} from "@ggsvelte/core/interaction";
+} from "@ggts-sh/core/interaction";

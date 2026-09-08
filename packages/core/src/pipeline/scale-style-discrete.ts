@@ -1,5 +1,5 @@
 /** Shared ordinal/manual discrete training and guide assembly for style aesthetics. */
-import type { StyleAesthetic } from "@ggsvelte/spec";
+import type { StyleAesthetic } from "@ggts-sh/spec";
 
 import { disambiguatedLabels } from "../domain-labels.js";
 import type { StyleOutput, StyleScale } from "../scales/style.js";

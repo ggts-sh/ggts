@@ -16,7 +16,7 @@
 import { flushSync, type Component } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import * as Spec from "@ggsvelte/spec";
+import * as Spec from "@ggts-sh/spec";
 
 import { gg, SCALE_CAPABILITIES, type Scales } from "../../src/lib/index.js";
 import * as SveltePkg from "../../src/lib/index.js";
@@ -115,7 +115,7 @@ function representativeCommonProps(helper: string): Record<string, unknown> | un
 function callHelper(helper: string, props: Record<string, unknown>): Scales {
   const fn = (Spec as Record<string, unknown>)[helper];
   if (typeof fn !== "function") {
-    throw new TypeError(`helper ${helper} is not a function export of @ggsvelte/spec`);
+    throw new TypeError(`helper ${helper} is not a function export of @ggts-sh/spec`);
   }
   return (fn as (opts: Record<string, unknown>) => Scales)(props);
 }

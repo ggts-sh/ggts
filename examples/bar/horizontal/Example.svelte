@@ -6,7 +6,7 @@
     Inspect,
     Labs,
     ThemeFivethirtyeight,
-  } from "@ggsvelte/svelte";
+  } from "@ggts-sh/svelte";
 
   import { armadaMen } from "./data.js";
 </script>

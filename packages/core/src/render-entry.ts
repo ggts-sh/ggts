@@ -1,17 +1,17 @@
 /**
- * Lean render entry (`@ggsvelte/core/render`).
+ * Lean render entry (`@ggts-sh/core/render`).
  *
  * Pipeline + SVG string renderer with basic geom registration only.
  * Does not register heavy stats (smooth/loess, density_2d, sf, …) or specialty
  * geoms. Identity charts (scatter, line, bar, area) stay on this graph.
  *
- * Full grammar: import from `@ggsvelte/core` instead.
+ * Full grammar: import from `@ggts-sh/core` instead.
  *
  * Lifecycle (Hadley lesson 13; meanings in CONTRIBUTING.md): tags collected
  * into lifecycle.json by scripts/gen-lifecycle.ts.
  */
 // @lifecycle-default experimental
-// Side-effect contract of this subpath: importing `@ggsvelte/core/render`
+// Side-effect contract of this subpath: importing `@ggts-sh/core/render`
 // registers basic geom batches + basic stat frames (identity charts).
 import { registerBasicStatFrames } from "./pipeline/frame-stats-register-basic.js";
 import { registerBasicGeomBatches } from "./pipeline/geometry-register-basic.js";
@@ -49,7 +49,7 @@ export { renderToSVGString } from "./render-svg-full.js";
 export type { RenderSVGOptions } from "./render-svg.js";
 
 // Strata planning is pure (no DOM, no temporal install) — lean canvas charts
-// compose it with @ggsvelte/core/dom drawStratum.
+// compose it with @ggts-sh/core/dom drawStratum.
 export { planStrata } from "./strata.js";
 export type { Stratum } from "./strata.js";
 

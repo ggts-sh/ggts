@@ -1,7 +1,7 @@
 /**
  * Continuous scale domain parsing for positional axes.
  */
-import type { PositionScaleSpec } from "@ggsvelte/spec";
+import type { PositionScaleSpec } from "@ggts-sh/spec";
 
 import { positionConversionContext, positionValuesToNumeric } from "./temporal-position.js";
 import { PipelineError } from "./types.js";

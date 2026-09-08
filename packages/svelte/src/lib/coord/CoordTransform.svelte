@@ -4,7 +4,7 @@
    * <GGPlot> (#659 slice 5). Accepts the same options as `coordTransform(…)`.
    * Emits NO markup.
    */
-  import { coordTransform, type CoordTransformOptions } from "@ggsvelte/spec";
+  import { coordTransform, type CoordTransformOptions } from "@ggts-sh/spec";
 
   import {
     createPlotLayer,

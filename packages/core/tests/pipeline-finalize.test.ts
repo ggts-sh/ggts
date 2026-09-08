@@ -4,7 +4,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { aes, gg } from "@ggsvelte/spec";
+import { aes, gg } from "@ggts-sh/spec";
 
 import { finalize, type PipelineRunState } from "../src/pipeline/finalize.ts";
 import { finalizeGeometryAndScene } from "../src/pipeline/finalize-geometry-scene.ts";

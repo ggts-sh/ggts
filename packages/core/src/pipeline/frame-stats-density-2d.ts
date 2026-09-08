@@ -3,7 +3,7 @@
  *
  * Path series keyed by (group × piece). after_stat level for tooltips / fill.
  */
-import type { Density2dParams } from "@ggsvelte/spec";
+import type { Density2dParams } from "@ggts-sh/spec";
 
 import { statDensity2d } from "../stats/density-2d.js";
 import type { ColumnTable } from "../table.js";

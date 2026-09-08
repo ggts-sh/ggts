@@ -4,7 +4,7 @@ import {
   scaleColorManual,
   scaleLinewidthContinuous,
   scaleXContinuous,
-} from "@ggsvelte/spec";
+} from "@ggts-sh/spec";
 
 import { defineExample } from "../../define.js";
 import { campaignRivers, minardCityLabels, minardStrengthLabels, minardTroops } from "./data.js";

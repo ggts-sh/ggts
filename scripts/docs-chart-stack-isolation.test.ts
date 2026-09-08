@@ -40,7 +40,7 @@ describe("docs chart stack isolation (PR1)", () => {
     expect(server).not.toContain('p.slug !== "getting-started"');
   });
 
-  it("isolates @ggsvelte packages via vite/rolldown codeSplitting groups", () => {
+  it("isolates @ggts-sh packages via vite/rolldown codeSplitting groups", () => {
     const vite = readFileSync(path.join(root, "apps/docs/vite.config.ts"), "utf8");
     expect(vite).toContain("codeSplitting");
     expect(vite).toContain("svelte-runtime");
@@ -72,7 +72,7 @@ describe("docs chart stack isolation (PR1)", () => {
     for (const prefix of [
       "/repo/packages/spec/src/",
       "/repo/packages/spec/dist/",
-      "/repo/node_modules/@ggsvelte/spec/dist/",
+      "/repo/node_modules/@ggts-sh/spec/dist/",
     ]) {
       for (const file of [
         "geom-reference.js",
@@ -87,7 +87,7 @@ describe("docs chart stack isolation (PR1)", () => {
       expect(reference.test(prefix + "generated/plot-spec-validator.js")).toBe(false);
     }
     expect(schema.test("/repo/packages/spec/schema/v0.json")).toBe(true);
-    expect(schema.test("/repo/node_modules/@ggsvelte/spec/schema/v0.json")).toBe(true);
+    expect(schema.test("/repo/node_modules/@ggts-sh/spec/schema/v0.json")).toBe(true);
     expect(schema.test(String.raw`C:\repo\packages\spec\schema\v0.json`)).toBe(true);
     expect(schema.test("/repo/packages/spec/dist/schema-names.js")).toBe(false);
   });
@@ -103,13 +103,13 @@ describe("docs chart stack isolation (PR1)", () => {
     expect(vite).toMatch(/name:\s*["']ggsvelte-data["'][\s\S]*?priority:\s*40/);
     expect(vite).toMatch(/name:\s*["']ggsvelte-palette-tables["'][\s\S]*?priority:\s*40/);
     // Data/palette carve-outs must match the thin modules, not the whole package.
-    expect(vite).toContain("@ggsvelte/core/data");
+    expect(vite).toContain("@ggts-sh/core/data");
     expect(vite).toMatch(
       /categorical-palettes\|colorbrewer-palettes\|viridis-ramp\|sequential-schemes\|crameri-ramps\|crameri-categorical/,
     );
   });
 
-  it("keeps intent-shell components free of static @ggsvelte/svelte main imports", () => {
+  it("keeps intent-shell components free of static @ggts-sh/svelte main imports", () => {
     // Type-only is fine; a value import of the main entry pulls ggsvelte-svelte.
     for (const rel of [
       "lib/components/ThemeSpecimen.svelte",
@@ -120,18 +120,18 @@ describe("docs chart stack isolation (PR1)", () => {
       "lib/components/SequentialDeferredPlot.svelte",
     ] as const) {
       const source = read(rel);
-      expect(source, rel).not.toMatch(/import\s+[^;]*\s+from\s*["']@ggsvelte\/svelte["']/);
-      expect(source, rel).not.toMatch(/import\s+[^;]*\s+from\s*["']@ggsvelte\/core["']/);
+      expect(source, rel).not.toMatch(/import\s+[^;]*\s+from\s*["']@ggts-sh\/svelte["']/);
+      expect(source, rel).not.toMatch(/import\s+[^;]*\s+from\s*["']@ggts-sh\/core["']/);
     }
   });
 
   it("keeps the docs palette catalog free of chart package value imports", () => {
     // The catalog is statically imported by ChartThemeLab / SequentialColorLab.
-    // Value imports of @ggsvelte/core or @ggsvelte/spec pull package mega-chunks
+    // Value imports of @ggts-sh/core or @ggts-sh/spec pull package mega-chunks
     // (TypeBox schemas, pipeline) onto /themes and /palettes before intent.
     const catalog = read("lib/catalog/themes.ts");
-    expect(catalog).not.toMatch(/from\s*["']@ggsvelte\/core["']/);
-    expect(catalog).not.toMatch(/import\s+(?!type\b)[^;]*\s+from\s*["']@ggsvelte\/spec["']/);
+    expect(catalog).not.toMatch(/from\s*["']@ggts-sh\/core["']/);
+    expect(catalog).not.toMatch(/import\s+(?!type\b)[^;]*\s+from\s*["']@ggts-sh\/spec["']/);
     expect(catalog).toMatch(/palette-tables|CATEGORICAL_SCHEMES|VIRIDIS_RAMP/);
   });
 
@@ -143,12 +143,12 @@ describe("docs chart stack isolation (PR1)", () => {
     // and checked against the registry by apps/docs/tests/sequential-ramps.test.ts.
     const source = read("lib/catalog/sequential-ramps.ts");
     expect(source).not.toMatch(
-      /import\s+(?!type\b)[^;]*\s+from\s*["']@ggsvelte\/(?:spec|core|svelte)["']/,
+      /import\s+(?!type\b)[^;]*\s+from\s*["']@ggts-sh\/(?:spec|core|svelte)["']/,
     );
   });
 
-  it("keeps root layout free of static @ggsvelte chart imports", () => {
+  it("keeps root layout free of static @ggts-sh chart imports", () => {
     const layout = read("routes/+layout.svelte");
-    expect(layout).not.toMatch(/from\s*["']@ggsvelte\/(?:svelte|core)["']/);
+    expect(layout).not.toMatch(/from\s*["']@ggts-sh\/(?:svelte|core)["']/);
   });
 });

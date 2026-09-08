@@ -1,7 +1,7 @@
 import { fromAny } from "@total-typescript/shoehorn";
 import { describe, expect, it, vi } from "vitest";
 
-import type { GeometryBatch, RenderModel, Stratum } from "@ggsvelte/core";
+import type { GeometryBatch, RenderModel, Stratum } from "@ggts-sh/core";
 
 import MarkStrata from "../../src/lib/scene/MarkStrata.svelte";
 import { render } from "../helpers/render.js";

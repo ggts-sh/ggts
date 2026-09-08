@@ -8,7 +8,7 @@
  * Pure deriveds only — no $state, no handlers, no effects. Every construction
  * input is earlier-declared at the host factory site (original line 581).
  */
-import type { CellValue, RenderModel } from "@ggsvelte/core";
+import type { CellValue, RenderModel } from "@ggts-sh/core";
 
 import {
   INTERACTION_DIAGNOSTIC_CATALOG,

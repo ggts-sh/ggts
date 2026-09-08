@@ -41,7 +41,7 @@ export const consumerPlotSpec = {
 
 export function packageTarballNames(versions: PublishablePackageVersions): string[] {
   return publishablePackageDirectories.map(
-    (packageDirectory) => `ggsvelte-${packageDirectory}-${versions[packageDirectory]}.tgz`,
+    (packageDirectory) => `ggts-sh-${packageDirectory}-${versions[packageDirectory]}.tgz`,
   );
 }
 

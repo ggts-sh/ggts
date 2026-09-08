@@ -18,8 +18,8 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import { collectCompositionDiagnostics } from "@ggsvelte/compose";
-import { buildInteractionMasks, collectInspectIntentDiagnostics } from "@ggsvelte/core";
+import { collectCompositionDiagnostics } from "@ggts-sh/compose";
+import { buildInteractionMasks, collectInspectIntentDiagnostics } from "@ggts-sh/core";
 import {
   buildZoomEvent,
   filterScopeChannelsByZoomMode,
@@ -28,15 +28,15 @@ import {
   resolveSemanticKeysForPlot,
   sanitizePartialZoomDomains,
   uniqueKeysFromRowIndexes,
-} from "@ggsvelte/core/interaction";
-import type { BatchInteractionMask, RenderModel } from "@ggsvelte/core";
+} from "@ggts-sh/core/interaction";
+import type { BatchInteractionMask, RenderModel } from "@ggts-sh/core";
 import type {
   InteractionSource,
   LegendFilterClause,
   PreciseBoundsApplyEvent,
   ZoomDomains,
-} from "@ggsvelte/core/interaction";
-import type { LiveSvgHandle } from "@ggsvelte/core/svg-live";
+} from "@ggts-sh/core/interaction";
+import type { LiveSvgHandle } from "@ggts-sh/core/svg-live";
 import {
   CanvasAccessibility,
   inspectionLabel,
@@ -129,6 +129,7 @@ function usePlotSurface(props: SurfaceProps) {
     props.oninteraction?.(event);
   };
   const interactions = usePlotInteractions({
+    flipped: assembled?.coord?.type === "flip",
     model,
     config,
     props,

@@ -1,7 +1,7 @@
 /**
- * "Why ggsvelte?" capability tables (README + docs homepage).
+ * "Why ggts?" capability tables (README + docs homepage).
  *
- * Column order is ggsvelte, then TanStack, then the original peer order.
+ * Column order is ggts, then TanStack, then the original peer order.
  * TanStack cells are locked to the capability verdicts researched against
  * @tanstack/charts@0.14 (renderChartSvg + shipped skills; no JSON schema,
  * no CLI, no automatic time scale, not a ggplot2 API).
@@ -12,7 +12,7 @@ import { join } from "node:path";
 
 const ROOT = join(import.meta.dir, "..");
 
-const LIBS = ["ggsvelte", "TanStack", "SveltePlot", "Unovis", "LayerCake"] as const;
+const LIBS = ["ggts", "TanStack", "SveltePlot", "Unovis", "LayerCake"] as const;
 
 type Mark = "✅" | "⚠️" | "❌";
 
@@ -20,8 +20,8 @@ function parseReadmeTable(markdown: string): {
   headers: string[];
   rows: { feature: string; cells: { mark: Mark; note: string }[] }[];
 } {
-  const section = markdown.split("## Why ggsvelte?")[1];
-  if (section === undefined) throw new Error("README.md is missing ## Why ggsvelte?");
+  const section = markdown.split("## Why ggts?")[1];
+  if (section === undefined) throw new Error("README.md is missing ## Why ggts?");
   const lines = section
     .split("\n")
     .map((line) => line.trim())
@@ -63,10 +63,10 @@ function tableCell(
   return found;
 }
 
-describe("README Why ggsvelte? table", () => {
+describe("README Why ggts? table", () => {
   const table = parseReadmeTable(readFileSync(join(ROOT, "README.md"), "utf8"));
 
-  it("puts TanStack immediately after ggsvelte", () => {
+  it("puts TanStack immediately after ggts", () => {
     expect(table.headers).toEqual(["Capability", ...LIBS]);
   });
 
@@ -122,9 +122,9 @@ describe("README Why ggsvelte? table", () => {
 describe("docs homepage comparison table", () => {
   const source = readFileSync(join(ROOT, "apps/docs/src/lib/components/Benchmarks.svelte"), "utf8");
 
-  it("renders TanStack as the column after ggsvelte", () => {
+  it("renders TanStack as the column after ggts", () => {
     expect(source).toMatch(
-      /<th scope="col">ggsvelte<\/th>\s*<th scope="col">TanStack<\/th>\s*<th scope="col">SveltePlot<\/th>/,
+      /<th scope="col">ggts<\/th>\s*<th scope="col">TanStack<\/th>\s*<th scope="col">SveltePlot<\/th>/,
     );
     expect(source).toMatch(/\[row\.gg, row\.ts, row\.sp, row\.uv, row\.lc\]/);
     expect(source).toMatch(/span="5"/);
