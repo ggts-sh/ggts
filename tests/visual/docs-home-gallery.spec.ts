@@ -60,8 +60,10 @@ test("homepage leads with the agent sandbox and links to both framework quicksta
   );
   await expect(page.locator(".home-featured ol li")).toHaveCount(6);
   await expect(page.locator(".home-featured header a")).toHaveText("Gallery");
-  await expect(page.getByRole("heading", { name: "Framework benchmarks", level: 2 })).toBeVisible();
-  await expect(page.getByLabel("Surface")).toHaveValue("react");
+  await expect(
+    page.getByRole("heading", { name: "Fast SVG rendering. One shared core.", level: 2 }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Surface")).toHaveValue("core");
   await expect(page.getByLabel("Operation")).toHaveValue("mount");
   await expectNoOverflow(page);
 });
@@ -278,16 +280,22 @@ test("benchmark navigation compares fixed workloads for each surface and operati
   await expect(page).toHaveURL(/\/benchmarks(?:\?|$)/);
   await expect(page.getByRole("heading", { level: 1, name: "Benchmarks" })).toBeVisible();
   const benchmark = page.locator(".bench-tabs");
-  for (const surface of ["react", "svelte", "core"]) {
+  await expect(benchmark.getByLabel("Surface")).toHaveValue("core");
+  for (const surface of ["core", "svelte", "react"]) {
     await benchmark.getByLabel("Surface").selectOption(surface);
+    const workloads = [
+      ["Scatter 10k", "scatter-10k"],
+      ["Scatter 1k", "scatter-1k"],
+      ["Line 3k", "line-3k"],
+      ["Line 30k", "line-30k"],
+      ["Area 3k", "area-3k"],
+      ["Stacked bars", "bars-stacked"],
+    ].filter(([label]) => surface === "core" || label === "Scatter 10k" || label === "Line 30k");
     for (const operation of ["mount", "update"]) {
       await benchmark.getByLabel("Operation").selectOption(operation);
       const tabs = benchmark.getByRole("tablist", { name: "Benchmark scenarios" });
-      await expect(tabs.getByRole("tab")).toHaveText(["Scatter 10k", "Line 30k"]);
-      for (const [label, workload] of [
-        ["Scatter 10k", "scatter-10k"],
-        ["Line 30k", "line-30k"],
-      ]) {
+      await expect(tabs.getByRole("tab")).toHaveText(workloads.map(([label]) => label!));
+      for (const [label, workload] of workloads) {
         await tabs.getByRole("tab", { name: label, exact: true }).click();
         const chart = benchmark.locator(".bench-chart--light:visible");
         await expect(chart).toHaveAttribute(
@@ -304,7 +312,10 @@ test("benchmark navigation compares fixed workloads for each surface and operati
       }
     }
   }
-  await expect(page.getByRole("heading", { name: "All production browser results" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "SVG renderer results" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Full browser matrix (earlier run)" }),
+  ).toBeVisible();
   await expect(page.getByRole("heading", { name: "Server rendering" })).toBeVisible();
   await expectNoOverflow(page);
 });

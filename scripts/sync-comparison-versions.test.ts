@@ -119,12 +119,15 @@ describe("live comparison tables match the published lockstep version", () => {
       join(ROOT, "apps/docs/src/lib/generated/benchmark-charts.ts"),
       "utf8",
     );
-    const match = /ggsvelteKb:\s*([0-9]+(?:\.[0-9]+)?)/.exec(proj);
-    expect(match).not.toBeNull();
-    const rounded = Math.round(Number(match![1]));
+    const core = /coreKb:\s*([0-9]+(?:\.[0-9]+)?)/.exec(proj);
+    const svelte = /svelteKb:\s*([0-9]+(?:\.[0-9]+)?)/.exec(proj);
+    expect(core).not.toBeNull();
+    expect(svelte).not.toBeNull();
+    const coreKB = Math.round(Number(core![1]));
+    const svelteKB = Math.round(Number(svelte![1]));
     expect(readme).toMatch(
       new RegExp(
-        String.raw`\|\s*\*\*Bundle size\*\* \(min\+gzip, scatter import graph\)\s*\|\s*⚠️ ${String(rounded)} KB\s*\|`,
+        String.raw`\|\s*\*\*Bundle size\*\* \(min\+gzip, scatter import graph\)\s*\|\s*${String(coreKB)} KB core SVG / ${String(svelteKB)} KB Svelte\s*\|`,
       ),
     );
   });

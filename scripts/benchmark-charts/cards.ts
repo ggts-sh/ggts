@@ -20,9 +20,10 @@ const GROUPS = [
     libs: [
       ["ggsvelte-svg", "ggts core SVG"],
       ["d3", "D3"],
-      ["uplot", "uPlot (canvas)"],
-      ["chartjs", "Chart.js (canvas)"],
-      ["echarts", "ECharts (canvas)"],
+      ["layercake", "LayerCake (SVG)"],
+      ["unovis", "Unovis (SVG)"],
+      ["tanstack-svelte", "TanStack Svelte (SVG)"],
+      ["svelteplot", "SveltePlot (SVG)"],
     ],
   },
   {
@@ -49,20 +50,48 @@ const GROUPS = [
   },
 ] as const;
 const CASES = [
-  { id: "scatter-color-10k", slug: "scatter-10k", title: "10,000-point colored scatter" },
-  { id: "line-3x10k", slug: "line-30k", title: "3 × 10,000-point line chart" },
+  {
+    id: "scatter-color-10k",
+    slug: "scatter-10k",
+    tab: "Scatter 10k",
+    title: "10,000-point colored scatter",
+  },
+  { id: "line-3x10k", slug: "line-30k", tab: "Line 30k", title: "3 × 10,000-point line chart" },
+] as const;
+const SVG_CASES = [
+  CASES[0],
+  {
+    id: "scatter-color-1k",
+    slug: "scatter-1k",
+    tab: "Scatter 1k",
+    title: "1,000-point colored scatter",
+  },
+  { id: "line-3x1k", slug: "line-3k", tab: "Line 3k", title: "3 × 1,000-point line chart" },
+  CASES[1],
+  { id: "area-3x1k", slug: "area-3k", tab: "Area 3k", title: "3 × 1,000-point area chart" },
+  {
+    id: "bars-stacked-50x4",
+    slug: "bars-stacked",
+    tab: "Stacked bars",
+    title: "50 × 4 stacked bars",
+  },
 ] as const;
 
-export function buildCards(browser: BrowserResults): readonly ChartCard[] {
+export function buildCards(browser: BrowserResults, renderer = browser): readonly ChartCard[] {
   return GROUPS.flatMap(({ framework, libs }) =>
-    CASES.flatMap((scenario) =>
+    (framework === "core" ? SVG_CASES : CASES).flatMap((scenario) =>
       (["mount", "update"] as const).map((metric): ChartCard => {
         const id = `${framework}-${scenario.slug}-${metric}`;
         const title = `${framework === "core" ? "Core SVG" : framework === "react" ? "React" : "Svelte"} · ${scenario.title}`;
         const subtitle = `${metric === "mount" ? "Mount" : "In-place update"} · milliseconds · lower is better`;
         const bars: BenchmarkBar[] = libs
           .map(([lib, label]): BenchmarkBar => {
-            const value = timingMs(browser, lib, scenario.id, metric);
+            const value = timingMs(
+              framework === "core" ? renderer : browser,
+              lib,
+              scenario.id,
+              metric,
+            );
             return {
               lib: label,
               value,
@@ -75,7 +104,7 @@ export function buildCards(browser: BrowserResults): readonly ChartCard[] {
           id,
           framework,
           metric,
-          tab: scenario.slug === "scatter-10k" ? "Scatter 10k" : "Line 30k",
+          tab: scenario.tab,
           title,
           subtitle,
           width: 560,

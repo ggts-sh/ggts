@@ -83,9 +83,12 @@ export interface HistoricalBrowserResults {
 }
 
 export const SNAPSHOT = join(COMPETITIVE, "published.json");
+const RENDERER_SNAPSHOT = join(COMPETITIVE, "published-svg.json");
 
 export type PublishedSnapshot = {
   browser: BrowserResults;
+  /** Focused SVG run with its own date and clean-source provenance. */
+  renderer?: BrowserResults | undefined;
   bundles: BundleResults;
   ssr: SsrResults;
   highN: HistoricalBrowserResults;
@@ -128,11 +131,42 @@ export function validateSnapshot(snapshot: PublishedSnapshot): PublishedSnapshot
       }
     }
   }
+  if (snapshot.renderer) validateRendererSnapshot(snapshot.renderer);
   return snapshot;
 }
 
+function validateRendererSnapshot(renderer: BrowserResults): void {
+  if (
+    renderer.provenance?.mode !== "production" ||
+    renderer.provenance.dirty ||
+    !renderer.provenance.commit ||
+    !renderer.generatedAt
+  ) {
+    throw new Error("SVG measurements require a dated production run from a clean source commit.");
+  }
+  for (const lib of [
+    "ggsvelte-svg",
+    "d3",
+    "layercake",
+    "unovis",
+    "tanstack-svelte",
+    "svelteplot",
+  ]) {
+    if (renderer.libs.find((entry) => entry.id === lib)?.form !== "svg") {
+      throw new Error(`SVG comparison requires an SVG adapter: ${lib}`);
+    }
+    for (const scenario of CASES.filter((entry) => entry.defaultBrowser)) {
+      timingMs(renderer, lib, scenario.id, "mount");
+      timingMs(renderer, lib, scenario.id, "update");
+    }
+  }
+}
+
 export function readSnapshot(): PublishedSnapshot {
-  return validateSnapshot(JSON.parse(readFileSync(SNAPSHOT, "utf8")) as PublishedSnapshot);
+  return validateSnapshot({
+    ...(JSON.parse(readFileSync(SNAPSHOT, "utf8")) as PublishedSnapshot),
+    renderer: JSON.parse(readFileSync(RENDERER_SNAPSHOT, "utf8")) as BrowserResults,
+  });
 }
 
 export function timingMs(

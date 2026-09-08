@@ -35,29 +35,11 @@
 
   /*
    * Column order ggts → TanStack → SveltePlot → Unovis → LayerCake.
-   * Bun's homepage table leads with its flaw before the wins; same here:
-   * bundle size and pre-1.0 up top. Claims verified against svelteplot@0.14
+   * Lead with capabilities; entry-specific sizes and release status follow.
+   * Claims verified against svelteplot@0.14
    * / @tanstack/charts@0.14 / @unovis/svelte@1.6 / layercake@10 sources.
    */
   const rows: readonly Row[] = [
-    {
-      feature: "Bundle size",
-      desc: "Min+gzip, scatter import graph",
-      gg: { mark: "partial", note: kb(BENCHMARK_BUNDLE_KB.ggsvelteKb) },
-      ts: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.tanstackKb) },
-      lc: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.layercakeKb) },
-      uv: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.unovisKb) },
-      sp: { mark: "partial", note: kb(BENCHMARK_BUNDLE_KB.svelteplotKb) },
-    },
-    {
-      feature: "API stability",
-      desc: "Pre-1.0: minors can still break",
-      gg: { mark: "partial", note: `v${BENCHMARK_VERSIONS.ggsvelte}` },
-      ts: { mark: "partial", note: `v${BENCHMARK_VERSIONS.tanstack}` },
-      lc: { mark: "yes", note: `v${BENCHMARK_VERSIONS.layercake}` },
-      uv: { mark: "yes", note: `v${BENCHMARK_VERSIONS.unovis}` },
-      sp: { mark: "partial", note: `v${BENCHMARK_VERSIONS.svelteplot}` },
-    },
     {
       feature: "Headless server-side SVG",
       desc: "data → SVG string, no DOM",
@@ -123,6 +105,27 @@
       lc: { mark: "partial", note: "d3" },
       uv: yes,
       sp: yes,
+    },
+    {
+      feature: "Bundle size",
+      desc: "Min+gzip, scatter import graph",
+      gg: {
+        mark: "partial",
+        note: `${kb(BENCHMARK_BUNDLE_KB.coreKb)} core SVG / ${kb(BENCHMARK_BUNDLE_KB.svelteKb)} Svelte`,
+      },
+      ts: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.tanstackKb) },
+      lc: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.layercakeKb) },
+      uv: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.unovisKb) },
+      sp: { mark: "partial", note: kb(BENCHMARK_BUNDLE_KB.svelteplotKb) },
+    },
+    {
+      feature: "API stability",
+      desc: "Pre-1.0: minors can still break",
+      gg: { mark: "partial", note: `v${BENCHMARK_VERSIONS.ggsvelte}` },
+      ts: { mark: "partial", note: `v${BENCHMARK_VERSIONS.tanstack}` },
+      lc: { mark: "yes", note: `v${BENCHMARK_VERSIONS.layercake}` },
+      uv: { mark: "yes", note: `v${BENCHMARK_VERSIONS.unovis}` },
+      sp: { mark: "partial", note: `v${BENCHMARK_VERSIONS.svelteplot}` },
     },
   ];
 </script>

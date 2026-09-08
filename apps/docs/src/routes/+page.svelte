@@ -89,7 +89,12 @@
 </section>
 
 <section aria-labelledby="benchmark-heading">
-  <h2 id="benchmark-heading">Framework benchmarks</h2>
+  <h2 id="benchmark-heading">Fast SVG rendering. One shared core.</h2>
+  <p>
+    Render charts with the TypeScript core behind ggts. Compare first-mount
+    times against SVG chart libraries on six fixed workloads. Core SVG measures
+    the direct renderer; Svelte and React component timings are separate.
+  </p>
   <BenchmarkTabs />
   <p><a href={`${base}/benchmarks`}>All results and measurement method</a></p>
 </section>

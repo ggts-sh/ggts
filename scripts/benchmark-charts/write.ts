@@ -31,7 +31,7 @@ import { projectionSource, readmeSource, type ShellFile } from "./projection";
 
 export function build(snapshot: PublishedSnapshot = readSnapshot()) {
   const { browser, bundles } = snapshot;
-  const cards = buildCards(browser);
+  const cards = buildCards(browser, snapshot.renderer);
   const files: ShellFile[] = cards.flatMap((card) => {
     const light = benchmarkChartSvg(card.chart, { width: card.width, height: card.height });
     return [
@@ -74,6 +74,7 @@ export async function write(publish = false): Promise<void> {
   const snapshot = publish
     ? validateSnapshot({
         browser: readJson("browser.json") as BrowserResults,
+        renderer: readSnapshot().renderer,
         bundles: readJson("bundles.json") as BundleResults,
         ssr: readJson("ssr.json") as SsrResults,
         highN: existsSync(SNAPSHOT)
@@ -84,7 +85,10 @@ export async function write(publish = false): Promise<void> {
   const { files, cards, versions, bundleKb, generatedAt } = build(snapshot);
   const readmePath = join(ROOT, "README.md");
   const readme = await readmeSource(readFileSync(readmePath, "utf8"), cards, bundleKb, readmePath);
-  if (publish) writeFileSync(SNAPSHOT, JSON.stringify(snapshot, null, 2) + "\n");
+  if (publish) {
+    const { renderer: _renderer, ...fullSnapshot } = snapshot;
+    writeFileSync(SNAPSHOT, JSON.stringify(fullSnapshot, null, 2) + "\n");
+  }
   rmSync(OUTPUT_DIR, { recursive: true, force: true });
   mkdirSync(OUTPUT_DIR, { recursive: true });
   for (const file of files) {

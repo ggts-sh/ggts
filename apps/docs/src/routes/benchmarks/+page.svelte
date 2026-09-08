@@ -3,6 +3,9 @@
   import Benchmarks from "$lib/components/Benchmarks.svelte";
   import {
     BENCHMARK_RESULTS,
+    BENCHMARK_RENDERER_RESULTS,
+    BENCHMARK_RENDERER_MEASURED_AT,
+    BENCHMARK_RENDERER_PROVENANCE,
     BENCHMARK_LIBRARIES,
     BENCHMARK_MEASURED_AT,
     BENCHMARK_PROVENANCE,
@@ -24,7 +27,8 @@
   const number = (value: number | null) =>
     value === null ? "—" : value.toFixed(2);
   const browserTables = [
-    { title: "All production browser results", results: BENCHMARK_RESULTS },
+    { title: "SVG renderer results", results: BENCHMARK_RENDERER_RESULTS },
+    { title: "Full browser matrix (earlier run)", results: BENCHMARK_RESULTS },
     {
       title: "Historical large-data results",
       results: BENCHMARK_HIGH_N_RESULTS,
@@ -35,9 +39,9 @@
 <article>
   <h1>Benchmarks</h1>
   <p>
-    Compare the core renderer and the React and Svelte components on fixed
-    workloads. Lower times are better. Results include competitors that
-    outperform ggts.
+    Start with the ggts core SVG renderer against SVG chart libraries on six
+    fixed workloads. Explore Svelte and React component timings with the surface
+    selector. Lower times are better.
   </p>
   <BenchmarkTabs />
   <h2>What the measurements cover</h2>
@@ -50,8 +54,9 @@
   <p>
     The browser harness serves production builds and uses seeded data, fixed
     dimensions and palette domains. Update checks verify visible changes and
-    compare the result with a fresh chart. Scatter and line are fixed featured
-    workloads; the full tables retain area, bars, and every measured comparator.
+    compare the result with a fresh chart. The core comparison covers scatter,
+    line, area, and stacked bars with SVG adapters throughout. Framework charts
+    and the full tables retain the other measured surfaces, including canvas.
   </p>
   <p>
     These are measurements on one machine. The committed snapshot records
@@ -59,7 +64,16 @@
     timings. Versions identify the workspace build at the recorded source
     commit, which may include unreleased changes.
   </p>
-  <p>Production browser measurements: {BENCHMARK_MEASURED_AT}</p>
+  <p>
+    Core SVG comparison: {BENCHMARK_RENDERER_MEASURED_AT}. Each bar comes from
+    this same production run. First mount includes chart creation and paint
+    after two warmups; it does not include network download or module loading.
+  </p>
+  <details>
+    <summary>SVG comparison environment and package versions</summary>
+    <pre>{JSON.stringify(BENCHMARK_RENDERER_PROVENANCE, null, 2)}</pre>
+  </details>
+  <p>Full browser matrix: {BENCHMARK_MEASURED_AT}</p>
   <details>
     <summary>Measurement environment and package versions</summary>
     <pre>{JSON.stringify(BENCHMARK_PROVENANCE, null, 2)}</pre>
