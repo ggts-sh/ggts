@@ -1,7 +1,7 @@
 import { StrictMode, useState } from "react";
 import { renderToString } from "react-dom/server";
 import { hydrateRoot } from "react-dom/client";
-import { act, cleanup, fireEvent, render, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   createPlotInteraction,
@@ -291,14 +291,31 @@ describe("React host parity", () => {
     const root = result.container.querySelector<HTMLElement>(".gg-plot-root");
     if (root === null) throw new Error("missing plot root");
     expect(root.dataset["ggReady"]).toBe("false");
-    result.rerender(chart(true));
-    await waitFor(() => {
-      expect(root.dataset["ggReady"]).toBe("true");
+    let onResize: ((width: number) => void) | undefined;
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry !== undefined) onResize?.(entry.contentRect.width);
     });
-    expect(root.getBoundingClientRect().width).toBe(640);
-    result.rerender(chart(false));
-    await waitFor(() => {
-      expect(root.dataset["ggReady"]).toBe("false");
-    });
+    observer.observe(root);
+    const expectVisibility = async (visible: boolean) => {
+      const expectedWidth = visible ? 640 : 0;
+      const resized = new Promise<void>((resolve) => {
+        onResize = (width) => {
+          if (width === expectedWidth) resolve();
+        };
+      });
+      result.rerender(chart(visible));
+      // WebKit can deliver resize after waitFor's deadline under CI contention.
+      // Await the native event, then flush React before checking the public signal.
+      await act(async () => {
+        await resized;
+      });
+      expect(root.dataset["ggReady"]).toBe(visible ? "true" : "false");
+      expect(root.getBoundingClientRect().width).toBe(expectedWidth);
+    };
+    try {
+      for (const visible of [true, false, true, false]) await expectVisibility(visible);
+    } finally {
+      observer.disconnect();
+    }
   });
 });

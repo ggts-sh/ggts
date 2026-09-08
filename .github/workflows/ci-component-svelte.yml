@@ -135,10 +135,10 @@ jobs:
 
   # Merge the shards' blob reports into one coverage report, enforce the
   # thresholds the shards skipped, and upload the combined lcov. Also runs the
-  # SSR lane, which is ~15s and needs no browser — cheaper here than paying for
-  # it on a shard. Owns the content-hash marker for the whole execution.
+  # Svelte/React SSR lanes and React browser tests. Owns the content-hash marker
+  # for the whole execution; every test and coverage threshold must pass first.
   component-svelte-coverage:
-    name: component-svelte (coverage merge + ssr)
+    name: React browsers + Svelte/React SSR + Svelte coverage merge
     needs: component-svelte
     runs-on: ubuntu-latest
     timeout-minutes: 25

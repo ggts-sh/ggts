@@ -324,7 +324,17 @@ describe("R0 release wiring — CI lanes", () => {
     const svelteCollect = ciJob(ci, "component-svelte-coverage");
     expect(svelteCollect.length).toBeGreaterThan(0);
     expect(svelteCollect).toContain("needs: component-svelte");
-    expect(svelteCollect).toContain("--merge-reports");
+    expect(svelteCollect).toContain(
+      "name: React browsers + Svelte/React SSR + Svelte coverage merge",
+    );
+    expect(svelteCollect).toContain("working-directory: packages/react");
+    expect(svelteCollect).toContain("bun run --bun test && bun run --bun test:ssr");
+    expect(svelteCollect).toContain("bunx --bun vitest run --config vitest.ssr.config.ts");
+    expect(svelteCollect).toContain(
+      "bunx --bun vitest --merge-reports --project chromium --coverage",
+    );
+    expect(svelteCollect).not.toContain("--coverage.thresholds.");
+    expect(svelteCollect).not.toContain("continue-on-error:");
     expect(svelteCollect).toContain("uses: ./.github/actions/ci-content-hash-write");
     expect(svelteCollect).toContain("execution: component_svelte");
 
