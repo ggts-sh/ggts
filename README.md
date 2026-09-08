@@ -91,37 +91,44 @@ checks for callbacks, keyboard use, and hydration.
 | [`@ggts-sh/cli`](packages/cli)         | `ggts check` and `ggts render`                                               |
 | [`@ggts-sh/skill`](packages/skill)     | Versioned agent skill and framework references                               |
 
-## Framework benchmarks
+## Fast SVG rendering
 
-[Full results and methodology](https://ggts.sh/benchmarks) separate the
-core renderer, React, and Svelte. Fixed workloads retain every measured
-comparator, including results where another library wins.
+The TypeScript core behind ggts renders complete SVG charts without a framework
+host. Compare first-mount times against SVG chart libraries below. Each chart
+uses one production run, including paint, with fixed data and dimensions.
+
+[Explore all six SVG workloads, Svelte and React component timings, and methodology](https://ggts.sh/benchmarks).
+Core SVG timings measure the direct renderer, not the framework components.
+First mount excludes network download and module loading.
 
 <!-- framework-benchmark-charts:start -->
 
-![React · 10,000-point colored scatter. Mount · milliseconds · lower is better. uPlot (canvas): 44.6 ms; Chart.js (canvas): 55.9 ms; D3: 96.1 ms; ECharts (canvas): 143.3 ms; ggts React: 149.1 ms; TanStack React: 454.1 ms.](apps/docs/static/benchmarks/bench-react-scatter-10k-mount.svg)
+![Core SVG · 10,000-point colored scatter. Mount · milliseconds · lower is better. D3: 85 ms; ggts core SVG: 91.6 ms; LayerCake (SVG): 329.4 ms; TanStack Svelte (SVG): 335.6 ms; Unovis (SVG): 427.3 ms; SveltePlot (SVG): 3,955.7 ms.](apps/docs/static/benchmarks/bench-core-scatter-10k-mount.svg)
 
-![Svelte · 10,000-point colored scatter. Mount · milliseconds · lower is better. ECharts (canvas): 143.3 ms; LayerCake: 232.8 ms; ggts Svelte: 356.3 ms; TanStack Svelte: 392 ms; Unovis Svelte: 431.9 ms; SveltePlot: 4,500 ms.](apps/docs/static/benchmarks/bench-svelte-scatter-10k-mount.svg)
+![Core SVG · 3 × 10,000-point line chart. Mount · milliseconds · lower is better. D3: 37.8 ms; ggts core SVG: 59.8 ms; LayerCake (SVG): 60.7 ms; Unovis (SVG): 94.1 ms; TanStack Svelte (SVG): 153.5 ms; SveltePlot (SVG): 1,230.4 ms.](apps/docs/static/benchmarks/bench-core-line-30k-mount.svg)
 
 <!-- framework-benchmark-charts:end -->
 
 ## Why ggts?
 
-Svelte ecosystem comparison. For React timings and all measured surfaces, see
-[the full benchmark results](https://ggts.sh/benchmarks).
+Use ggplot2's grammar in TypeScript, validate portable chart specs, and render
+SVG without a DOM. The same grammar powers React and Svelte components.
 
-| Capability                                       | ggts       | TanStack | SveltePlot | Unovis   | LayerCake |
-| ------------------------------------------------ | ---------- | -------- | ---------- | -------- | --------- |
-| **Bundle size** (min+gzip, scatter import graph) | ⚠️ 273 KB  | ✅ 57 KB | ⚠️ 109 KB  | ✅ 80 KB | ✅ 41 KB  |
-| **API stability**                                | ⚠️ v0.43.0 | ⚠️ v0.14 | ⚠️ v0.14   | ✅ v1.6  | ✅ v10    |
-| **Headless server-side SVG** (no DOM)            | ✅         | ✅       | ❌         | ❌       | ⚠️ opt-in |
-| **Portable JSON spec + schema**                  | ✅         | ❌       | ❌         | ❌       | ❌        |
-| **CLI validator + renderer**                     | ✅         | ❌       | ❌         | ❌       | ❌        |
-| **Agent skill**                                  | ✅         | ✅       | ❌         | ❌       | ❌        |
-| **Automatic temporal detection**                 | ✅         | ❌       | ⚠️ Some    | ❌       | ❌        |
-| **Built-in interactions**                        | ✅         | ✅       | ⚠️ Some    | ⚠️ Some  | ❌        |
-| **ggplot2 API**                                  | ✅         | ❌       | ❌         | ❌       | ❌        |
-| **Scale, axis & coord control**                  | ✅         | ✅       | ✅         | ✅       | ⚠️ d3     |
+Svelte ecosystem capabilities below; [all measured entry points and bundle sizes](https://ggts.sh/benchmarks)
+remain available.
+
+| Capability                                       | ggts                            | TanStack | SveltePlot | Unovis   | LayerCake |
+| ------------------------------------------------ | ------------------------------- | -------- | ---------- | -------- | --------- |
+| **Headless server-side SVG** (no DOM)            | ✅                              | ✅       | ❌         | ❌       | ⚠️ opt-in |
+| **Portable JSON spec + schema**                  | ✅                              | ❌       | ❌         | ❌       | ❌        |
+| **CLI validator + renderer**                     | ✅                              | ❌       | ❌         | ❌       | ❌        |
+| **Agent skill**                                  | ✅                              | ✅       | ❌         | ❌       | ❌        |
+| **Automatic temporal detection**                 | ✅                              | ❌       | ⚠️ Some    | ❌       | ❌        |
+| **Built-in interactions**                        | ✅                              | ✅       | ⚠️ Some    | ⚠️ Some  | ❌        |
+| **ggplot2 API**                                  | ✅                              | ❌       | ❌         | ❌       | ❌        |
+| **Scale, axis & coord control**                  | ✅                              | ✅       | ✅         | ✅       | ⚠️ d3     |
+| **Bundle size** (min+gzip, scatter import graph) | 106 KB core SVG / 273 KB Svelte | ✅ 57 KB | ⚠️ 109 KB  | ✅ 80 KB | ✅ 41 KB  |
+| **API stability**                                | ⚠️ v0.43.0                      | ⚠️ v0.14 | ⚠️ v0.14   | ✅ v1.6  | ✅ v10    |
 
 ## Reference
 

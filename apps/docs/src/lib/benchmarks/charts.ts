@@ -111,7 +111,7 @@ export function benchmarkChartSpec(input: BenchmarkChartInput): PortableSpec {
       // the bottom, so reverse puts the fastest bar on top.
       x: { type: "band", domain: libsByAscendingValue(input.bars), reverse: true },
       // Headroom past the longest bar so bar-end value labels never clip.
-      y: { expand: { mult: 0.16, add: 0 } },
+      y: { expand: { mult: 0.35, add: 0 } },
       fill: {
         type: "manual",
         domain: ["ggsvelte", "peer"],

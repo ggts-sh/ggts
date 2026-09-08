@@ -11,7 +11,7 @@
   import { benchmarkChartSrc } from "$lib/benchmarks/asset-url";
   import { BENCHMARK_CHART_CARDS } from "$lib/generated/benchmark-charts";
 
-  let framework = $state("react");
+  let framework = $state("core");
   let metric = $state("mount");
   const cards = $derived(
     BENCHMARK_CHART_CARDS.filter(
@@ -24,9 +24,9 @@
   <div class="benchmark-filters">
     <label
       >Surface <select bind:value={framework}>
-        <option value="react">React</option>
-        <option value="svelte">Svelte</option>
         <option value="core">Core SVG</option>
+        <option value="svelte">Svelte component</option>
+        <option value="react">React component</option>
       </select></label
     >
     <label

@@ -127,14 +127,19 @@ describe("benchmarkChartSrc", () => {
 });
 
 describe("published benchmark workloads", () => {
-  it("publishes both fixed workloads for each framework and metric", () => {
+  it("publishes six SVG workloads and both framework workloads for each metric", () => {
     for (const framework of ["core", "react", "svelte"] as const) {
       for (const metric of ["mount", "update"] as const) {
         expect(
           BENCHMARK_CHART_CARDS.filter(
             (card) => card.framework === framework && card.metric === metric,
-          ).map((card) => card.id),
-        ).toEqual([`${framework}-scatter-10k-${metric}`, `${framework}-line-30k-${metric}`]);
+          ).map((card): string => card.id),
+        ).toEqual(
+          (framework === "core"
+            ? ["scatter-10k", "scatter-1k", "line-3k", "line-30k", "area-3k", "bars-stacked"]
+            : ["scatter-10k", "line-30k"]
+          ).map((scenario) => `${framework}-${scenario}-${metric}`),
+        );
       }
     }
   });
@@ -160,7 +165,7 @@ describe("benchmark claim integrity", () => {
     generatedAt: "2026-09-08T00:00:00Z",
     provenance: { commit: "test", dirty: false, mode: "production", versions: {} },
     results: libs.flatMap((lib) =>
-      ["scatter-color-10k", "line-3x10k"].map((caseId) => ({
+      CASES.filter((entry) => entry.defaultBrowser).map(({ id: caseId }) => ({
         lib,
         caseId,
         ok: true,
@@ -171,10 +176,10 @@ describe("benchmark claim integrity", () => {
   };
   it("retains every featured workload when gg loses", () => {
     const cards = buildCards(browser);
-    expect(cards).toHaveLength(12);
+    expect(cards).toHaveLength(20);
     for (const card of cards) expect(card.chart.bars.at(-1)?.kind).toBe("ggsvelte");
   });
-  it("generates README framework charts and measured adapter sizes without replacing surrounding prose", async () => {
+  it("leads the README with core SVG without relabeling full-host measurements", async () => {
     const source =
       "# Intro\n\n<!-- framework-benchmark-charts:start -->\nold charts\n<!-- framework-benchmark-charts:end -->\n\n| **Bundle size** (old) | 999 KB |\n";
     const bundles = {
@@ -195,12 +200,36 @@ describe("benchmark claim integrity", () => {
       join(import.meta.dir, "../README.md"),
     );
     expect(rendered).toContain("# Intro");
-    expect(rendered).toContain("bench-react-scatter-10k-mount.svg");
-    expect(rendered).toContain("bench-svelte-scatter-10k-mount.svg");
-    expect(rendered).not.toContain("bench-core");
+    expect(rendered).toContain("bench-core-scatter-10k-mount.svg");
+    expect(rendered).toContain("bench-core-line-30k-mount.svg");
+    expect(rendered).not.toContain("bench-react");
+    expect(rendered).not.toContain("bench-svelte");
     expect(rendered).not.toContain("999 KB");
-    expect(rendered).toContain("12 KB");
+    expect(rendered).toContain("8 KB core SVG / 12 KB Svelte");
     expect(rendered).toContain("scatter import graph");
+  });
+
+  it("keeps the SVG cohort fixed and uses its own run without mixing framework timings", () => {
+    const renderer = {
+      ...browser,
+      results: browser.results.map((cell) => ({ ...cell, mountMedianMs: 7, updateMedianMs: 3 })),
+    };
+    const cards = buildCards(browser, renderer);
+    const core = cards.find((card) => card.id === "core-scatter-10k-mount")!;
+    expect(core.chart.bars.map((bar) => bar.lib).toSorted()).toEqual(
+      [
+        "ggts core SVG",
+        "D3",
+        "LayerCake (SVG)",
+        "Unovis (SVG)",
+        "TanStack Svelte (SVG)",
+        "SveltePlot (SVG)",
+      ].toSorted(),
+    );
+    expect(core.chart.bars.every((bar) => bar.value === 7)).toBe(true);
+    expect(
+      cards.find((card) => card.id === "svelte-scatter-10k-mount")!.chart.bars.at(-1)?.value,
+    ).toBe(100);
   });
 
   it("binds published measurements to one clean commit while retaining historical provenance", () => {
@@ -228,6 +257,29 @@ describe("benchmark claim integrity", () => {
       highN: { generatedAt: "2026-08-10T00:00:00Z", host: {}, protocol: {}, results: [] },
     };
     expect(validateSnapshot(snapshot)).toBe(snapshot);
+    const renderer = {
+      ...snapshot.browser,
+      provenance: { ...browser.provenance, commit: "new-svg-run" },
+    };
+    expect(validateSnapshot({ ...snapshot, renderer }).renderer).toBe(renderer);
+    expect(() => validateSnapshot({ ...snapshot, renderer: { ...renderer, results: [] } })).toThrow(
+      /missing valid/,
+    );
+    expect(() =>
+      validateSnapshot({
+        ...snapshot,
+        renderer: { ...renderer, provenance: { ...renderer.provenance, dirty: true } },
+      }),
+    ).toThrow(/clean source commit/);
+    expect(() =>
+      validateSnapshot({
+        ...snapshot,
+        renderer: {
+          ...renderer,
+          libs: renderer.libs.map((lib) => ({ ...lib, form: "canvas" as const })),
+        },
+      }),
+    ).toThrow(/SVG adapter/);
     expect(() =>
       validateSnapshot({
         ...snapshot,

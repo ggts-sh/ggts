@@ -43,10 +43,11 @@ Results: `results/bundles.json`, `results/browser.json`.
 
 ## Published benchmarks
 
-The README and docs show fixed workloads: 10,000 colored points and three
-10,000-point lines, with mount and update timings for core SVG, React, and
-Svelte. A loss stays in the chart. The full results retain every comparator,
-including area, stacked bars, and the smaller cases.
+The README and docs lead with **core SVG**, compared with five SVG peers on
+six fixed workloads: scatter at 1k/10k, lines at 3k/30k, area at 3k, and stacked
+bars. React and Svelte component results remain selectable on the docs page.
+Core renderer timings are not framework-host timings. A loss stays in the chart.
+The full tables retain the canvas comparators and the earlier full matrix.
 
 `measure:browser` builds the fixture in production mode and serves the output
 through Vite preview. Both GGPlot hosts cover all four geom families in the
@@ -73,7 +74,31 @@ versions, runtime, browser, machine, and measurement dates. Without
 all chart artifacts without rerunning host-sensitive timings. Release version
 bumps do not change the measured package versions.
 
-The full page includes the fresh SSR and bundle matrices alongside browser
+### Refresh the focused SVG comparison
+
+Run from a clean, built checkout. This subset does not run React, canvas,
+bundles, SSR, or the large-data suite:
+
+```sh
+cd benchmarks/competitive
+COMPETITIVE_LIBS=ggsvelte-svg,d3,layercake,unovis,tanstack-svelte,svelteplot \
+COMPETITIVE_CASES=scatter-color-1k,scatter-color-10k,line-3x1k,line-3x10k,area-3x1k,bars-stacked-50x4 \
+bun run measure:browser
+cp results/browser.json published-svg.json
+cd ../..
+bun scripts/gen-benchmark-charts.ts
+bun scripts/gen-benchmark-charts.ts --check
+```
+
+`published-svg.json` records this run's own commit, date, environment, and
+versions. All SVG comparison bars come from that one run. It does not replace
+or splice rows into `published.json`: framework charts, bundles, and SSR retain
+their original measurements and provenance. `--publish` preserves the focused
+SVG snapshot. Generation validates all six SVG workloads and refuses missing
+or invalid measurements. First mount means fresh chart creation after two
+warmups, including paint, not cold network download or module evaluation.
+
+The full page includes the SSR and bundle matrices alongside browser
 results. It preserves high-N results from their historical run, labeled with
 the recorded date and development-server protocol; its source commit and
 package versions were not recorded. These rows must not be compared with the

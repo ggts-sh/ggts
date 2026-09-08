@@ -39,6 +39,7 @@ export function projectionSource(
   snapshot: PublishedSnapshot,
 ): Promise<string> {
   const { browser, bundles: measuredBundles, ssr, highN } = snapshot;
+  const renderer = snapshot.renderer ?? browser;
   const entries = cards
     .map((card) => {
       const light = files.find((f) => f.filename === `bench-${card.id}.svg`)!;
@@ -79,6 +80,9 @@ export interface BenchmarkChartCard {
   readonly height: number;
 }
 
+export const BENCHMARK_RENDERER_MEASURED_AT = ${JSON.stringify(renderer.generatedAt)};
+export const BENCHMARK_RENDERER_PROVENANCE = ${JSON.stringify(renderer.provenance)} as const;
+export const BENCHMARK_RENDERER_RESULTS = ${JSON.stringify(renderer.results.map((cell) => ({ lib: cell.lib, caseId: cell.caseId, ok: cell.ok, mountMedianMs: cell.mountMedianMs ?? null, updateMedianMs: cell.updateMedianMs ?? null })))} as const;
 export const BENCHMARK_MEASURED_AT = ${JSON.stringify(generatedAt)};
 export const BENCHMARK_BUNDLE_MEASURED_AT = ${JSON.stringify(measuredBundles.generatedAt)};
 export const BENCHMARK_BUNDLE_PROVENANCE = ${JSON.stringify(measuredBundles.provenance)} as const;
@@ -106,7 +110,7 @@ export const BENCHMARK_BUNDLE_KB = ${JSON.stringify(bundles)} as const;
   return formatGeneratedSource(PROJECTION, raw);
 }
 
-/** README embeds one measured scatter chart for each shipped framework. */
+/** README leads with the direct SVG renderer; full host results stay on /benchmarks. */
 export async function readmeSource(
   source: string,
   cards: readonly ChartCard[],
@@ -116,7 +120,7 @@ export async function readmeSource(
   const block =
     /<!-- framework-benchmark-charts:start -->[\s\S]*?<!-- framework-benchmark-charts:end -->/;
   if (!block.test(source)) throw new Error("README is missing framework benchmark markers");
-  const featured = ["react-scatter-10k-mount", "svelte-scatter-10k-mount"].map((id) => {
+  const featured = ["core-scatter-10k-mount", "core-line-30k-mount"].map((id) => {
     const card = cards.find((entry) => entry.id === id);
     if (!card) throw new Error(`Missing README chart: ${id}`);
     return `![${card.chart.ariaLabel}](apps/docs/static/benchmarks/bench-${card.id}.svg)`;
@@ -129,7 +133,7 @@ export async function readmeSource(
   if (!row.test(body)) throw new Error("README is missing its bundle-size comparison row");
   const updated = body.replace(
     row,
-    `| **Bundle size** (min+gzip, scatter import graph) | ⚠️ ${Math.round(bundles.svelteKb)} KB | ✅ ${Math.round(bundles.tanstackKb)} KB | ⚠️ ${Math.round(bundles.svelteplotKb)} KB | ✅ ${Math.round(bundles.unovisKb)} KB | ✅ ${Math.round(bundles.layercakeKb)} KB |`,
+    `| **Bundle size** (min+gzip, scatter import graph) | ${Math.round(bundles.coreKb)} KB core SVG / ${Math.round(bundles.svelteKb)} KB Svelte | ✅ ${Math.round(bundles.tanstackKb)} KB | ⚠️ ${Math.round(bundles.svelteplotKb)} KB | ✅ ${Math.round(bundles.unovisKb)} KB | ✅ ${Math.round(bundles.layercakeKb)} KB |`,
   );
   return format(updated, { ...(await resolveConfig(path)), filepath: path });
 }
