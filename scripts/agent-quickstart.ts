@@ -58,3 +58,12 @@ const spec = normalize(input);
 export default function Chart() {
   return <GGPlot spec={spec} />;
 }`;
+
+/** A complete framework-free program; redirect stdout to chart.svg. */
+export const TYPESCRIPT_QUICKSTART_SOURCE = `import { registerAll, renderToSVGString } from "@ggsvelte/core";
+import type { PortableSpec } from "@ggsvelte/spec";
+
+registerAll();
+const spec: PortableSpec = ${SANDBOX_SPEC_JSON};
+
+console.log(renderToSVGString(spec, { width: 640, height: 400 }));`;

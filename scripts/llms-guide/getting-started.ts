@@ -1,4 +1,8 @@
-import { REACT_QUICKSTART_SOURCE, SVELTE_QUICKSTART_SOURCE } from "../agent-quickstart";
+import {
+  REACT_QUICKSTART_SOURCE,
+  SVELTE_QUICKSTART_SOURCE,
+  TYPESCRIPT_QUICKSTART_SOURCE,
+} from "../agent-quickstart";
 
 /**
  * Getting-started guide section (docs pages + llms surfaces).
@@ -42,6 +46,26 @@ ${REACT_QUICKSTART_SOURCE}
 
 \`\`\`svelte complete
 ${SVELTE_QUICKSTART_SOURCE}
+\`\`\`
+
+## TypeScript
+
+For a script without a browser or framework, install the core and spec packages:
+
+\`\`\`sh complete
+npm install @ggsvelte/core @ggsvelte/spec
+\`\`\`
+
+Save this complete program as \`chart.ts\`:
+
+\`\`\`ts complete
+${TYPESCRIPT_QUICKSTART_SOURCE}
+\`\`\`
+
+Run it with Bun to write the SVG:
+
+\`\`\`sh complete
+bun chart.ts > chart.svg
 \`\`\`
 
 ## Svelte install and composition

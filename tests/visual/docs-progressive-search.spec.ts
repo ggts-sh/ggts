@@ -11,11 +11,11 @@ test("Getting started is a markdown guide with install and a complete file", asy
 
   const guide = page.locator("article.guide.prose");
   await expect(guide.getByRole("heading", { level: 1 })).toHaveText("Getting started");
-  await expect(guide.getByRole("heading", { level: 2, name: "Install" })).toBeVisible();
+  await expect(guide.getByRole("heading", { level: 2, name: "Choose your surface" })).toBeVisible();
   await expect(
     guide.getByRole("heading", { level: 2, name: "A complete Svelte file" }),
   ).toBeVisible();
-  await expect(guide.locator("pre code").first()).toContainText("bun add @ggsvelte/svelte");
+  await expect(guide.locator("pre code").first()).toContainText("npm install @ggsvelte/react");
   await expect(guide.locator("pre code").filter({ hasText: "kyotoSakura" }).first()).toContainText(
     'import { kyotoSakura } from "@ggsvelte/core/data"',
   );
@@ -51,7 +51,7 @@ test("Docs landing and sidebar expose the full path without duplicate Reference"
   await expect(sidebar.getByRole("heading", { name: "Start" })).toHaveCount(0);
   await expect(sidebar.getByRole("heading", { name: "Core grammar" })).toHaveCount(0);
   // Overview + consolidated guide/reference chapters (Scales + Coords + Labs/Axes/Labels + Themes/Palettes).
-  await expect(sidebar.getByRole("link")).toHaveCount(26);
+  await expect(sidebar.getByRole("link")).toHaveCount(27);
   await expect(sidebar.getByRole("link", { name: "Dates without preprocessing" })).toBeVisible();
   await expectNoDocumentOverflow(page);
 
@@ -81,7 +81,7 @@ test("prerendered Docs and getting-started remain useful without JavaScript", as
   );
   await page.goto("/guide/getting-started?theme=light");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Getting started");
-  await expect(page.locator("pre code").first()).toContainText("bun add @ggsvelte/svelte");
+  await expect(page.locator("pre code").first()).toContainText("npm install @ggsvelte/react");
   await expect(page.locator("pre code").filter({ hasText: "kyotoSakura" }).first()).toContainText(
     'import { kyotoSakura } from "@ggsvelte/core/data"',
   );

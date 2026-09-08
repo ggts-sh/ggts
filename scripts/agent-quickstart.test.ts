@@ -1,7 +1,11 @@
 import { expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { runCommand } from "../packages/cli/src/index.ts";
-import { SANDBOX_SPEC, SANDBOX_SPEC_JSON } from "./agent-quickstart.ts";
+import {
+  SANDBOX_SPEC,
+  SANDBOX_SPEC_JSON,
+  TYPESCRIPT_QUICKSTART_SOURCE,
+} from "./agent-quickstart.ts";
 import { codeBlocks } from "./guide-code-contract.ts";
 
 test("the README sandbox chart runs through check and render without a framework", async () => {
@@ -40,4 +44,11 @@ test("the README sandbox chart runs through check and render without a framework
     if (command === "check") expect(output).toEqual([]);
     else expect(output.join("")).toContain("Annual sales");
   }
+});
+
+test("the complete TypeScript quickstart renders the shared sales chart", () => {
+  const result = Bun.spawnSync([process.execPath, "-e", TYPESCRIPT_QUICKSTART_SOURCE]);
+  expect(result.exitCode).toBe(0);
+  expect(result.stdout.toString()).toContain("<svg");
+  expect(result.stdout.toString()).toContain("Annual sales");
 });

@@ -42,7 +42,9 @@ export function build(snapshot: PublishedSnapshot = readSnapshot()) {
   const measured = browser.provenance.versions;
   const version = (name: string) => {
     const value = measured[name];
-    if (!value) throw new Error(`Missing measured package version: ${name}`);
+    if (value === undefined || value === "") {
+      throw new Error(`Missing measured package version: ${name}`);
+    }
     return value;
   };
   const versions = {

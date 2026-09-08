@@ -3,7 +3,11 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 
 import { consumerPlotSpec } from "./consumer-compat-plan.js";
-import { REACT_QUICKSTART_SOURCE, SANDBOX_SPEC } from "./agent-quickstart.js";
+import {
+  REACT_QUICKSTART_SOURCE,
+  SANDBOX_SPEC,
+  TYPESCRIPT_QUICKSTART_SOURCE,
+} from "./agent-quickstart.js";
 import { assertRecipeImports } from "./consumer-compat-skill.js";
 import type { PackageManager } from "./support-matrix.js";
 
@@ -55,7 +59,7 @@ export function writeReactConsumerFixture(
       strict: true,
       skipLibCheck: false,
     },
-    include: ["main.tsx", "Quickstart.tsx", "skill/**/*.ts", "skill/**/*.tsx"],
+    include: ["main.tsx", "Quickstart.tsx", "chart.ts", "skill/**/*.ts", "skill/**/*.tsx"],
   });
   write(
     "index.html",
@@ -63,6 +67,7 @@ export function writeReactConsumerFixture(
   );
   assertRecipeImports(REACT_QUICKSTART_SOURCE, ["@ggsvelte/react"], "React quickstart");
   write("Quickstart.tsx", REACT_QUICKSTART_SOURCE + "\n");
+  write("chart.ts", TYPESCRIPT_QUICKSTART_SOURCE + "\n");
   write(
     "main.tsx",
     `import { createRoot } from "react-dom/client";

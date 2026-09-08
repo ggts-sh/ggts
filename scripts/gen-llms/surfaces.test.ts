@@ -110,7 +110,7 @@ describe("llms surfaces", () => {
     }));
     const txt = buildLlmsFull(pages, examples);
     const exampleText = txt.slice(txt.indexOf("# Examples\n"));
-    const specs = [...exampleText.matchAll(/```json\n([\s\S]*?)\n```/g)].map((match) =>
+    const specs = [...exampleText.matchAll(/```json\n([\s\S]*?)\n```/g)].map((match): unknown =>
       JSON.parse(match[1]!),
     );
     expect(specs).toEqual(examples.map((ex) => ({ marker: `spec-${ex.id}` })));

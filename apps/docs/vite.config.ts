@@ -57,6 +57,26 @@ export default defineConfig({
               test: /(?:[\\/]node_modules[\\/]@ggsvelte[\\/]svelte[\\/]|[\\/]packages[\\/]svelte[\\/])/,
               priority: 20,
             },
+            // API reference prose and generated parameter catalogs are docs data.
+            // A package-wide render group otherwise adds these to every chart.
+            // Their shared vocabulary must outrank recursive reference grouping,
+            // or core imports of GEOM_DEFAULTS would pull the reference catalogs.
+            {
+              name: "ggsvelte-spec-capabilities",
+              test: /(?:packages[\\/]spec[\\/](?:src|dist)[\\/]|@ggsvelte[\\/]spec[\\/](?:dist[\\/])?)(?:schema-catalog|capabilities(?:-data)?)\.[cm]?[jt]s$/,
+              priority: 50,
+            },
+            {
+              name: "ggsvelte-spec-reference",
+              test: /(?:packages[\\/]spec[\\/](?:src|dist)[\\/]|@ggsvelte[\\/]spec[\\/](?:dist[\\/])?)(?:generated[\\/])?(?:geom|stat|position|coord|scale|guide)-reference(?:-data)?\.[cm]?[jt]s$/,
+              priority: 40,
+            },
+            // Only the schema endpoint needs the published JSON artifact.
+            {
+              name: "ggsvelte-spec-schema-artifact",
+              test: /(?:packages[\\/]spec[\\/]|@ggsvelte[\\/]spec[\\/])schema[\\/]v0\.json$/,
+              priority: 40,
+            },
             // TypeBox schema + validate/lint/artifact — agent/LLM path.
             // Higher priority than ggsvelte-spec so chart pages do not pay for
             // schema-declarations or compiled validators. API docs catalogs and

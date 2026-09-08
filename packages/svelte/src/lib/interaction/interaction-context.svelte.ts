@@ -36,7 +36,7 @@ export type InteractionContext = {
   readonly root: () => HTMLDivElement | null;
   readonly captureSurface: () => HTMLDivElement | null;
   /** External linked controller, when the plot is controller-driven. */
-  readonly interaction: () => PlotInteractionController<PropertyKey> | undefined;
+  readonly interaction: () => PlotInteractionController | undefined;
   readonly resolvedInteractionScope: () => PlotInteractionScope;
   /** Narrow config slices over the resolved interaction config. */
   readonly selectConfig: () => ResolvedInteractionConfig["select"];

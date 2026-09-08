@@ -53,7 +53,7 @@ import {
 // ---------------------------------------------------------------------------
 
 export type LegendFocusStateDeps = {
-  interaction: () => PlotInteractionController<PropertyKey> | undefined;
+  interaction: () => PlotInteractionController | undefined;
   resolvedInteractionScope: () => PlotInteractionScope;
   legendFocusEnabled: () => boolean;
   /** Narrow reactive getter over `interactionConfig.legendFocus?.preview`. */

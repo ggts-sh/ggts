@@ -11,66 +11,68 @@ async function expectNoOverflow(page: import("@playwright/test").Page): Promise<
   );
 }
 
-test("homepage first viewport leads with title, bench tabs, then featured examples", async ({
+test("homepage leads with the agent sandbox and links to both framework quickstarts", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/?theme=light");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "ggsvelte is a fast, agent-native implementation of the layered grammar of graphics",
+    "ggsvelte: ggplot2’s grammar for TypeScript",
   );
-  // Hero carries compact benchmark tabs (bun-style); no install strip / CTA pair.
-  await expect(page.getByRole("tablist", { name: "Benchmark scenarios" })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Area" })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Bars" })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Line 100k" })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Scatter", exact: true })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Scatter 10k" })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Scatter 100k" })).toHaveCount(0);
-  await expect(page.locator(".bench-chart--light").first()).toHaveAttribute(
-    "src",
-    /\/benchmarks\/bench-area-mount\.svg\?v=[0-9a-f]{64}$/,
+  const hero = page.locator(".home-hero");
+  await expect(hero.getByRole("tab", { name: "Agent sandbox" })).toHaveAttribute(
+    "aria-selected",
+    "true",
   );
-  await expect(page.getByRole("button", { name: "Copy install" })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Getting started" })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Examples", level: 2 })).toHaveCount(0);
-  await expect(page.locator(".benchmarks thead th")).toHaveText([
-    "Capability",
-    "ggsvelte",
-    "TanStack",
-    "SveltePlot",
-    "Unovis",
-    "LayerCake",
-  ]);
+  await expect(hero.getByRole("tabpanel")).toContainText("ggts render");
+  await expect(hero.getByRole("link", { name: "Set up an agent sandbox" })).toHaveAttribute(
+    "href",
+    "/guide/agents",
+  );
+  await expect(hero.getByRole("link", { name: "React and Svelte quickstarts" })).toHaveAttribute(
+    "href",
+    "/guide/getting-started",
+  );
   await expect(page.locator(".home-featured ol li")).toHaveCount(6);
   await expect(page.locator(".home-featured header a")).toHaveText("Gallery");
+  await expect(page.getByRole("heading", { name: "Framework benchmarks", level: 2 })).toBeVisible();
+  await expect(page.getByLabel("Surface")).toHaveValue("react");
+  await expect(page.getByLabel("Operation")).toHaveValue("mount");
   await expectNoOverflow(page);
 });
 
-test("homepage stacks title, benchmark tabs, then featured gallery", async ({ page }) => {
+async function expectHomeSectionOrder(page: import("@playwright/test").Page): Promise<void> {
+  const boxes = await page.evaluate(() =>
+    [
+      ".home-hero h1",
+      ".home-hero .code-tabs",
+      ".home-featured",
+      ".code-path",
+      '[aria-labelledby="benchmark-heading"]',
+    ].map((selector) => {
+      const rect = document.querySelector(selector)!.getBoundingClientRect();
+      return { top: rect.top, bottom: rect.bottom };
+    }),
+  );
+  for (let index = 1; index < boxes.length; index += 1) {
+    expect(boxes[index]!.top).toBeGreaterThan(boxes[index - 1]!.bottom - 1);
+  }
+}
+
+test("homepage stacks title, sandbox, featured gallery, code path, then benchmarks", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 960, height: 900 });
   await page.goto("/?theme=light");
-  // Below 64rem the hero collapses to a single column: h1 → tabs → gallery.
-  const metrics = await page.evaluate(() => {
-    const title = document.querySelector(".home-hero h1")!.getBoundingClientRect();
-    const tabs = document.querySelector(".bench-tabs")!.getBoundingClientRect();
-    const featured = document.querySelector(".home-featured")!.getBoundingClientRect();
-    return {
-      titleBottom: title.bottom,
-      tabsTop: tabs.top,
-      tabsBottom: tabs.bottom,
-      featuredTop: featured.top,
-    };
-  });
-  expect(metrics.tabsTop).toBeGreaterThan(metrics.titleBottom - 1);
-  expect(metrics.featuredTop).toBeGreaterThan(metrics.tabsBottom - 1);
+  await expectHomeSectionOrder(page);
+  await expectNoOverflow(page);
 });
 
 test("homepage code-path section SSRs heading and a static chart shell", async ({ request }) => {
   const response = await request.get("/");
   const html = await response.text();
   // Section chrome is not gated on the dynamic plot import.
-  expect(html).toContain("Svelte for builders, JSON for embedded agents.");
+  expect(html).toContain("One grammar. React, Svelte, or a sandbox.");
   expect(html).toContain('id="code-path-heading"');
   // Static shell ships before live GGPlot hydrates.
   expect(html).toContain("grammar-static");
@@ -84,7 +86,7 @@ test("homepage grammar chart upgrades to full interactive layers on intent", asy
   await page.goto("/");
   // Code-path chrome is SSR'd immediately — not blocked on the plot chunk.
   await expect(
-    page.getByRole("heading", { name: "Svelte for builders, JSON for embedded agents." }),
+    page.getByRole("heading", { name: "One grammar. React, Svelte, or a sandbox." }),
   ).toBeVisible();
   const output = page.locator(".grammar-output");
   const plot = output.locator(".gg-plot-root");
@@ -138,21 +140,10 @@ test("homepage grammar inspect draws xy crosshair and supports legend focus", as
   await expect(legendTarget).toBeFocused();
 });
 
-test("homepage mobile order is title, bench tabs, then featured examples", async ({ page }) => {
+test("homepage mobile order keeps onboarding before examples and benchmarks", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/?theme=light");
-  const metrics = await page.evaluate(() => {
-    const title = document.querySelector(".home-hero h1")!.getBoundingClientRect();
-    const tabs = document.querySelector(".bench-tabs")!.getBoundingClientRect();
-    const featured = document.querySelector(".home-featured")!.getBoundingClientRect();
-    return {
-      titleTop: title.top,
-      tabsTop: tabs.top,
-      featuredTop: featured.top,
-    };
-  });
-  expect(metrics.titleTop).toBeLessThan(metrics.tabsTop);
-  expect(metrics.tabsTop).toBeLessThan(metrics.featuredTop);
+  await expectHomeSectionOrder(page);
   await expect(page.locator(".home-featured ol li")).toHaveCount(6);
   await expectNoOverflow(page);
 });
@@ -167,9 +158,10 @@ test("code tabs share the manual-copy fallback", async ({ page }) => {
     });
   });
   await page.goto("/");
-  const tabs = page.getByRole("tablist", { name: "Code representations" }).getByRole("tab");
-  await expect(tabs.first()).toHaveText("Svelte");
-  await page.getByRole("button", { name: "Copy code" }).first().click();
+  const codePath = page.locator(".code-path");
+  const tabs = codePath.getByRole("tablist", { name: "Code representations" }).getByRole("tab");
+  await expect(tabs).toHaveText(["React", "Svelte", "Spec (JSON)"]);
+  await codePath.getByRole("button", { name: "Copy code" }).click();
   await expect(page.locator(".code-path [role=status]")).toHaveText(
     "Clipboard unavailable. Code selected for manual copy.",
   );
@@ -244,13 +236,66 @@ test("unknown gallery filter values reset without dropping unrelated params", as
   await expect(page).not.toHaveURL(/category=unknown|tag=nope/);
 });
 
-test("detail is specimen-first and always orders Svelte, builder, then JSON", async ({ page }) => {
+test("detail is specimen-first and orders React, Svelte, builder, then JSON", async ({ page }) => {
   await page.goto("/examples/point/scatter-color");
   await expect(page.locator(".gg-example-frame")).toBeVisible();
   const tabs = page.getByRole("tablist", { name: "Code representations" }).getByRole("tab");
-  await expect(tabs).toHaveText(["Svelte", "Builder (TS)", "Spec (JSON)"]);
+  await expect(tabs).toHaveText(["React", "Svelte", "Builder (TS)", "Spec (JSON)"]);
   await expect(page.getByRole("link", { name: "Open in Playground" })).toHaveCount(0);
   await expect(page.locator(".related li")).toHaveCount(3);
+});
+
+test("benchmark navigation compares fixed workloads for each surface and operation", async ({
+  page,
+}) => {
+  await page.goto("/?theme=light");
+  await page.getByRole("link", { name: "All results and measurement method" }).click();
+  await expect(page).toHaveURL(/\/benchmarks(?:\?|$)/);
+  await expect(page.getByRole("heading", { level: 1, name: "Benchmarks" })).toBeVisible();
+  const benchmark = page.locator(".bench-tabs");
+  for (const surface of ["react", "svelte", "core"]) {
+    await benchmark.getByLabel("Surface").selectOption(surface);
+    for (const operation of ["mount", "update"]) {
+      await benchmark.getByLabel("Operation").selectOption(operation);
+      const tabs = benchmark.getByRole("tablist", { name: "Benchmark scenarios" });
+      await expect(tabs.getByRole("tab")).toHaveText(["Scatter 10k", "Line 30k"]);
+      for (const [label, workload] of [
+        ["Scatter 10k", "scatter-10k"],
+        ["Line 30k", "line-30k"],
+      ]) {
+        await tabs.getByRole("tab", { name: label, exact: true }).click();
+        const chart = benchmark.locator(".bench-chart--light:visible");
+        await expect(chart).toHaveAttribute(
+          "src",
+          new RegExp(
+            `/benchmarks/bench-${surface}-${workload}-${operation}\\.svg\\?v=[0-9a-f]{64}$`,
+          ),
+        );
+        await expect
+          .poll(() =>
+            chart.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
+          )
+          .toBe(true);
+      }
+    }
+  }
+  await expect(page.getByRole("heading", { name: "All production browser results" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Server rendering" })).toBeVisible();
+  await expectNoOverflow(page);
+});
+
+test("gallery React tab exposes the authored inspection example", async ({ page }) => {
+  await page.goto("/examples/interaction/tooltip");
+  const code = page.locator(".code-section");
+  const react = code.getByRole("tab", { name: "React", exact: true });
+  await expect(react).toHaveAttribute("aria-selected", "true");
+  await expect(code.getByRole("tabpanel")).toContainText("function PenguinInspection");
+  await expect(code.getByRole("tabpanel")).toContainText('contentMode="interactive"');
+  await expect(code.getByRole("tabpanel")).toContainText("Remember this penguin");
+  await code.getByRole("tab", { name: "Svelte", exact: true }).click();
+  await expect(code.getByRole("tabpanel")).toContainText("<script lang=");
+  await react.click();
+  await expect(code.getByRole("tabpanel")).toContainText("function PenguinInspection");
 });
 
 for (const [path, width, height] of [

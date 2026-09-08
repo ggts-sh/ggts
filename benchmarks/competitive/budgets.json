@@ -1,5 +1,5 @@
 {
-  "$comment": "PROVISIONAL competitive browser budgets: measured on linux-x64 (bun 1.3.14) on 2026-08-03 via `bun run measure:browser`; budget = median * ~3 headroom, rounded up to ~2 significant figures, because these are paint-inclusive wall-clock medians (double-rAF mount) inside a CI container with real runner variance. Absolute budgets cover ggsvelte-svg + ggsvelte-canvas cells ONLY \u2014 peer libs (layercake, svelteplot, ...) are third-party and get no absolute budget; the Svelte-peer win is locked by the relative gate in check-budgets.ts instead (same-run same-runner comparison). Keys are '<lib> <caseId> mount' and must exactly match the ggsvelte cells emitted in results/browser.json; check-budgets.ts asserts coverage in both directions so a new ggsvelte cell cannot dodge budgeting and a stale budget cannot linger after a cell is removed. Cells are data-driven from results/browser.json \u2014 peers gaining area/bars cells (or new peer libs) need no edit here.",
+  "$comment": "Provisional browser budgets. Core SVG/canvas limits retain their prior baselines; React and Svelte host limits use the clean production measurement at b68b75c315850794b2fa2c7e57f9ff41c5dd3629 on 2026-09-08, with 3x headroom rounded upward to two significant figures. All own cells have absolute mount/update limits. Framework-host peer losses remain visible without relative superiority gates; existing core relative gates and issue-tracked gaps remain. Budget keys and measured own cells must cover the same set.",
   "knownGaps": [
     {
       "ggsvelte": "ggsvelte-canvas",
@@ -7,7 +7,7 @@
       "caseId": "line-3x10k",
       "kind": "mount",
       "issue": "https://github.com/ljodea/ggsvelte/issues/1468",
-      "note": "~55\u201358ms vs ~44\u201349ms after one-pass line geometry + ordinal color skip + solid stroke hot path + named-data void adapter (#1468). Relative thr often ~peer+5\u20137ms still short; self-destructs when the gap closes."
+      "note": "~55–58ms vs ~44–49ms after one-pass line geometry + ordinal color skip + solid stroke hot path + named-data void adapter (#1468). Relative thr often ~peer+5–7ms still short; self-destructs when the gap closes."
     },
     {
       "ggsvelte": "ggsvelte-svg",
@@ -56,6 +56,78 @@
     },
     "ggsvelte-canvas scatter-color-1k update": {
       "budgetMs": 15
+    },
+    "ggsvelte-ggplot area-3x1k mount": {
+      "budgetMs": 72
+    },
+    "ggsvelte-ggplot area-3x1k update": {
+      "budgetMs": 56
+    },
+    "ggsvelte-ggplot bars-stacked-50x4 mount": {
+      "budgetMs": 36
+    },
+    "ggsvelte-ggplot bars-stacked-50x4 update": {
+      "budgetMs": 22
+    },
+    "ggsvelte-ggplot line-3x10k mount": {
+      "budgetMs": 490
+    },
+    "ggsvelte-ggplot line-3x10k update": {
+      "budgetMs": 430
+    },
+    "ggsvelte-ggplot line-3x1k mount": {
+      "budgetMs": 52
+    },
+    "ggsvelte-ggplot line-3x1k update": {
+      "budgetMs": 49
+    },
+    "ggsvelte-ggplot scatter-color-10k mount": {
+      "budgetMs": 730
+    },
+    "ggsvelte-ggplot scatter-color-10k update": {
+      "budgetMs": 540
+    },
+    "ggsvelte-ggplot scatter-color-1k mount": {
+      "budgetMs": 86
+    },
+    "ggsvelte-ggplot scatter-color-1k update": {
+      "budgetMs": 59
+    },
+    "ggsvelte-react area-3x1k mount": {
+      "budgetMs": 28
+    },
+    "ggsvelte-react area-3x1k update": {
+      "budgetMs": 21
+    },
+    "ggsvelte-react bars-stacked-50x4 mount": {
+      "budgetMs": 26
+    },
+    "ggsvelte-react bars-stacked-50x4 update": {
+      "budgetMs": 19
+    },
+    "ggsvelte-react line-3x10k mount": {
+      "budgetMs": 94
+    },
+    "ggsvelte-react line-3x10k update": {
+      "budgetMs": 50
+    },
+    "ggsvelte-react line-3x1k mount": {
+      "budgetMs": 31
+    },
+    "ggsvelte-react line-3x1k update": {
+      "budgetMs": 18
+    },
+    "ggsvelte-react scatter-color-10k mount": {
+      "budgetMs": 350
+    },
+    "ggsvelte-react scatter-color-10k update": {
+      "budgetMs": 180
+    },
+    "ggsvelte-react scatter-color-1k mount": {
+      "budgetMs": 41
+    },
+    "ggsvelte-react scatter-color-1k update": {
+      "budgetMs": 29
     },
     "ggsvelte-svg area-3x1k mount": {
       "budgetMs": 91

@@ -35,12 +35,18 @@ for (const route of [
 test("getting started presents install, a complete file, then PortableSpec", async ({ page }) => {
   await page.goto(GUIDE_ROUTE);
   const article = page.locator("article.guide");
-  const text = (await article.textContent()) ?? "";
+  const headings = await article.locator("h2").allTextContents();
 
-  const order = ["Install", "A complete Svelte file", "The PortableSpec contract"];
+  const order = [
+    "Choose your surface",
+    "React",
+    "Svelte",
+    "A complete Svelte file",
+    "The PortableSpec contract",
+  ];
   let previous = -1;
   for (const heading of order) {
-    const at = text.indexOf(heading);
+    const at = headings.indexOf(heading);
     expect(at, `missing "${heading}"`).toBeGreaterThan(previous);
     previous = at;
   }
@@ -79,9 +85,7 @@ test("errors deep links expose source-qualified recovery and copy safe recipes",
 
   await page.goto("/guide/errors#invalid-json");
   await expect(page.locator("#invalid-json")).toBeVisible();
-  await expect(page.locator("#invalid-json ~ .guide-code-copy").first()).toContainText(
-    "ggsvelte-render",
-  );
+  await expect(page.locator("#invalid-json ~ .guide-code-copy").first()).toContainText("ggts");
 });
 
 test("guide code copy falls back to selecting text when clipboard access is denied", async ({
@@ -115,7 +119,7 @@ test("desktop docs shell exposes chapter, breadcrumb, contents, and sequence nav
   const chapters = page.getByRole("navigation", { name: "Guide chapters" });
   await expect(chapters).toBeVisible();
   // Overview + consolidated guide/reference chapters (Scales + Coords + Labs/Axes/Labels + Themes/Palettes).
-  await expect(chapters.getByRole("link")).toHaveCount(26);
+  await expect(chapters.getByRole("link")).toHaveCount(27);
   await expect(chapters.getByRole("link", { name: "Dates without preprocessing" })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toContainText(
     "Getting started",

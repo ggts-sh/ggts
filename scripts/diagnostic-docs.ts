@@ -35,7 +35,7 @@ function slug(code: string): string {
 function cliFix(code: string): string {
   switch (code) {
     case "usage":
-      return "Run ggsvelte-render --help, then remove unsupported or conflicting arguments.";
+      return "Run ggts render --help, then remove unsupported or conflicting arguments.";
     case "unreadable-input":
       return "Check the file path and permissions, or pipe readable JSON on stdin.";
     case "invalid-json":
@@ -121,7 +121,7 @@ const recipes = new Map<string, DiagnosticDocEntry["recipe"]>([
     {
       language: "sh",
       code: `printf '%s\\n' '{"data":{"values":[{"x":1,"y":2}]},"layers":[{"geom":"point","aes":{"x":{"field":"x"},"y":{"field":"y"}}}]}' \\
-  | ggsvelte-render > chart.svg`,
+  | ggts render > chart.svg`,
     },
   ],
 ]);
@@ -195,7 +195,7 @@ export function buildDiagnosticDocs(): DiagnosticDocEntry[] {
       source: "cli",
       code,
       severity: "error",
-      whatFailed: `ggsvelte-render stopped with exit ${String(exitCode)} and wrote this JSON Line to stderr.`,
+      whatFailed: `ggts stopped with exit ${String(exitCode)} and wrote this JSON Line to stderr.`,
       why: entry.summary,
       fix: cliFix(code),
       consequence: "blocked",

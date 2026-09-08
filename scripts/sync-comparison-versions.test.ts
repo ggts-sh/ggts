@@ -104,7 +104,9 @@ describe("live comparison tables match the published lockstep version", () => {
       const old = 'export const BENCHMARK_VERSIONS = { ggsvelte: "0.42.0" };';
       writeFileSync(projection, old);
       expect(syncComparisonVersions(root).readmeChanged).toBe(false);
-      expect(() => checkComparisonVersions(root)).not.toThrow();
+      expect(() => {
+        checkComparisonVersions(root);
+      }).not.toThrow();
       expect(readFileSync(projection, "utf8")).toBe(old);
     } finally {
       rmSync(root, { recursive: true, force: true });

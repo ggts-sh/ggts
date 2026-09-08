@@ -128,8 +128,8 @@ describe("benchmarkChartSrc", () => {
 
 describe("published benchmark workloads", () => {
   it("publishes both fixed workloads for each framework and metric", () => {
-    for (const framework of ["core", "react", "svelte"]) {
-      for (const metric of ["mount", "update"]) {
+    for (const framework of ["core", "react", "svelte"] as const) {
+      for (const metric of ["mount", "update"] as const) {
         expect(
           BENCHMARK_CHART_CARDS.filter(
             (card) => card.framework === framework && card.metric === metric,

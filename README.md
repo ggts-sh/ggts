@@ -96,6 +96,11 @@ core renderer, React, and Svelte. Fixed workloads retain every measured
 comparator, including results where another library wins.
 
 <!-- framework-benchmark-charts:start -->
+
+![React · 10,000-point colored scatter. Mount · milliseconds · lower is better. uPlot (canvas): 35.4 ms; Chart.js (canvas): 48.3 ms; D3: 73.5 ms; ECharts (canvas): 106.7 ms; ggsvelte React: 114.6 ms; TanStack React: 248.5 ms.](apps/docs/static/benchmarks/bench-react-scatter-10k-mount.svg)
+
+![Svelte · 10,000-point colored scatter. Mount · milliseconds · lower is better. ECharts (canvas): 106.7 ms; LayerCake: 193.4 ms; ggsvelte Svelte: 241.8 ms; TanStack Svelte: 265.8 ms; Unovis Svelte: 315.2 ms; SveltePlot: 2,906.9 ms.](apps/docs/static/benchmarks/bench-svelte-scatter-10k-mount.svg)
+
 <!-- framework-benchmark-charts:end -->
 
 ## Why ggsvelte?
@@ -103,18 +108,18 @@ comparator, including results where another library wins.
 Svelte ecosystem comparison. For React timings and all measured surfaces, see
 [the full benchmark results](https://ggsvelte.sh/benchmarks).
 
-| Capability                                 | ggsvelte   | TanStack | SveltePlot | Unovis   | LayerCake |
-| ------------------------------------------ | ---------- | -------- | ---------- | -------- | --------- |
-| **Bundle size** (min+gzip, 1k scatter app) | ⚠️ 103 KB  | ✅ 57 KB | ⚠️ 109 KB  | ✅ 80 KB | ✅ 41 KB  |
-| **API stability**                          | ⚠️ v0.42.0 | ⚠️ v0.14 | ⚠️ v0.14   | ✅ v1.6  | ✅ v10    |
-| **Headless server-side SVG** (no DOM)      | ✅         | ✅       | ❌         | ❌       | ⚠️ opt-in |
-| **Portable JSON spec + schema**            | ✅         | ❌       | ❌         | ❌       | ❌        |
-| **CLI validator + renderer**               | ✅         | ❌       | ❌         | ❌       | ❌        |
-| **Agent skill**                            | ✅         | ✅       | ❌         | ❌       | ❌        |
-| **Automatic temporal detection**           | ✅         | ❌       | ⚠️ Some    | ❌       | ❌        |
-| **Built-in interactions**                  | ✅         | ✅       | ⚠️ Some    | ⚠️ Some  | ❌        |
-| **ggplot2 API**                            | ✅         | ❌       | ❌         | ❌       | ❌        |
-| **Scale, axis & coord control**            | ✅         | ✅       | ✅         | ✅       | ⚠️ d3     |
+| Capability                                       | ggsvelte   | TanStack | SveltePlot | Unovis   | LayerCake |
+| ------------------------------------------------ | ---------- | -------- | ---------- | -------- | --------- |
+| **Bundle size** (min+gzip, scatter import graph) | ⚠️ 273 KB  | ✅ 57 KB | ⚠️ 109 KB  | ✅ 80 KB | ✅ 41 KB  |
+| **API stability**                                | ⚠️ v0.42.0 | ⚠️ v0.14 | ⚠️ v0.14   | ✅ v1.6  | ✅ v10    |
+| **Headless server-side SVG** (no DOM)            | ✅         | ✅       | ❌         | ❌       | ⚠️ opt-in |
+| **Portable JSON spec + schema**                  | ✅         | ❌       | ❌         | ❌       | ❌        |
+| **CLI validator + renderer**                     | ✅         | ❌       | ❌         | ❌       | ❌        |
+| **Agent skill**                                  | ✅         | ✅       | ❌         | ❌       | ❌        |
+| **Automatic temporal detection**                 | ✅         | ❌       | ⚠️ Some    | ❌       | ❌        |
+| **Built-in interactions**                        | ✅         | ✅       | ⚠️ Some    | ⚠️ Some  | ❌        |
+| **ggplot2 API**                                  | ✅         | ❌       | ❌         | ❌       | ❌        |
+| **Scale, axis & coord control**                  | ✅         | ✅       | ✅         | ✅       | ⚠️ d3     |
 
 ## Reference
 

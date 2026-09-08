@@ -16813,6 +16813,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["Svelte"],
   },
   {
+    id: "heading:guide-getting-started:typescript",
+    kind: "heading",
+    title: "TypeScript",
+    summary:
+      "TypeScript in Getting started. Render the same chart in an agent sandbox, React, or Svelte.",
+    href: "/guide/getting-started#typescript",
+    keywords: ["Getting started", "Start"],
+    exact: ["TypeScript"],
+  },
+  {
     id: "heading:guide-getting-started:svelte-install-and-composition",
     kind: "heading",
     title: "Svelte install and composition",
@@ -51838,7 +51848,7 @@ export const DOCS_SEARCH_INDEX = [
     keywords: [
       "cli",
       "error",
-      "Run ggsvelte-render --help, then remove unsupported or conflicting arguments.",
+      "Run ggts render --help, then remove unsupported or conflicting arguments.",
     ],
     exact: ["usage", "cli:usage"],
   },

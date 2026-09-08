@@ -175,13 +175,17 @@ test("React consumers use their packed adapter and skill with no Svelte dependen
       ),
       "pnpm",
     );
-    const manifest = JSON.parse(readFileSync(join(directory, "package.json"), "utf8"));
-    expect(manifest.dependencies.react).toBe("18.2.0");
-    expect(manifest.dependencies["react-dom"]).toBe("18.2.0");
-    expect(manifest.dependencies["@ggsvelte/react"]).toContain("ggsvelte-react-0.tgz");
-    expect(manifest.dependencies["@ggsvelte/skill"]).toContain("ggsvelte-skill-0.tgz");
-    expect(manifest.dependencies.svelte).toBeUndefined();
-    expect(manifest.dependencies["@ggsvelte/svelte"]).toBeUndefined();
+    const manifest: unknown = JSON.parse(readFileSync(join(directory, "package.json"), "utf8"));
+    expect(manifest).toMatchObject({
+      dependencies: {
+        react: "18.2.0",
+        "react-dom": "18.2.0",
+        "@ggsvelte/react": "file:../ggsvelte-react-0.tgz",
+        "@ggsvelte/skill": "file:../ggsvelte-skill-0.tgz",
+      },
+    });
+    expect(manifest).not.toHaveProperty("dependencies.svelte");
+    expect(manifest).not.toHaveProperty("dependencies.@ggsvelte/svelte");
     expect(readFileSync(join(directory, "pnpm-workspace.yaml"), "utf8")).toContain(
       "@ggsvelte/react",
     );

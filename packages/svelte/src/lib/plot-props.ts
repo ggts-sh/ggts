@@ -197,7 +197,7 @@ export type EnginePlotProps = Omit<
   "key" | "interaction" | "oninspect" | "onselect" | "onlegendfocus" | "oninteraction"
 > & {
   key?: PropertyKey | ((row: Record<string, CellValue>, index: number) => PropertyKey);
-  interaction?: PlotInteractionController<PropertyKey>;
+  interaction?: PlotInteractionController;
   oninspect?: (event: PlotInspection<Record<string, CellValue>>) => void;
   onselect?: (event: PlotSelection) => void;
   onlegendfocus?: (event: LegendFocusEvent) => void;

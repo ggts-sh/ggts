@@ -59,6 +59,39 @@ describe("docs chart stack isolation (PR1)", () => {
     expect(vite).toMatch(/schema-declarations|validate/);
   });
 
+  it("separates reference catalogs and the served schema from render modules", () => {
+    const vite = readFileSync(path.join(root, "apps/docs/vite.config.ts"), "utf8");
+    const referenceSource = vite.match(/name: "ggsvelte-spec-reference",\s*test: \/(.+)\/,/u)?.[1];
+    const schemaSource = vite.match(
+      /name: "ggsvelte-spec-schema-artifact",\s*test: \/(.+)\/,/u,
+    )?.[1];
+    if (referenceSource === undefined || schemaSource === undefined)
+      throw new Error("missing docs data chunk rules");
+    const reference = new RegExp(referenceSource);
+    const schema = new RegExp(schemaSource);
+    for (const prefix of [
+      "/repo/packages/spec/src/",
+      "/repo/packages/spec/dist/",
+      "/repo/node_modules/@ggsvelte/spec/dist/",
+    ]) {
+      for (const file of [
+        "geom-reference.js",
+        "scale-reference.js",
+        "generated/scale-reference-data.js",
+        "generated/guide-reference-data.js",
+      ]) {
+        expect(reference.test(prefix + file), prefix + file).toBe(true);
+        expect(reference.test((prefix + file).replaceAll("/", "\\"))).toBe(true);
+      }
+      expect(reference.test(prefix + "scale-x-continuous.js")).toBe(false);
+      expect(reference.test(prefix + "generated/plot-spec-validator.js")).toBe(false);
+    }
+    expect(schema.test("/repo/packages/spec/schema/v0.json")).toBe(true);
+    expect(schema.test("/repo/node_modules/@ggsvelte/spec/schema/v0.json")).toBe(true);
+    expect(schema.test(String.raw`C:\repo\packages\spec\schema\v0.json`)).toBe(true);
+    expect(schema.test("/repo/packages/spec/dist/schema-names.js")).toBe(false);
+  });
+
   it("splits pure data out of the chart mega-chunks (priority > package groups)", () => {
     // Named package groups put every matching module into one shared chunk. A
     // one-line import of palette colors or kyotoSakura then modulepreloads the

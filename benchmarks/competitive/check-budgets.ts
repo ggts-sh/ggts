@@ -372,7 +372,7 @@ console.log(
 );
 for (const c of comparisons) {
   const verdict = !c.gated
-    ? "info (cross-form)"
+    ? "info (ungated comparison)"
     : c.gap
       ? clearlyBeats(c.ggMs, c.peerMs)
         ? `STALE GAP — remove exemption (${c.gap.issue})`

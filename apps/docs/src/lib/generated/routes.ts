@@ -10460,6 +10460,11 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
+        id: "typescript",
+        title: "TypeScript",
+        level: 2,
+      },
+      {
         id: "svelte-install-and-composition",
         title: "Svelte install and composition",
         level: 2,
