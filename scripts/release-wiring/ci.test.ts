@@ -191,7 +191,7 @@ describe("R0 release wiring — CI lanes", () => {
     expect(read(".github/workflows/ci.yml")).toContain("interaction_perf == 'true'");
     expect(interactionPerfJob).toContain("uses: ./.github/actions/ci-download-packages-dist");
     expect(interactionPerfJob).toContain("packages-dist");
-    expect(bench).toContain("ghcr.io/ljodea/ggsvelte/ci-runner:v1.61.1-noble");
+    expect(bench).toContain("ghcr.io/ggts-sh/ggts/ci-runner:v1.61.1-noble");
     expect(bench).toContain("bun run test:interaction-perf");
     expect(read("package.json")).toContain('"test:interaction-perf"');
     expect(read("tests/performance/interaction.spec.ts")).toContain("/__perf/interaction-100k");

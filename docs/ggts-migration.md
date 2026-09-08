@@ -53,8 +53,8 @@ interactions in a browser. The new CLI preserves JSONL diagnostics on stderr;
 1. Wait for active release and deployment runs to finish. Set the existing
    `NPM_PUBLISH_ENABLED` repository variable to `false` before the cutover.
 2. Verify anonymous access to
-   `ghcr.io/ljodea/ggsvelte/ci-runner:v1.61.1-noble`. The migration pins consumers
-   to that old public image until the destination image exists. Its manifest
+   `ghcr.io/ljodea/ggsvelte/ci-runner:v1.61.1-noble`. The migration kept consumers
+   on that old public image until the destination image was publicly accessible. Its manifest
    digest at the September 8, 2026 check was
    `sha256:18bfa97ec372d36b97d4993ec5d185d971c86523d74300f8d94ab5b867d5dc1e`.
 3. In repository **Settings → General → Transfer**, select `ggts-sh` and set
@@ -72,7 +72,8 @@ interactions in a browser. The new CLI preserves JSONL diagnostics on stderr;
    `.github/workflows/build-ci-image.yml` on main. It has no manual dispatch
    trigger by design. Confirm the new package is public and can be pulled
    without credentials, then restore consumer image URLs to
-   `ghcr.io/${{ github.repository }}/ci-runner:<tag>` in a follow-up change.
+   `ghcr.io/ggts-sh/ggts/ci-runner:<tag>`. The destination image passed
+   anonymous access verification on September 8, 2026, and consumers now use it.
 7. Run destination PR CI before restoring publication. GitHub Container
    Registry packages do not move to the new owner with the repository.
 

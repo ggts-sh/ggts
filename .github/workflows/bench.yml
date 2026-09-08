@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     container:
-      image: ghcr.io/ljodea/ggsvelte/ci-runner:v1.61.1-noble
+      image: ghcr.io/ggts-sh/ggts/ci-runner:v1.61.1-noble
     defaults:
       run:
         shell: bash

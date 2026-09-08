@@ -33,7 +33,7 @@ jobs:
       HOME: /root
     container:
       # Keep in sync with inputs.playwright_container_tag above.
-      image: ghcr.io/ljodea/ggsvelte/ci-runner:${{ inputs.playwright_container_tag }}
+      image: ghcr.io/ggts-sh/ggts/ci-runner:${{ inputs.playwright_container_tag }}
     defaults:
       run:
         # The container's /bin/sh is dash, which rejects `set -o pipefail`.
