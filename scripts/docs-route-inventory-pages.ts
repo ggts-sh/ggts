@@ -11,17 +11,6 @@ type DocsRouteRecord = DocsRouteMetadata;
 
 export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   {
-    path: "/benchmarks",
-    title: "Benchmarks — ggts",
-    description:
-      "Production measurements for the core, React, Svelte, and existing charting comparators.",
-    canonicalPath: "/benchmarks",
-    kind: "page",
-    index: true,
-    sitemap: true,
-    shell: "site",
-  },
-  {
     path: "/",
     title: "ggts — ggplot2’s grammar for TypeScript",
     description:
