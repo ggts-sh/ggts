@@ -11,6 +11,31 @@ async function expectNoOverflow(page: import("@playwright/test").Page): Promise<
   );
 }
 
+for (const route of ["/", "/examples/interactions/inspection"]) {
+  test(`${route} chart load waits for page hydration`, async ({ page }) => {
+    let releaseBootstrap!: () => void;
+    const bootstrap = new Promise<void>((resolve) => {
+      releaseBootstrap = resolve;
+    });
+    await page.route("**/_app/immutable/entry/*.js", async (request) => {
+      await bootstrap;
+      await request.continue();
+    });
+    await page.goto(route, { waitUntil: "commit" });
+    const button = page.getByRole("button", { name: "Load interactive chart" });
+    try {
+      await expect(button).toBeDisabled();
+    } finally {
+      releaseBootstrap();
+    }
+    await expect(button).toBeEnabled();
+    await button.click();
+    await expect(page.locator('.gg-plot-root[data-gg-ready="true"]')).toHaveCount(1, {
+      timeout: 60_000,
+    });
+  });
+}
+
 test("homepage leads with the agent sandbox and links to both framework quickstarts", async ({
   page,
 }) => {
