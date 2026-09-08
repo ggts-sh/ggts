@@ -1,5 +1,24 @@
 # @ggsvelte/svelte
 
+## 0.42.0
+
+### Minor Changes
+
+- fec36b3: Add `tooltipTotal` on `<Inspect>` so stacked charts can show a group Total without switching inspect `mode` to `"x"` or `"y"`.
+
+  Migration: none — additive
+
+### Patch Changes
+
+- c390b04: Add `@ggsvelte/react`, a React DOM adapter over the same core pipeline and ggplot2 names as `@ggsvelte/svelte`. Shared spec assembly lives in `@ggsvelte/compose`.
+
+  Migration: none — additive
+
+- Updated dependencies [c390b04]
+  - @ggsvelte/compose@0.42.0
+  - @ggsvelte/core@0.42.0
+  - @ggsvelte/spec@0.42.0
+
 ## 0.41.0
 
 ### Patch Changes

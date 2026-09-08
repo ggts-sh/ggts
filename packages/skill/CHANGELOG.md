@@ -1,5 +1,13 @@
 # @ggsvelte/skill
 
+## 0.42.0
+
+### Minor Changes
+
+- fec36b3: Add `tooltipTotal` on `<Inspect>` so stacked charts can show a group Total without switching inspect `mode` to `"x"` or `"y"`.
+
+  Migration: none — additive
+
 ## 0.41.0
 
 ## 0.40.0

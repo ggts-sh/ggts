@@ -1,6 +1,6 @@
 {
   "name": "@ggsvelte/core",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "description": "ggsvelte core: framework-agnostic grammar-of-graphics pipeline, scale stability, layout, and the pure SVG-string renderer.",
   "keywords": [
     "canvas",
@@ -67,7 +67,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@ggsvelte/spec": "^0.41.0"
+    "@ggsvelte/spec": "^0.42.0"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

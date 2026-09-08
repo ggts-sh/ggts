@@ -1,6 +1,6 @@
 {
   "name": "@ggsvelte/compose",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "description": "Framework-free plot composition: assemble PortableSpec from props and grammar layers.",
   "keywords": [
     "charts",
@@ -34,7 +34,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@ggsvelte/spec": "^0.41.0"
+    "@ggsvelte/spec": "^0.42.0"
   },
   "devDependencies": {
     "typescript": "^6.0.3"
