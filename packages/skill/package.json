@@ -1,6 +1,6 @@
 {
   "name": "@ggsvelte/skill",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "description": "The ggsvelte agent skill (SKILL.md + references): teaches coding agents the ggsvelte grammar of graphics — Svelte 5 child-component composition, PortableSpec JSON, and the validate/render feedback loop. Versioned in lock-step with @ggsvelte/spec, @ggsvelte/core, @ggsvelte/svelte, and @ggsvelte/cli.",
   "keywords": [
     "agent-skill",

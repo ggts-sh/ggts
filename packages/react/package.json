@@ -1,6 +1,6 @@
 {
   "name": "@ggsvelte/react",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "description": "ggsvelte React DOM adapter: ggplot2-named components over the framework-agnostic core pipeline.",
   "keywords": [
     "charts",
@@ -42,9 +42,9 @@
     "test:ssr": "vitest run --config vitest.ssr.config.ts"
   },
   "dependencies": {
-    "@ggsvelte/compose": "^0.41.0",
-    "@ggsvelte/core": "^0.41.0",
-    "@ggsvelte/spec": "^0.41.0"
+    "@ggsvelte/compose": "^0.42.0",
+    "@ggsvelte/core": "^0.42.0",
+    "@ggsvelte/spec": "^0.42.0"
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.0",

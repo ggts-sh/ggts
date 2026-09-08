@@ -80,7 +80,7 @@ export const BENCHMARK_CHART_CARDS = [
 ] as const;
 
 export const BENCHMARK_VERSIONS = {
-  ggsvelte: "0.41.0",
+  ggsvelte: "0.42.0",
   svelteplot: "0.14.2",
   layercake: "10.0.3",
   unovis: "1.6.7",
