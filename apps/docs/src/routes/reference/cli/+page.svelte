@@ -11,9 +11,10 @@
 <article class="cli-reference prose" aria-labelledby="cli-heading">
   <h1 id="cli-heading">Command-line reference</h1>
   <p>
-    <code>ggsvelte-render</code> reads PortableSpec JSON and writes
-    deterministic SVG. Its option list below comes from the same package-private
-    registry as argument parsing and
+    <code>ggts render</code> reads PortableSpec JSON and writes deterministic
+    SVG. <code>ggts check</code> runs the same validation and rendering checks
+    with no SVG output. Its option list below comes from the same
+    package-private registry as argument parsing and
     <code>--help</code>.
   </p>
 
@@ -39,7 +40,7 @@
     class="cli-command"
     language="bash"
     accessibleLabel="Copy command"
-    code="ggsvelte-render spec.json > chart.svg 2> diagnostics.jsonl"
+    code="ggts render spec.json > chart.svg 2> diagnostics.jsonl"
   />
   <p>Errors, warnings, and advisories are JSON Lines on stderr.</p>
 
@@ -69,7 +70,7 @@
   <dl class="exit-codes">
     <div>
       <dt>0</dt>
-      <dd>Rendered successfully.</dd>
+      <dd>Checked or rendered successfully.</dd>
     </div>
     <div>
       <dt>1</dt>
@@ -88,9 +89,8 @@
   <h2 id="troubleshooting">Troubleshooting</h2>
   <p>
     Keep stdout and stderr separate. Search the source-qualified code in the
-    <a href={`${base}/guide/errors#cli-diagnostics-ggsvelte-render`}
-      >Errors reference</a
-    >, correct the input, and rerun the same command.
+    <a href={`${base}/guide/errors#cli-diagnostics-ggts`}>Errors reference</a>,
+    correct the input, and rerun the same command.
   </p>
 </article>
 

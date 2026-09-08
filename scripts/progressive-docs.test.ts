@@ -65,7 +65,9 @@ describe("progressive Docs journey", () => {
     const headings = route?.headings ?? [];
     const ids = new Set(headings.map((h) => h.id as string));
     const titles = new Map(headings.map((h) => [h.id as string, h.title]));
-    expect(titles.get("install")).toBe("Install");
+    expect(titles.get("choose-your-surface")).toBe("Choose your surface");
+    expect(titles.get("react")).toBe("React");
+    expect(titles.get("svelte")).toBe("Svelte");
     expect(titles.get("a-complete-svelte-file")).toBe("A complete Svelte file");
     expect(titles.get("the-portablespec-contract")).toBe("The PortableSpec contract");
     // Progressive walkthrough step titles must not leak into the guide page.

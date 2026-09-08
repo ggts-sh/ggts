@@ -19,6 +19,8 @@ import {
   type CommandStep,
   type PublishablePackageVersions,
 } from "./consumer-compat-plan.js";
+import { writeReactConsumerFixture } from "./consumer-compat-react-fixture.js";
+import { writeInstalledSkillExamples } from "./consumer-compat-skill.js";
 import { writeConsumerFixture } from "./consumer-compat-fixture.js";
 import { type PackageManager } from "./support-matrix.js";
 
@@ -94,6 +96,8 @@ function pack(root: string, artifacts: string): string[] {
     core: packageVersion(root, "core"),
     compose: packageVersion(root, "compose"),
     svelte: packageVersion(root, "svelte"),
+    react: packageVersion(root, "react"),
+    skill: packageVersion(root, "skill"),
     cli: packageVersion(root, "cli"),
   };
   for (const packageDirectory of publishablePackageDirectories) {
@@ -113,10 +117,8 @@ function pack(root: string, artifacts: string): string[] {
 }
 
 function main(): void {
-  const { packageManager, svelteVersion, packageManagerVersion } = resolveConsumerOptions(
-    process.argv.slice(2),
-    process.env,
-  );
+  const { packageManager, svelteVersion, reactVersion, packageManagerVersion } =
+    resolveConsumerOptions(process.argv.slice(2), process.env);
   if (!["npm", "pnpm", "bun"].includes(packageManager)) {
     throw new Error(`unknown package manager: ${packageManager}`);
   }
@@ -133,8 +135,17 @@ function main(): void {
     const expectedCliPackageVersion = packageVersion(root, "cli");
     for (const step of commandPlan(packageManager, expectedCliPackageVersion)) {
       run(step, fixture, root);
+      if (step.label === "install packed consumer") writeInstalledSkillExamples(fixture, "svelte");
     }
     console.log(`consumer-compat: PASS (${packageManager}, Svelte ${svelteVersion})`);
+    const reactFixture = join(temporaryRoot, "react consumer space ü");
+    writeReactConsumerFixture(reactFixture, reactVersion, tarballs, packageManager);
+    for (const step of commandPlan(packageManager, expectedCliPackageVersion, "react")) {
+      run(step, reactFixture, root);
+      if (step.label === "install packed consumer")
+        writeInstalledSkillExamples(reactFixture, "react");
+    }
+    console.log(`consumer-compat: PASS (${packageManager}, React ${reactVersion})`);
   } finally {
     rmSync(temporaryRoot, { recursive: true, force: true });
   }

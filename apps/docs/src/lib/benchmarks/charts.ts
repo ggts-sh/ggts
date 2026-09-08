@@ -1,21 +1,7 @@
 /**
- * Bun-style benchmark comparison charts, drawn with ggsvelte itself
- * (headless renderToSVGString — dogfooding the agent surface). Numbers come
- * from benchmarks/competitive/results/*.json via scripts/gen-benchmark-charts.ts;
- * never hand-edit the rendered SVGs.
- *
- * Claim discipline (enforced in scripts/gen-benchmark-charts.ts): classic
- * six-bar charts require ggsvelte-svg to beat LayerCake SVG, SveltePlot,
- * Unovis, TanStack Charts Svelte, and ECharts. ECharts is compared to the
- * full-chart SVG cell, not the marks-only canvas harness. The Line 100k form-factor chart shades
- * every ggsvelte path and still requires the SVG path to beat LayerCake SVG,
- * Unovis, and TanStack Charts Svelte. SveltePlot is omitted from that chart
- * because its mount time stretches the axis. LayerCake canvas may win a cell
- * and is shown for honesty. Bar rank is always mount time (fastest on top);
- * `benchmarkChartSpec` sets the band domain from `value`, so a hand-ordered
- * input cannot invert LayerCake and TanStack. Conventions follow bun.sh:
- * subject bars use the brand accent, peer bars stay grey, value labels sit
- * at bar ends, and time benchmarks ("faster") use horizontal bars.
+ * Fixed core/React/Svelte benchmark charts drawn with the headless renderer.
+ * The generator reads a committed measurement snapshot. Every result is
+ * retained regardless of winner; bars sort by measured time, fastest first.
  */
 import { registerAll, renderToSVGString } from "@ggsvelte/core";
 

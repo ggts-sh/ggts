@@ -17,6 +17,12 @@ import {
 const HEADER = "// @lifecycle-default experimental\n";
 
 describe("extractExports", () => {
+  it("preserves inline type exports on data and adapter entrypoints", () => {
+    expect(extractExports(HEADER + 'export { rows, type Row } from "./data.js";', "f.ts")).toEqual([
+      { name: "Row", kind: "type", lifecycle: "experimental" },
+      { name: "rows", kind: "value", lifecycle: "experimental" },
+    ]);
+  });
   it("applies the file default, statement JSDoc markers, and name tags", () => {
     const src =
       HEADER +
@@ -98,6 +104,8 @@ describe("lifecycle.json", () => {
     // Lean subpath entries shipped by package.json exports (#1278).
     for (const entry of [
       { package: "@ggsvelte/core", entry: "./render" },
+      { package: "@ggsvelte/core", entry: "./data" },
+      { package: "@ggsvelte/react", entry: "." },
       { package: "@ggsvelte/core", entry: "./temporal" },
       { package: "@ggsvelte/spec", entry: "./portable" },
     ] as const) {

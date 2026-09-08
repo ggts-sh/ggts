@@ -239,7 +239,7 @@ describe("readiness + canvas + handle", () => {
     const painted = [...container.querySelectorAll("svg.gg-plot, canvas.gg-canvas")].map((el) =>
       el.tagName.toLowerCase(),
     );
-    expect(painted).toEqual(["canvas", "svg"]);
+    expect(painted).toEqual(["svg", "canvas", "svg"]);
   });
 
   it("paints every canvas stratum", () => {
@@ -261,7 +261,7 @@ describe("readiness + canvas + handle", () => {
       [...container.querySelectorAll("svg.gg-plot, canvas.gg-canvas")].map((el) =>
         el.tagName.toLowerCase(),
       ),
-    ).toEqual(["canvas", "svg", "canvas"]);
+    ).toEqual(["svg", "canvas", "svg", "canvas", "svg"]);
   });
 
   it("sets aria-label on the live svg", () => {

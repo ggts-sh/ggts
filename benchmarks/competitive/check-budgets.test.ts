@@ -12,6 +12,7 @@ type GateFixture = {
   ggsvelte: Timing;
   peer: Timing;
   knownGap?: boolean;
+  lib?: "ggsvelte-svg" | "ggsvelte-react" | "ggsvelte-ggplot";
 };
 
 const temporaryDirectories: string[] = [];
@@ -22,7 +23,7 @@ afterEach(() => {
   }
 });
 
-function runGate({ ggsvelte, peer, knownGap = false }: GateFixture) {
+function runGate({ ggsvelte, peer, knownGap = false, lib = "ggsvelte-svg" }: GateFixture) {
   const directory = mkdtempSync(path.join(tmpdir(), "ggsvelte-competitive-budget-"));
   temporaryDirectories.push(directory);
   cpSync(new URL("./check-budgets.ts", import.meta.url), path.join(directory, "check-budgets.ts"));
@@ -36,7 +37,7 @@ function runGate({ ggsvelte, peer, knownGap = false }: GateFixture) {
       measuresSync: true,
       results: [
         {
-          lib: "ggsvelte-svg",
+          lib,
           caseId: "line-3x1k",
           ok: true,
           mountMedianMs: 5,
@@ -60,13 +61,13 @@ function runGate({ ggsvelte, peer, knownGap = false }: GateFixture) {
     path.join(directory, "budgets.json"),
     JSON.stringify({
       budgets: {
-        "ggsvelte-svg line-3x1k mount": { budgetMs: 20 },
-        "ggsvelte-svg line-3x1k update": { budgetMs: 20 },
+        [`${lib} line-3x1k mount`]: { budgetMs: 20 },
+        [`${lib} line-3x1k update`]: { budgetMs: 20 },
       },
       knownGaps: knownGap
         ? [
             {
-              ggsvelte: "ggsvelte-svg",
+              ggsvelte: lib,
               peer: "layercake",
               caseId: "line-3x1k",
               kind: "update",
@@ -126,4 +127,17 @@ describe("competitive browser budget gate", () => {
     expect(result.exitCode).toBe(1);
     expect(result.stderr.toString()).toContain("known gap CLOSED");
   });
+});
+
+test("framework budgets allow peer wins while rejecting framework regressions", () => {
+  for (const lib of ["ggsvelte-react", "ggsvelte-ggplot"] as const) {
+    const loss = runGate({ lib, ggsvelte: { total: 15, sync: 12 }, peer: { total: 1, sync: 1 } });
+    expect(loss.exitCode).toBe(0);
+    const regression = runGate({
+      lib,
+      ggsvelte: { total: 25, sync: 22 },
+      peer: { total: 1, sync: 1 },
+    });
+    expect(regression.exitCode).toBe(1);
+  }
 });

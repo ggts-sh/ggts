@@ -1,13 +1,15 @@
 # @ggsvelte/skill
 
 The ggsvelte agent skill: `SKILL.md` plus deep-dive `references/` that teach a
-coding agent the ggsvelte grammar of graphics — Svelte 5 child-component
-composition, PortableSpec JSON authoring, and the `validate()` /
-`ggsvelte-render` feedback loop.
+coding agent the shared grammar of graphics — TypeScript builders, React
+and Svelte components, PortableSpec JSON, and the `ggts check` /
+`ggts render` feedback loop.
 
 This package is the one published home of the skill. It versions in lock-step
 with [`@ggsvelte/spec`](https://www.npmjs.com/package/@ggsvelte/spec),
 [`@ggsvelte/core`](https://www.npmjs.com/package/@ggsvelte/core),
+[`@ggsvelte/compose`](https://www.npmjs.com/package/@ggsvelte/compose),
+[`@ggsvelte/react`](https://www.npmjs.com/package/@ggsvelte/react),
 [`@ggsvelte/svelte`](https://www.npmjs.com/package/@ggsvelte/svelte), and
 [`@ggsvelte/cli`](https://www.npmjs.com/package/@ggsvelte/cli): a given version
 number describes the spec, the renderers, and this skill as of the same
@@ -17,8 +19,7 @@ npm-check-updates) tell you when the bundled skill in your repo is stale.
 ## Install
 
 ```sh
-bun add -D @ggsvelte/skill
-# or: npm install --save-dev @ggsvelte/skill
+npm install --save-dev --save-exact @ggsvelte/skill @ggsvelte/cli
 ```
 
 The package root **is** the skill directory: `SKILL.md` sits next to this
@@ -46,23 +47,25 @@ script works); the dependabot PR is the signal that the skill changed.
 
 The skill assumes the agent can also run
 [`@ggsvelte/cli`](https://www.npmjs.com/package/@ggsvelte/cli)
-(`ggsvelte-render`) for spec validation and headless SVG rendering — install it
+(`ggts check` and `ggts render`) for spec validation and headless SVG rendering — install it
 in every sandbox where an agent authors specs.
 
 ## Contents
 
-- `SKILL.md` — trigger conditions, layer ontology, authoring workflow.
+- `SKILL.md` — target selection, shared grammar, authoring workflow.
+- `references/react.md` and `references/svelte.md` — adapter instructions.
 - `references/` — geoms and stats, scales and palettes, themes, interactions,
   composition surfaces, recipes.
 
 ## Guarantees
 
-The skill cannot quietly fall behind the library. CI enforces three layers:
+CI checks the teaching contracts and shipped examples:
 
 1. **Content contracts** (`scripts/skill-content/*.test.ts`,
    `scripts/skill-package.test.ts`) — inventory completeness for every geom,
    stat, position, theme, and color scheme; every complete JSON fence
-   normalizes and validates; pack shape and lock-step version.
+   normalizes and validates; pack shape and lock-step version. Packed-consumer
+   checks also compile complete TSX and Svelte examples from the installed skill.
 2. **Trigger / disclosure contracts** (`scripts/skill-trigger.test.ts`) —
    frontmatter description quality (the loader's selection signal), balanced
    positive/negative trigger fixtures under `evals/trigger-cases.json`,

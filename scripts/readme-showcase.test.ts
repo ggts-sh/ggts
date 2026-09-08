@@ -20,12 +20,18 @@ describe("README front door", () => {
     expect(readme).toContain("https://ggsvelte.sh/themes");
   });
 
-  it("uses no TypeScript, builder, or PortableSpec snippets on the GitHub front door", () => {
+  it("starts with a runnable JSON and CLI sandbox workflow", () => {
     const fenceLanguages = [...readme.matchAll(/^```([^\n]*)$/gm)].map(([, language]) => language);
 
-    expect(fenceLanguages.every((language) => language === "" || language === "sh")).toBe(true);
+    expect(
+      fenceLanguages.every(
+        (language) => language === "" || language === "sh" || language === "json",
+      ),
+    ).toBe(true);
     expect(readme).not.toContain("```ts");
-    expect(readme).not.toContain("```json");
+    expect(readme).toContain("```json");
+    expect(readme).toContain("ggts check chart.json");
+    expect(readme).toContain("ggts render chart.json");
     expect(readme).not.toContain("```svelte");
     expect(readme).not.toContain("https://ljodea.github.io/ggsvelte");
   });

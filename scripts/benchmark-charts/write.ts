@@ -3,7 +3,7 @@
  * `build()` is shared with the --check freshness path.
  */
 
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { buildCards } from "./cards";
@@ -14,21 +14,24 @@ import {
 
 import {
   bundleGzipKb,
-  installedVersion,
+  readSnapshot,
+  validateSnapshot,
+  SNAPSHOT,
   OUTPUT_DIR,
   PROJECTION,
-  readJson,
   ROOT,
+  readJson,
   type BundleResults,
   type BrowserResults,
+  type PublishedSnapshot,
+  type SsrResults,
+  type HistoricalBrowserResults,
 } from "./results";
-import { projectionSource, type ShellFile } from "./projection";
+import { projectionSource, readmeSource, type ShellFile } from "./projection";
 
-export function build() {
-  const browser = readJson("browser.json") as BrowserResults;
-  const peers100k = readJson("browser-100k-peers.json") as BrowserResults;
-  const bundles = readJson("bundles.json") as BundleResults;
-  const cards = buildCards(browser, peers100k);
+export function build(snapshot: PublishedSnapshot = readSnapshot()) {
+  const { browser, bundles } = snapshot;
+  const cards = buildCards(browser);
   const files: ShellFile[] = cards.flatMap((card) => {
     const light = benchmarkChartSvg(card.chart, { width: card.width, height: card.height });
     return [
@@ -36,37 +39,58 @@ export function build() {
       { filename: `bench-${card.id}-dark-site.svg`, body: benchmarkChartDarkSiteSvg(light) },
     ];
   });
-  // Unchecked cast at a JSON boundary: the svelte package manifest always
-  // carries a version; there is no runtime shape to distinguish.
-  const svelteManifest = JSON.parse(
-    readFileSync(join(ROOT, "packages", "svelte", "package.json"), "utf8"),
-  ) as { version: string };
+  const measured = browser.provenance.versions;
+  const version = (name: string) => {
+    const value = measured[name];
+    if (!value) throw new Error(`Missing measured package version: ${name}`);
+    return value;
+  };
   const versions = {
-    ggsvelte: svelteManifest.version,
-    svelteplot: installedVersion("svelteplot"),
-    layercake: installedVersion("layercake"),
-    unovis: installedVersion("@unovis/svelte"),
-    tanstack: installedVersion("@tanstack/charts"),
+    ggsvelte: version("@ggsvelte/svelte"),
+    svelteplot: version("svelteplot"),
+    layercake: version("layercake"),
+    unovis: version("@unovis/svelte"),
+    tanstack: version("@tanstack/charts"),
   };
   const bundleKb = {
-    ggsvelteKb: bundleGzipKb(bundles, "ggsvelte-svg", "scatter-color"),
+    ggsvelteKb: bundleGzipKb(bundles, "ggsvelte-ggplot", "scatter-color"),
+    coreKb: bundleGzipKb(bundles, "ggsvelte-svg", "scatter-color"),
+    reactKb: bundleGzipKb(bundles, "ggsvelte-react", "scatter-color"),
+    svelteKb: bundleGzipKb(bundles, "ggsvelte-ggplot", "scatter-color"),
+    tanstackReactKb: bundleGzipKb(bundles, "tanstack-react", "scatter-color"),
     svelteplotKb: bundleGzipKb(bundles, "svelteplot", "scatter-color"),
     layercakeKb: bundleGzipKb(bundles, "layercake", "scatter-color"),
     unovisKb: bundleGzipKb(bundles, "unovis", "scatter-color"),
     tanstackKb: bundleGzipKb(bundles, "tanstack-svelte", "scatter-color"),
   };
-  // Stamp both sources so --check staleness covers 100k re-measures.
-  const generatedAt = `${browser.generatedAt}; 100k peers ${peers100k.generatedAt}`;
-  return { files, cards, versions, bundleKb, generatedAt };
+  const generatedAt = `${browser.generatedAt}; bundles ${bundles.generatedAt}; commit ${browser.provenance.commit}${browser.provenance.dirty ? " (working tree)" : ""}`;
+  return { files, cards, versions, bundleKb, generatedAt, snapshot };
 }
 
-export async function write(): Promise<void> {
-  const { files, cards, versions, bundleKb, generatedAt } = build();
+export async function write(publish = false): Promise<void> {
+  const snapshot = publish
+    ? validateSnapshot({
+        browser: readJson("browser.json") as BrowserResults,
+        bundles: readJson("bundles.json") as BundleResults,
+        ssr: readJson("ssr.json") as SsrResults,
+        highN: existsSync(SNAPSHOT)
+          ? (JSON.parse(readFileSync(SNAPSHOT, "utf8")) as PublishedSnapshot).highN
+          : (readJson("browser-100k-peers.json") as HistoricalBrowserResults),
+      })
+    : readSnapshot();
+  const { files, cards, versions, bundleKb, generatedAt } = build(snapshot);
+  const readmePath = join(ROOT, "README.md");
+  const readme = await readmeSource(readFileSync(readmePath, "utf8"), cards, bundleKb, readmePath);
+  if (publish) writeFileSync(SNAPSHOT, JSON.stringify(snapshot, null, 2) + "\n");
   rmSync(OUTPUT_DIR, { recursive: true, force: true });
   mkdirSync(OUTPUT_DIR, { recursive: true });
   for (const file of files) {
     writeFileSync(join(OUTPUT_DIR, file.filename), file.body);
   }
-  writeFileSync(PROJECTION, await projectionSource(files, cards, versions, bundleKb, generatedAt));
+  writeFileSync(
+    PROJECTION,
+    await projectionSource(files, cards, versions, bundleKb, generatedAt, snapshot),
+  );
+  writeFileSync(readmePath, readme);
   console.log(`wrote ${String(files.length)} benchmark charts to ${OUTPUT_DIR}`);
 }

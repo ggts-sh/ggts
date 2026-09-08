@@ -8,7 +8,7 @@
     Labs,
     Theme,
   } from "@ggsvelte/svelte";
-  import { palmerPenguins } from "@ggsvelte/svelte/data";
+  import { palmerPenguins } from "@ggsvelte/core/data";
 
   import { contrastChartTheme } from "$lib/docs-appearance-state.svelte";
 

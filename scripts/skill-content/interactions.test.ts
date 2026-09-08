@@ -137,7 +137,7 @@ describe("skill teaches inspect mode selection and hit hygiene (#1530)", () => {
       /## CLI cannot catch host inspect behaviour[\s\S]*?(?=\n## )/,
     )?.[0];
     expect(section).toBeDefined();
-    expect(section!).toMatch(/ggsvelte-render/);
+    expect(section!).toMatch(/ggts render/);
     expect(section!).toMatch(
       /does \*\*not\*\* validate host Inspect mode|does not validate host Inspect mode/i,
     );

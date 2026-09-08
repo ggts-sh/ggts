@@ -24,7 +24,7 @@ jobs:
     env:
       HOME: /root
     container:
-      image: ghcr.io/${{ github.repository }}/ci-runner:${{ inputs.playwright_container_tag }}
+      image: ghcr.io/ljodea/ggsvelte/ci-runner:${{ inputs.playwright_container_tag }}
     defaults:
       run:
         shell: bash

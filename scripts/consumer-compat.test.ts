@@ -13,6 +13,7 @@ import {
   resolveConsumerOptions,
   writeConsumerFixture,
 } from "./consumer-compat.js";
+import { writeReactConsumerFixture } from "./consumer-compat-react-fixture.js";
 import { QUICKSTART_PAGE_SVELTE } from "./quickstart.js";
 import { loadSupportMatrix } from "./support-matrix.js";
 
@@ -25,13 +26,17 @@ describe("packed consumer compatibility harness", () => {
         compose: "0.2.0",
         svelte: "0.2.1",
         cli: "0.2.1",
+        react: "0.2.1",
+        skill: "0.2.1",
       }),
     ).toEqual([
       "ggsvelte-spec-0.2.0.tgz",
       "ggsvelte-core-0.2.0.tgz",
       "ggsvelte-compose-0.2.0.tgz",
       "ggsvelte-svelte-0.2.1.tgz",
+      "ggsvelte-react-0.2.1.tgz",
       "ggsvelte-cli-0.2.1.tgz",
+      "ggsvelte-skill-0.2.1.tgz",
     ]);
   });
 
@@ -61,6 +66,7 @@ describe("packed consumer compatibility harness", () => {
       packageManager: "pnpm",
       packageManagerVersion: "11.13.0",
       svelteVersion: "5.56.5",
+      reactVersion: loadSupportMatrix().react.minimum,
     });
   });
 
@@ -89,6 +95,7 @@ describe("packed consumer compatibility harness", () => {
         "CLI version",
         "CLI file input",
         "CLI stdin",
+        "CLI check",
       ]);
       expect(plan.find((step) => step.label === "CLI version")?.expect).toBe("9.8.7");
     },
@@ -106,6 +113,7 @@ describe("packed consumer compatibility harness", () => {
           "/tmp/ggsvelte-compose-0.tgz",
           "/tmp/ggsvelte-svelte-0.tgz",
           "/tmp/ggsvelte-cli-0.tgz",
+          "/tmp/ggsvelte-skill-0.tgz",
         ],
         "npm",
       );
@@ -130,6 +138,7 @@ describe("packed consumer compatibility harness", () => {
         join("artifacts", "ggsvelte-compose-0.0.0.tgz"),
         join("artifacts", "ggsvelte-svelte-0.0.0.tgz"),
         join("artifacts", "ggsvelte-cli-0.0.0.tgz"),
+        join("artifacts", "ggsvelte-skill-0.0.0.tgz"),
       ],
       "/consumer",
     );
@@ -153,4 +162,33 @@ describe("packed consumer compatibility harness", () => {
       build: "vite build",
     });
   });
+});
+
+test("React consumers use their packed adapter and skill with no Svelte dependency", () => {
+  const directory = mkdtempSync(join(tmpdir(), "react-consumer-"));
+  try {
+    writeReactConsumerFixture(
+      directory,
+      "18.2.0",
+      ["spec", "core", "compose", "react", "cli", "skill"].map(
+        (name) => `/tmp/ggsvelte-${name}-0.tgz`,
+      ),
+      "pnpm",
+    );
+    const manifest = JSON.parse(readFileSync(join(directory, "package.json"), "utf8"));
+    expect(manifest.dependencies.react).toBe("18.2.0");
+    expect(manifest.dependencies["react-dom"]).toBe("18.2.0");
+    expect(manifest.dependencies["@ggsvelte/react"]).toContain("ggsvelte-react-0.tgz");
+    expect(manifest.dependencies["@ggsvelte/skill"]).toContain("ggsvelte-skill-0.tgz");
+    expect(manifest.dependencies.svelte).toBeUndefined();
+    expect(manifest.dependencies["@ggsvelte/svelte"]).toBeUndefined();
+    expect(readFileSync(join(directory, "pnpm-workspace.yaml"), "utf8")).toContain(
+      "@ggsvelte/react",
+    );
+    expect(commandPlan("pnpm", "0", "react").map((step) => step.label)).toContain(
+      "type-check React consumer",
+    );
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
 });

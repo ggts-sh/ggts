@@ -70,7 +70,7 @@ describe("docs chart stack isolation (PR1)", () => {
     expect(vite).toMatch(/name:\s*["']ggsvelte-data["'][\s\S]*?priority:\s*40/);
     expect(vite).toMatch(/name:\s*["']ggsvelte-palette-tables["'][\s\S]*?priority:\s*40/);
     // Data/palette carve-outs must match the thin modules, not the whole package.
-    expect(vite).toMatch(/data[\\/]|[\\/]data[\\/]|svelte[\\/]data/);
+    expect(vite).toContain("@ggsvelte/core/data");
     expect(vite).toMatch(
       /categorical-palettes\|colorbrewer-palettes\|viridis-ramp\|sequential-schemes\|crameri-ramps\|crameri-categorical/,
     );

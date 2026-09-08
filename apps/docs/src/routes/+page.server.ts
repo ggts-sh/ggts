@@ -1,4 +1,4 @@
-import { palmerPenguins } from "@ggsvelte/svelte/data";
+import { palmerPenguins } from "@ggsvelte/core/data";
 
 import { homeGrammarStaticSvgFromData } from "$lib/theme-specimens/static-svg";
 

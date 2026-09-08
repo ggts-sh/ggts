@@ -8,7 +8,7 @@
  */
 import { describe, expect, it } from "bun:test";
 import type { CLIIO } from "../src/index.ts";
-import { runCLI } from "../src/index.ts";
+import { runCLI, runCommand } from "../src/index.ts";
 
 const SPEC = {
   data: {
@@ -43,6 +43,33 @@ function makeIO(stdin = ""): { io: CLIIO; out: string[]; err: string[] } {
 }
 
 describe("@ggsvelte/cli surface (src/index.ts)", () => {
+  it("check runs render validation and diagnostics without writing SVG", async () => {
+    for (const [input, flags, expected] of [
+      [JSON.stringify(SPEC), [], 0],
+      [JSON.stringify(SPEC), ["--max-marks", "1"], 1],
+      ["{", [], 2],
+      [JSON.stringify({ layers: [] }), [], 3],
+    ] as const) {
+      const render = makeIO(input);
+      const check = makeIO(input);
+      expect(await runCommand(["render", ...flags], render.io)).toBe(expected);
+      expect(await runCommand(["check", ...flags], check.io)).toBe(expected);
+      expect(check.out).toEqual([]);
+      expect(check.err).toEqual(render.err);
+      if (expected === 0) expect(render.out.join("")).toStartWith("<svg ");
+    }
+  });
+
+  it("requires a subcommand and exposes command-specific help and version", async () => {
+    const missing = makeIO();
+    expect(await runCommand([], missing.io)).toBe(2);
+    const help = makeIO();
+    expect(await runCommand(["check", "--help"], help.io)).toBe(0);
+    expect(help.err.join("\n")).toContain("ggts check");
+    const version = makeIO();
+    expect(await runCommand(["--version"], version.io, { version: "1.2.3" })).toBe(0);
+    expect(version.out).toEqual(["1.2.3\n"]);
+  });
   it("re-exports runCLI that renders a point chart to SVG", async () => {
     expect(typeof runCLI).toBe("function");
     const { io, out } = makeIO(JSON.stringify(SPEC));

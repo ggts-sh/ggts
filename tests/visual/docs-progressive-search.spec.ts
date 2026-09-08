@@ -17,7 +17,7 @@ test("Getting started is a markdown guide with install and a complete file", asy
   ).toBeVisible();
   await expect(guide.locator("pre code").first()).toContainText("bun add @ggsvelte/svelte");
   await expect(guide.locator("pre code").filter({ hasText: "kyotoSakura" }).first()).toContainText(
-    'import { kyotoSakura } from "@ggsvelte/svelte/data"',
+    'import { kyotoSakura } from "@ggsvelte/core/data"',
   );
   await expectNoDocumentOverflow(page);
 });
@@ -83,7 +83,7 @@ test("prerendered Docs and getting-started remain useful without JavaScript", as
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Getting started");
   await expect(page.locator("pre code").first()).toContainText("bun add @ggsvelte/svelte");
   await expect(page.locator("pre code").filter({ hasText: "kyotoSakura" }).first()).toContainText(
-    'import { kyotoSakura } from "@ggsvelte/svelte/data"',
+    'import { kyotoSakura } from "@ggsvelte/core/data"',
   );
   await context.close();
 });

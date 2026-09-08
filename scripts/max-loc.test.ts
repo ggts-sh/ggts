@@ -252,6 +252,25 @@ describe("max-loc guard", () => {
     rmSync(repo.dir, { recursive: true });
   });
 
+  it("carries a baseline across an unchanged move but rejects a copy", () => {
+    const repo = makeRepo();
+    repo.writeList("legacy.ts 501 # legacy\n");
+    repo.write("legacy.ts", overLimit);
+    repo.commit("baseline");
+    repo.write("moved.ts", overLimit);
+    repo.writeList("moved.ts 501 # moved\n");
+    expect(repo.guard(["moved.ts"]).status).toBe(1);
+    rmSync(join(repo.dir, "legacy.ts"));
+    expect(repo.guard(["moved.ts"]).status).toBe(0);
+    repo.write("copy.ts", overLimit);
+    repo.writeList("moved.ts 501 # moved\ncopy.ts 501 # copy\n");
+    expect(repo.guard(["moved.ts", "copy.ts"]).status).toBe(1);
+    repo.writeList("moved.ts 501 # moved\n");
+    repo.write("moved.ts", "y\n".repeat(501));
+    expect(repo.guard(["moved.ts"]).status).toBe(1);
+    rmSync(repo.dir, { recursive: true });
+  });
+
   it("accepts pruning an entry after the file shrank", () => {
     const repo = makeRepo();
     repo.writeList("legacy.ts 501 # legacy\n");

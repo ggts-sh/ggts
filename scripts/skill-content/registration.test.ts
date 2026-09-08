@@ -15,21 +15,23 @@ import { ROOT, SKILL_DIR } from "./test-helpers.ts";
 
 describe("skill teaches the opt-in registration contract", () => {
   const skill = readFileSync(join(SKILL_DIR, "SKILL.md"), "utf8");
-  const section = skill.match(/## Registration \(call these\)[\s\S]*?(?=\n## )/)?.[0];
+  const registration = readFileSync(join(SKILL_DIR, "references", "registration.md"), "utf8");
+  const section = registration.match(/## Registration \(call these\)[\s\S]*?(?=\n## |$)/)?.[0];
   const scales = readFileSync(join(SKILL_DIR, "references", "scales-and-palettes.md"), "utf8");
   const themes = readFileSync(join(SKILL_DIR, "references", "themes.md"), "utf8");
   const geoms = readFileSync(join(SKILL_DIR, "references", "geoms-and-stats.md"), "utf8");
 
   it("SKILL.md has a Registration section agents see without opening references", () => {
     expect(section).toBeDefined();
-    expect(section!.length).toBeGreaterThan(400);
+    expect(skill).toContain("## Registration (call these)");
+    expect(skill).toContain("references/registration.md");
   });
 
   it("defaults spec-driven surfaces to registerAll() and names the loud failure", () => {
     expect(section).toBeDefined();
     expect(section!).toMatch(/registerAll\(\)/);
     expect(section!).toMatch(/not registered in this build/);
-    expect(section!).toMatch(/ggsvelte-render/);
+    expect(section!).toMatch(/ggts render/);
     expect(section!).toMatch(/full grammar/);
   });
 

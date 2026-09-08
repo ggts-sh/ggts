@@ -16,7 +16,7 @@
     ScaleYMonthDay,
     ThemeTufte,
   } from "@ggsvelte/svelte";
-  import { kyotoSakura } from "@ggsvelte/svelte/data";
+  import { kyotoSakura } from "@ggsvelte/core/data";
 
   // stat="summary_rolling" on the basic GeomLine shell: opt into the family
   // (the shell registers only its default stat, #1420).

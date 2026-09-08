@@ -1,9 +1,8 @@
 /**
  * Pure unit tests for controller-canonical (scope/domain/interval helpers).
- * Browser lane: CI coverage is browser-only.
  */
 import { fromAny } from "@total-typescript/shoehorn";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 
 import {
   assertKey,
@@ -19,7 +18,7 @@ import {
   scopedDomains,
   scopedKeys,
   sortedScopes,
-} from "../../src/lib/interaction/controller-canonical.js";
+} from "../src/interaction-canonical.js";
 
 describe("assertScope / normalizedScope / keyScope", () => {
   it("rejects empty channel scope strings", () => {

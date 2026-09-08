@@ -6,7 +6,7 @@
  * never dump every row into a mile-tall panel. Matches the interactive
  * grammar chart above the code tabs on the homepage.
  *
- * Data: bundled `palmerPenguins` from `@ggsvelte/svelte/data` (333 complete
+ * Data: bundled `palmerPenguins` from `@ggsvelte/core/data` (333 complete
  * cases). Field names match the published dataset, not the short theme-specimen
  * aliases.
  *
@@ -21,7 +21,7 @@
 
 const HOME_CODE_PATH_SVELTE = `<script lang="ts">
   import { GeomJitter, GeomSmooth, GGPlot, GuideLegend, Inspect, Labs } from "@ggsvelte/svelte";
-  import { palmerPenguins } from "@ggsvelte/svelte/data";
+  import { palmerPenguins } from "@ggsvelte/core/data";
 </script>
 
 <GGPlot
@@ -46,44 +46,73 @@ const HOME_CODE_PATH_SVELTE = `<script lang="ts">
  * envelope field — use `<GuideLegend channel="color" focus />` in Svelte.
  */
 const HOME_CODE_PATH_SPEC_JSON = `{
-  "interactions": {
-    "inspect": true
+  "edition": 2,
+  "data": {
+    "name": "palmerPenguins"
   },
-  "spec": {
-    "edition": 2,
-    "data": { "name": "palmerPenguins" },
-    "layers": [
-      {
-        "geom": "jitter",
-        "stat": "identity",
-        "position": "jitter",
-        "aes": {
-          "x": { "field": "flipperLengthMm" },
-          "y": { "field": "bodyMassG" },
-          "color": { "field": "species" }
+  "layers": [
+    {
+      "geom": "jitter",
+      "stat": "identity",
+      "position": "jitter",
+      "aes": {
+        "x": {
+          "field": "flipperLengthMm"
         },
-        "params": { "alpha": 0.88 }
-      },
-      {
-        "geom": "smooth",
-        "stat": "smooth",
-        "position": "identity",
-        "aes": {
-          "x": { "field": "flipperLengthMm" },
-          "y": { "field": "bodyMassG" },
-          "color": { "field": "species" }
+        "y": {
+          "field": "bodyMassG"
         },
-        "params": {
-          "method": "loess",
-          "span": 0.75,
-          "degree": 1,
-          "se": false
+        "color": {
+          "field": "species"
         }
+      },
+      "params": {
+        "alpha": 0.88
       }
-    ]
-  }
-}
-`;
+    },
+    {
+      "geom": "smooth",
+      "stat": "smooth",
+      "position": "identity",
+      "aes": {
+        "x": {
+          "field": "flipperLengthMm"
+        },
+        "y": {
+          "field": "bodyMassG"
+        },
+        "color": {
+          "field": "species"
+        }
+      },
+      "params": {
+        "method": "loess",
+        "span": 0.75,
+        "degree": 1,
+        "se": false
+      }
+    }
+  ]
+}\n`;
+
+const HOME_CODE_PATH_REACT = `"use client";
+
+import { GeomJitter, GeomSmooth, GGPlot, GuideLegend, Inspect, Labs } from "@ggsvelte/react";
+import { palmerPenguins } from "@ggsvelte/core/data";
+
+export default function PenguinChart() {
+  return (
+    <GGPlot data={palmerPenguins}
+      aes={{ x: "flipperLengthMm", y: "bodyMassG", color: "species" }}
+      width={640} height={400}>
+      <GeomJitter alpha={0.88} />
+      <GeomSmooth method="loess" span={0.75} degree={1} se={false} />
+      <GuideLegend channel="color" focus />
+      <Labs x="Flipper length mm" y="Body mass g" color="species" />
+      <Inspect mode="xy" pin maxDistance={24} />
+    </GGPlot>
+  );
+}`;
 
 /** Only public home code-path surface — tab labels + sources for CodeTabs. */
 export const HOME_CODE_PATH_TABS: {
@@ -91,6 +120,7 @@ export const HOME_CODE_PATH_TABS: {
   code: string;
   language: string;
 }[] = [
+  { label: "React", code: HOME_CODE_PATH_REACT, language: "tsx" },
   { label: "Svelte", code: HOME_CODE_PATH_SVELTE, language: "svelte" },
   {
     label: "Spec (JSON)",

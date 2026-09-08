@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
+import { scenarioSpec } from "./adapters/ggsvelte-svg";
 
 import {
   CASES,
@@ -54,6 +55,18 @@ describe("competitive scenario catalog", () => {
     expect(ids.has("layercake")).toBe(true);
     expect(ids.has("unovis")).toBe(true);
     expect(ids.has("tanstack-svelte")).toBe(true);
+  });
+
+  test("both shipped GGPlot hosts cover every default scenario and have bundle entries", () => {
+    for (const id of ["ggsvelte-ggplot", "ggsvelte-react"]) {
+      const lib = LIBS.find((item) => item.id === id)!;
+      expect(lib.browser).toBe(true);
+      for (const scenario of new Set(casesForRun(false).map((item) => item.scenario))) {
+        expect(lib.scenarios).toContain(scenario);
+        expect(scenarioSpec(scenario).layers?.[0]?.render).toBe("svg");
+        expect(existsSync(new URL(`./entries/${id}__${scenario}.ts`, import.meta.url))).toBe(true);
+      }
+    }
   });
 
   test("data generators are deterministic and sized correctly", () => {
@@ -154,14 +167,22 @@ describe("competitive scenario catalog", () => {
 
   test("area-multiseries ggsvelte adapters force identity position (fair vs competitors) (#1357)", () => {
     // Competitors draw overlaid areas; geomArea defaults to stack.
-    const svg = readFileSync(new URL("./adapters/ggsvelte-svg.ts", import.meta.url), "utf8");
+    const svg = scenarioSpec("area-multiseries");
     const canvas = readFileSync(new URL("./adapters/ggsvelte-canvas.ts", import.meta.url), "utf8");
-    expect(svg).toMatch(/geom:\s*["']area["'],\s*position:\s*["']identity["']/);
+    expect(svg.layers?.[0]).toMatchObject({ geom: "area", position: "identity", render: "svg" });
     expect(canvas).toMatch(/geom:\s*["']area["'],\s*position:\s*["']identity["']/);
   });
 
   test("SSR bench entries exist for ggsvelte + Svelte peers (server-render matrix cannot collapse)", () => {
-    for (const lib of ["ggsvelte", "svelteplot", "layercake", "unovis", "tanstack-svelte"]) {
+    for (const lib of [
+      "ggsvelte",
+      "ggsvelte-react",
+      "ggsvelte-ggplot",
+      "svelteplot",
+      "layercake",
+      "unovis",
+      "tanstack-svelte",
+    ]) {
       for (const scenario of ["scatter-color", "line-multiseries"]) {
         expect(existsSync(new URL(`./entries/ssr__${lib}__${scenario}.ts`, import.meta.url))).toBe(
           true,

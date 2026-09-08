@@ -121,6 +121,7 @@ describe("inspect + select host", () => {
         width={480}
         height={320}
         inspect={{ identity: "x" }}
+        tool="point"
         select="point"
         onselect={onselect}
       >
@@ -175,7 +176,7 @@ describe("createPlotInteraction zoom on the host", () => {
         interaction={controller}
         interactionScope={scope}
         onrender={(_model, spec) => {
-          specs.push(spec as { scales?: { x?: { domain?: unknown } } });
+          specs.push(spec);
         }}
       >
         <GeomPoint />
@@ -192,7 +193,7 @@ describe("createPlotInteraction zoom on the host", () => {
     expect(specs.at(-1)?.scales?.x?.domain).toEqual(baseline);
   });
 
-  it("does not select when the pointer brushes a zoom", () => {
+  it("does not select when the zoom tool brushes a zoom", () => {
     const onselect = vi.fn(() => {});
     const onzoom = vi.fn(() => {});
     const { container } = render(
@@ -203,6 +204,7 @@ describe("createPlotInteraction zoom on the host", () => {
         height={320}
         select="point"
         zoom
+        tool="zoom-area"
         onselect={onselect}
         onzoom={onzoom}
       >

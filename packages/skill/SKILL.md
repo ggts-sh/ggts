@@ -1,101 +1,49 @@
 ---
 name: ggsvelte
-description: Build data visualizations with ggsvelte, a grammar-of-graphics charting library (ggplot2 semantics, Svelte 5 child-component composition, JSON specs, headless SVG rendering). Use whenever creating, editing, validating, or debugging charts, plots, graphs, scatter plots, bar charts, histograms, line charts, boxplots, density plots, violins, heatmaps, maps, faceted/small-multiple charts, or data visualization in a JavaScript/TypeScript/Svelte project; when code imports from "@ggsvelte/svelte", "@ggsvelte/spec", or "@ggsvelte/core"; when composing GGPlot with Geom*/Scale*/Theme*/Facet*/Coord*/Guide*/Labs children; when emitting a ggsvelte plot spec JSON; or when rendering charts server-side/headless to SVG.
+description: Build data visualizations with ggsvelte, a grammar-of-graphics charting library (ggplot2 semantics, React and Svelte 5 components, TypeScript builders, JSON specs, headless SVG rendering). Use whenever creating, editing, validating, or debugging charts, plots, graphs, scatter plots, bar charts, histograms, line charts, boxplots, density plots, violins, heatmaps, maps, faceted/small-multiple charts, or data visualization in a JavaScript/TypeScript/React/Svelte project; when code imports from "@ggsvelte/react", "@ggsvelte/svelte", "@ggsvelte/spec", or "@ggsvelte/core"; when composing GGPlot with Geom*/Scale*/Theme*/Facet*/Coord*/Guide*/Labs children; when emitting a ggsvelte plot spec JSON; or when rendering charts server-side/headless to SVG.
 ---
 
 # ggsvelte
 
-A layered grammar of graphics with ggplot2 nomenclature. Two ways to author the
-same grammar — never build SVG or canvas output yourself:
+ggplot2’s layered grammar for TypeScript, with headless rendering and React
+and Svelte adapters. A chart spec carries the same grammar between surfaces.
 
-- **Svelte apps (canonical):** `<GGPlot>` with declaration-only children —
-  `<GeomPoint/>`, `<ThemeMinimal/>`, `<ScaleXLog10/>`, `<FacetWrap/>`, `<Labs/>`.
-- **Agents / headless:** emit a JSON `PortableSpec`, check it with
-  `validate(spec)`, render with `renderToSVGString(spec, {width, height})`
-  (Node-safe). Call `registerAll()` once first unless a Svelte child
-  self-registers the piece — see **Registration** below. Then
-  `ggsvelte-render spec.json > out.svg` (CLI), or `<GGPlot spec>`.
-  A third skin, the `gg()` builder, produces the same spec in TypeScript.
-  The CLI is part of the install contract for agent-driven chart generation:
-  install `@ggsvelte/cli` in every sandbox where an agent authors specs
-  (`npm i -g @ggsvelte/cli`). It is the only way the agent sees the
-  pipeline's warnings and advisories before a chart ships; a JSON-only
-  workflow renders blind. Do not drop it to slim an install.
+## Choose the target
+
+1. Follow the user’s explicit framework choice. Otherwise inspect the target
+   application’s package.json and imports. In a mixed monorepo, choose the
+   application before generating component code.
+2. For a sandbox or an unspecified framework, author PortableSpec JSON or use
+   the TypeScript builder; run the CLI before shipping the chart.
+3. For React, read [React](references/react.md). For Svelte, read
+   [Svelte](references/svelte.md). Keep framework callbacks and host-only
+   interactions in that adapter; PortableSpec holds the portable grammar.
+4. In every agent sandbox, install `@ggsvelte/cli` and `@ggsvelte/skill`
+   at matching local versions and keep the lockfile. Expose
+   the installed skill to the agent, refreshing any copied skill on upgrades.
+   Run `ggts check chart.json`, apply relevant diagnostics, then
+   `ggts render chart.json > chart.svg` and inspect the output. A local npm
+   install exposes these commands through `npm exec -- ggts`.
 
 ## Registration (call these)
 
-The `@ggsvelte/core` barrel is side-effect-free. A missing opt-in throws
-`not registered in this build` and names the fix. **Default for agents:**
-call `registerAll()` once at startup for every spec-driven, `layers`,
-`<GGPlot spec>`, `runPipeline`, or `renderToSVGString` path. Do not invent
-a lean register list unless the user asked for a small bundle.
+The `@ggsvelte/core` barrel is side-effect-free. Call `registerAll()` once
+at startup for every agent-authored JSON, builder, `layers`, or `<GGPlot spec>`
+path. It installs the full grammar; both `ggts render` and `ggts check` do
+this for you. Missing opt-ins throw `not registered in this build` and name
+the required registration. `registerBasic()` alone is insufficient for
+specialty stats and Temporal.
 
-`ggsvelte-render` already registers the full grammar. Svelte **children**
-self-register only the piece they are.
-
-| Surface                                                             | What is already registered                                                                                                    | What you must still call                                                                                                                |
-| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `<Geom*>` child                                                     | that geom + its **default** stat                                                                                              | `register<Family>()` for a `stat="…"` override (from `@ggsvelte/svelte`) — e.g. `<GeomErrorbar stat="summary" />` → `registerSummary()` |
-| `<ScaleXDate>` / `<ScaleYDatetime>` / other Temporal scale children | `installTemporal()`                                                                                                           | nothing                                                                                                                                 |
-| `<GGPlot>` construction                                             | `registerBasic()` + `installCandidates()` (identity geoms/stats, every color/style kind, band-axis planner, host hit-testing) | `registerAll()` for specialty geoms/stats; `installTemporal()` for spec/`layers` temporal charts that have no Temporal child            |
-| `@ggsvelte/core/render` import                                      | same basic tier as `registerBasic()`                                                                                          | specialty families + Temporal                                                                                                           |
-| `@ggsvelte/core/temporal` import                                    | Temporal polyfill + guides                                                                                                    | the rest of the grammar                                                                                                                 |
-| CLI `ggsvelte-render`                                               | full grammar                                                                                                                  | nothing                                                                                                                                 |
-
-**Spec-driven Temporal:** ISO strings with no explicit temporal options keep
-the lean UTC path. Charts driven through `spec` or `layers` have no Temporal
-child. Call `installTemporal()` (from `@ggsvelte/svelte` or `@ggsvelte/core`)
-or `registerAll()` when those charts set `type: "time"`, a named parser,
-timezone, date interval, or full Temporal guide planning.
-
-**Lean headless** (`@ggsvelte/core/headless` + `@ggsvelte/core/headless/register`)
-is opt-in per family. One forgotten call fails at render:
-
-- Basic geoms: `registerBasicPoints()`, `registerBasicLines()`,
-  `registerBasicAreas()`, `registerBasicBars()`, `registerBasicRects()`,
-  `registerBasicGlyphs()`, `registerBasicSegments()`.
-- Specialty geoms/stats (same names from `@ggsvelte/core` /
-  `@ggsvelte/svelte`): `registerAbline()`, `registerAlign()`, `registerBin()`,
-  `registerBin2d()`, `registerBoxplot()`, `registerConnect()`,
-  `registerContour()`, `registerCrossbar()`, `registerCurve()`,
-  `registerDensity()`, `registerDensity2d()`, `registerDensity2dFilled()`,
-  `registerDotplot()`, `registerEcdf()`, `registerEllipse()`,
-  `registerErrorbar()`, `registerFunction()`, `registerHex()`,
-  `registerLinerange()`, `registerManual()`, `registerMap()`,
-  `registerPointrange()`, `registerPolygon()`, `registerQq()`,
-  `registerQqLine()`, `registerQuantile()`, `registerRaster()`,
-  `registerRug()`, `registerSf()`, `registerSfLabel()`, `registerSfText()`,
-  `registerSmooth()`, `registerSpoke()`, `registerSummary()`,
-  `registerSummaryBin()`, `registerSummaryRolling()`, `registerTile()`,
-  `registerUnique()`, `registerViolin()`.
-- Color: `registerDefaultOrdinalColor()` for the built-in palette or an
-  explicit `range`. A named **categorical** scheme (`observable10`,
-  `colorblind`, `Dark2`, …) needs `registerOrdinalColor()`. A named
-  **sequential or diverging** scheme (`viridis`, `magma`, `Blues`, `RdBu`,
-  Crameri `batlow`, cyclic `romaO`, …) needs `registerSequentialColor()`
-  — a sequential name with no `type` infers sequential, so
-  `registerOrdinalColor()` is not enough. Cyclic `*O` names are sequential
-  only. Explicit `type: "ordinal"` (including discrete sampling of a
-  non-cyclic sequential name) still needs `registerOrdinalColor()`. Other kinds:
-  `registerBinnedColor()`, `registerManualColor()`,
-  `registerIdentityColor()`.
-- Style: `registerNumericStyle()` (size / linewidth / alpha),
-  `registerFiniteStyle()` (shape / linetype).
-- Band axes: `registerBandGuide()` for categorical x/y.
-- Legends: `registerDiscreteLegend()` / `registerContinuousLegend()` (the
-  matching color register also pulls these).
-- Named themes: `@ggsvelte/core/headless` resolves only `default` and `void`.
-  `dark`, `minimal`, and the rest need `@ggsvelte/core` or
-  `@ggsvelte/core/render` — not a `register*()` call.
-
-`registerAll()` covers every stat frame, every geom batch, every color kind
-(with catalogs), every style kind, the band-axis planner, Temporal, and
-interaction candidates. `registerBasic()` covers identity charts only; it
-does not install Temporal or specialty geoms/stats.
+Framework geom children self-register their own geom and default stat;
+stat overrides still need the matching family. Spec-driven temporal options
+need `installTemporal()` or `registerAll()` because there is no Temporal child.
+Use the full default for agents. If the user requests a lean bundle, read the
+[registration reference](references/registration.md) for the exact family,
+color, theme, and headless entry-point rules before selecting imports.
 
 ## Mental model
 
-**Everything that composes a plot is a layer in Svelte.** Marks _and_ the
+**Everything that composes a plot is a layer in component composition.** Marks _and_ the
 seven grammar families (scale, theme, coord, facet, labs, guides, legend)
 register as `Layer` kinds via `createPlotLayer` / geom factories. Never call
 Scale/Theme/Guide/Labs/Coord/Facet/Legend “non-layers.”
@@ -103,7 +51,7 @@ Scale/Theme/Guide/Labs/Coord/Facet/Legend “non-layers.”
 Two serializations of the same grammar:
 
 ```text fragment
-# Svelte composition (canonical product model)
+# React / Svelte composition
 plot children = mark layers + grammar layers
   mark    = Geom*  → Layer.kind "mark"
   grammar = Scale* | Theme* | Coord* | Facet* | Labs | Guide* | Legend
@@ -128,14 +76,14 @@ is wrong and must never appear in issues, docs, or comments.
   jitter → point+jitter, freqpoly → bin, smooth → smooth, count → sum,
   density → density, hex → bin_hex, everything else identity+identity.
 
-## Aes: JSON specs vs Svelte props
+## Aes: JSON specs vs component props
 
 The one rule that differs between the two skins:
 
-| Surface                                 | `x: "displ"` bare string              | canonical                |
-| --------------------------------------- | ------------------------------------- | ------------------------ |
-| JSON `PortableSpec` (incl. `spec` prop) | INVALID                               | `{"field": "displ"}`     |
-| Svelte `aes` prop (plot or `Geom*`)     | valid shorthand, expands to `{field}` | same object form also OK |
+| Surface                                     | `x: "displ"` bare string              | canonical                |
+| ------------------------------------------- | ------------------------------------- | ------------------------ |
+| JSON `PortableSpec` (incl. `spec` prop)     | INVALID                               | `{"field": "displ"}`     |
+| React / Svelte `aes` prop (plot or `Geom*`) | valid shorthand, expands to `{field}` | same object form also OK |
 
 Canonical channel forms: `{"field": "col"}` maps a column, `{"value": "red"}`
 is a constant, `{"stat": "count"}` reads a stat output, `null` unsets an
@@ -144,151 +92,6 @@ Channels (25): x, y, color, fill, size, linewidth, alpha, shape, linetype,
 group, label, weight, ymin, ymax, xmin, xmax, xend, yend, width, height, z,
 map_id, angle, radius, sample. Mapped size/linewidth/alpha/shape/linetype work
 only on the geoms in `STYLE_AESTHETIC_GEOMS`.
-
-## Svelte composition — children are canonical
-
-```svelte fragment
-<script lang="ts">
-  import {
-    GeomPoint,
-    GeomSmooth,
-    GGPlot,
-    Labs,
-    ScaleColorDiscrete,
-    ThemeMinimal,
-  } from "@ggsvelte/svelte";
-
-  const cars = [
-    { displ: 1.8, hwy: 29, class: "compact" },
-    { displ: 2.0, hwy: 31, class: "compact" },
-    { displ: 3.5, hwy: 26, class: "midsize" },
-    { displ: 5.3, hwy: 20, class: "suv" },
-    { displ: 5.7, hwy: 17, class: "suv" },
-    { displ: 6.2, hwy: 16, class: "suv" },
-  ];
-</script>
-
-<GGPlot data={cars} aes={{ x: "displ", y: "hwy", color: "class" }} height={400}>
-  <GeomSmooth method="loess" se={false} />
-  <GeomPoint size={3} alpha={0.85} />
-  <ScaleColorDiscrete scheme="observable10" />
-  <ThemeMinimal />
-  <Labs
-    title="Bigger engines, thirstier cars"
-    x="Displacement (l)"
-    y="Highway mpg"
-    color="Class"
-  />
-</GGPlot>
-```
-
-Convention (ggplot2 thinking order): mark layers first, then scales / coords /
-facets, then theme / guides / labs, then host-only `<Inspect>` last. Grammar
-**layers** (theme/scale/coord/facet/guides/labs/legend) render no markup and
-register declaratively as non-mark `Layer` kinds; mark-layer registration
-order is z-order (points above smooth here). Interleave does not change the
-assembled PortableSpec beyond mark z-order and last-wins folds within a
-family. Every geom takes aesthetics through one `aes` object prop
-(bare-string shorthand allowed) and constant style params as direct props
-(`size={3}`); structural props are `data`, `stat`, `position`,
-`positionParams`, `render`.
-
-`<GGPlot>` props: `spec`, `data`, `aes`, `layers`, `width`
-(number | "container"), `height`, `a11y`, `ariaLabel`, the interaction props
-(`select`, `zoom`, `tool`, `interaction`, `interactionScope`; prefer
-`<Inspect>` for inspection and `<GuideLegend channel focus>` /
-`<GuideLegend channel filter>` for legend interaction — do not put
-`inspect` / `legendFocus` / `legendFilter` on `<GGPlot>` in new code), the
-`on*` handlers, and `children`. Plot-level `key` is **deprecated** since
-0.21 — prefer `identity` on `<Inspect>`, object-form `select`, or
-`createPlotInteraction` (default: `id` column when present, else row index).
-Instance methods: `resetScales()`, `setZoom()`.
-
-Precedence: `spec` wins over everything else. For mark layers, an explicit
-`layers` prop wins over geom children — use it for dynamic layer lists (a keyed
-`{#each}` reorder does not preserve z-order). For grammar families, children
-win. Coord/facet/theme REPLACE (last wins); scales merge per channel;
-labs/guides/legend merge per key. Duplicates emit `DUPLICATE_PLOT_LAYER` /
-`DUPLICATE_SCALE_CHANNEL` / `DUPLICATE_MERGE_KEY` advisories — full semantics
-in
-[references/composition-surfaces.md](references/composition-surfaces.md).
-
-**Removed in 0.13.0** (deprecated since 0.11.0): the seven `<GGPlot>` grammar
-props `facet`, `coord`, `scales`, `guides`, `legend`, `theme`, `labs`. Compose
-them as children instead; `spec`, `data`, `aes`, and `layers` stay first-class.
-Migrate old sources with `npx ggsvelte-codemod --write src` (dry-run without
-`--write`).
-
-## Which geom for which data
-
-| x type           | y type                                | extra              | recommend                                                    |
-| ---------------- | ------------------------------------- | ------------------ | ------------------------------------------------------------ |
-| quantitative     | quantitative                          | ≤ ~2k rows         | `point` (+ `smooth` layer for trend)                         |
-| quantitative     | quantitative                          | many rows          | `point` with `"render": "canvas"`, or `hex`/`bin_2d` density |
-| temporal         | quantitative                          | —                  | `line` (multi-series: map `color` to the series field)       |
-| nominal/ordinal  | quantitative (pre-aggregated)         | —                  | `col`; many/long labels → add a `flip` coord                 |
-| nominal/ordinal  | (none — count rows)                   | —                  | `bar` (count stat; do NOT map y)                             |
-| quantitative     | (none — distribution)                 | —                  | `histogram` (or `density` for smooth overlay)                |
-| nominal          | quantitative (distribution per group) | —                  | `boxplot` (or `violin` for shape)                            |
-| nominal          | nominal                               | —                  | `point` + `"position": "jitter"`, or counts via `count`      |
-| quantitative     | quantitative                          | uncertainty bounds | `errorbar` (map ymin/ymax) or `smooth` (se ribbon)           |
-| any of the above | + one more nominal field              | few values         | same geom + facet wrap on that field                         |
-
-Only the everyday geoms appear above. All 49 geoms (violin, hex, contour, qq,
-step, segment, sf/maps, text/label annotation, …), all 28 stats with their
-computed columns, and the position rules live in
-[references/geoms-and-stats.md](references/geoms-and-stats.md) — read it
-whenever the user wants a geom, stat, or annotation not shown here.
-
-Two rules worth keeping in working memory:
-
-- **Positions are scoped per geom** (a disallowed position is a schema error):
-  stack/fill only on bar, col, histogram, area; dodge on those plus boxplot
-  and violin; jitter on point, count, jitter; nudge on point, count, text,
-  label; identity everywhere.
-- **A stat that computes y forbids mapping `aes.y` to a field**
-  (bar/histogram/density/…) — the `computed-y-mapped` error. Read stat outputs
-  with `{"stat": "count"}` aes.
-
-## Scales, palettes, themes
-
-- x/y families: `{"type": "linear"|"binned"|"time"|"band"}` with
-  `"transform": "identity"|"log10"|"sqrt"`, `domain`/`limits`,
-  `oob: "censor"|"squish"`, `expand`, `nice`, breaks, `reverse`. Authored
-  `type:"log"` canonicalizes to linear+log10. Scale transforms run before
-  stats and positions; coord transforms run after stats.
-- color/fill families: `ordinal`, `sequential`, `binned`, `manual`,
-  `identity`. 107 named schemes — 47 categorical (`observable10`, `colorblind`,
-  `Dark2`, Crameri `batlowS`…) and 60 sequential/diverging (`viridis`, `magma`,
-  `Blues`, `RdBu`, Crameri `batlow`, cyclic `romaO`…).
-  Size/linewidth/alpha and shape/linetype have their own scale families.
-- Three equivalent skins:
-  JSON `"scales": {"x": {"type": "linear", "transform": "log10"}}` ≡ helper
-  functions `scaleXLog10()` / `scale_x_log10()` (binding-identical camelCase,
-  snake_case, and Colour spellings, from `@ggsvelte/spec`) ≡ components
-  `<ScaleXLog10/>`. The `gg()` builder chains the same names:
-  `gg(rows, aes({ x: "flipper", y: "mass" })).geomPoint({ alpha: 0.7 }).scaleXLog10().spec()`.
-- Temporal: ISO dates/date-times, four-digit-year strings, year-months, and
-  year-quarters infer time automatically. Ambiguous ordered dates need
-  `"parse": "dmy"` or `"mdy"`; force `{"type": "band"}` for year-like
-  identifiers; never preprocess dates into indexes. Spec-driven time scales
-  also need `installTemporal()` or `registerAll()` — see Registration.
-- Themes: 32 names (`default`, `light`, `dark`, `minimal`, `ggplot2`,
-  `classic`, `bw`, `hrbr`, `few`, `clean`, `fivethirtyeight`, `economist`,
-  `tufte`, `linedraw`, `void`, `stata`, `stata_s1color`, `solarized`,
-  `solarizeddark`, `economist_white`, `solarized_2`, `solarized_2dark`,
-  `wsj`, `hc`, `hcdark`, `pander`, `base`, `igray`, `map`, `solid`, plus
-  `grey`/`gray` aliasing `ggplot2`) as `<ThemeTufte/>`-style children or
-  `"theme": "tufte"` in JSON. Looks, shells, and role overrides:
-  [references/themes.md](references/themes.md).
-
-Full option surfaces — every scale option, the `Scale*` component matrix, all
-scheme tables, the whole temporal/parser system:
-[references/scales-and-palettes.md](references/scales-and-palettes.md).
-Theme roster and shells:
-[references/themes.md](references/themes.md). Coords, facets, guides, legend
-order, and `Labs`:
-[references/composition-surfaces.md](references/composition-surfaces.md).
 
 ## The validation contract (use it!)
 
@@ -318,7 +121,7 @@ mixed-sign data, fractional calendar years on a linear scale); `lintSpec(spec)`
 is the standalone equivalent. Advisories never block; fix them when they match
 intent. `normalize(input)` canonicalizes
 authoring sugar into a `PortableSpec`; `isPortable`/`toPortable` check and
-strip runtime-only fields. CLIs: `ggsvelte-render spec.json > out.svg`
+strip runtime-only fields. CLIs: `ggts render spec.json > out.svg`
 (from `@ggsvelte/cli`; JSON-line diagnostics on stderr — exit 3 means
 validation errors, exit 0 with stderr output means quality warnings worth
 fixing) and `ggsvelte-codemod [--write] src` (ships with `@ggsvelte/svelte`).
@@ -331,7 +134,7 @@ codes such as `INTERACTION_INSPECT_X_ON_COL`. When the host will enable inspect,
 declare it:
 
 ```sh fragment
-ggsvelte-render --inspect xy spec.json > out.svg
+ggts render --inspect xy spec.json > out.svg
 # stderr: kind advisory|warning, source "interaction", bar/col x-guide codes
 ```
 
@@ -339,43 +142,6 @@ Modes match the host enum (`auto|exact|x|y|xy`). This path covers the pure
 bar/col axis-guide collectors only (same codes as host for that slice).
 High-cardinality discrete and runtime key/lineage/wiring diagnostics still
 require a mounted host's `ondiagnostic`.
-
-## Recipes (spec JSON — the everyday twelve)
-
-All specs assume inline `"data": {"values": [...]}` or a named dataset.
-
-1. **Scatter** — `{"layers":[{"geom":"point","aes":{"x":{"field":"displ"},"y":{"field":"hwy"}}}]}`; color by category: add `"color":{"field":"class"}`.
-2. **Scatter + trend** — `{"aes":{"x":{"field":"x"},"y":{"field":"y"}},"layers":[{"geom":"point"},{"geom":"smooth","params":{"method":"loess"}}]}` (plot-level aes inherits into both layers).
-3. **Line (time series)** — `{"layers":[{"geom":"line","aes":{"x":{"field":"date"},"y":{"field":"value"}}}]}`; multi-series: map `"color":{"field":"series"}`.
-4. **Column chart (pre-computed heights)** — `{"layers":[{"geom":"col","aes":{"x":{"field":"category"},"y":{"field":"amount"}}}]}`
-5. **Bar chart (count rows)** — `{"layers":[{"geom":"bar","aes":{"x":{"field":"category"}}}]}` — never map y on bar.
-6. **Horizontal bars** — recipe 4 or 5 + `"coord":{"type":"flip"}`.
-7. **Stacked / dodged / proportion bars** — recipe 5 + `"fill":{"field":"subgroup"}` in aes (stack is the default); `"position":"dodge"` for side-by-side, `"position":"fill"` for 100% stacked.
-8. **Histogram** — `{"layers":[{"geom":"histogram","aes":{"x":{"field":"measure"}},"params":{"bins":30}}]}` (or `"binwidth"`; never both `center` and `boundary`).
-9. **Boxplot by category** — `{"layers":[{"geom":"boxplot","aes":{"x":{"field":"group"},"y":{"field":"value"}}}]}` (x must be discrete).
-10. **Facets (small multiples)** — any recipe + `"facet":{"wrap":{"field":"panel"},"ncol":3}` (add `"scales":"free_y"` for per-panel y).
-11. **Reference line annotation** — add layer `{"geom":"rule","params":{"yintercept":0}}`.
-12. **Finishing** — `"labs":{"title":...,"x":...,"y":...}`, `"width"`/`"height"` in px, `"theme":"minimal"`.
-
-The same charts as Svelte children, twice over:
-
-```svelte fragment
-<GGPlot data={sales} aes={{ x: "quarter", y: "amount", fill: "region" }}>
-  <GeomCol position="dodge" />
-</GGPlot>
-```
-
-```svelte fragment
-<GGPlot data={measurements} aes={{ x: "value" }}>
-  <GeomHistogram bins={20} />
-  <FacetWrap field="site" ncol={2} />
-</GGPlot>
-```
-
-Long-tail recipes — errorbar, value labels, canvas big-scatter, log axis,
-violin, tile heatmap, hex density, ECDF step, ribbon, flipped boxplot,
-per-layer aes override, sf/map — each as validated JSON plus a Svelte twin:
-[references/recipes.md](references/recipes.md).
 
 ## Interactions (host props / children, not PortableSpec fields)
 
@@ -424,5 +190,7 @@ or linked-view code.
   facets, guides, merge semantics),
   [interactions.md](references/interactions.md) (tooltips, selection, linking),
   [recipes.md](references/recipes.md) (long-tail chart recipes).
-  Registration calls live in this file (Registration); the references
-  restate the family that belongs to that page.
+  Registration calls live in the [registration reference](references/registration.md).
+
+- [Grammar and recipes](references/grammar.md): choose charts, scales, and themes;
+  the same recipes work in every adapter.

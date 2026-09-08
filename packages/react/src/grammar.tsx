@@ -26,7 +26,7 @@ import {
 
 import { definedProps } from "./defined-props.js";
 import { usePlotLayerValue } from "./geom-factory.js";
-import type { InspectMode } from "./interaction.js";
+import type { InspectOptions } from "./interaction.js";
 import { useRegisterCapability } from "./registry.js";
 
 export function Labs(props: LabsSpec): ReactNode {
@@ -190,12 +190,7 @@ export function GuideNone(props: { channel: GuideChannel }): ReactNode {
   return null;
 }
 
-export function Inspect(props: {
-  mode?: InspectMode;
-  pin?: boolean;
-  maxDistance?: number;
-  identity?: PropertyKey | ((row: Record<string, unknown>, index: number) => PropertyKey);
-}): ReactNode {
+export function Inspect(props: InspectOptions): ReactNode {
   useRegisterCapability("inspect", () => definedProps(props) as Record<string, unknown>);
   return null;
 }

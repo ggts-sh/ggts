@@ -11,10 +11,21 @@ type DocsRouteRecord = DocsRouteMetadata;
 
 export const TOP_LEVEL_ROUTES: readonly DocsRouteRecord[] = [
   {
-    path: "/",
-    title: "ggsvelte — layered grammar of graphics for Svelte",
+    path: "/benchmarks",
+    title: "Benchmarks — ggsvelte",
     description:
-      "Layered grammar of graphics for Svelte: ggplot2-style aes, geoms, stats, and themes, with PortableSpec JSON and hybrid SVG/canvas rendering.",
+      "Production measurements for the core, React, Svelte, and existing charting comparators.",
+    canonicalPath: "/benchmarks",
+    kind: "page",
+    index: true,
+    sitemap: true,
+    shell: "site",
+  },
+  {
+    path: "/",
+    title: "ggsvelte — ggplot2’s grammar for TypeScript",
+    description:
+      "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
     canonicalPath: "/",
     kind: "page",
     index: true,

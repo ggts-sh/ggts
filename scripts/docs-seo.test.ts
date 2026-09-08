@@ -23,9 +23,9 @@ describe("generated docs SEO", () => {
     const seo = buildSeoDocument(home, "https://ggsvelte.sh");
 
     expect(seo).toMatchObject({
-      title: "ggsvelte — layered grammar of graphics for Svelte",
+      title: "ggsvelte — ggplot2’s grammar for TypeScript",
       description:
-        "Layered grammar of graphics for Svelte: ggplot2-style aes, geoms, stats, and themes, with PortableSpec JSON and hybrid SVG/canvas rendering.",
+        "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
       canonical: "https://ggsvelte.sh/",
       image: {
         url: `https://ggsvelte.sh${OG_HOME_PATH}`,
@@ -49,7 +49,7 @@ describe("generated docs SEO", () => {
         name: "ggsvelte",
         url: "https://ggsvelte.sh/",
         description:
-          "Layered grammar of graphics for Svelte: ggplot2-style aes, geoms, stats, and themes, with PortableSpec JSON and hybrid SVG/canvas rendering.",
+          "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
       },
       {
         "@context": "https://schema.org",

@@ -162,7 +162,7 @@ function buildSakuraSource(state: SakuraFoldState): string {
       : `{ ${imported.join(", ")} }`;
   const script = [
     `  import ${imports} from "@ggsvelte/svelte";`,
-    `  import { kyotoSakura } from "@ggsvelte/svelte/data";`,
+    `  import { kyotoSakura } from "@ggsvelte/core/data";`,
     ...(state.registers.size > 0
       ? [
           "",

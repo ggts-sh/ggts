@@ -44,6 +44,7 @@ describe("R0 release wiring — packages", () => {
       bin?: Record<string, string>;
     };
     expect(cliManifest.bin).toEqual({
+      ggts: "bin/ggts.js",
       "ggsvelte-render": "bin/ggsvelte-render.js",
     });
   });
@@ -54,6 +55,7 @@ describe("R0 release wiring — packages", () => {
     for (const path of [
       "packages/svelte/bin/ggsvelte-codemod.js",
       "packages/cli/bin/ggsvelte-render.js",
+      "packages/cli/bin/ggts.js",
     ]) {
       const source = read(path);
       expect(source.startsWith("#!/usr/bin/env node"), `${path} needs a shebang`).toBe(true);

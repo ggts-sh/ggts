@@ -13,7 +13,7 @@ import { SAKURA_STEPS, SAKURA_TREND_WINDOW } from "./steps";
 // --- the agent surface -----------------------------------------------------
 
 export const QUICKSTART_BUILDER_FRAGMENT = `import { aes, gg } from "@ggsvelte/svelte";
-import { kyotoSakura } from "@ggsvelte/svelte/data";
+import { kyotoSakura } from "@ggsvelte/core/data";
 
 const spec = gg(kyotoSakura, aes({ x: "year", y: "bloomDate" }))
   .geomPoint()
@@ -31,7 +31,7 @@ const spec = gg(kyotoSakura, aes({ x: "year", y: "bloomDate" }))
  * Derived from `foldSakura(SAKURA_STEPS.length)` so layers, scales, theme, and
  * guides cannot drift from the finished Svelte file or the live chart. Plot
  * data is a named ref (`kyotoSakura`) — hosts resolve it from
- * `@ggsvelte/svelte/data`. Small annotation tables (epochs, records) stay as
+ * `@ggsvelte/core/data`. Small annotation tables (epochs, records) stay as
  * inline `values` because they are chart decoration, not the 838-row series.
  * `key` and `<Inspect>` are host-only; not PortableSpec fields.
  */
@@ -59,4 +59,4 @@ export const QUICKSTART_HEADLESS_FRAGMENT = `import { registerAll, renderToSVGSt
 registerAll();
 const svg = renderToSVGString(spec, { width: 900, height: 360 });`;
 
-export const QUICKSTART_CLI_FRAGMENT = "ggsvelte-render spec.json > chart.svg 2> diagnostics.jsonl";
+export const QUICKSTART_CLI_FRAGMENT = "ggts render spec.json > chart.svg 2> diagnostics.jsonl";

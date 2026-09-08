@@ -12,3 +12,5 @@
 // @lifecycle-default experimental
 export { runCLI } from "@ggsvelte/core";
 export type { CLIIO } from "@ggsvelte/core";
+
+export { runCommand } from "./command.js";

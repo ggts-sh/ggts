@@ -91,12 +91,12 @@ describe("guide sections cover their catalogs", () => {
 
   it("carries the exact complete SvelteKit page", () => {
     expect(GETTING_STARTED_MD).toContain(QUICKSTART_PAGE_SVELTE);
-    expect(GETTING_STARTED_MD.match(/```svelte complete/g)).toHaveLength(1);
+    expect(GETTING_STARTED_MD.match(/```svelte complete/g)).toHaveLength(2);
     expect(QUICKSTART_PAGE_SVELTE).toContain("GeomPoint");
     expect(QUICKSTART_PAGE_SVELTE).toContain("GGPlot");
     expect(QUICKSTART_PAGE_SVELTE).toContain("ScaleXContinuous");
     expect(QUICKSTART_PAGE_SVELTE).toContain("Labs");
-    expect(QUICKSTART_PAGE_SVELTE).toContain('import { kyotoSakura } from "@ggsvelte/svelte/data"');
+    expect(QUICKSTART_PAGE_SVELTE).toContain('import { kyotoSakura } from "@ggsvelte/core/data"');
     expect(QUICKSTART_PAGE_SVELTE).toContain('aes={{ x: "year", y: "bloomDate" }}');
     // ariaLabel is production polish; the basic plot stays bare.
     expect(QUICKSTART_PAGE_SVELTE).not.toMatch(/ariaLabel=/);
@@ -105,7 +105,13 @@ describe("guide sections cover their catalogs", () => {
   });
 
   it("leads with install, PortableSpec, and the validate loop", () => {
-    const order = ["## Install", "## The PortableSpec contract", "## The validate loop"];
+    const order = [
+      "## Choose your surface",
+      "## React",
+      "## Svelte",
+      "## The PortableSpec contract",
+      "## The validate loop",
+    ];
     let previous = -1;
     for (const heading of order) {
       const at = GETTING_STARTED_MD.indexOf(heading);
@@ -113,7 +119,7 @@ describe("guide sections cover their catalogs", () => {
       previous = at;
     }
     expect(GETTING_STARTED_MD).toContain("renderToSVGString");
-    expect(GETTING_STARTED_MD).toContain("ggsvelte-render");
+    expect(GETTING_STARTED_MD).toContain("ggts render");
 
     // Progressive walkthrough step titles stay out of the published guide.
     for (const step of SAKURA_STEPS) {

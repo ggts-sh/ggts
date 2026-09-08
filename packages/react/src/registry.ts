@@ -1,4 +1,5 @@
-import { createContext, useContext, useLayoutEffect, useRef } from "react";
+import { useHostLayoutEffect } from "./host-effect.js";
+import { createContext, useContext, useRef } from "react";
 
 import type { Layer, MarkLayerDescriptor } from "@ggsvelte/compose";
 
@@ -15,11 +16,45 @@ type CapabilityEntry<K extends HostCapabilityKind = HostCapabilityKind> = {
   get value(): HostCapabilityValue[K];
 };
 
+// Copy live descriptor getters at commit so a parent rerender with equivalent
+// grammar does not retrain the plot or invoke onrender again. Data stays opaque.
+function snapshotValue(value: unknown, field?: string): unknown {
+  if (field === "data" || value === null || typeof value !== "object") return value;
+  if (Array.isArray(value)) return value.map((item) => snapshotValue(item));
+  if (Object.getPrototypeOf(value) !== Object.prototype) return value;
+  return Object.fromEntries(
+    Object.entries(value).map(([key, item]) => [key, snapshotValue(item, key)]),
+  );
+}
+function sameValue(a: unknown, b: unknown, field?: string): boolean {
+  if (Object.is(a, b)) return true;
+  if (
+    field === "data" ||
+    a === null ||
+    b === null ||
+    typeof a !== "object" ||
+    typeof b !== "object"
+  )
+    return false;
+  if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) return false;
+  if (!Array.isArray(a) && Object.getPrototypeOf(a) !== Object.prototype) return false;
+  const left = Object.entries(a);
+  const right = Object.entries(b);
+  return (
+    left.length === right.length &&
+    left.every(
+      ([key, value], index) =>
+        right[index]?.[0] === key && sameValue(value, right[index]?.[1], key),
+    )
+  );
+}
+
 let nextId = 0;
 
 export class LayerRegistry {
   readonly #byId = new Map<number, Layer>();
   readonly #capabilities = new Map<number, CapabilityEntry>();
+  #committed: readonly unknown[] = [];
   #version = 0;
   #capabilityVersion = 0;
   #registrationCount = 0;
@@ -69,6 +104,12 @@ export class LayerRegistry {
 
   /** Safe after commit (layout effect). No-op when nobody is subscribed. */
   notify(): void {
+    const next = [...this.layers, ...this.capabilities("inspect")].map((value) =>
+      snapshotValue(value),
+    );
+    if (sameValue(this.#committed, next)) return;
+    this.#committed = next;
+    this.#version += 1;
     this.#emit();
   }
 
@@ -118,8 +159,9 @@ export function useRegisterLayer(layer: Layer): void {
   if (registry !== null && idRef.current === null) {
     idRef.current = registry.registerPlotLayer(layer);
   }
-  useLayoutEffect(() => {
-    registry?.notify();
+  useHostLayoutEffect(() => {
+    if (registry !== null && idRef.current === null)
+      idRef.current = registry.registerPlotLayer(layer);
     return () => {
       if (registry !== null && idRef.current !== null) {
         registry.unregister(idRef.current);
@@ -127,6 +169,9 @@ export function useRegisterLayer(layer: Layer): void {
       }
     };
   }, [registry]);
+  useHostLayoutEffect(() => {
+    registry?.notify();
+  });
 }
 
 export function useRegisterCapability<K extends HostCapabilityKind>(
@@ -140,8 +185,9 @@ export function useRegisterCapability<K extends HostCapabilityKind>(
   if (registry !== null && idRef.current === null) {
     idRef.current = registry.registerCapability(kind, () => getValueRef.current());
   }
-  useLayoutEffect(() => {
-    registry?.notify();
+  useHostLayoutEffect(() => {
+    if (registry !== null && idRef.current === null)
+      idRef.current = registry.registerCapability(kind, () => getValueRef.current());
     return () => {
       if (registry !== null && idRef.current !== null) {
         registry.unregister(idRef.current);
@@ -149,4 +195,7 @@ export function useRegisterCapability<K extends HostCapabilityKind>(
       }
     };
   }, [registry]);
+  useHostLayoutEffect(() => {
+    registry?.notify();
+  });
 }

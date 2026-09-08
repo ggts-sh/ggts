@@ -127,7 +127,8 @@ const cliOptionLines = CLI_OPTIONS.map((option) => {
   return `  ${signature.padEnd(17)} ${option.description}${detail}`;
 }).join("\n");
 
-const USAGE = `Usage: ggsvelte-render [spec.json] [options]
+function cliUsage(command?: "render" | "check"): string {
+  return `Usage: ${command === undefined ? "ggsvelte-render" : `ggts ${command}`} [spec.json] [options]
 
 Renders a ggsvelte plot spec (JSON) to SVG on stdout. Reads the spec from
 the file argument, or from stdin when omitted.
@@ -136,7 +137,8 @@ Options:
 ${cliOptionLines}
 
 Diagnostics are JSON lines on stderr. Exit codes: 0 rendered, 1 render
-failed, 2 usage error, 3 invalid spec.`;
+failed, 2 usage error, 3 invalid spec.${command === "check" ? "\nCheck runs the same rendering checks and diagnostics, with no SVG output." : ""}`;
+}
 
 interface ParsedArgs {
   specPath: string | null;
@@ -236,6 +238,8 @@ function parseJSON(io: CLIIO, text: string, what: string): { value: unknown } | 
 export interface CLIRunOptions {
   /** Version of the package that owns the installed ggsvelte-render bin. */
   version?: string;
+  /** Installed CLI subcommand; check validates the full render and suppresses SVG. */
+  command?: "render" | "check";
 }
 
 function handleSpecialArgs(args: ParsedArgs, io: CLIIO, options: CLIRunOptions): number | null {
@@ -256,14 +260,14 @@ function handleSpecialArgs(args: ParsedArgs, io: CLIIO, options: CLIRunOptions):
           ? "--version must be used without a spec or other options"
           : "--version is unavailable from this programmatic runner",
       );
-      io.writeErr(USAGE);
+      io.writeErr(cliUsage(options.command));
       return 2;
     }
     io.writeOut(`${options.version}\n`);
     return 0;
   }
   if (args.help) {
-    io.writeErr(USAGE);
+    io.writeErr(cliUsage(options.command));
     return 0;
   }
   return null;
@@ -398,7 +402,7 @@ export async function runCLI(
     args = parseArgs(argv);
   } catch (error) {
     cliError(io, "usage", (error as Error).message);
-    io.writeErr(USAGE);
+    io.writeErr(cliUsage(options.command));
     return 2;
   }
   const special = handleSpecialArgs(args, io, options);
@@ -418,5 +422,12 @@ export async function runCLI(
   const height =
     args.height ?? (typeof specRecord["height"] === "number" ? specRecord["height"] : 400);
 
-  return renderCLI(spec, args, data, width, height, io);
+  return renderCLI(
+    spec,
+    args,
+    data,
+    width,
+    height,
+    options.command === "check" ? { ...io, writeOut: () => {} } : io,
+  );
 }

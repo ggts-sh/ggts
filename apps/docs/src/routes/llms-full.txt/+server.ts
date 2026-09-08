@@ -25,10 +25,16 @@ const svelteSources = import.meta.glob<string>("$examples/*/*/Example.svelte", {
   import: "default",
   eager: true,
 });
+const reactSources = import.meta.glob<string>("$examples/*/*/Example.tsx", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
 
 // Module-scoped id maps: O(n) once per table, O(1) per EXAMPLE (was O(n²)).
 const specsById = indexExampleModulesById(specs, "spec.ts");
 const svelteSourcesById = indexExampleModulesById(svelteSources, "Example.svelte");
+const reactSourcesById = indexExampleModulesById(reactSources, "Example.tsx");
 
 export function GET(): Response {
   const config = docsBuildConfig();
@@ -41,11 +47,12 @@ export function GET(): Response {
     ).default;
     // Cap inline data so one 10k-row example cannot dominate the corpus.
     const { spec, prunedRows } = pruneSpecData(full, 20);
-    const suffix =
-      prunedRows > 0 ? `\n// note: inline data truncated (${String(prunedRows)} more rows)` : "";
+    const reactSource = reactSourcesById.get(entry.id);
     return {
       ...entry,
-      specJSON: JSON.stringify(spec, null, 2) + suffix,
+      specJSON: JSON.stringify(spec, null, 2),
+      prunedRows,
+      ...(reactSource === undefined ? {} : { reactSource }),
       svelteSource: requireExampleModule(
         svelteSourcesById,
         entry.id,

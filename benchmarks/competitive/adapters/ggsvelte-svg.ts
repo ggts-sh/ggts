@@ -6,6 +6,7 @@ import { mountSceneSvg } from "@ggsvelte/core/svg-live";
 import type { SpecInput } from "@ggsvelte/spec/portable";
 
 import {
+  COLORS,
   PLOT_HEIGHT,
   PLOT_WIDTH,
   type BarsColumns,
@@ -33,7 +34,14 @@ function scatterSpec(): SpecInput {
   return {
     data: { name: DATA_NAME },
     aes: { x: "x", y: "y", color: "cls" },
-    layers: [{ geom: "point", params: { size: 1.5, alpha: 0.7 } }],
+    layers: [{ geom: "point", render: "svg", params: { size: 1.5, alpha: 0.7 } }],
+    scales: {
+      color: {
+        type: "ordinal",
+        domain: ["series-0", "series-1", "series-2", "series-3", "series-4"],
+        range: COLORS.slice(0, 5),
+      },
+    },
   };
 }
 
@@ -41,7 +49,7 @@ function lineSpec(): SpecInput {
   return {
     data: { name: DATA_NAME },
     aes: { x: "x", y: "y", color: "series", group: "series" },
-    layers: [{ geom: "line" }],
+    layers: [{ geom: "line", render: "svg" }],
   };
 }
 
@@ -50,7 +58,7 @@ function areaSpec(): SpecInput {
   return {
     data: { name: DATA_NAME },
     aes: { x: "x", y: "y", fill: "series", group: "series" },
-    layers: [{ geom: "area", position: "identity" }],
+    layers: [{ geom: "area", render: "svg", position: "identity" }],
   };
 }
 
@@ -58,11 +66,18 @@ function barsSpec(): SpecInput {
   return {
     data: { name: DATA_NAME },
     aes: { x: "category", y: "value", fill: "stack" },
-    layers: [{ geom: "col" }],
+    layers: [{ geom: "col", render: "svg" }],
+    scales: {
+      fill: {
+        type: "ordinal",
+        domain: ["stack-0", "stack-1", "stack-2", "stack-3"],
+        range: COLORS.slice(0, 4),
+      },
+    },
   };
 }
 
-function scenarioSpec(scenario: ScenarioId): SpecInput {
+export function scenarioSpec(scenario: ScenarioId): SpecInput {
   switch (scenario) {
     case "scatter-color":
       return scatterSpec();

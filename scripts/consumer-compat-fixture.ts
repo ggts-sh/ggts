@@ -6,7 +6,9 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 
 import { COMPLETE_SVELTE_SNIPPETS } from "./guide-code-contract.js";
+import { SVELTE_QUICKSTART_SOURCE, SANDBOX_SPEC } from "./agent-quickstart.js";
 import { type PackageManager } from "./support-matrix.js";
+import { assertRecipeImports } from "./consumer-compat-skill.js";
 import { consumerPlotSpec } from "./consumer-compat-plan.js";
 
 const fixtureDependencies = [
@@ -42,6 +44,7 @@ export function fixtureManifest(
     "@ggsvelte/compose": named("compose"),
     "@ggsvelte/svelte": named("svelte"),
     "@ggsvelte/cli": named("cli"),
+    "@ggsvelte/skill": named("skill"),
   };
   return {
     name: "ggsvelte-packed-consumer",
@@ -73,6 +76,11 @@ export function writeConsumerFixture(
 ): void {
   mkdirSync(join(directory, "src", "lib"), { recursive: true });
   mkdirSync(join(directory, "src", "routes", "contract"), { recursive: true });
+  mkdirSync(join(directory, "src", "routes", "agent"), { recursive: true });
+  writeFileSync(
+    join(directory, "src", "routes", "agent", "+page.svelte"),
+    SVELTE_QUICKSTART_SOURCE + "\n",
+  );
   const manifest = fixtureManifest(svelteVersion, tarballs, directory, packageManager);
   writeFileSync(join(directory, "package.json"), `${JSON.stringify(manifest, null, 2)}\n`);
   if (packageManager === "pnpm") {
@@ -215,7 +223,8 @@ export function writeConsumerFixture(
 </GGPlot>
 `,
   );
-  writeFileSync(join(directory, "plot.json"), `${JSON.stringify(consumerPlotSpec)}\n`);
+  assertRecipeImports(SVELTE_QUICKSTART_SOURCE, ["@ggsvelte/svelte"], "Svelte quickstart");
+  writeFileSync(join(directory, "plot.json"), `${JSON.stringify(SANDBOX_SPEC)}\n`);
   writeFileSync(
     join(directory, "verify-prerender.mjs"),
     `import { strict as assert } from "node:assert";
@@ -233,6 +242,9 @@ assert.equal(
   existsSync("build/contract.html") || existsSync("build/contract/index.html"),
   true,
 );
+const agentHtml = readFileSync(existsSync("build/agent.html") ? "build/agent.html" : "build/agent/index.html", "utf8");
+assert.match(agentHtml, /Annual sales/);
+for (const year of ["2023", "2024", "2025"]) assert.ok(agentHtml.includes(year));
 console.log("prerendered Quickstart verified");
 `,
   );
@@ -251,7 +263,7 @@ import {
   kyotoSakura,
   mpg,
   palmerPenguins,
-} from "@ggsvelte/svelte/data";
+} from "@ggsvelte/core/data";
 
 // Bundled datasets resolve from the packed tarball's subpath export, which is
 // what makes a copy-pasted quickstart file build in a bare app.

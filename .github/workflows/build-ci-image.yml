@@ -1,3 +1,6 @@
+# Migration: consumers remain on the old public image until this publisher runs
+# under the new repository and its image permits anonymous pulls. See
+# docs/ggts-migration.md for the transfer order.
 # Build and publish the CI runner image (Playwright + unzip) to GHCR.
 #
 # The image lets container jobs skip the per-job `apt-get install unzip` (slow

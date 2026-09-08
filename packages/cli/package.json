@@ -25,7 +25,8 @@
     "directory": "packages/cli"
   },
   "bin": {
-    "ggsvelte-render": "bin/ggsvelte-render.js"
+    "ggsvelte-render": "bin/ggsvelte-render.js",
+    "ggts": "bin/ggts.js"
   },
   "files": [
     "dist",

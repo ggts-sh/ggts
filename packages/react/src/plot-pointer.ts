@@ -1,4 +1,6 @@
+import { resolveInspection } from "@ggsvelte/core/interaction";
 import type { RenderModel } from "@ggsvelte/core";
+import type { InspectMode } from "@ggsvelte/core/interaction";
 
 import { applyDatumKey, type DatumKey } from "./datum-key.js";
 import type { PlotInspectionChange, ZoomDomains } from "./interaction.js";
@@ -18,43 +20,33 @@ export function hitAt(
   rect: ClientRect | null,
   datumKey: DatumKey,
   maxDistance: number,
+  mode: InspectMode = "auto",
 ) {
   if (model === null || rect === null) return null;
   const located = model.viewport.locate(event.clientX, event.clientY, rect);
   const panel = model.viewport.panelAtOrOnly(located);
-  const hit = panel?.nearest(located, { mode: "auto", maxDistance });
+  const hit = panel?.nearest(located, { mode, maxDistance });
   if (hit === undefined || hit === null) return null;
   const index = Math.max(hit.rowIndex ?? -1, 0);
   const rowIndex = hit.rowIndex ?? -1;
   const row = rowIndex >= 0 ? model.row(rowIndex) : null;
   const key = applyDatumKey(datumKey, row, index);
-  return { hit, row, key, located, panel, rect };
+  return { hit, row, key, located, panel, rect, model, datumKey };
 }
 
 export function inspectionFromHit(
   event: { clientX: number; clientY: number },
   found: NonNullable<ReturnType<typeof hitAt>>,
 ): PlotInspectionChange<Record<string, unknown>, PropertyKey> {
-  const datum = {
-    key: found.key,
-    row: found.row,
-    sourceKeys: [found.key] as PropertyKey[],
-    lineageCount: 1,
-    layerIndex: found.hit.layerIndex,
-    panelId: found.hit.panelId,
-    fields: [],
-    anchor: { x: event.clientX - found.rect.left, y: event.clientY - found.rect.top },
-  };
-  return {
-    type: "inspect",
-    phase: "change",
+  void event;
+  return resolveInspection({
+    model: found.model,
+    seed: found.hit,
+    mode: found.hit.mode,
     state: "transient",
     source: "pointer",
-    panelId: found.hit.panelId,
-    mode: found.hit.mode,
-    focus: datum,
-    members: [datum],
-  };
+    keyOf: (row, index) => applyDatumKey(found.datumKey, row, index),
+  });
 }
 
 export function zoomFromBrush(

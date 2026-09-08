@@ -101,12 +101,14 @@ describe("SKILL.md frontmatter description (trigger surface)", () => {
     expect(description.toLowerCase()).toMatch(/ggsvelte/);
     expect(description).toMatch(/grammar-of-graphics|grammar of graphics/i);
     expect(description).toMatch(/Svelte/);
+    expect(description).toMatch(/React/);
     expect(description).toMatch(/JSON|spec/i);
   });
 
   it("lists package import paths agents already have in code", () => {
     // Import-path triggers are high-precision; losing them is a silent regression.
     expect(description).toContain("@ggsvelte/svelte");
+    expect(description).toContain("@ggsvelte/react");
     expect(description).toContain("@ggsvelte/spec");
     expect(description).toContain("@ggsvelte/core");
   });
@@ -214,7 +216,7 @@ describe("skill progressive disclosure and link integrity", () => {
 describe("skill body uses directives for the validation feedback loop", () => {
   it("teaches validate() and the CLI render path as required steps", () => {
     expect(skillMd).toMatch(/validate\(spec\)/);
-    expect(skillMd).toMatch(/ggsvelte-render/);
+    expect(skillMd).toMatch(/ggts render/);
     // Section title is imperative in spirit ("use it").
     expect(skillMd).toMatch(/The validation contract \(use it!\)/i);
   });
@@ -228,6 +230,6 @@ describe("skill body uses directives for the validation feedback loop", () => {
     expect(skillMd).toMatch(/## Registration \(call these\)/);
     expect(skillMd).toMatch(/registerAll\(\)/);
     expect(skillMd).toMatch(/installTemporal\(\)/);
-    expect(skillMd).toMatch(/registerDefaultOrdinalColor\(\)/);
+    expect(skillMd).toContain("references/registration.md");
   });
 });

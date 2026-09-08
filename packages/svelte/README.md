@@ -31,7 +31,7 @@ Compose with declaration-only children (theme, scales, labs, geoms). Do not put
     Labs,
     ThemeMinimal,
   } from "@ggsvelte/svelte";
-  import { kyotoSakura } from "@ggsvelte/svelte/data";
+  import { kyotoSakura } from "@ggsvelte/core/data";
 </script>
 
 <GGPlot data={kyotoSakura} aes={{ x: "year", y: "bloomDoy" }}>

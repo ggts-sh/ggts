@@ -8,7 +8,7 @@
 
 import { registerAll } from "@ggsvelte/core";
 
-import { kyotoSakura } from "../../packages/svelte/src/lib/data/index.ts";
+import { kyotoSakura } from "../../packages/core/src/data/index.ts";
 
 // Headless full-grammar rendering (#1420): explicit opt-in.
 registerAll();

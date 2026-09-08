@@ -28,7 +28,7 @@ describe("llms surfaces", () => {
     expect(txt).toContain("Package version: 0.4.0");
     expect(txt).toContain("Defaults edition: 2");
     expect(txt).toContain("Registered chart themes (2): light, dark");
-    expect(txt).toContain("(https://ggsvelte.sh/guide/getting-started)");
+    expect(txt).toContain("(https://ggsvelte.sh/guide/agents)");
     expect(txt).toContain("(https://ggsvelte.sh/examples/");
     expect(txt).not.toMatch(/\]\(\//);
   });
@@ -100,18 +100,27 @@ describe("llms surfaces", () => {
     expect(txt).not.toMatch(/\]\(\//);
   });
 
-  it("llms-full.txt embeds guide prose + spec JSON + svelte source per example", () => {
+  it("llms-full.txt embeds guide prose + valid spec JSON + React and Svelte source per example", () => {
     const examples = EXAMPLES.slice(0, 2).map((e) => ({
       ...e,
       specJSON: `{\n  "marker": "spec-${e.id}"\n}`,
       svelteSource: `<!-- svelte-${e.id} -->`,
+      reactSource: `// react-${e.id}`,
+      prunedRows: 10,
     }));
     const txt = buildLlmsFull(pages, examples);
+    const exampleText = txt.slice(txt.indexOf("# Examples\n"));
+    const specs = [...exampleText.matchAll(/```json\n([\s\S]*?)\n```/g)].map((match) =>
+      JSON.parse(match[1]!),
+    );
+    expect(specs).toEqual(examples.map((ex) => ({ marker: `spec-${ex.id}` })));
     for (const page of pages) expect(txt).toContain(page.markdown.trim().split("\n")[0]!);
     for (const ex of examples) {
       expect(txt).toContain(`## ${ex.title} (${ex.id})`);
       expect(txt).toContain(`spec-${ex.id}`);
       expect(txt).toContain(`svelte-${ex.id}`);
+      expect(txt).toContain(`react-${ex.id}`);
+      expect(txt).toContain("Data sample: 10 rows omitted.");
     }
   });
 });

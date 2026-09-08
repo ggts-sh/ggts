@@ -1,3 +1,5 @@
+import { REACT_QUICKSTART_SOURCE, SVELTE_QUICKSTART_SOURCE } from "../agent-quickstart";
+
 /**
  * Getting-started guide section (docs pages + llms surfaces).
  */
@@ -12,22 +14,47 @@ import {
 
 export const GETTING_STARTED_MD = `# Getting started
 
-ggsvelte is ggplot2's layered grammar for Svelte 5. A plot is data + an
+ggsvelte is ggplot2's layered grammar for TypeScript, React, and Svelte 5. A plot is data + an
 aesthetic mapping + one or more layers, and every plot normalizes to a
 PortableSpec: strict JSON, no functions, no closures. That JSON is the surface
 to generate, validate, and correct against.
 
-## Install
+## Choose your surface
+
+For an agent sandbox, start with the [CLI and skill setup](/guide/agents).
+For a browser application, install its adapter. React and Svelte use the
+same PortableSpec and grammar; the rest of your application chooses the framework.
+
+## React
 
 \`\`\`sh complete
-bun add @ggsvelte/svelte
-# or: npm install @ggsvelte/svelte
-# or: pnpm add @ggsvelte/svelte
+npm install @ggsvelte/react
+\`\`\`
+
+React DOM 18.2 and 19 are supported. In a server-component application, keep
+interactive charts behind a client component boundary. Save SalesChart.tsx:
+
+\`\`\`tsx complete
+${REACT_QUICKSTART_SOURCE}
+\`\`\`
+
+## Svelte
+
+\`\`\`svelte complete
+${SVELTE_QUICKSTART_SOURCE}
+\`\`\`
+
+## Svelte install and composition
+
+\`\`\`sh complete
+bun add @ggsvelte/svelte @ggsvelte/core
+# or: npm install @ggsvelte/svelte @ggsvelte/core
+# or: pnpm add @ggsvelte/svelte @ggsvelte/core
 \`\`\`
 
 \`@ggsvelte/spec\` (schema, validate, builder) and \`@ggsvelte/core\`
 (pipeline, headless render) are dependencies of the Svelte package. Install
-them directly for spec-only or headless work. The \`ggsvelte-render\` CLI is
+them directly when importing their APIs or bundled data. The \`ggts\` CLI is
 its own package — install \`@ggsvelte/cli\` in every sandbox where an agent
 authors specs, so validation errors and chart-quality warnings surface
 before a chart ships. The agent skill is also its own package:
@@ -35,7 +62,7 @@ before a chart ships. The agent skill is also its own package:
 install it and copy/symlink \`node_modules/@ggsvelte/skill\` into the agent's
 skills directory as \`ggsvelte/\` (or point the agent at
 \`node_modules/@ggsvelte/skill/SKILL.md\` directly). Bundled teaching data
-lives at \`@ggsvelte/svelte/data\`.
+lives at \`@ggsvelte/core/data\`.
 
 ## A complete Svelte file
 
@@ -128,7 +155,7 @@ ${QUICKSTART_BUILDER_FRAGMENT}
 
 ## Bundled data
 
-\`@ggsvelte/svelte/data\` exports seven cited teaching tables (each also served
+\`@ggsvelte/core/data\` exports seven cited teaching tables (each also served
 as JSON under the same name on the docs site):
 
 - \`kyotoSakura\` — 838 peak cherry-blossom dates for Kyoto, 812-2026 CE

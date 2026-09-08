@@ -24,17 +24,23 @@ const svelteSources = import.meta.glob<string>("$examples/*/*/Example.svelte", {
   query: "?raw",
   import: "default",
 });
+const reactSources = import.meta.glob<string>("$examples/*/*/Example.tsx", {
+  query: "?raw",
+  import: "default",
+});
 
 // Module-scoped id maps: O(n) once, O(1) per loadExample (was O(n) per pick).
 const componentsById = indexExampleModulesById(components, "Example.svelte");
 const specsById = indexExampleModulesById(specs, "spec.ts");
 const specSourcesById = indexExampleModulesById(specSources, "spec.ts");
 const svelteSourcesById = indexExampleModulesById(svelteSources, "Example.svelte");
+const reactSourcesById = indexExampleModulesById(reactSources, "Example.tsx");
 
 export interface ExampleSources {
   spec: PortableSpec;
   specSource: string;
   svelteSource: string;
+  reactSource: string | null;
 }
 
 export interface LoadedExample extends ExampleSources {
@@ -46,15 +52,17 @@ export interface LoadedExample extends ExampleSources {
  * Use on example pages that paint a PNG first and upgrade client-side.
  */
 export async function loadExampleSources(id: string): Promise<ExampleSources> {
-  const [spec, specSource, svelteSource] = await Promise.all([
+  const [spec, specSource, svelteSource, reactSource] = await Promise.all([
     requireExampleModule(specsById, id, "spec.ts")(),
     requireExampleModule(specSourcesById, id, "spec.ts")(),
     requireExampleModule(svelteSourcesById, id, "Example.svelte")(),
+    reactSourcesById.get(id)?.() ?? null,
   ]);
   return {
     spec: spec.default,
     specSource,
     svelteSource,
+    reactSource,
   };
 }
 

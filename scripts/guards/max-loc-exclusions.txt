@@ -8,17 +8,17 @@
 # permanent waivers: pure data corpora with zero imports/logic — splitting
 # them is busywork. A guard run (--all) fails on any NEW oversize hand-written
 # file, so this list cannot grow.
-packages/svelte/src/lib/data/chocolate-bars.ts 20278 # pure data corpus, no logic — permanently exempt
-packages/svelte/src/lib/data/coffee-ratings.ts 16103 # pure data corpus, no logic — permanently exempt
-packages/svelte/src/lib/data/fastfood-menu.ts 4674 # pure data corpus, no logic — permanently exempt
-packages/svelte/src/lib/data/palmer-penguins.ts 3723 # pure data corpus, no logic — permanently exempt
-packages/svelte/src/lib/data/mpg.ts 3099 # pure data corpus, no logic — permanently exempt
+packages/core/src/data/chocolate-bars.ts 20278 # pure data corpus, no logic — permanently exempt
+packages/core/src/data/coffee-ratings.ts 16103 # pure data corpus, no logic — permanently exempt
+packages/core/src/data/fastfood-menu.ts 4674 # pure data corpus, no logic — permanently exempt
+packages/core/src/data/palmer-penguins.ts 3723 # pure data corpus, no logic — permanently exempt
+packages/core/src/data/mpg.ts 3099 # pure data corpus, no logic — permanently exempt
 examples/interaction/tooltip/data.ts 3019 # pure data corpus, no logic — permanently exempt
 examples/hex/basic/data.ts 1014 # pure data corpus, no logic — permanently exempt
 examples/density/overlay/data.ts 948 # pure data corpus, no logic — permanently exempt
 examples/errorbar/summary-bin/data.ts 945 # pure data corpus, no logic — permanently exempt
 examples/point/count/data.ts 943 # pure data corpus, no logic — permanently exempt
-packages/svelte/src/lib/data/kyoto-sakura.ts 891 # pure data corpus, no logic — permanently exempt
+packages/core/src/data/kyoto-sakura.ts 891 # pure data corpus, no logic — permanently exempt
 apps/docs/src/lib/theme-specimens/data.ts 821 # pure data corpus, no logic — permanently exempt
 examples/point/stat-unique/data.ts 796 # pure data corpus, no logic — permanently exempt
 examples/line/ecdf/data.ts 793 # pure data corpus, no logic — permanently exempt

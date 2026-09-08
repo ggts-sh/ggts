@@ -42,7 +42,7 @@
   const rows: readonly Row[] = [
     {
       feature: "Bundle size",
-      desc: "Min+gzip, 1k scatter app",
+      desc: "Min+gzip, scatter import graph",
       gg: { mark: "partial", note: kb(BENCHMARK_BUNDLE_KB.ggsvelteKb) },
       ts: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.tanstackKb) },
       lc: { mark: "yes", note: kb(BENCHMARK_BUNDLE_KB.layercakeKb) },
@@ -129,7 +129,7 @@
 
 <section class="benchmarks" aria-labelledby="benchmarks-heading">
   <header class="bench-intro">
-    <h2 id="benchmarks-heading">Why ggsvelte?</h2>
+    <h2 id="benchmarks-heading">Svelte ecosystem capabilities</h2>
   </header>
 
   <div class="bench-table-wrap">

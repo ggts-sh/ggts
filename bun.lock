@@ -4,9 +4,6 @@
   "workspaces": {
     "": {
       "name": "ggsvelte-monorepo",
-      "dependencies": {
-        "@types/react-dom": "^19.2.5",
-      },
       "devDependencies": {
         "@arethetypeswrong/cli": "0.18.5",
         "@changesets/cli": "3.0.1",
@@ -95,7 +92,7 @@
       "devDependencies": {
         "@sveltejs/vite-plugin-svelte": "^7.3.0",
         "@types/react": "^19.2.18",
-        "@types/react-dom": "^19.2.4",
+        "@types/react-dom": "^19.2.5",
         "@vitejs/plugin-react": "^6.0.5",
         "playwright": "1.61.1",
         "vite": "^8.2.0",
@@ -105,17 +102,23 @@
       "name": "@ggsvelte/examples",
       "version": "0.0.0",
       "dependencies": {
+        "@ggsvelte/core": "workspace:*",
+        "@ggsvelte/react": "workspace:*",
         "@ggsvelte/spec": "workspace:*",
         "@ggsvelte/svelte": "workspace:*",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
       },
       "devDependencies": {
+        "@types/react": "^19.2.0",
+        "@types/react-dom": "^19.2.0",
         "svelte": "^5.56.10",
         "typescript": "^6.0.3",
       },
     },
     "packages/cli": {
       "name": "@ggsvelte/cli",
-      "version": "0.41.0",
+      "version": "0.42.0",
       "bin": {
         "ggsvelte-render": "bin/ggsvelte-render.js",
       },
@@ -125,9 +128,9 @@
     },
     "packages/compose": {
       "name": "@ggsvelte/compose",
-      "version": "0.41.0",
+      "version": "0.42.0",
       "dependencies": {
-        "@ggsvelte/spec": "^0.41.0",
+        "@ggsvelte/spec": "^0.42.0",
       },
       "devDependencies": {
         "typescript": "^6.0.3",
@@ -135,9 +138,9 @@
     },
     "packages/core": {
       "name": "@ggsvelte/core",
-      "version": "0.41.0",
+      "version": "0.42.0",
       "dependencies": {
-        "@ggsvelte/spec": "^0.41.0",
+        "@ggsvelte/spec": "^0.42.0",
       },
       "devDependencies": {
         "typescript": "^6.0.3",
@@ -145,16 +148,16 @@
     },
     "packages/react": {
       "name": "@ggsvelte/react",
-      "version": "0.41.0",
+      "version": "0.42.0",
       "dependencies": {
-        "@ggsvelte/compose": "^0.41.0",
-        "@ggsvelte/core": "^0.41.0",
-        "@ggsvelte/spec": "^0.41.0",
+        "@ggsvelte/compose": "^0.42.0",
+        "@ggsvelte/core": "^0.42.0",
+        "@ggsvelte/spec": "^0.42.0",
       },
       "devDependencies": {
         "@testing-library/react": "^16.3.0",
         "@types/react": "^19.2.0",
-        "@types/react-dom": "^19.2.0",
+        "@types/react-dom": "^19.2.5",
         "@vitejs/plugin-react": "^5.1.0",
         "@vitest/browser-playwright": "^4.1.11",
         "playwright": "1.61.1",
@@ -165,17 +168,17 @@
         "vitest": "^4.1.11",
       },
       "peerDependencies": {
-        "react": ">=18.2.0",
-        "react-dom": ">=18.2.0",
+        "react": "^18.2.0 || ^19.0.0",
+        "react-dom": "^18.2.0 || ^19.0.0",
       },
     },
     "packages/skill": {
       "name": "@ggsvelte/skill",
-      "version": "0.41.0",
+      "version": "0.42.0",
     },
     "packages/spec": {
       "name": "@ggsvelte/spec",
-      "version": "0.41.0",
+      "version": "0.42.0",
       "dependencies": {
         "@js-temporal/polyfill": "^0.5.1",
         "typebox": "^1.3.8",
@@ -187,14 +190,14 @@
     },
     "packages/svelte": {
       "name": "@ggsvelte/svelte",
-      "version": "0.41.0",
+      "version": "0.42.0",
       "bin": {
         "ggsvelte-codemod": "bin/ggsvelte-codemod.js",
       },
       "dependencies": {
-        "@ggsvelte/compose": "^0.41.0",
-        "@ggsvelte/core": "^0.41.0",
-        "@ggsvelte/spec": "^0.41.0",
+        "@ggsvelte/compose": "^0.42.0",
+        "@ggsvelte/core": "^0.42.0",
+        "@ggsvelte/spec": "^0.42.0",
       },
       "devDependencies": {
         "@sveltejs/package": "^2.5.8",

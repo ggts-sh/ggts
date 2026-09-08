@@ -3,10 +3,21 @@ import type { DocsRouteMetadata } from "../route-types.js";
 
 export const DOCS_ROUTES = [
   {
-    path: "/",
-    title: "ggsvelte — layered grammar of graphics for Svelte",
+    path: "/benchmarks",
+    title: "Benchmarks — ggsvelte",
     description:
-      "Layered grammar of graphics for Svelte: ggplot2-style aes, geoms, stats, and themes, with PortableSpec JSON and hybrid SVG/canvas rendering.",
+      "Production measurements for the core, React, Svelte, and existing charting comparators.",
+    canonicalPath: "/benchmarks",
+    kind: "page",
+    index: true,
+    sitemap: true,
+    shell: "site",
+  },
+  {
+    path: "/",
+    title: "ggsvelte — ggplot2’s grammar for TypeScript",
+    description:
+      "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
     canonicalPath: "/",
     kind: "page",
     index: true,
@@ -10382,9 +10393,46 @@ export const DOCS_ROUTES = [
     ],
   },
   {
+    path: "/guide/agents",
+    title: "Agent sandboxes — ggsvelte",
+    description: "Install the skill and CLI, check chart specs, and render SVG in a sandbox.",
+    canonicalPath: "/guide/agents",
+    kind: "page",
+    index: true,
+    sitemap: true,
+    shell: "docs",
+    navigation: {
+      section: "Start",
+      label: "Agent sandboxes",
+      order: 0.5,
+    },
+    headings: [
+      {
+        id: "install-the-feedback-loop",
+        title: "Install the feedback loop",
+        level: 2,
+      },
+      {
+        id: "give-the-agent-a-complete-task",
+        title: "Give the agent a complete task",
+        level: 2,
+      },
+      {
+        id: "repair-then-inspect",
+        title: "Repair, then inspect",
+        level: 2,
+      },
+      {
+        id: "bring-the-chart-into-an-application",
+        title: "Bring the chart into an application",
+        level: 2,
+      },
+    ],
+  },
+  {
     path: "/guide/getting-started",
     title: "Getting started — ggsvelte",
-    description: "Install @ggsvelte/svelte and render one chart from a Svelte file.",
+    description: "Render the same chart in an agent sandbox, React, or Svelte.",
     canonicalPath: "/guide/getting-started",
     kind: "page",
     index: true,
@@ -10397,8 +10445,23 @@ export const DOCS_ROUTES = [
     },
     headings: [
       {
-        id: "install",
-        title: "Install",
+        id: "choose-your-surface",
+        title: "Choose your surface",
+        level: 2,
+      },
+      {
+        id: "react",
+        title: "React",
+        level: 2,
+      },
+      {
+        id: "svelte",
+        title: "Svelte",
+        level: 2,
+      },
+      {
+        id: "svelte-install-and-composition",
+        title: "Svelte install and composition",
         level: 2,
       },
       {
@@ -12187,8 +12250,8 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
-        id: "cli-diagnostics-ggsvelte-render",
-        title: "CLI diagnostics (ggsvelte-render)",
+        id: "cli-diagnostics-ggts",
+        title: "CLI diagnostics (ggts)",
         level: 2,
       },
       {
@@ -12426,6 +12489,26 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "ggsvelte-core-interaction",
+        title: "@ggsvelte/core (./interaction)",
+        level: 2,
+      },
+      {
+        id: "experimental-213",
+        title: "experimental (213)",
+        level: 3,
+      },
+      {
+        id: "ggsvelte-core-data",
+        title: "@ggsvelte/core (./data)",
+        level: 2,
+      },
+      {
+        id: "experimental-21-2",
+        title: "experimental (21)",
+        level: 3,
+      },
+      {
         id: "ggsvelte-core-render",
         title: "@ggsvelte/core (./render)",
         level: 2,
@@ -12491,8 +12574,8 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
-        id: "experimental-34",
-        title: "experimental (34)",
+        id: "experimental-50",
+        title: "experimental (50)",
         level: 3,
       },
       {
@@ -12511,13 +12594,28 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "ggsvelte-react",
+        title: "@ggsvelte/react",
+        level: 2,
+      },
+      {
+        id: "experimental-353",
+        title: "experimental (353)",
+        level: 3,
+      },
+      {
+        id: "stable-intent-1",
+        title: "stable-intent (1)",
+        level: 3,
+      },
+      {
         id: "ggsvelte-cli",
         title: "@ggsvelte/cli",
         level: 2,
       },
       {
-        id: "experimental-2",
-        title: "experimental (2)",
+        id: "experimental-3",
+        title: "experimental (3)",
         level: 3,
       },
     ],

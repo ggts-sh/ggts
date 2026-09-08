@@ -13,7 +13,7 @@ import { defineConfig } from "vite";
  *
  * Named package groups put *every* matching module into one shared chunk. A
  * tiny static import of palette hex tables (`catalog/themes`) or teaching
- * datasets (`@ggsvelte/svelte/data`) then modulepreloads the full ~1MB chart
+ * datasets (`@ggsvelte/core/data`) then modulepreloads the full ~1MB chart
  * stack on intent-only pages. Higher-priority carve-outs keep pure data in
  * their own small chunks so those pages stay light until live charts load.
  */
@@ -38,7 +38,7 @@ export default defineConfig({
             // Pure teaching datasets — not the GGPlot runtime.
             {
               name: "ggsvelte-data",
-              test: /(?:[\\/]node_modules[\\/]@ggsvelte[\\/]svelte[\\/]data[\\/]|[\\/]packages[\\/]svelte[\\/](?:src[\\/]lib[\\/]|dist[\\/])?data[\\/])/,
+              test: /(?:[\\/]node_modules[\\/]@ggsvelte[\\/]core[\\/](?:src[\\/]|dist[\\/])?data[\\/]|[\\/]packages[\\/]core[\\/](?:src[\\/]|dist[\\/])data[\\/])/,
               priority: 40,
             },
             // Pure palette / ramp tables — not pipeline, render, or scales engine.

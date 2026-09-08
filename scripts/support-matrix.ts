@@ -8,12 +8,14 @@ export interface ConsumerRow {
   node: string;
   packageManager: PackageManager;
   svelte: string;
+  react: string;
 }
 
 export interface SupportMatrix {
   schemaVersion: 1;
   node: { range: string; tested: string[]; canary: string };
   svelte: { range: string; minimum: string; current: string };
+  react: { range: string; minimum: string; current: string };
   packageManagers: Record<PackageManager, string>;
   operatingSystems: ConsumerRow["os"][];
   browsers: { playwright: string; engines: string[] };
@@ -47,6 +49,7 @@ function requiredCoverageProblems(matrix: SupportMatrix): string[] {
   const requiredValues = {
     node: new Set(matrix.required.map((row) => row.node)),
     svelte: new Set(matrix.required.map((row) => row.svelte)),
+    react: new Set(matrix.required.map((row) => row.react)),
     packageManager: new Set(matrix.required.map((row) => row.packageManager)),
     os: new Set(matrix.required.map((row) => row.os)),
   };
@@ -56,6 +59,9 @@ function requiredCoverageProblems(matrix: SupportMatrix): string[] {
   for (const svelte of [matrix.svelte.minimum, matrix.svelte.current]) {
     if (!requiredValues.svelte.has(svelte))
       errors.push(`required matrix must cover Svelte ${svelte}`);
+  }
+  for (const react of [matrix.react.minimum, matrix.react.current]) {
+    if (!requiredValues.react.has(react)) errors.push(`required matrix must cover React ${react}`);
   }
   for (const packageManager of Object.keys(matrix.packageManagers) as PackageManager[]) {
     if (!requiredValues.packageManager.has(packageManager)) {
@@ -82,7 +88,10 @@ function rowProblems(matrix: SupportMatrix, rows: readonly ConsumerRow[]): strin
     if (![matrix.svelte.minimum, matrix.svelte.current].includes(row.svelte)) {
       errors.push(`unknown Svelte version: ${row.svelte}`);
     }
-    const key = `${row.os}/${row.node}/${row.packageManager}/${row.svelte}`;
+    if (![matrix.react.minimum, matrix.react.current].includes(row.react)) {
+      errors.push(`unknown React version: ${row.react}`);
+    }
+    const key = `${row.os}/${row.node}/${row.packageManager}/${row.svelte}/${row.react}`;
     if (keys.has(key)) errors.push(`duplicate row: ${key}`);
     keys.add(key);
   }
@@ -97,6 +106,9 @@ export function validateSupportMatrix(matrix: SupportMatrix): string[] {
   }
   if (matrix.svelte.range !== `^${matrix.svelte.minimum}`) {
     errors.push("Svelte peer range must begin at the tested minimum");
+  }
+  if (matrix.react.range !== `^${matrix.react.minimum} || ^19.0.0`) {
+    errors.push("React peer range must begin at the tested minimum");
   }
   if (matrix.required.length < 4 || matrix.required.length > 6) {
     errors.push("required matrix must contain 4–6 covering rows");

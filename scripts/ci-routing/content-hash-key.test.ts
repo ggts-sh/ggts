@@ -27,6 +27,7 @@ describe("contentHashCacheKey", () => {
         packageManager: "npm",
         packageManagerVersion: "10",
         svelte: "5.0.0",
+        react: "18.2.0",
       },
     });
     expect(consumerKey).toContain("consumer");
@@ -34,6 +35,7 @@ describe("contentHashCacheKey", () => {
     expect(consumerKey).toContain("node22");
     expect(consumerKey).toContain("npm");
     expect(consumerKey).toContain("svelte5.0.0");
+    expect(consumerKey).toContain("react18.2.0");
     expect(consumerKey).toContain("deadbeef");
   });
 
@@ -47,6 +49,7 @@ describe("contentHashCacheKey", () => {
         packageManager: "npm",
         packageManagerVersion: "bundled with Node",
         svelte: "5.56.5",
+        react: "19.2.0",
       },
     };
     const a = contentHashCacheKey({

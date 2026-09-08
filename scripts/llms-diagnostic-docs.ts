@@ -30,7 +30,7 @@ const diagnosticSectionTitles: Record<DiagnosticDocSource, string> = {
   pipeline: "Render-time errors (@ggsvelte/core)",
   warning: "Render warnings",
   interaction: "Interaction diagnostics (@ggsvelte/svelte)",
-  cli: "CLI diagnostics (ggsvelte-render)",
+  cli: "CLI diagnostics (ggts)",
 };
 
 function diagnosticHeading(entry: DiagnosticDocEntry): string {
@@ -108,7 +108,7 @@ can intentionally exist in more than one source with a different consequence.
 - **TypeScript or linked-package mismatch:** install one compatible
   \`@ggsvelte/svelte\` version and let it resolve matching core/spec packages;
   remove stale lockfile overrides that mix versions.
-- **CLI input failure:** run \`ggsvelte-render --help\`; keep SVG stdout
+- **CLI input failure:** run \`ggts --help\`; keep SVG stdout
   separate from JSON Lines stderr while correcting the reported input.
 
 ${sections.join("\n\n")}

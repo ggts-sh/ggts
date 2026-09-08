@@ -1,7 +1,22 @@
+import type { CompositionDiagnostic } from "@ggsvelte/compose";
 import type { ReactNode } from "react";
 
 import type { CellValue, RenderModel } from "@ggsvelte/core";
-import type { A11yMode, AesInput, DataInput, LayerInput, SpecInput } from "@ggsvelte/spec";
+import type {
+  InteractionDiagnostic,
+  LegendFocusEvent,
+  LegendFocusInput,
+  LegendFilterEvent,
+  LegendFilterInput,
+} from "@ggsvelte/core/interaction";
+import type {
+  A11yMode,
+  AesInput,
+  DataInput,
+  LayerInput,
+  PortableSpec,
+  SpecInput,
+} from "@ggsvelte/spec";
 
 import type {
   InspectInput,
@@ -37,7 +52,11 @@ export interface GGPlotProps<Row extends Record<string, CellValue> = Record<stri
   identity?: PropertyKey | ((row: Row, index: number) => PropertyKey);
   /** @deprecated since 0.21.0 — React strips JSX `key`; use `identity`. */
   key?: PropertyKey | ((row: Row, index: number) => PropertyKey);
-  inspect?: InspectInput;
+  inspect?: InspectInput<Row>;
+  /** Legacy shorthand; prefer <GuideLegend focus>. */
+  legendFocus?: LegendFocusInput;
+  /** Legacy shorthand; prefer <GuideLegend filter>. */
+  legendFilter?: LegendFilterInput;
   select?: SelectInput;
   zoom?: ZoomInput;
   tool?: InteractionTool;
@@ -47,7 +66,11 @@ export interface GGPlotProps<Row extends Record<string, CellValue> = Record<stri
   onselect?: (selection: PlotSelection) => void;
   onzoom?: (event: ZoomEvent) => void;
   oninteraction?: (event: PlotInteractionEvent<Row>) => void;
-  onrender?: (model: RenderModel, spec: unknown) => void;
+  onlegendfocus?: (event: LegendFocusEvent) => void;
+  onlegendfilter?: (event: LegendFilterEvent) => void;
+  ontoolchange?: (tool: InteractionTool) => void;
+  ondiagnostic?: (diagnostic: InteractionDiagnostic | CompositionDiagnostic) => void;
+  onrender?: (model: RenderModel, spec: PortableSpec) => void;
   ariaLabel?: string;
   children?: ReactNode;
 }

@@ -9,7 +9,7 @@ import type {
   ScopedInteractionDomain,
   ScopedInteractionInterval,
   ScopedInteractionKeys,
-} from "./interaction.js";
+} from "./interaction-types.js";
 
 /** Mutation scope: bare keys string or full PlotInteractionScope. */
 export type KeyScope = string | PlotInteractionScope;

@@ -14,7 +14,7 @@
   {
     "id": "import-ggsvelte-svelte",
     "should_trigger": true,
-    "prompt": "I'm importing GeomPoint and GGPlot from @ggsvelte/svelte — help me add a smooth layer and a minimal theme.",
+    "prompt": "I'm importing GeomPoint and GGPlot from @ggsvelte/svelte \u2014 help me add a smooth layer and a minimal theme.",
     "notes": "Import path is an explicit frontmatter trigger signal."
   },
   {
@@ -26,7 +26,7 @@
   {
     "id": "validate-debug",
     "should_trigger": true,
-    "prompt": "This ggsvelte plot spec fails validation — fix the aes and re-validate.",
+    "prompt": "This ggsvelte plot spec fails validation \u2014 fix the aes and re-validate.",
     "notes": "Debugging/validating charts is in the description trigger set."
   },
   {
@@ -88,5 +88,11 @@
     "should_trigger": false,
     "prompt": "Add Tailwind styling to my existing Svelte app header and buttons.",
     "notes": "Svelte mention alone must not fire the skill (OpenAI eval pattern: adjacent false positive)."
+  },
+  {
+    "id": "react-component",
+    "should_trigger": true,
+    "prompt": "Create a React TSX chart using @ggsvelte/react with points and a trend line.",
+    "notes": "React adapter must route to React instructions and the shared grammar."
   }
 ]

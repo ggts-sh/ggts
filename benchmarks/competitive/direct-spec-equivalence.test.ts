@@ -21,6 +21,7 @@ import {
 } from "./adapters/ggsvelte-svg";
 import { aes, gg } from "@ggsvelte/spec/portable";
 import {
+  COLORS,
   makeMultiSeries,
   makeScatter,
   makeStackedBars,
@@ -49,7 +50,14 @@ describe("competitive direct specs", () => {
     expect(bundleScatterSvg(scatter)).toBe(
       renderToSVGString(
         gg(scatter, aes({ x: "x", y: "y", color: "cls" }))
-          .geomPoint({ size: 1.5, alpha: 0.7 })
+          .geomPoint({ size: 1.5, alpha: 0.7, render: "svg" })
+          .scales({
+            color: {
+              type: "ordinal",
+              domain: ["series-0", "series-1", "series-2", "series-3", "series-4"],
+              range: COLORS.slice(0, 5),
+            },
+          })
           .toPortable(),
         options,
       ),
@@ -73,7 +81,14 @@ describe("competitive direct specs", () => {
     expect(bundleBarsSvg(bars)).toBe(
       renderToSVGString(
         gg(bars, aes({ x: "category", y: "value", fill: "stack" }))
-          .geomCol()
+          .geomCol({ render: "svg" })
+          .scales({
+            fill: {
+              type: "ordinal",
+              domain: ["stack-0", "stack-1", "stack-2", "stack-3"],
+              range: COLORS.slice(0, 4),
+            },
+          })
           .toPortable(),
         options,
       ),

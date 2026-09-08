@@ -107,6 +107,7 @@ export type ContentHashCacheKeyInput = {
     packageManager: string;
     packageManagerVersion: string;
     svelte: string;
+    react: string;
   };
   /**
    * Resolved toolchain versions after setup-node / setup-bun (consumer).
@@ -134,6 +135,7 @@ export function contentHashCacheKey(input: ContentHashCacheKeyInput): string {
       sanitizeKeyPart(input.matrix.packageManager),
       `pm${sanitizeKeyPart(input.matrix.packageManagerVersion)}`,
       `svelte${sanitizeKeyPart(input.matrix.svelte)}`,
+      `react${sanitizeKeyPart(input.matrix.react)}`,
     );
   }
   if (input.runtime !== undefined) {

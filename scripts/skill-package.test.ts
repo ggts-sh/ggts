@@ -33,7 +33,7 @@ const manifest = JSON.parse(readFileSync(join(PKG_DIR, "package.json"), "utf8"))
   repository?: { directory?: string };
 };
 
-const SIBLINGS = ["cli", "core", "spec", "svelte"] as const;
+const SIBLINGS = ["cli", "compose", "core", "react", "spec", "svelte"] as const;
 
 function siblingVersion(dir: string): string {
   const pkg = JSON.parse(readFileSync(join(ROOT, "packages", dir, "package.json"), "utf8")) as {

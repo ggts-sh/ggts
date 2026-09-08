@@ -35,7 +35,7 @@ jobs:
         run: echo "matrix=$(bun scripts/support-matrix.ts nightly)" >> "$GITHUB_OUTPUT"
 
   packed-consumer:
-    name: packed consumer (${{ matrix.os }}, Node ${{ matrix.node }}, ${{ matrix.packageManager }}, Svelte ${{ matrix.svelte }})
+    name: packed consumer (${{ matrix.os }}, Node ${{ matrix.node }}, ${{ matrix.packageManager }}, Svelte ${{ matrix.svelte }}, React ${{ matrix.react }})
     needs: matrix
     strategy:
       fail-fast: false
@@ -66,4 +66,5 @@ jobs:
           PACKAGE_MANAGER: ${{ matrix.packageManager }}
           PACKAGE_MANAGER_VERSION: ${{ matrix.packageManagerVersion }}
           SVELTE_VERSION: ${{ matrix.svelte }}
+          REACT_VERSION: ${{ matrix.react }}
         run: bun scripts/consumer-compat.ts

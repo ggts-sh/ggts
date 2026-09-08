@@ -47,7 +47,7 @@ test("getting started presents install, a complete file, then PortableSpec", asy
 
   const completeFile = article.locator("pre code").filter({ hasText: "GeomPoint" }).first();
   await expect(completeFile).toContainText("GGPlot");
-  await expect(completeFile).toContainText('from "@ggsvelte/svelte/data"');
+  await expect(completeFile).toContainText('from "@ggsvelte/core/data"');
   // Width follows the container and height defaults; neither belongs in the
   // file a reader copies.
   await expect(completeFile).not.toContainText("width=");

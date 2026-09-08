@@ -17,7 +17,7 @@ const root = join(import.meta.dir, "..");
 const PACKAGES = [
   { dir: "packages/cli", name: "@ggsvelte/cli", shipped: ["dist", "bin", "src"] },
   { dir: "packages/compose", name: "@ggsvelte/compose", shipped: ["dist", "src"] },
-  { dir: "packages/core", name: "@ggsvelte/core", shipped: ["dist", "src"] },
+  { dir: "packages/core", name: "@ggsvelte/core", shipped: ["dist", "src", "NOTICE"] },
   { dir: "packages/react", name: "@ggsvelte/react", shipped: ["dist"] },
   // @ggsvelte/skill ships root-level files, not only directories: SKILL.md is
   // a `files` entry that is not a path prefix (the isShippedPath file-entry
