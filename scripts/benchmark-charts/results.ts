@@ -83,7 +83,7 @@ export interface HistoricalBrowserResults {
 }
 
 export const SNAPSHOT = join(COMPETITIVE, "published.json");
-export const RENDERER_SNAPSHOT = join(COMPETITIVE, "published-svg.json");
+const RENDERER_SNAPSHOT = join(COMPETITIVE, "published-svg.json");
 
 export type PublishedSnapshot = {
   browser: BrowserResults;
