@@ -4,6 +4,7 @@ import { timingMs, type BrowserResults } from "./results";
 
 export interface ChartCard {
   readonly id: string;
+  readonly tab: string;
   readonly width: number;
   readonly height: number;
   readonly chart: BenchmarkChartInput;
@@ -18,14 +19,38 @@ const LIBRARIES = [
 ] as const;
 
 const HIGHLIGHTS = [
-  { caseId: "scatter-color-10k", slug: "scatter-10k", title: "10,000 points", metric: "mount" },
-  { caseId: "scatter-color-1k", slug: "scatter-1k", title: "1,000 points", metric: "mount" },
-  { caseId: "scatter-color-10k", slug: "scatter-10k", title: "10,000 points", metric: "update" },
-  { caseId: "line-3x10k", slug: "line-30k", title: "30,000-point line chart", metric: "update" },
+  {
+    caseId: "scatter-color-10k",
+    slug: "scatter-10k",
+    title: "10,000 points",
+    metric: "mount",
+    tab: "10k points",
+  },
+  {
+    caseId: "scatter-color-1k",
+    slug: "scatter-1k",
+    title: "1,000 points",
+    metric: "mount",
+    tab: "1k points",
+  },
+  {
+    caseId: "scatter-color-10k",
+    slug: "scatter-10k",
+    title: "10,000 points",
+    metric: "update",
+    tab: "10k update",
+  },
+  {
+    caseId: "line-3x10k",
+    slug: "line-30k",
+    title: "30,000-point line chart",
+    metric: "update",
+    tab: "30k line update",
+  },
 ] as const;
 
 export function buildCards(renderer: BrowserResults): readonly ChartCard[] {
-  return HIGHLIGHTS.map(({ caseId, slug, title, metric }) => {
+  return HIGHLIGHTS.map(({ caseId, slug, title, metric, tab }) => {
     const id = `core-${slug}-${metric}`;
     const subtitle = `${metric === "mount" ? "First render" : "Data update"} · SVG · milliseconds`;
     const bars = LIBRARIES.map(([lib, label]): BenchmarkBar => {
@@ -39,6 +64,7 @@ export function buildCards(renderer: BrowserResults): readonly ChartCard[] {
     }).toSorted((a, b) => a.value - b.value || a.lib.localeCompare(b.lib));
     return {
       id,
+      tab,
       width: 360,
       height: 250,
       chart: {

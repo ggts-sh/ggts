@@ -17,6 +17,7 @@ export function projectionSource(
     const light = files.find((file) => file.filename === `bench-${card.id}.svg`)!;
     return {
       id: card.id,
+      tab: card.tab,
       path: `/benchmarks/bench-${card.id}.svg`,
       darkPath: `/benchmarks/bench-${card.id}-dark-site.svg`,
       sha256: createHash("sha256").update(light.body).digest("hex"),

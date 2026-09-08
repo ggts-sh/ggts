@@ -23,9 +23,9 @@ describe("generated docs SEO", () => {
     const seo = buildSeoDocument(home, "https://ggts.sh");
 
     expect(seo).toMatchObject({
-      title: "ggts — ggplot2’s grammar for TypeScript",
+      title: "ggts — grammar of graphics in TypeScript",
       description:
-        "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
+        "ggts is a fast agent-native implementation of the grammar of graphics in TypeScript.",
       canonical: "https://ggts.sh/",
       image: {
         url: `https://ggts.sh${OG_HOME_PATH}`,
@@ -49,7 +49,7 @@ describe("generated docs SEO", () => {
         name: "ggts",
         url: "https://ggts.sh/",
         description:
-          "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
+          "ggts is a fast agent-native implementation of the grammar of graphics in TypeScript.",
       },
       {
         "@context": "https://schema.org",
