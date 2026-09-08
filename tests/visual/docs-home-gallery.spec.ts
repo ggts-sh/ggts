@@ -85,7 +85,7 @@ test("homepage code-path section SSRs heading and a static chart shell", async (
   const response = await request.get("/");
   const html = await response.text();
   // Section chrome is not gated on the dynamic plot import.
-  expect(html).toContain("Svelte for builders, JSON for embedded agents.");
+  expect(html).toContain("Frameworks for builders, JSON for embedded agents.");
   expect(html).toContain('id="code-path-heading"');
   // Static shell ships before live GGPlot hydrates.
   expect(html).toContain("grammar-static");
@@ -99,7 +99,7 @@ test("homepage grammar chart upgrades to full interactive layers on intent", asy
   await page.goto("/");
   // Code-path chrome is SSR'd immediately — not blocked on the plot chunk.
   await expect(
-    page.getByRole("heading", { name: "Svelte for builders, JSON for embedded agents." }),
+    page.getByRole("heading", { name: "Frameworks for builders, JSON for embedded agents." }),
   ).toBeVisible();
   const output = page.locator(".grammar-output");
   const plot = output.locator(".gg-plot-root");
@@ -173,7 +173,12 @@ test("code tabs share the manual-copy fallback", async ({ page }) => {
   await page.goto("/");
   const codePath = page.locator(".code-path");
   const tabs = codePath.getByRole("tablist", { name: "Code representations" }).getByRole("tab");
-  await expect(tabs).toHaveText(["React", "Svelte", "Spec (JSON)"]);
+  await expect(codePath.locator(".code-path-copy p")).toHaveText(
+    "Frameworks for when humans need them. CLI validation for when embedded agents need to write JSON specs.",
+  );
+  await expect(tabs).toHaveText(["Svelte", "React", "Spec (JSON)"]);
+  await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
+  await expect(codePath.getByRole("tabpanel")).toContainText("@ggts-sh/svelte");
   await codePath.getByRole("button", { name: "Copy code" }).click();
   await expect(page.locator(".code-path [role=status]")).toHaveText(
     "Clipboard unavailable. Code selected for manual copy.",

@@ -67,11 +67,11 @@
   </div>
   <div class="code-path-copy">
     <h2 id="code-path-heading">
-      Svelte for builders, JSON for embedded agents.
+      Frameworks for builders, JSON for embedded agents.
     </h2>
     <p>
-      Human-agent pairs get Svelte components for clarity. Embedded agents can
-      use JSON specs for interactive charts on demand.
+      Frameworks for when humans need them. CLI validation for when embedded
+      agents need to write JSON specs.
     </p>
   </div>
   <div class="code-path-tabs">
