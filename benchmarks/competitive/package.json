@@ -31,7 +31,7 @@
     "layercake": "^10.0.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "svelte": "^5.56.10",
+    "svelte": "^5.57.0",
     "svelteplot": "^0.14.2",
     "uplot": "^1.6.32"
   },
