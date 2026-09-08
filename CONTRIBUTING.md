@@ -91,7 +91,7 @@ upstream, `.md`/`.yaml`/`.svelte` can fold back into oxfmt (`.oxfmtrc.json`
 | publint / @arethetypeswrong/cli              | 0.3.21 / 0.18.5        | package publish shape (skips unbuilt stubs)                                        |
 | actionlint (npm, wasm)                       | 2.0.6                  | workflow lint via `scripts/actionlint.ts` (no shellcheck integration — wasm build) |
 | zizmor                                       | 1.26.1 (uv tool)       | Actions security audit                                                             |
-| @changesets/cli                              | 3.0.1                  | versioning/release (all seven packages in fixed lockstep, access public)           |
+| @changesets/cli                              | 3.0.2                  | versioning/release (all seven packages in fixed lockstep, access public)           |
 | vitest + @vitest/browser-playwright          | 4.1.11                 | browser-mode component tests (factory `playwright()` provider)                     |
 | playwright / @playwright/test                | 1.61.1 (exact pins)    | must match `ghcr.io/<repo>/ci-runner:v1.61.1-noble` — two-step bump (see below)    |
 | @sveltejs/kit + @sveltejs/adapter-static     | 2.x / 3.x              | apps/docs static docs site (the VR screenshot target)                              |
