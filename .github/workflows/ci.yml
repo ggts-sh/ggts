@@ -256,7 +256,7 @@ jobs:
       pr_labels: ${{ join(github.event.pull_request.labels.*.name, ',') }}
 
   component-svelte:
-    name: component-svelte (packages/svelte chromium + coverage + ssr)
+    name: component (Svelte chromium + React browsers + SSR + coverage)
     needs: [detect-changes, packages-dist]
     if: >-
       needs.detect-changes.outputs.component == 'true' &&
