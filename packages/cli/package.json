@@ -1,6 +1,6 @@
 {
   "name": "@ggts-sh/cli",
-  "version": "0.43.0",
+  "version": "0.43.1",
   "description": "ggts: validate and render plot specs (JSON) to SVG from the command line — the feedback loop for agents that author charts in sandboxes.",
   "keywords": [
     "agents",
@@ -45,7 +45,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@ggts-sh/core": "^0.43.0"
+    "@ggts-sh/core": "^0.43.1"
   },
   "engines": {
     "node": ">=22"

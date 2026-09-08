@@ -1,5 +1,13 @@
 # @ggts-sh/react
 
+## 0.43.1
+
+### Patch Changes
+
+- @ggts-sh/compose@0.43.1
+  - @ggts-sh/core@0.43.1
+  - @ggts-sh/spec@0.43.1
+
 ## 0.43.0
 
 ### Minor Changes

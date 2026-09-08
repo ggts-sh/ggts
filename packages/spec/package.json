@@ -1,6 +1,6 @@
 {
   "name": "@ggts-sh/spec",
-  "version": "0.43.0",
+  "version": "0.43.1",
   "description": "ggts plot spec: TypeBox schemas, PortableSpec types, normalize(), validate() with agent errors, fluent builder, JSON Schema artifact.",
   "keywords": [
     "agents",
