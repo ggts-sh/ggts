@@ -99,9 +99,9 @@ comparator, including results where another library wins.
 
 <!-- framework-benchmark-charts:start -->
 
-![React · 10,000-point colored scatter. Mount · milliseconds · lower is better. uPlot (canvas): 35.4 ms; Chart.js (canvas): 48.3 ms; D3: 73.5 ms; ECharts (canvas): 106.7 ms; ggts React: 114.6 ms; TanStack React: 248.5 ms.](apps/docs/static/benchmarks/bench-react-scatter-10k-mount.svg)
+![React · 10,000-point colored scatter. Mount · milliseconds · lower is better. uPlot (canvas): 44.6 ms; Chart.js (canvas): 55.9 ms; D3: 96.1 ms; ECharts (canvas): 143.3 ms; ggts React: 149.1 ms; TanStack React: 454.1 ms.](apps/docs/static/benchmarks/bench-react-scatter-10k-mount.svg)
 
-![Svelte · 10,000-point colored scatter. Mount · milliseconds · lower is better. ECharts (canvas): 106.7 ms; LayerCake: 193.4 ms; ggts Svelte: 241.8 ms; TanStack Svelte: 265.8 ms; Unovis Svelte: 315.2 ms; SveltePlot: 2,906.9 ms.](apps/docs/static/benchmarks/bench-svelte-scatter-10k-mount.svg)
+![Svelte · 10,000-point colored scatter. Mount · milliseconds · lower is better. ECharts (canvas): 143.3 ms; LayerCake: 232.8 ms; ggts Svelte: 356.3 ms; TanStack Svelte: 392 ms; Unovis Svelte: 431.9 ms; SveltePlot: 4,500 ms.](apps/docs/static/benchmarks/bench-svelte-scatter-10k-mount.svg)
 
 <!-- framework-benchmark-charts:end -->
 
