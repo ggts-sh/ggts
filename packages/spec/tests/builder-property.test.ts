@@ -44,8 +44,7 @@ function randomAes(rnd: () => number): AesInput {
   for (const channel of CHANNEL_POOL) {
     const roll = rnd();
     if (roll < 0.45) continue; // absent
-    if (roll < 0.7)
-      out[channel] = FIELDS[Math.floor(rnd() * FIELDS.length)]; // bare string
+    if (roll < 0.7) out[channel] = FIELDS[Math.floor(rnd() * FIELDS.length)]; // bare string
     else if (roll < 0.8) out[channel] = { field: FIELDS[Math.floor(rnd() * FIELDS.length)]! };
     else if (roll < 0.9) {
       out[channel] =
