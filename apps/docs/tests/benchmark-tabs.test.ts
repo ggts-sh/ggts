@@ -9,29 +9,25 @@ describe("benchmark surface navigation", () => {
     const { container } = render(BenchmarkTabs, {});
     flushSync();
     const [surface, operation] = container.querySelectorAll("select");
-    expect(surface!.value).toBe("core");
-    expect(operation!.value).toBe("mount");
-    expect([...surface!.options].map((option) => option.value)).toEqual([
-      "core",
-      "svelte",
-      "react",
-    ]);
+    expect(surface.value).toBe("core");
+    expect(operation.value).toBe("mount");
+    expect([...surface.options].map((option) => option.value)).toEqual(["core", "svelte", "react"]);
     expect(container.querySelectorAll('[role="tab"]')).toHaveLength(6);
     expect(container.querySelector("img")?.getAttribute("src")).toContain(
       "bench-core-scatter-10k-mount",
     );
 
     for (const framework of ["svelte", "react"]) {
-      surface!.value = framework;
-      surface!.dispatchEvent(new Event("change", { bubbles: true }));
+      surface.value = framework;
+      surface.dispatchEvent(new Event("change", { bubbles: true }));
       flushSync();
       expect(container.querySelectorAll('[role="tab"]')).toHaveLength(2);
       expect(container.querySelector("img")?.getAttribute("src")).toContain(
         `bench-${framework}-scatter-10k-mount`,
       );
     }
-    operation!.value = "update";
-    operation!.dispatchEvent(new Event("change", { bubbles: true }));
+    operation.value = "update";
+    operation.dispatchEvent(new Event("change", { bubbles: true }));
     flushSync();
     expect(container.querySelector("img")?.getAttribute("src")).toContain(
       "bench-react-scatter-10k-update",
