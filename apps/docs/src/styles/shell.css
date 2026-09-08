@@ -666,26 +666,65 @@
   }
 }
 
-/* Static homepage highlights. Keep styles external for the site's CSP. */
-.benchmark-highlights {
-  display: grid;
-  max-width: 64rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+/* Hero benchmark tabs. Keep styles external for the site's CSP. */
+.bench-tabs {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
-.benchmark-highlight {
+.bench-tabs-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.bench-tabs-trigger {
+  position: relative;
+  min-height: 2.25rem;
+  margin-bottom: -1px;
+  padding: 0.45rem 0.15rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--muted);
+  font: 600 0.85rem/1.2 var(--body-font);
+  cursor: pointer;
+}
+
+/* 36px visual height, 44px hit height (DESIGN.md hit-region floor). */
+.bench-tabs-trigger::after {
+  content: "";
+  position: absolute;
+  inset: -4px 0;
+}
+
+.bench-tabs-trigger:hover {
+  color: var(--fg);
+}
+
+.bench-tabs-trigger[data-state="active"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.bench-tabs-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.bench-tabs-content {
+  padding-top: 1.25rem;
+}
+
+.bench-tabs-chart {
   min-width: 0;
-  overflow: hidden;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--line);
   border-radius: var(--code-radius);
   background: var(--paper);
-}
-
-@media (max-width: 42rem) {
-  .benchmark-highlights {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 .bench-chart-img {

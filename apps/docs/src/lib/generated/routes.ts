@@ -4,9 +4,9 @@ import type { DocsRouteMetadata } from "../route-types.js";
 export const DOCS_ROUTES = [
   {
     path: "/",
-    title: "ggts — ggplot2’s grammar for TypeScript",
+    title: "ggts — grammar of graphics in TypeScript",
     description:
-      "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
+      "ggts is a fast agent-native implementation of the grammar of graphics in TypeScript.",
     canonicalPath: "/",
     kind: "page",
     index: true,

@@ -3,8 +3,7 @@
 
   import CodeTabs from "$lib/CodeTabs.svelte";
   import { FEATURED_EXAMPLES, galleryCatalog } from "$lib/catalog/gallery";
-  import BenchmarkHighlights from "$lib/components/BenchmarkHighlights.svelte";
-  import { SANDBOX_INSTALL, SANDBOX_COMMANDS } from "$scripts/agent-quickstart";
+  import BenchmarkTabs from "$lib/components/BenchmarkTabs.svelte";
   import GrammarDemo from "$lib/components/GrammarDemo.svelte";
   import { EXAMPLES } from "$lib/examples-manifest";
   import { HOME_CODE_PATH_TABS } from "$lib/home-code-path";
@@ -22,41 +21,17 @@
 
 <section class="home-hero" aria-labelledby="home-heading">
   <h1 id="home-heading">
-    ggts: ggplot2’s grammar for <span class="hero-fast">TypeScript</span>
+    ggts is a <span class="hero-fast">fast</span> agent-native implementation of the
+    grammar of graphics in TypeScript
   </h1>
   <div>
-    <p>
-      Built for coding agents. Check charts in a sandbox, then use the same spec
-      in React or Svelte.
-    </p>
-    <CodeTabs
-      tabs={[
-        {
-          label: "Agent sandbox",
-          code: `${SANDBOX_INSTALL}\n${SANDBOX_COMMANDS}`,
-          language: "bash",
-        },
-      ]}
-    />
-    <p>
-      <a href={`${base}/guide/agents`}>Set up an agent sandbox</a> ·
-      <a href={`${base}/guide/getting-started`}>React and Svelte quickstarts</a>
+    <BenchmarkTabs />
+    <p class="benchmark-source">
+      <a href="https://github.com/ggts-sh/ggts/tree/main/benchmarks/competitive"
+        >Benchmarks on GitHub</a
+      >
     </p>
   </div>
-</section>
-
-<section class="home-performance" aria-labelledby="benchmark-heading">
-  <h2 id="benchmark-heading">The grammar you want. The speed you need.</h2>
-  <p>
-    Render thousands of points without hand-writing scales, axes, or legends.
-  </p>
-  <BenchmarkHighlights />
-  <p class="benchmark-source">
-    Selected SVG comparisons · lower is better ·
-    <a href="https://github.com/ggts-sh/ggts/tree/main/benchmarks/competitive"
-      >Benchmarks on GitHub</a
-    >
-  </p>
 </section>
 
 <section class="home-featured" aria-label="Examples">
@@ -91,10 +66,12 @@
     />
   </div>
   <div class="code-path-copy">
-    <h2 id="code-path-heading">One grammar. React, Svelte, or a sandbox.</h2>
+    <h2 id="code-path-heading">
+      Svelte for builders, JSON for embedded agents.
+    </h2>
     <p>
-      Compose charts with familiar ggplot2 names, or generate PortableSpec JSON.
-      Both framework adapters use the same TypeScript pipeline.
+      Human-agent pairs get Svelte components for clarity. Embedded agents can
+      use JSON specs for interactive charts on demand.
     </p>
   </div>
   <div class="code-path-tabs">
@@ -154,16 +131,9 @@
   }
 
   .hero-fast {
+    margin-right: 0.1em;
     color: var(--accent);
     font-style: italic;
-  }
-
-  .home-performance {
-    padding-top: clamp(2rem, 5vw, 4rem);
-  }
-
-  .home-performance h2 {
-    margin-bottom: 0.5rem;
   }
 
   .benchmark-source {

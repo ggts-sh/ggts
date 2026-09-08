@@ -3,6 +3,7 @@
 export const BENCHMARK_CHART_CARDS = [
   {
     id: "core-scatter-10k-mount",
+    tab: "10k points",
     path: "/benchmarks/bench-core-scatter-10k-mount.svg",
     darkPath: "/benchmarks/bench-core-scatter-10k-mount-dark-site.svg",
     sha256: "003b4382e9d6620e2b06cdcf15fb9196f36c606a39a98af328ec53e172fe77dd",
@@ -12,6 +13,7 @@ export const BENCHMARK_CHART_CARDS = [
   },
   {
     id: "core-scatter-1k-mount",
+    tab: "1k points",
     path: "/benchmarks/bench-core-scatter-1k-mount.svg",
     darkPath: "/benchmarks/bench-core-scatter-1k-mount-dark-site.svg",
     sha256: "e5c79d18011ab7bbb1f766e20e4c2f4f5d15950ad5f2f542fe9b424978f2c299",
@@ -21,6 +23,7 @@ export const BENCHMARK_CHART_CARDS = [
   },
   {
     id: "core-scatter-10k-update",
+    tab: "10k update",
     path: "/benchmarks/bench-core-scatter-10k-update.svg",
     darkPath: "/benchmarks/bench-core-scatter-10k-update-dark-site.svg",
     sha256: "0f3f59fe848cc3ece39a60de452fb40bcad45d1252f0d96116a253d1fcc1310a",
@@ -30,6 +33,7 @@ export const BENCHMARK_CHART_CARDS = [
   },
   {
     id: "core-line-30k-update",
+    tab: "30k line update",
     path: "/benchmarks/bench-core-line-30k-update.svg",
     darkPath: "/benchmarks/bench-core-line-30k-update-dark-site.svg",
     sha256: "c3ae0b14b23aabd9abca1b8de3835b874b71bca77d65750911b380ea262b48f2",

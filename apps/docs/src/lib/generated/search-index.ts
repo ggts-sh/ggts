@@ -5,12 +5,11 @@ export const DOCS_SEARCH_INDEX = [
   {
     id: "page:home",
     kind: "page",
-    title: "ggts — ggplot2’s grammar for TypeScript",
-    summary:
-      "Charts for coding agents, React, and Svelte: ggplot2-style grammar, portable JSON, and headless SVG rendering.",
+    title: "ggts — grammar of graphics in TypeScript",
+    summary: "ggts is a fast agent-native implementation of the grammar of graphics in TypeScript.",
     href: "/",
     keywords: [],
-    exact: ["ggts — ggplot2’s grammar for TypeScript"],
+    exact: ["ggts — grammar of graphics in TypeScript"],
   },
   {
     id: "page:docs",

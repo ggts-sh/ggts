@@ -36,47 +36,35 @@ for (const route of ["/", "/examples/interactions/inspection"]) {
   });
 }
 
-test("homepage leads with the agent sandbox and links to both framework quickstarts", async ({
-  page,
-}) => {
+test("homepage restores the product description and hero benchmark tabs", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/?theme=light");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "ggts: ggplot2’s grammar for TypeScript",
+    "ggts is a fast agent-native implementation of the grammar of graphics in TypeScript",
   );
   const hero = page.locator(".home-hero");
-  await expect(hero.getByRole("tab", { name: "Agent sandbox" })).toHaveAttribute(
+  await expect(hero.getByRole("tab", { name: "10k points", exact: true })).toHaveAttribute(
     "aria-selected",
     "true",
   );
-  await expect(hero.getByRole("tabpanel")).toContainText("ggts render");
-  await expect(hero.getByRole("link", { name: "Set up an agent sandbox" })).toHaveAttribute(
-    "href",
-    "/guide/agents",
+  await expect(hero.locator("select, .code-tabs")).toHaveCount(0);
+  await expect(page.getByText("Built for coding agents.", { exact: false })).toHaveCount(0);
+  await expect(page.getByText("The grammar you want.", { exact: false })).toHaveCount(0);
+  await expect(page.getByText("Render thousands of points without", { exact: false })).toHaveCount(
+    0,
   );
-  await expect(hero.getByRole("link", { name: "React and Svelte quickstarts" })).toHaveAttribute(
-    "href",
-    "/guide/getting-started",
+  await expect(page.locator(".site-footer p")).toHaveText(
+    "ggts is a fast agent-native implementation of the layered grammar of graphics, inspired by ggplot2",
   );
   await expect(page.locator(".home-featured ol li")).toHaveCount(6);
   await expect(page.locator(".home-featured header a")).toHaveText("Gallery");
-  await expect(
-    page.getByRole("heading", { name: "The grammar you want. The speed you need.", level: 2 }),
-  ).toBeVisible();
-  await expect(page.locator(".home-performance select")).toHaveCount(0);
-  await expect(page.locator(".benchmark-highlight")).toHaveCount(4);
+  await expect(hero.locator("img:visible")).toHaveCount(1);
   await expectNoOverflow(page);
 });
 
 async function expectHomeSectionOrder(page: import("@playwright/test").Page): Promise<void> {
   const boxes = await page.evaluate(() =>
-    [
-      ".home-hero h1",
-      ".home-hero .code-tabs",
-      '[aria-labelledby="benchmark-heading"]',
-      ".home-featured",
-      ".code-path",
-    ].map((selector) => {
+    [".home-hero h1", ".home-hero .bench-tabs", ".home-featured", ".code-path"].map((selector) => {
       const rect = document.querySelector(selector)!.getBoundingClientRect();
       return { top: rect.top, bottom: rect.bottom };
     }),
@@ -86,7 +74,7 @@ async function expectHomeSectionOrder(page: import("@playwright/test").Page): Pr
   }
 }
 
-test("homepage puts performance highlights before the gallery and code path", async ({ page }) => {
+test("homepage puts benchmark tabs before the gallery and code path", async ({ page }) => {
   await page.setViewportSize({ width: 960, height: 900 });
   await page.goto("/?theme=light");
   await expectHomeSectionOrder(page);
@@ -97,7 +85,7 @@ test("homepage code-path section SSRs heading and a static chart shell", async (
   const response = await request.get("/");
   const html = await response.text();
   // Section chrome is not gated on the dynamic plot import.
-  expect(html).toContain("One grammar. React, Svelte, or a sandbox.");
+  expect(html).toContain("Svelte for builders, JSON for embedded agents.");
   expect(html).toContain('id="code-path-heading"');
   // Static shell ships before live GGPlot hydrates.
   expect(html).toContain("grammar-static");
@@ -111,7 +99,7 @@ test("homepage grammar chart upgrades to full interactive layers on intent", asy
   await page.goto("/");
   // Code-path chrome is SSR'd immediately — not blocked on the plot chunk.
   await expect(
-    page.getByRole("heading", { name: "One grammar. React, Svelte, or a sandbox." }),
+    page.getByRole("heading", { name: "Svelte for builders, JSON for embedded agents." }),
   ).toBeVisible();
   const output = page.locator(".grammar-output");
   const plot = output.locator(".gg-plot-root");
@@ -165,7 +153,7 @@ test("homepage grammar inspect draws xy crosshair and supports legend focus", as
   await expect(legendTarget).toBeFocused();
 });
 
-test("homepage mobile order puts performance highlights before examples", async ({ page }) => {
+test("homepage mobile order puts benchmark tabs before examples", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/?theme=light");
   await expectHomeSectionOrder(page);
@@ -270,18 +258,32 @@ test("detail is specimen-first and orders React, Svelte, builder, then JSON", as
   await expect(page.locator(".related li")).toHaveCount(3);
 });
 
-test("homepage shows four static comparisons and sends benchmark details to GitHub", async ({
+test("homepage switches four benchmark tabs and sends details to GitHub", async ({
   page,
   request,
 }) => {
   for (const theme of ["light", "dark"]) {
     await page.goto(`/?theme=${theme}`);
-    const section = page.locator(".home-performance");
-    await expect(section.locator("select, [role=tab]")).toHaveCount(0);
-    const charts = section.locator("img:visible");
-    await expect(charts).toHaveCount(4);
-    for (const chart of await charts.all()) {
-      await chart.scrollIntoViewIfNeeded();
+    const section = page.locator(".home-hero");
+    await expect(section.locator("select")).toHaveCount(0);
+    const tabs = section.getByRole("tablist", { name: "Benchmark scenarios" }).getByRole("tab");
+    await expect(tabs).toHaveText(["10k points", "1k points", "10k update", "30k line update"]);
+    const paths = [
+      "scatter-10k-mount",
+      "scatter-1k-mount",
+      "scatter-10k-update",
+      "line-30k-update",
+    ];
+    for (let index = 0; index < paths.length; index += 1) {
+      await tabs.nth(index).click();
+      await expect(tabs.nth(index)).toHaveAttribute("aria-selected", "true");
+      await expect(section.getByRole("tabpanel")).toHaveCount(1);
+      const chart = section.locator("img:visible");
+      await expect(chart).toHaveCount(1);
+      await expect(chart).toHaveAttribute(
+        "src",
+        new RegExp(`bench-core-${paths[index]}${theme === "dark" ? "-dark-site" : ""}\\.svg\\?v=`),
+      );
       await expect(chart).toHaveAttribute("alt", /ggts core SVG/);
       await expect(chart).not.toHaveAttribute("alt", /D3/);
       await expect
@@ -290,6 +292,14 @@ test("homepage shows four static comparisons and sends benchmark details to GitH
         )
         .toBe(true);
     }
+    await tabs.first().focus();
+    await tabs.first().press("ArrowRight");
+    await expect(tabs.nth(1)).toBeFocused();
+    await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
+    await tabs.nth(1).press("End");
+    await expect(tabs.last()).toHaveAttribute("aria-selected", "true");
+    await tabs.last().press("Home");
+    await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
     await expect(section.getByRole("link", { name: "Benchmarks on GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/ggts-sh/ggts/tree/main/benchmarks/competitive",

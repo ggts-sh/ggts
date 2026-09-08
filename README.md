@@ -7,15 +7,13 @@ Formerly ggsvelte. [Migration guide](https://ggts.sh/guide/upgrading#0-42-to-0-4
 [![codecov](https://codecov.io/gh/ggts-sh/ggts/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ggts-sh/ggts)
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
-ggplot2’s grammar for TypeScript, built for coding agents. Generate and check
-charts in a sandbox, then use the same spec in React or Svelte.
+ggts is a fast agent-native implementation of the grammar of graphics in TypeScript.
 
 [Documentation](https://ggts.sh/) · [Agent setup](https://ggts.sh/guide/agents) ·
 [Examples](https://ggts.sh/examples) · [Framework quickstarts](https://ggts.sh/guide/getting-started)
 
-## The grammar you want. The speed you need
+## Benchmarks
 
-Render thousands of points without hand-writing scales, axes, or legends.
 Selected SVG comparisons using the ggts core renderer; lower is better.
 [Source and full results](benchmarks/competitive).
 
