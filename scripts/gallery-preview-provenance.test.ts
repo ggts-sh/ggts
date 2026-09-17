@@ -161,6 +161,7 @@ describe("assertPreviewProvenance", () => {
           tags: [],
           docsSection: "",
           hasData: false,
+          hasReact: false,
         },
         {
           id: "b/two",
@@ -171,6 +172,7 @@ describe("assertPreviewProvenance", () => {
           tags: [],
           docsSection: "",
           hasData: false,
+          hasReact: false,
         },
       ] as const;
       let provenance = emptyProvenance();
@@ -244,6 +246,7 @@ describe("assertPreviewProvenance", () => {
               tags: [],
               docsSection: "",
               hasData: false,
+              hasReact: false,
             },
           ],
           provenance: upsertProvenanceEntry(emptyProvenance(), "x/y", entry),

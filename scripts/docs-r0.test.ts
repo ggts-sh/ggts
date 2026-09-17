@@ -30,6 +30,7 @@ describe("R0 documentation journeys", () => {
       ),
       "utf8",
     );
+    expect(page).not.toContain("REACT_SPEC_HOST_SOURCE");
     const source = page.indexOf("<CodeTabs {tabs} />");
     const tags = page.indexOf('<p class="tags">');
     const references = page.indexOf('<nav class="references"');
