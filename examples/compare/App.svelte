@@ -2,9 +2,15 @@
   import ColSvelte from "../col/basic/Example.svelte";
   import HistSvelte from "../histogram/basic/Example.svelte";
   import ScatterSvelte from "../point/scatter-color/Example.svelte";
+  import HlineSvelte from "../hline/threshold/Example.svelte";
+  import BarSvelte from "../bar/horizontal/Example.svelte";
+  import JitterSvelte from "../jitter/basic/Example.svelte";
   import ColReact from "../col/basic/Example.tsx";
   import HistReact from "../histogram/basic/Example.tsx";
   import ScatterReact from "../point/scatter-color/Example.tsx";
+  import HlineReact from "../hline/threshold/Example.tsx";
+  import BarReact from "../bar/horizontal/Example.tsx";
+  import JitterReact from "../jitter/basic/Example.tsx";
 
   import ReactMount from "./ReactMount.svelte";
 
@@ -26,6 +32,24 @@
       title: "Two measures coloured by region",
       svelte: ScatterSvelte,
       react: ScatterReact,
+    },
+    {
+      id: "hline/threshold",
+      title: "One horizontal threshold",
+      svelte: HlineSvelte,
+      react: HlineReact,
+    },
+    {
+      id: "bar/horizontal",
+      title: "Category totals, flipped so labels read across",
+      svelte: BarSvelte,
+      react: BarReact,
+    },
+    {
+      id: "jitter/basic",
+      title: "Menu calories, spread so items do not stack",
+      svelte: JitterSvelte,
+      react: JitterReact,
     },
   ];
 </script>

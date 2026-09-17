@@ -6,25 +6,27 @@ That file is the proof that the example runs as a React host. A generic
 
 Regenerate with `bun run manifest:gen`.
 
-## Verified (8)
+## Verified (11)
 
+- `bar/horizontal` — Category totals, flipped so labels read across
 - `col/basic` — Counts across ordered chest sizes
 - `histogram/basic` — Histogram of a hundred experimental runs
+- `hline/threshold` — One horizontal threshold
 - `interaction/brush-zoom` — Interval selection and zoom
 - `interaction/legend-filter` — Filter series from the legend
 - `interaction/linked-views` — Link plots, controls, and a table
 - `interaction/tooltip` — Inspect and pin data
+- `jitter/basic` — Menu calories, spread so items do not stack
 - `point/scatter-color` — Two measures coloured by region
 - `smooth/loess-scatter` — Cocoa percent against bar rating
 
-## Remaining (86)
+## Remaining (83)
 
 Write and check `Example.tsx` before the React tab can appear.
 
 - `area/basic` — Survivors from a cohort of one thousand
 - `area/stacked` — Stacked deaths by cause over time
 - `bar/dodged` — US beer production by package type
-- `bar/horizontal` — Category totals, flipped so labels read across
 - `bar/proportions` — Parts of a whole within each group
 - `bar/stacked` — Stacked counts inside each bag
 - `bin2d/basic` — Two-dimensional bins for a dense cloud
@@ -52,10 +54,8 @@ Write and check `Example.tsx` before the React tab can appear.
 - `facet/wrap-free-y` — Facets with free y scales
 - `freqpoly/basic` — Frequency polygon through bin centres
 - `hex/basic` — Hex bins for a dense cloud
-- `hline/threshold` — One horizontal threshold
 - `interaction/facet-intervals` — One interval, applied in every panel
 - `interaction/legend-focus` — Focus a legend group without changing the data
-- `jitter/basic` — Menu calories, spread so items do not stack
 - `jitter/spread` — Jittered points by group
 - `label/basic` — Boxed labels
 - `line/ecdf` — Empirical distribution of event sizes

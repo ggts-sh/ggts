@@ -8,7 +8,14 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = join(import.meta.dir, "..");
-const PICKS = ["col/basic", "histogram/basic", "point/scatter-color"] as const;
+const PICKS = [
+  "col/basic",
+  "histogram/basic",
+  "point/scatter-color",
+  "hline/threshold",
+  "bar/horizontal",
+  "jitter/basic",
+] as const;
 
 function grammarNames(source: string): string[] {
   const names = source.matchAll(/\b(GGPlot|Geom\w+|Theme\w+|Scale\w+|Guide\w+|Labs|Inspect)\b/g);

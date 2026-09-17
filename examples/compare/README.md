@@ -5,6 +5,9 @@ Side-by-side live hosts for the three basic React spike examples:
 - `col/basic`
 - `histogram/basic`
 - `point/scatter-color`
+- `hline/threshold`
+- `bar/horizontal`
+- `jitter/basic`
 
 Start from the repo root:
 

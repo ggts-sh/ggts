@@ -9,6 +9,9 @@ import SelectAndZoom from "../../../examples/interaction/brush-zoom/Example.js";
 import ChestSizeColumns from "../../../examples/col/basic/Example.js";
 import MichelsonHistogram from "../../../examples/histogram/basic/Example.js";
 import GuerryScatter from "../../../examples/point/scatter-color/Example.js";
+import EarthDensityThreshold from "../../../examples/hline/threshold/Example.js";
+import ArmadaHorizontalBars from "../../../examples/bar/horizontal/Example.js";
+import FastfoodJitter from "../../../examples/jitter/basic/Example.js";
 
 afterEach(cleanup);
 
@@ -148,5 +151,41 @@ describe("copyable React gallery examples", () => {
       expect(view.container.querySelectorAll(".gg-points circle").length).toBeGreaterThan(20);
     });
     expect(view.container.textContent).toContain("Two measures coloured by region");
+  });
+
+  it("renders the earth-density threshold from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <EarthDensityThreshold />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-points circle").length).toBeGreaterThan(10);
+    });
+    expect(view.container.textContent).toContain("One horizontal threshold");
+  });
+
+  it("renders flipped armada columns from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <ArmadaHorizontalBars />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-rects rect").length).toBeGreaterThan(3);
+    });
+    expect(view.container.textContent).toContain("Category totals, flipped so labels read across");
+  });
+
+  it("renders jittered menu calories from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <FastfoodJitter />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-points circle").length).toBeGreaterThan(20);
+    });
+    expect(view.container.textContent).toContain("Menu calories, spread so items do not stack");
   });
 });

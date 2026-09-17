@@ -84,7 +84,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["bar", "col", "coord", "flip", "horizontal", "theme"],
     docsSection: "Bars & columns",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "bar/proportions",
@@ -416,7 +416,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["hline", "rule", "annotation", "line", "theme"],
     docsSection: "Annotations & rules",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "interaction/brush-zoom",
@@ -566,7 +566,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["jitter", "scatter", "categorical", "overplotting", "color"],
     docsSection: "Points & scatter",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "jitter/spread",
