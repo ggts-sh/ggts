@@ -1,6 +1,9 @@
 <script lang="ts">
   import { base } from "$app/paths";
-  import { REACT_SPEC_HOST_SOURCE } from "$scripts/agent-quickstart";
+  import {
+    exampleSourceHeading,
+    exampleSourceTabs,
+  } from "$scripts/example-source-tabs";
 
   import CodeTabs from "$lib/CodeTabs.svelte";
   import { galleryCatalog } from "$lib/catalog/gallery";
@@ -23,20 +26,15 @@
   const related = $derived(
     rankRelatedExamples(data.entry.id, galleryEntries, 3, data.entry),
   );
-  const tabs = $derived([
-    {
-      label: "React",
-      code: data.reactSource ?? REACT_SPEC_HOST_SOURCE,
-      language: "tsx",
-    },
-    { label: "Svelte", code: data.svelteSource, language: "svelte" },
-    { label: "Builder (TS)", code: data.specSource, language: "typescript" },
-    {
-      label: "Spec (JSON)",
-      code: JSON.stringify(data.spec, null, 2),
-      language: "json",
-    },
-  ]);
+  const tabs = $derived(
+    exampleSourceTabs({
+      svelteSource: data.svelteSource,
+      specSource: data.specSource,
+      spec: data.spec,
+      reactSource: data.reactSource,
+    }),
+  );
+  const codeHeading = $derived(exampleSourceHeading(data.reactSource !== null));
 </script>
 
 <article class="example-page">
@@ -96,18 +94,9 @@
     <div class="section-heading">
       <div>
         <p class="eyebrow">Source</p>
-        <h2 id="example-code-heading">React, Svelte, builder, JSON</h2>
+        <h2 id="example-code-heading">{codeHeading}</h2>
       </div>
     </div>
-    {#if data.reactSource === null}
-      <p>
-        For React, save the complete Spec JSON as <code>chart.json</code>
-        beside the component. This host renders the chart grammar. The live Svelte
-        example may add interactions; follow the
-        <a href={`${base}/guide/interactions`}>interaction guide</a>
-        for inspection, selection, and linked state in your framework.
-      </p>
-    {/if}
     <CodeTabs {tabs} />
   </section>
 

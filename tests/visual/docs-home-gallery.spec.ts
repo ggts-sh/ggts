@@ -254,13 +254,25 @@ test("unknown gallery filter values reset without dropping unrelated params", as
   await expect(page).not.toHaveURL(/category=unknown|tag=nope/);
 });
 
-test("detail is specimen-first and orders React, Svelte, builder, then JSON", async ({ page }) => {
+test("detail is specimen-first and orders Svelte, builder, then JSON without a React stub", async ({
+  page,
+}) => {
   await page.goto("/examples/point/scatter-color");
   await expect(page.locator(".gg-example-frame")).toBeVisible();
   const tabs = page.getByRole("tablist", { name: "Code representations" }).getByRole("tab");
-  await expect(tabs).toHaveText(["React", "Svelte", "Builder (TS)", "Spec (JSON)"]);
+  await expect(tabs).toHaveText(["Svelte", "Builder (TS)", "Spec (JSON)"]);
+  await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("heading", { name: "Svelte, builder, JSON" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open in Playground" })).toHaveCount(0);
   await expect(page.locator(".related li")).toHaveCount(3);
+});
+
+test("detail shows a React tab after Svelte only when Example.tsx exists", async ({ page }) => {
+  await page.goto("/examples/smooth/loess-scatter");
+  const tabs = page.getByRole("tablist", { name: "Code representations" }).getByRole("tab");
+  await expect(tabs).toHaveText(["Svelte", "React", "Builder (TS)", "Spec (JSON)"]);
+  await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("heading", { name: "Svelte, React, builder, JSON" })).toBeVisible();
 });
 
 test("homepage switches four benchmark tabs and sends details to GitHub", async ({

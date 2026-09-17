@@ -18,6 +18,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { defineArtifact } from "./artifact.ts";
+import { buildReactBacklogMarkdown } from "./react-example-backlog.ts";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -56,6 +57,8 @@ export interface DiscoveredExample extends ExampleMeta {
   name: string;
   /** Whether the example ships a data.ts module. */
   hasData: boolean;
+  /** Whether the example ships a verified React host (Example.tsx). */
+  hasReact: boolean;
 }
 
 export class ManifestError extends Error {
@@ -278,6 +281,7 @@ export function buildManifestSource(examples: readonly DiscoveredExample[]): str
               `    },`,
             ]),
         `    hasData: ${String(ex.hasData)},`,
+        `    hasReact: ${String(ex.hasReact)},`,
       ];
       return `  {\n${lines.join("\n")}\n  },`;
     })
@@ -321,6 +325,8 @@ export interface ExampleManifestEntry {
   readonly journey?: ExampleJourney;
   /** Whether the example ships a data.ts module. */
   readonly hasData: boolean;
+  /** Whether the example ships a verified React host (Example.tsx). */
+  readonly hasReact: boolean;
 }
 
 export const EXAMPLES: readonly ExampleManifestEntry[] = [
@@ -381,6 +387,7 @@ export function discoverExamples(examplesDir: string): DiscoveredExample[] {
         ...(m.vrWidth === undefined ? {} : { vrWidth: m.vrWidth }),
         ...(m.journey === undefined ? {} : { journey: m.journey }),
         hasData: existsSync(join(dir, "data.ts")),
+        hasReact: existsSync(join(dir, "Example.tsx")),
       });
     }
   }
@@ -403,4 +410,14 @@ export const manifestArtifact = defineArtifact({
   build: () => buildManifestSource(discoverExamples(examplesDir)),
 });
 
-if (import.meta.main) await manifestArtifact.cli();
+export const reactBacklogArtifact = defineArtifact({
+  path: join(examplesDir, "REACT.md"),
+  label: "examples/REACT.md",
+  regenerateWith: "manifest:gen",
+  build: () => buildReactBacklogMarkdown(sortExamples(discoverExamples(examplesDir))),
+});
+
+if (import.meta.main) {
+  await manifestArtifact.cli();
+  await reactBacklogArtifact.cli();
+}

@@ -37,6 +37,8 @@ export interface ExampleManifestEntry {
   readonly journey?: ExampleJourney;
   /** Whether the example ships a data.ts module. */
   readonly hasData: boolean;
+  /** Whether the example ships a verified React host (Example.tsx). */
+  readonly hasReact: boolean;
 }
 
 export const EXAMPLES: readonly ExampleManifestEntry[] = [
@@ -49,6 +51,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["area", "line", "layers", "theme"],
     docsSection: "Areas",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "area/stacked",
@@ -59,6 +62,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["area", "stack", "fill", "legend", "theme", "palette"],
     docsSection: "Areas",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "bar/dodged",
@@ -69,6 +73,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["bar", "count", "dodge", "fill", "legend", "weight", "theme", "palette"],
     docsSection: "Bars & columns",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "bar/horizontal",
@@ -79,6 +84,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["bar", "col", "coord", "flip", "horizontal", "theme"],
     docsSection: "Bars & columns",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "bar/proportions",
@@ -89,6 +95,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["bar", "fill", "proportion", "legend", "weight", "theme"],
     docsSection: "Bars & columns",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "bar/stacked",
@@ -99,6 +106,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["bar", "stack", "fill", "legend", "weight", "theme", "palette"],
     docsSection: "Bars & columns",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "bin2d/basic",
@@ -109,6 +117,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["bin2d", "heatmap", "density"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "blank/axes-only",
@@ -119,6 +128,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["blank", "scales", "domain", "theme"],
     docsSection: "Annotations & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "blank/domain-expand",
@@ -129,6 +139,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["blank", "point", "scales", "domain", "theme"],
     docsSection: "Annotations & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "boxplot/by-category",
@@ -139,6 +150,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["boxplot", "stat", "summary", "outliers", "theme"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "boxplot/violin",
@@ -149,6 +161,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["violin", "density", "distribution", "boxplot"],
     docsSection: "Boxes & distributions",
     hasData: false,
+    hasReact: false,
   },
   {
     id: "col/basic",
@@ -159,6 +172,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["col", "bars", "identity", "theme"],
     docsSection: "Bars & columns",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "col/long-labels",
@@ -170,6 +184,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     docsSection: "Bars & columns",
     vrHeight: 420,
     hasData: true,
+    hasReact: false,
   },
   {
     id: "col/mixed-outlier-labels",
@@ -181,6 +196,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     docsSection: "Bars & columns",
     vrHeight: 320,
     hasData: true,
+    hasReact: false,
   },
   {
     id: "col/theme-linedraw",
@@ -191,6 +207,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["col", "bars", "theme", "linedraw"],
     docsSection: "Bars & columns",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "col/value-labels",
@@ -201,6 +218,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["col", "text", "labels", "annotation", "theme"],
     docsSection: "Bars & columns",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "color/binned",
@@ -211,6 +229,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "color", "binned", "colorsteps", "legend"],
     docsSection: "Color & legends",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "contour/basic",
@@ -221,6 +240,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["contour", "stat", "path", "grid", "surface", "theme"],
     docsSection: "Surfaces & grids",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "crossbar/boxes",
@@ -231,6 +251,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["crossbar", "identity", "box", "ymin", "ymax"],
     docsSection: "Statistical summaries",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "curve/connectors",
@@ -241,6 +262,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["curve", "annotation", "connector", "bezier"],
     docsSection: "Lines & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "density/kde-2d",
@@ -251,6 +273,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["density", "density_2d", "stat", "kde", "contour", "point", "map"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "density/kde-2d-filled",
@@ -261,6 +284,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["density", "density_2d_filled", "kde", "fill", "stat", "contour", "map"],
     docsSection: "Statistical summaries",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "density/overlay",
@@ -271,6 +295,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["density", "kde", "fill", "alpha", "theme", "palette"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "dotplot/histodot",
@@ -281,6 +306,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["dotplot", "bindot", "stat", "bin", "point", "stack", "theme"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "errorbar/caps",
@@ -291,6 +317,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["errorbar", "identity", "caps", "ymin", "ymax"],
     docsSection: "Statistical summaries",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "errorbar/mean-se",
@@ -301,6 +328,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["errorbar", "summary", "mean-se", "jitter"],
     docsSection: "Statistical summaries",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "errorbar/summary-bin",
@@ -311,6 +339,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["errorbar", "summary_bin", "bin", "mean-se", "line", "stat"],
     docsSection: "Statistical summaries",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "facet/ordered-side-strips",
@@ -321,6 +350,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["facet", "order", "labels", "strip", "wrap", "col"],
     docsSection: "Facets",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "facet/wrap",
@@ -331,6 +361,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["facet", "histogram", "bin", "wrap", "weight"],
     docsSection: "Facets",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "facet/wrap-free-y",
@@ -341,6 +372,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["facet", "free-scales", "line", "wrap"],
     docsSection: "Facets",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "freqpoly/basic",
@@ -351,6 +383,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["freqpoly", "bin", "line", "stat", "rule", "annotation", "theme"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "hex/basic",
@@ -361,6 +394,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["hex", "heatmap", "density"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "histogram/basic",
@@ -371,6 +405,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["histogram", "bins", "stat", "rule", "annotation", "theme"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "hline/threshold",
@@ -381,6 +416,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["hline", "rule", "annotation", "line", "theme"],
     docsSection: "Annotations & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "interaction/brush-zoom",
@@ -403,6 +439,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
       fullWidth: true,
     },
     hasData: true,
+    hasReact: true,
   },
   {
     id: "interaction/facet-intervals",
@@ -425,6 +462,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
       fullWidth: true,
     },
     hasData: true,
+    hasReact: false,
   },
   {
     id: "interaction/legend-filter",
@@ -447,6 +485,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
       fullWidth: true,
     },
     hasData: true,
+    hasReact: true,
   },
   {
     id: "interaction/legend-focus",
@@ -470,6 +509,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
       fullWidth: true,
     },
     hasData: true,
+    hasReact: false,
   },
   {
     id: "interaction/linked-views",
@@ -492,6 +532,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
       fullWidth: true,
     },
     hasData: true,
+    hasReact: true,
   },
   {
     id: "interaction/tooltip",
@@ -514,6 +555,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
       fullWidth: true,
     },
     hasData: true,
+    hasReact: true,
   },
   {
     id: "jitter/basic",
@@ -524,6 +566,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["jitter", "scatter", "categorical", "overplotting", "color"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "jitter/spread",
@@ -534,6 +577,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["jitter", "point", "overplotting", "categorical"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "label/basic",
@@ -544,6 +588,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["label", "text", "point"],
     docsSection: "Labels & text",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "line/ecdf",
@@ -554,6 +599,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["line", "ecdf", "stat", "step"],
     docsSection: "Lines & time",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "line/function",
@@ -564,6 +610,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["function", "dnorm", "overlay", "line"],
     docsSection: "Lines & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "line/labor-cost-of-wheat",
@@ -574,6 +621,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["line", "point", "ratio", "theme"],
     docsSection: "Lines & time",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "line/multi-series",
@@ -584,6 +632,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["line", "point", "color", "legend", "layers", "theme", "palette"],
     docsSection: "Lines & time",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "line/time-axis",
@@ -594,6 +643,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["line", "time", "scales", "inference", "theme"],
     docsSection: "Lines & time",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "linerange/stems",
@@ -604,6 +654,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["linerange", "identity", "stem", "ymin", "ymax"],
     docsSection: "Statistical summaries",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "map/choropleth",
@@ -614,6 +665,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["map", "choropleth", "region", "join", "fill"],
     docsSection: "Maps & polygons",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "path/connect-hv",
@@ -624,6 +676,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["path", "connect", "stat", "step", "hv", "trajectory"],
     docsSection: "Lines & time",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "path/ellipse-rings",
@@ -634,6 +687,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["path", "ellipse", "stat", "confidence", "group", "point", "theme"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "path/trajectory",
@@ -650,6 +704,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
       fullWidth: true,
     },
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/abline-identity",
@@ -660,6 +715,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "abline", "annotation", "reference"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/count",
@@ -670,6 +726,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "count", "size", "overplot", "stat"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/fixed-aspect",
@@ -680,6 +737,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "coordinates", "fixed-aspect", "responsive"],
     docsSection: "Scatter plots",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/gradient-continuous",
@@ -690,6 +748,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "color", "gradient", "sequential", "scale"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/hue-discrete",
@@ -700,6 +759,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "color", "hue", "discrete", "scale"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/jitter",
@@ -710,6 +770,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "jitter", "position", "scatter", "categorical", "color"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/layer-data-bands",
@@ -720,6 +781,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "rect", "text", "layer-data", "multi-table"],
     docsSection: "Scatter plots",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/log-scale",
@@ -730,6 +792,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "scales", "log", "inspect", "theme", "palette"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/quantile-lines",
@@ -740,6 +803,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "quantile", "scatter", "stat"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/scatter-color",
@@ -750,6 +814,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "color", "legend", "scatter", "theme", "palette"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/stat-manual-mean",
@@ -760,6 +825,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "manual", "stat", "mean", "group", "theme"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/stat-unique",
@@ -770,6 +836,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "unique", "stat", "overplotting", "dedupe", "theme"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/steps-binned",
@@ -780,6 +847,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "color", "steps", "binned", "scale"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "point/void-chrome",
@@ -790,6 +858,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "theme", "void", "chrome-free"],
     docsSection: "Points & scatter",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "pointrange/midpoints",
@@ -800,6 +869,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["pointrange", "identity", "point", "ymin", "ymax"],
     docsSection: "Statistical summaries",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "polygon/regions",
@@ -810,6 +880,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["polygon", "fill", "group", "choropleth"],
     docsSection: "Rectangles & grids",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "qq/cloud",
@@ -820,6 +891,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["qq", "diagnostics", "distribution", "quantiles"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "qq/normal",
@@ -830,6 +902,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["qq", "diagnostics", "distribution"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "qq_line/match",
@@ -840,6 +913,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["qq_line", "qq-line", "diagnostics", "distribution"],
     docsSection: "Distributions",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "raster/grid",
@@ -850,6 +924,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["raster", "heatmap", "fill", "grid"],
     docsSection: "Rectangles & grids",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "rect/regions",
@@ -860,6 +935,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["rect", "regions", "bands", "layers"],
     docsSection: "Rectangles & grids",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "ribbon/bounds",
@@ -870,6 +946,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["ribbon", "interval", "bounds", "sqrt"],
     docsSection: "Areas",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "ribbon/paint",
@@ -880,6 +957,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["ribbon", "interval", "gradient", "glow", "paint"],
     docsSection: "Areas",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "rug/ticks",
@@ -890,6 +968,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["rug", "distribution", "marginal"],
     docsSection: "Annotations & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "rule/annotation",
@@ -900,6 +979,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["rule", "annotation", "line", "layers"],
     docsSection: "Annotations & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "rule/data-driven",
@@ -910,6 +990,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["rule", "distribution", "rug"],
     docsSection: "Annotations & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "segment/annotations",
@@ -920,6 +1001,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["segment", "annotation", "leader", "slope"],
     docsSection: "Lines & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "sf/basic",
@@ -930,6 +1012,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["sf", "geojson", "polygon", "fill", "map", "geom"],
     docsSection: "Maps & spatial",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "sf/boxed-labels",
@@ -940,6 +1023,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["sf", "sf_label", "label", "box", "geojson", "centroid", "map"],
     docsSection: "Maps & spatial",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "sf/geometry-collection",
@@ -950,6 +1034,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["sf", "geojson", "geometrycollection", "polygon", "fill", "map", "geom"],
     docsSection: "Maps & spatial",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "sf/holes",
@@ -960,6 +1045,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["sf", "geojson", "polygon", "hole", "evenodd", "fill", "map", "geom"],
     docsSection: "Maps & spatial",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "sf/labels",
@@ -970,6 +1056,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["sf", "sf_text", "label", "geojson", "centroid", "map"],
     docsSection: "Maps & spatial",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "showcase/kyoto-sakura",
@@ -982,6 +1069,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     vrHeight: 420,
     vrWidth: 768,
     hasData: false,
+    hasReact: false,
   },
   {
     id: "smooth/loess-scatter",
@@ -992,6 +1080,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["smooth", "loess", "ribbon", "scatter"],
     docsSection: "Statistical summaries",
     hasData: true,
+    hasReact: true,
   },
   {
     id: "spoke/rays",
@@ -1002,6 +1091,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["spoke", "vector", "angle", "radius"],
     docsSection: "Lines & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "spoke/vector-field",
@@ -1012,6 +1102,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["spoke", "vector", "angle", "radius", "segment", "theme"],
     docsSection: "Lines & rules",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "step/ecdf",
@@ -1022,6 +1113,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["step", "ecdf", "line", "geom"],
     docsSection: "Lines & time",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "step/stairs",
@@ -1032,6 +1124,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["step", "line", "stairs"],
     docsSection: "Lines & time",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "text/labels",
@@ -1042,6 +1135,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["text", "point", "labels"],
     docsSection: "Labels & text",
     hasData: true,
+    hasReact: false,
   },
   {
     id: "tile/heatmap",
@@ -1054,6 +1148,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     vrHeight: 380,
     vrWidth: 1200,
     hasData: true,
+    hasReact: false,
   },
   {
     id: "vline/cutoff",
@@ -1064,5 +1159,6 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["vline", "rule", "annotation", "line", "theme"],
     docsSection: "Annotations & rules",
     hasData: true,
+    hasReact: false,
   },
 ];

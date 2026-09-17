@@ -1,8 +1,8 @@
 /**
  * Loader bridge between the generated manifest (ids + metadata) and the
  * example modules themselves. Vite's import.meta.glob provides lazy module
- * access plus ?raw sources for the code triptych (spec JSON / builder /
- * Svelte — plan: "docs triptychs").
+ * access plus ?raw sources for the code tabs (Svelte / builder / spec JSON,
+ * plus React only when Example.tsx exists).
  *
  * Metadata-only consumers should import `$lib/examples-manifest` instead so
  * they do not register the Example.svelte globs (and their chart deps).

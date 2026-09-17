@@ -1,8 +1,7 @@
 <script lang="ts">
   /**
-   * The code triptych (plan: "docs triptych"): the same plot as canonical
-   * spec JSON (what agents emit), fluent-builder TypeScript (spec.ts), and
-   * idiomatic Svelte components (Example.svelte) — each with a copy button.
+   * Gallery and home source tabs: Svelte first, then optional verified React,
+   * builder TypeScript, and canonical spec JSON — each with a copy button.
    */
   import { briefCopyStatus, COPIED_STATUS, copyText } from "$lib/clipboard";
   import {
