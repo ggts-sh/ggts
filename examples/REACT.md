@@ -6,15 +6,18 @@ That file is the proof that the example runs as a React host. A generic
 
 Regenerate with `bun run manifest:gen`.
 
-## Verified (5)
+## Verified (8)
 
+- `col/basic` — Counts across ordered chest sizes
+- `histogram/basic` — Histogram of a hundred experimental runs
 - `interaction/brush-zoom` — Interval selection and zoom
 - `interaction/legend-filter` — Filter series from the legend
 - `interaction/linked-views` — Link plots, controls, and a table
 - `interaction/tooltip` — Inspect and pin data
+- `point/scatter-color` — Two measures coloured by region
 - `smooth/loess-scatter` — Cocoa percent against bar rating
 
-## Remaining (89)
+## Remaining (86)
 
 Write and check `Example.tsx` before the React tab can appear.
 
@@ -29,7 +32,6 @@ Write and check `Example.tsx` before the React tab can appear.
 - `blank/domain-expand` — Expanded domain with no marks
 - `boxplot/by-category` — Boxplots for five runs of the same experiment
 - `boxplot/violin` — Violin plots for the same five runs
-- `col/basic` — Counts across ordered chest sizes
 - `col/long-labels` — Long category labels at a narrow width
 - `col/mixed-outlier-labels` — One long label among short ones
 - `col/theme-linedraw` — Linedraw theme on chest-size columns
@@ -50,7 +52,6 @@ Write and check `Example.tsx` before the React tab can appear.
 - `facet/wrap-free-y` — Facets with free y scales
 - `freqpoly/basic` — Frequency polygon through bin centres
 - `hex/basic` — Hex bins for a dense cloud
-- `histogram/basic` — Histogram of a hundred experimental runs
 - `hline/threshold` — One horizontal threshold
 - `interaction/facet-intervals` — One interval, applied in every panel
 - `interaction/legend-focus` — Focus a legend group without changing the data
@@ -76,7 +77,6 @@ Write and check `Example.tsx` before the React tab can appear.
 - `point/layer-data-bands` — What the wars did to the national debt
 - `point/log-scale` — Cholera, crowding and water in London, 1849
 - `point/quantile-lines` — Flavor against aroma in cupping scores
-- `point/scatter-color` — Two measures coloured by region
 - `point/stat-manual-mean` — Raw points with a manual mean per group
 - `point/stat-unique` — Collapse duplicate coordinates to unique marks
 - `point/steps-binned` — Cholera against height above the Thames

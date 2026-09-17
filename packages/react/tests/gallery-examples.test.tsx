@@ -6,6 +6,9 @@ import PenguinInspection from "../../../examples/interaction/tooltip/Example.js"
 import LinkedPenguins from "../../../examples/interaction/linked-views/Example.js";
 import LegendComparison from "../../../examples/interaction/legend-filter/Example.js";
 import SelectAndZoom from "../../../examples/interaction/brush-zoom/Example.js";
+import ChestSizeColumns from "../../../examples/col/basic/Example.js";
+import MichelsonHistogram from "../../../examples/histogram/basic/Example.js";
+import GuerryScatter from "../../../examples/point/scatter-color/Example.js";
 
 afterEach(cleanup);
 
@@ -80,7 +83,7 @@ describe("copyable React gallery examples", () => {
       expect(view.container.querySelectorAll(".gg-points circle").length).toBeLessThan(count);
     });
     fireEvent.click(view.getByRole("radio", { name: "Focus a series" }));
-    const focusDebt = await view.findByRole("button", { name: "Focus National debt" });
+    const focusDebt = await view.findByRole("button", { name: /National debt \(.*legend\)/ });
     await waitFor(() => {
       expect(view.container.querySelectorAll(".gg-points circle")).toHaveLength(count);
     });
@@ -106,5 +109,44 @@ describe("copyable React gallery examples", () => {
     await view.findByText(/Zoom applied \(keyboard\)/);
     fireEvent.click(view.getByRole("button", { name: "Reset zoom" }));
     await view.findByText("Zoom reset.");
+  });
+
+  it("renders chest-size columns from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <ChestSizeColumns />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-rects rect").length).toBeGreaterThan(10);
+    });
+    expect(view.container.textContent).toContain("Counts across ordered chest sizes");
+    // Regression: inspect-only charts must not overlay an Inspect tool rail
+    // (Svelte hides a single-tool rail; React used to paint it over the title).
+    expect(view.queryByRole("group", { name: "Chart interaction tools" })).toBeNull();
+  });
+
+  it("renders the Michelson histogram from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <MichelsonHistogram />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-rects rect").length).toBeGreaterThan(4);
+    });
+    expect(view.container.textContent).toContain("Histogram of a hundred experimental runs");
+  });
+
+  it("renders the Guerry scatter from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <GuerryScatter />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-points circle").length).toBeGreaterThan(20);
+    });
+    expect(view.container.textContent).toContain("Two measures coloured by region");
   });
 });

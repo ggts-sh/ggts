@@ -206,8 +206,8 @@ describe("React host parity", () => {
         <GuideLegend channel="color" focus />
       </GGPlot>,
     );
-    const a = result.getByRole("button", { name: "Focus A" });
-    const b = result.getByRole("button", { name: "Focus B" });
+    const a = result.getByRole("button", { name: /A \(.*legend\)/ });
+    const b = result.getByRole("button", { name: /B \(.*legend\)/ });
     fireEvent.click(a);
     expect(interaction.emphasized(scope)).toEqual(["a"]);
     fireEvent.pointerEnter(b);

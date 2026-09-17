@@ -172,7 +172,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["col", "bars", "identity", "theme"],
     docsSection: "Bars & columns",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "col/long-labels",
@@ -405,7 +405,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["histogram", "bins", "stat", "rule", "annotation", "theme"],
     docsSection: "Distributions",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "hline/threshold",
@@ -814,7 +814,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "color", "legend", "scatter", "theme", "palette"],
     docsSection: "Points & scatter",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "point/stat-manual-mean",

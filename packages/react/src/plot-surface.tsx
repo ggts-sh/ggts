@@ -44,7 +44,8 @@ import {
   visuallyHidden,
 } from "./plot-accessibility.js";
 import { PlotOverlay } from "./plot-overlay.js";
-import { PlotControls } from "./plot-controls.js";
+import { ReactLegendChrome } from "./plot-legend-chrome.js";
+import { ReactPlotControls } from "./plot-tool-rail.js";
 import { usePlotInteractions } from "./plot-interactions.js";
 import { usePlotLegends } from "./plot-legends.js";
 import { usePlotModel } from "./plot-runtime.js";
@@ -361,10 +362,7 @@ function PlotSurfaceView({ state }: { state: ReturnType<typeof usePlotSurface> }
     config,
     interactions,
     legends,
-    zoom,
     onZoom,
-    boundsInputs,
-    applyBounds,
     root,
     capture,
     stack,
@@ -382,27 +380,7 @@ function PlotSurfaceView({ state }: { state: ReturnType<typeof usePlotSurface> }
   } = state;
   return (
     <div>
-      {interactive && (
-        <PlotControls
-          tools={config.availableTools}
-          activeTool={interactions.activeTool}
-          onToolChange={interactions.chooseTool}
-          canResetZoom={zoom !== null}
-          onResetZoom={() => {
-            onZoom(null, "pointer");
-          }}
-          canClearSelection={interactions.selected.length > 0}
-          onClearSelection={() => {
-            interactions.clearSelection("pointer");
-          }}
-          canClearIntervals={interactions.intervals.length > 0}
-          onClearIntervals={() => {
-            interactions.clearIntervals("pointer");
-          }}
-          boundsInputs={boundsInputs}
-          onApplyBounds={applyBounds}
-        />
-      )}
+      <ReactPlotControls {...state} />
       <div
         ref={root}
         className={`gg-plot-root${typeof props.width === "number" ? "" : " gg-container-width"}`}
@@ -475,6 +453,16 @@ function PlotSurfaceView({ state }: { state: ReturnType<typeof usePlotSurface> }
               onLeave={interactions.onTooltipLeave}
             />
           )}
+        {legends.focusEntries.length > 0 && (
+          <ReactLegendChrome
+            entries={legends.focusEntries}
+            previewIdentity={legends.previewIdentity}
+            pressedIdentity={legends.pressedIdentity}
+            focusEntry={legends.focusEntry}
+            clearPreview={legends.clearPreview}
+            clearFocus={legends.clearFocus}
+          />
+        )}
         {interactive && (
           <>
             <p id={`${plotId}-description`} style={visuallyHidden}>
