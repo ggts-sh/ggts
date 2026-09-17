@@ -329,15 +329,15 @@ test("homepage switches four benchmark tabs and sends details to GitHub", async 
 test("gallery React tab exposes the authored inspection example", async ({ page }) => {
   await page.goto("/examples/interaction/tooltip");
   const code = page.locator(".code-section");
+  const svelte = code.getByRole("tab", { name: "Svelte", exact: true });
   const react = code.getByRole("tab", { name: "React", exact: true });
+  await expect(svelte).toHaveAttribute("aria-selected", "true");
+  await expect(code.getByRole("tabpanel")).toContainText("<script lang=");
+  await react.click();
   await expect(react).toHaveAttribute("aria-selected", "true");
   await expect(code.getByRole("tabpanel")).toContainText("function PenguinInspection");
   await expect(code.getByRole("tabpanel")).toContainText('contentMode="interactive"');
   await expect(code.getByRole("tabpanel")).toContainText("Remember this penguin");
-  await code.getByRole("tab", { name: "Svelte", exact: true }).click();
-  await expect(code.getByRole("tabpanel")).toContainText("<script lang=");
-  await react.click();
-  await expect(code.getByRole("tabpanel")).toContainText("function PenguinInspection");
 });
 
 for (const [path, width, height] of [
