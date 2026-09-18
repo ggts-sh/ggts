@@ -7,13 +7,13 @@
  *   bun scripts/gen-benchmark-charts.ts --check
  */
 
-import { check } from "./benchmark-charts/check";
-import { write } from "./benchmark-charts/write";
+import { benchmarkChartArtifacts } from "./benchmark-charts/artifacts.ts";
 
 if (import.meta.main) {
-  if (process.argv.includes("--check")) {
-    await check();
-  } else {
-    await write(process.argv.includes("--publish"));
-  }
+  const check = process.argv.includes("--check");
+  const artifacts = await benchmarkChartArtifacts(
+    undefined,
+    !check && process.argv.includes("--publish"),
+  );
+  await artifacts.cli();
 }
