@@ -15,11 +15,7 @@ import type {
 import type { Scene } from "./scene.js";
 import type { CellValue } from "./table.js";
 
-export type {
-  BucketBoundary,
-  CandidateStoreIndexes,
-  SeriesBoundary,
-} from "./candidate-store-index-types.js";
+export type { CandidateStoreIndexes } from "./candidate-store-index-types.js";
 
 const NO_ROW = 0xffffffff;
 
@@ -277,7 +273,7 @@ export function buildCandidateStoreIndexes(
     traversal,
     anyNonFiniteAnchor,
   });
-  const axisGroups = createLazyCandidateAxisGroups({
+  const group = createLazyCandidateAxisGroups({
     scene,
     n,
     flip,
@@ -291,6 +287,7 @@ export function buildCandidateStoreIndexes(
     yTokenIds,
     xs,
     ys,
+    logicalValue,
   });
 
   // Do not retain construction scratch beside the store (the 100k-candidate
@@ -330,8 +327,7 @@ export function buildCandidateStoreIndexes(
     orderByX,
     coincidentStack,
     coincidentAt,
-    axisGroups,
-    logicalValue,
+    group,
     fact,
   };
 }
