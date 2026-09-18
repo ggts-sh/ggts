@@ -1,8 +1,6 @@
-import { closestOrthInRange } from "./candidate-geometry-nearest.js";
 import { createHitGeometry } from "./candidate-hit-geometry.js";
 import { resolveTopmostHit } from "./candidate-hit-resolve.js";
 import { buildCandidateStoreIndexes } from "./candidate-store-indexes.js";
-import type { BucketBoundary, SeriesBoundary } from "./candidate-store-indexes.js";
 import { buildSpatialIndex } from "./candidate-store-spatial-index.js";
 import { findNearest, traverseCandidate } from "./candidate-store-nearest.js";
 import type { CandidateStore, CandidateStoreOptions } from "./candidate-store-types.js";
@@ -34,15 +32,11 @@ export function assembleCandidateStore(
     batchIds,
     primitiveIds,
     panelIds,
-    series,
-    ranks,
-    sources,
     autoModes,
     xs,
     ys,
     xTokenIds,
     yTokenIds,
-    tokens,
     traversal,
     traversalRank,
     orderByX,
@@ -107,58 +101,7 @@ export function assembleCandidateStore(
         search,
       );
     },
-    group(seedId, axis) {
-      if (seedId < 0 || seedId >= n) return null;
-      const keys = axis === "x" ? xTokenIds : yTokenIds;
-      const key = keys[seedId];
-      if (key === -1 || key === undefined) return null;
-      const panel = panelIds[seedId]!;
-      // Axis-group tables build lazily — group() is their only consumer, so
-      // first-hover sessions never pay the token sort / bucket walk.
-      const { permutations, buckets } = indexes.axisGroups();
-      // Numeric composite key mirrors the build side (panel * tokenCount + tokenId).
-      const tuple: BucketBoundary | undefined = buckets[axis].get(
-        panel * Math.max(tokens.length, 1) + key,
-      );
-      if (tuple === undefined) return null;
-      const { start, end } = tuple;
-      const permutation = permutations[axis];
-      const orth = axis === "x" ? (flip ? xs : ys) : flip ? ys : xs;
-      const seedLayer = scene.batches[batchIds[seedId]!]!.layerIndex;
-      const memberIds = new Uint32Array(tuple.series.length);
-      const seedOrth = orth[seedId]!;
-      for (let boundaryIndex = 0; boundaryIndex < tuple.series.length; boundaryIndex++) {
-        const boundary: SeriesBoundary = tuple.series[boundaryIndex]!;
-        if (boundary.layerIndex === seedLayer && boundary.seriesId === series[seedId]) {
-          memberIds[boundaryIndex] = seedId;
-          continue;
-        }
-        // Bucket sort orders ranks before orth. A single layer/series boundary
-        // is orth-sorted only when rank is constant across the range; otherwise
-        // fall back to linear closest (preserves prior group() semantics).
-        const firstId = permutation[boundary.start]!;
-        const lastId = permutation[boundary.end - 1]!;
-        const orthSorted = ranks[firstId] === ranks[lastId];
-        memberIds[boundaryIndex] = closestOrthInRange(
-          permutation,
-          orth,
-          batchIds,
-          sources,
-          boundary.start,
-          boundary.end,
-          seedOrth,
-          orthSorted,
-        );
-      }
-      return {
-        axis,
-        axisValue: indexes.logicalValue(seedId, axis),
-        token: tokens[key]!,
-        focusId: seedId,
-        memberIds,
-        range: { axis, panelIndex: panel, start, end, permutation },
-      };
-    },
+    group: indexes.group,
     traverse(startId, direction = "next", step) {
       return traverseCandidate(
         startId,
