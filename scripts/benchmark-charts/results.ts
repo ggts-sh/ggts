@@ -73,7 +73,7 @@ export interface SsrResults {
   }[];
 }
 
-export interface HistoricalBrowserResults {
+interface HistoricalBrowserResults {
   readonly generatedAt: string;
   readonly host: Readonly<Record<string, string>>;
   readonly protocol: Readonly<Record<string, string | number>>;
