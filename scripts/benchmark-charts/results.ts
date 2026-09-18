@@ -5,8 +5,6 @@ import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 export const ROOT = resolve(import.meta.dir, "..", "..");
-const COMPETITIVE = join(ROOT, "benchmarks", "competitive");
-export const OUTPUT_DIR = join(ROOT, "apps", "docs", "static", "benchmarks");
 export const PROJECTION = join(
   ROOT,
   "apps",
@@ -48,8 +46,8 @@ export interface BundleResults {
   }[];
 }
 
-export function readJson(name: string): unknown {
-  const path = join(COMPETITIVE, "results", name);
+export function readJson(name: string, root = ROOT): unknown {
+  const path = join(root, "benchmarks", "competitive", "results", name);
   if (!existsSync(path)) {
     throw new Error(
       `${name} is missing. Run the competitive benchmarks first:\n` +
@@ -81,9 +79,6 @@ export interface HistoricalBrowserResults {
   readonly protocol: Readonly<Record<string, string | number>>;
   readonly results: BrowserResults["results"];
 }
-
-export const SNAPSHOT = join(COMPETITIVE, "published.json");
-const RENDERER_SNAPSHOT = join(COMPETITIVE, "published-svg.json");
 
 export type PublishedSnapshot = {
   browser: BrowserResults;
@@ -162,10 +157,13 @@ function validateRendererSnapshot(renderer: BrowserResults): void {
   }
 }
 
-export function readSnapshot(): PublishedSnapshot {
+export function readSnapshot(root = ROOT): PublishedSnapshot {
+  const competitive = join(root, "benchmarks", "competitive");
   return validateSnapshot({
-    ...(JSON.parse(readFileSync(SNAPSHOT, "utf8")) as PublishedSnapshot),
-    renderer: JSON.parse(readFileSync(RENDERER_SNAPSHOT, "utf8")) as BrowserResults,
+    ...(JSON.parse(readFileSync(join(competitive, "published.json"), "utf8")) as PublishedSnapshot),
+    renderer: JSON.parse(
+      readFileSync(join(competitive, "published-svg.json"), "utf8"),
+    ) as BrowserResults,
   });
 }
 

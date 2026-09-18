@@ -86,6 +86,8 @@
     "bench:competitive:check": "cd benchmarks/competitive && bun run check:budgets",
     "bench:competitive:full": "cd benchmarks/competitive && bun run measure:bundles:full && bun run measure:browser:full",
     "evals": "bun tests/evals/run.ts",
+    "benchmark:charts:gen": "bun scripts/gen-benchmark-charts.ts",
+    "benchmark:charts:check": "bun scripts/gen-benchmark-charts.ts --check",
     "render:fresh": "bun scripts/render-fresh.ts",
     "render:theme-evidence": "bun scripts/render-theme-evidence.ts && Rscript scripts/render-theme-references.R",
     "validator:gen": "bun scripts/gen-plot-validator.ts",
