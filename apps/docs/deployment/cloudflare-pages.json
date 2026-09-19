@@ -8,7 +8,7 @@
   "destinationDirectory": "apps/docs/build",
   "rootDirectory": "",
   "runtimes": {
-    "BUN_VERSION": "1.4.0",
+    "BUN_VERSION": "1.4.2",
     "NODE_VERSION": "22"
   },
   "environments": {

@@ -41,7 +41,7 @@ describe("Cloudflare Pages project contract", () => {
       buildCommand: "bun run build:cloudflare",
       destinationDirectory: "apps/docs/build",
       rootDirectory: "",
-      runtimes: { BUN_VERSION: "1.4.0", NODE_VERSION: "22" },
+      runtimes: { BUN_VERSION: "1.4.2", NODE_VERSION: "22" },
       environments: {
         production: { DOCS_BUILD_MODE: "cloudflare-production" },
         preview: { DOCS_BUILD_MODE: "cloudflare-preview" },

@@ -27,7 +27,7 @@ tested support boundaries and what information helps the community respond.
 
 1. **bun** — the package manager, script runner, and unit-test runner.
    Pinned via `packageManager` in `package.json` and `mise.toml` (currently
-   **bun 1.4.0**). Install with `mise install` or <https://bun.sh> →
+   **bun 1.4.2**). Install with `mise install` or <https://bun.sh> →
    `~/.bun/bin/bun` must be on `PATH`.
 2. **Install dependencies**: `bun install` (text lockfile `bun.lock`; CI uses
    `--frozen-lockfile`).
@@ -79,7 +79,7 @@ upstream, `.md`/`.yaml`/`.svelte` can fold back into oxfmt (`.oxfmtrc.json`
 
 | Tool                                         | Version                | Role                                                                               |
 | -------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------- |
-| bun                                          | 1.4.0 (pinned)         | PM / runner / unit tests                                                           |
+| bun                                          | 1.4.2 (pinned)         | PM / runner / unit tests                                                           |
 | typescript                                   | 6.0.3                  | `tsc -b` project references (spec, core)                                           |
 | oxlint                                       | 1.73.0                 | JS/TS linting (correctness+suspicious error, pedantic warn)                        |
 | oxlint-tsgolint                              | 0.24.0                 | type-aware rules via `oxlint --type-aware` (no standalone CLI)                     |
