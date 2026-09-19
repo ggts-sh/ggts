@@ -51,7 +51,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["area", "line", "layers", "theme"],
     docsSection: "Areas",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "area/stacked",
@@ -84,7 +84,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["bar", "col", "coord", "flip", "horizontal", "theme"],
     docsSection: "Bars & columns",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "bar/proportions",
@@ -172,7 +172,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["col", "bars", "identity", "theme"],
     docsSection: "Bars & columns",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "col/long-labels",
@@ -383,7 +383,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["freqpoly", "bin", "line", "stat", "rule", "annotation", "theme"],
     docsSection: "Distributions",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "hex/basic",
@@ -405,7 +405,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["histogram", "bins", "stat", "rule", "annotation", "theme"],
     docsSection: "Distributions",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "hline/threshold",
@@ -416,7 +416,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["hline", "rule", "annotation", "line", "theme"],
     docsSection: "Annotations & rules",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "interaction/brush-zoom",
@@ -566,7 +566,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["jitter", "scatter", "categorical", "overplotting", "color"],
     docsSection: "Points & scatter",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "jitter/spread",
@@ -814,7 +814,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["point", "color", "legend", "scatter", "theme", "palette"],
     docsSection: "Points & scatter",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "point/stat-manual-mean",
@@ -1159,6 +1159,6 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["vline", "rule", "annotation", "line", "theme"],
     docsSection: "Annotations & rules",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
 ];

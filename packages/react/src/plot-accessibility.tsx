@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import {
   a11yMarkCount,
@@ -6,8 +6,13 @@ import {
   collapseIdenticalDisplayMembers,
   defaultTooltipRows,
   formatTooltipCell,
+  selectHoverDisplayMembers,
   tooltipTotalPlacement,
+  TRANSIENT_MEMBER_LIMIT,
+  type TooltipTotal,
 } from "@ggts-sh/core/interaction";
+import { ensureReactPlotChrome, shouldShowTooltipPinHint } from "./plot-chrome.js";
+import { tooltipCardPosition, tooltipOverflowCount } from "./plot-tooltip-layout.js";
 import type { GeometryBatch, RenderModel, CellValue } from "@ggts-sh/core";
 import type { PlotInspectionChange } from "@ggts-sh/core/interaction";
 import type { PortableSpec } from "@ggts-sh/spec";
@@ -96,6 +101,98 @@ export function inspectionLabel(
     .join(", ");
 }
 
+function PlotTooltipDefaultBody({
+  inspection,
+  spec,
+  model,
+  showPinHint,
+  tooltipTotal,
+}: {
+  inspection: PlotInspectionChange<Record<string, CellValue>, PropertyKey>;
+  spec: PortableSpec;
+  model: RenderModel;
+  showPinHint: boolean;
+  tooltipTotal: TooltipTotal | undefined;
+}) {
+  const displayMembers = collapseIdenticalDisplayMembers(
+    inspection.members,
+    inspection.focus,
+    model.axisFormatters,
+    inspection.mode,
+  );
+  const members =
+    inspection.state === "transient"
+      ? selectHoverDisplayMembers(displayMembers, inspection.focus, {
+          mode: inspection.mode,
+          limit: TRANSIENT_MEMBER_LIMIT,
+        })
+      : displayMembers;
+  const overflowCount = tooltipOverflowCount({
+    transient: inspection.state === "transient",
+    mode: inspection.mode,
+    groupMemberCount:
+      inspection.mode === "x" || inspection.mode === "y"
+        ? inspection.groupMemberCount
+        : displayMembers.length,
+    displayCount: displayMembers.length,
+    shownCount: members.length,
+  });
+  const placement = tooltipTotalPlacement({
+    tooltipTotal: tooltipTotal ?? "auto",
+    groupTotal: inspection.groupTotal,
+    memberCount: displayMembers.length,
+    mode: inspection.mode,
+  });
+  const stackTotal = placement === null ? null : (inspection.groupTotal ?? null);
+  const total =
+    stackTotal === null ? null : (
+      <dl
+        className={
+          placement === "top" ? "gg-tooltip-total gg-tooltip-total-top" : "gg-tooltip-total"
+        }
+      >
+        <dt>Total</dt>
+        <dd>{formatTooltipCell(stackTotal)}</dd>
+      </dl>
+    );
+  return (
+    <>
+      {(inspection.mode === "x" || inspection.mode === "y") && (
+        <div className="gg-tooltip-axis">{inspection.axisLabel}</div>
+      )}
+      <div className="gg-tooltip-members">
+        {placement === "top" && total}
+        {members.map((member, index) => (
+          <dl key={index} className={member === inspection.focus ? "gg-tooltip-focus" : undefined}>
+            {defaultTooltipRows(member.fields, inspection.mode, { labs: spec.labs }).map((row) => (
+              <Fragment key={row.key}>
+                <dt>{row.label}</dt>
+                <dd>
+                  {formatTooltipCell(
+                    row.value,
+                    member.row === null
+                      ? { channel: row.valueChannel, axisFormatters: model.axisFormatters }
+                      : undefined,
+                  )}
+                </dd>
+              </Fragment>
+            ))}
+          </dl>
+        ))}
+        {placement === "bottom" && total}
+      </div>
+      {overflowCount > 0 ? (
+        <p className="gg-tooltip-more">
+          {showPinHint ? `+${overflowCount} more · pin to inspect all` : `+${overflowCount} more`}
+        </p>
+      ) : (
+        showPinHint &&
+        inspection.state === "transient" && <p className="gg-tooltip-hint">Click to pin</p>
+      )}
+    </>
+  );
+}
+
 export function PlotTooltip({
   id,
   inspection,
@@ -115,47 +212,44 @@ export function PlotTooltip({
   onEnter: () => void;
   onLeave: () => void;
 }) {
+  ensureReactPlotChrome();
   const pinned = inspection.state === "pinned";
   const interactive = options.contentMode === "interactive" && pinned;
-  const members = collapseIdenticalDisplayMembers(
-    inspection.members,
-    inspection.focus,
-    model.axisFormatters,
-    inspection.mode,
-  );
-  const placement = tooltipTotalPlacement({
-    tooltipTotal: options.tooltipTotal ?? "auto",
-    groupTotal: inspection.groupTotal,
-    memberCount: members.length,
-    mode: inspection.mode,
+  const pin = options.pin ?? true;
+  const tooltipBorder = model.scene.theme.tooltipBorder ?? "#b8b8b8";
+  const showPinHint = shouldShowTooltipPinHint({ pin, tooltipBorder });
+  const [node, setNode] = useState<HTMLDivElement | null>(null);
+  const [measured, setMeasured] = useState({ width: 0, height: 0 });
+  useEffect(() => {
+    if (node === null) return;
+    const measure = () => {
+      setMeasured({ width: node.offsetWidth, height: node.offsetHeight });
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [node]);
+  const { left, top } = tooltipCardPosition({
+    anchorX: inspection.focus.anchor.x,
+    anchorY: inspection.focus.anchor.y,
+    measuredWidth: measured.width,
+    measuredHeight: measured.height,
+    sceneWidth: model.scene.width,
+    sceneHeight: model.scene.height,
   });
-  const total = (
-    <div className="gg-tooltip-total">
-      Total: {formatTooltipCell(inspection.groupTotal ?? null)}
-    </div>
-  );
   return (
     <div
+      ref={setNode}
       id={id}
-      className={`gg-tooltip${pinned ? " gg-tooltip-pinned" : ""}`}
+      className={`gg-tooltip${pinned ? " gg-tooltip-pinned" : ""}${interactive ? " gg-tooltip-interactive" : ""}`}
       role={interactive ? "dialog" : "tooltip"}
       aria-label={interactive ? "Data inspection" : undefined}
       tabIndex={interactive ? -1 : undefined}
       style={{
-        position: "absolute",
-        left: Math.max(0, Math.min(inspection.focus.anchor.x + 12, model.scene.width - 260)),
-        top: Math.max(0, Math.min(inspection.focus.anchor.y + 12, model.scene.height - 100)),
-        maxWidth: 260,
-        maxHeight: 320,
-        overflow: "auto",
-        padding: 12,
-        lineHeight: 1.4,
-        color: "var(--gg-ink, CanvasText)",
-        background: "var(--gg-paper, Canvas)",
-        border: "1px solid currentColor",
-        borderRadius: 4,
-        zIndex: 2,
-        pointerEvents: "auto",
+        left,
+        top,
+        fontSize: model.scene.theme.fontSize,
       }}
       onPointerEnter={onEnter}
       onPointerLeave={onLeave}
@@ -167,43 +261,17 @@ export function PlotTooltip({
       }}
     >
       {options.content === undefined ? (
-        <>
-          {(inspection.mode === "x" || inspection.mode === "y") && (
-            <div className="gg-tooltip-axis">{inspection.axisLabel}</div>
-          )}
-          {placement === "top" && total}
-          {members.map((member, index) => (
-            <dl key={index} className="gg-tooltip-member">
-              {defaultTooltipRows(member.fields, inspection.mode, { labs: spec.labs }).map(
-                (row) => (
-                  <div
-                    key={row.key}
-                    style={{ display: "flex", gap: 12, justifyContent: "space-between" }}
-                  >
-                    <dt>{row.label}</dt>
-                    <dd style={{ margin: 0 }}>
-                      {formatTooltipCell(
-                        row.value,
-                        member.row === null
-                          ? { channel: row.valueChannel, axisFormatters: model.axisFormatters }
-                          : undefined,
-                      )}
-                    </dd>
-                  </div>
-                ),
-              )}
-            </dl>
-          ))}
-          {placement === "bottom" && total}
-          {(inspection.mode === "x" || inspection.mode === "y") &&
-            inspection.groupMemberCount > members.length && (
-              <div>+{inspection.groupMemberCount - members.length} more</div>
-            )}
-        </>
+        <PlotTooltipDefaultBody
+          inspection={inspection}
+          spec={spec}
+          model={model}
+          showPinHint={showPinHint}
+          tooltipTotal={options.tooltipTotal}
+        />
       ) : (
         options.content(inspection)
       )}
-      {pinned && (
+      {interactive && (
         <button
           type="button"
           onClick={() => {

@@ -18,6 +18,7 @@
     "check:svelte": "cd packages/svelte && bun run --bun check",
     "check:react": "tsc -b packages/react",
     "check:examples": "bun node_modules/.bin/tsc -p examples --noEmit",
+    "examples:compare": "bun run --filter @ggts-sh/examples compare",
     "check:docs": "cd apps/docs && bun run --bun check",
     "check:pages-links": "bun scripts/check-pages-links.ts",
     "docs:routes:gen": "bun scripts/gen-docs-routes.ts",
