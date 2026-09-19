@@ -298,7 +298,7 @@ describe("release.yml concurrent-merge race recovery", () => {
       devDependencies: Record<string, string>;
     };
     const cli = pkg.devDependencies["@changesets/cli"];
-    expect(cli).toBe("3.0.2");
+    expect(cli).toBe("3.0.3");
     expect(read("CONTRIBUTING.md")).toMatch(
       new RegExp(String.raw`\|\s*@changesets/cli\s+\|\s*${cli}\s+\|`),
     );
