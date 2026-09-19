@@ -13,6 +13,8 @@
 #     (asserted in CI; see CONTRIBUTING.md tool roster)
 #   - pnpm — root pin must match support-matrix.json packageManagers.pnpm
 #     (asserted in scripts/support-matrix.test.ts)
+#   - @types/bun — declared range must be ^${packageManagers.bun}
+#     (asserted in scripts/support-matrix.test.ts). Bump with the Bun pin.
 #   - @ggts-sh/* — publish-range deps in packages/* are owned by Changesets,
 #     not Dependabot registry bumps
 #
@@ -86,6 +88,7 @@ updates:
           - "playwright"
           - "@playwright/test"
           - "pnpm"
+          - "@types/bun"
           - "@ggts-sh/*"
         group-by: dependency-name
     ignore:
@@ -104,9 +107,8 @@ updates:
       # @types/node majors track the Node line we choose to support (engines >=22).
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
-      # @types/bun majors track packageManager / mise.toml bun pins.
+      # Declared range is ^${packageManagers.bun} (support-matrix.test.ts).
       - dependency-name: "@types/bun"
-        update-types: ["version-update:semver-major"]
       # Container lockstep — see header comment and CONTRIBUTING.md tool roster.
       - dependency-name: "playwright"
       - dependency-name: "@playwright/test"
