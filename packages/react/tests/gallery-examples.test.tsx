@@ -12,6 +12,9 @@ import GuerryScatter from "../../../examples/point/scatter-color/Example.js";
 import EarthDensityThreshold from "../../../examples/hline/threshold/Example.js";
 import ArmadaHorizontalBars from "../../../examples/bar/horizontal/Example.js";
 import FastfoodJitter from "../../../examples/jitter/basic/Example.js";
+import HalleyLifeTableArea from "../../../examples/area/basic/Example.js";
+import EarthDensityCutoff from "../../../examples/vline/cutoff/Example.js";
+import MichelsonFreqpoly from "../../../examples/freqpoly/basic/Example.js";
 
 afterEach(cleanup);
 
@@ -187,5 +190,41 @@ describe("copyable React gallery examples", () => {
       expect(view.container.querySelectorAll(".gg-points circle").length).toBeGreaterThan(20);
     });
     expect(view.container.textContent).toContain("Menu calories, spread so items do not stack");
+  });
+
+  it("renders the Halley life-table area from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <HalleyLifeTableArea />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-marks path").length).toBeGreaterThan(0);
+    });
+    expect(view.container.textContent).toContain("Survivors from a cohort of one thousand");
+  });
+
+  it("renders the earth-density vertical cutoff from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <EarthDensityCutoff />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-points circle").length).toBeGreaterThan(10);
+    });
+    expect(view.container.textContent).toContain("One vertical cutoff");
+  });
+
+  it("renders the Michelson frequency polygon from the authored React host", async () => {
+    const view = render(
+      <div style={{ width: 640 }}>
+        <MichelsonFreqpoly />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(view.container.querySelectorAll(".gg-marks path").length).toBeGreaterThan(0);
+    });
+    expect(view.container.textContent).toContain("Frequency polygon through bin centres");
   });
 });

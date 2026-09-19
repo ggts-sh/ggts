@@ -15,6 +15,9 @@ const PICKS = [
   "hline/threshold",
   "bar/horizontal",
   "jitter/basic",
+  "area/basic",
+  "vline/cutoff",
+  "freqpoly/basic",
 ] as const;
 
 function grammarNames(source: string): string[] {

@@ -51,7 +51,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["area", "line", "layers", "theme"],
     docsSection: "Areas",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "area/stacked",
@@ -383,7 +383,7 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["freqpoly", "bin", "line", "stat", "rule", "annotation", "theme"],
     docsSection: "Distributions",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
   {
     id: "hex/basic",
@@ -1159,6 +1159,6 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     tags: ["vline", "rule", "annotation", "line", "theme"],
     docsSection: "Annotations & rules",
     hasData: true,
-    hasReact: false,
+    hasReact: true,
   },
 ];

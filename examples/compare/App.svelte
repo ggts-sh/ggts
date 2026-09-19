@@ -5,12 +5,18 @@
   import HlineSvelte from "../hline/threshold/Example.svelte";
   import BarSvelte from "../bar/horizontal/Example.svelte";
   import JitterSvelte from "../jitter/basic/Example.svelte";
+  import AreaSvelte from "../area/basic/Example.svelte";
+  import VlineSvelte from "../vline/cutoff/Example.svelte";
+  import FreqpolySvelte from "../freqpoly/basic/Example.svelte";
   import ColReact from "../col/basic/Example.tsx";
   import HistReact from "../histogram/basic/Example.tsx";
   import ScatterReact from "../point/scatter-color/Example.tsx";
   import HlineReact from "../hline/threshold/Example.tsx";
   import BarReact from "../bar/horizontal/Example.tsx";
   import JitterReact from "../jitter/basic/Example.tsx";
+  import AreaReact from "../area/basic/Example.tsx";
+  import VlineReact from "../vline/cutoff/Example.tsx";
+  import FreqpolyReact from "../freqpoly/basic/Example.tsx";
 
   import ReactMount from "./ReactMount.svelte";
 
@@ -50,6 +56,24 @@
       title: "Menu calories, spread so items do not stack",
       svelte: JitterSvelte,
       react: JitterReact,
+    },
+    {
+      id: "area/basic",
+      title: "Survivors from a cohort of one thousand",
+      svelte: AreaSvelte,
+      react: AreaReact,
+    },
+    {
+      id: "vline/cutoff",
+      title: "One vertical cutoff",
+      svelte: VlineSvelte,
+      react: VlineReact,
+    },
+    {
+      id: "freqpoly/basic",
+      title: "Frequency polygon through bin centres",
+      svelte: FreqpolySvelte,
+      react: FreqpolyReact,
     },
   ];
 </script>
