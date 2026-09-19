@@ -101,7 +101,7 @@
     "@ggts-sh/spec": "workspace:*",
     "@playwright/test": "1.61.1",
     "@total-typescript/shoehorn": "^0.1.2",
-    "@types/bun": "^1.4.0",
+    "@types/bun": "^1.4.2",
     "@types/node": "^26.4.0",
     "actionlint": "2.0.6",
     "axe-core": "^4.13.0",
