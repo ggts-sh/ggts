@@ -5,8 +5,8 @@
     "pipeline scatter 100k retained": { "maxRetainedBytes": 134217728 },
     "grouped inspection 1k two-slot retained": {
       "maxRetainedBytes": 16777216,
-      "baselinePlatform": "linux-x64-bun-1.4.0",
-      "baselineRetainedBytes": 2371430,
+      "baselinePlatform": "linux-x64-bun-1.4.2",
+      "baselineRetainedBytes": 2392452,
       "maxRegressionRatio": 1.2
     }
   }
