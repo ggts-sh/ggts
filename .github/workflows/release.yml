@@ -187,7 +187,7 @@ jobs:
       # Action v2 requires @changesets/cli v3, the version-script input name,
       # and github-token (env.GITHUB_TOKEN is ignored).
       - name: changesets — open/update Version Packages PR
-        uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           version-script: bun run version
           github-token: ${{ secrets.GITHUB_TOKEN }}

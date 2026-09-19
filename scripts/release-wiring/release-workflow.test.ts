@@ -240,9 +240,9 @@ it("uses job-private Bun caches across CI workflows (issue #319)", () => {
 const release = () => read(".github/workflows/release.yml");
 
 describe("release.yml concurrent-merge race recovery", () => {
-  // Peeled v2.1.1 tag → commit (changesets/action@v2.1.1). Verified against
-  // the annotated tag object, not copied from Dependabot #1655 alone.
-  const CHANGESETS_ACTION_V2 = "changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1";
+  // Peeled v2.1.2 tag → commit (changesets/action@v2.1.2). Verified against
+  // the annotated tag object, not copied from Dependabot #1789 alone.
+  const CHANGESETS_ACTION_V2 = "changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51";
 
   type ReleaseStep = {
     name?: string;
