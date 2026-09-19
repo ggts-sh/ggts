@@ -1,6 +1,6 @@
 {
   "name": "@ggts-sh/skill",
-  "version": "0.43.0",
+  "version": "0.43.1",
   "description": "Agent skill for the shared grammar of graphics: TypeScript, React, Svelte, portable JSON, and the ggts check/render feedback loop. Versions with all framework adapters.",
   "keywords": [
     "agent-skill",
