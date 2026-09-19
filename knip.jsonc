@@ -89,8 +89,17 @@
     "examples": {
       // The corpus: spec.ts/data.ts are consumed by the docs app via the
       // $examples alias and by tests/visual via the generated manifest.
-      "entry": ["*/*/spec.ts", "*/*/data.ts", "define.ts", "rng.ts", "manifest.ts"],
-      "project": ["**/*.ts"],
+      // Example.tsx files are the React gallery counterparts; knip 6.35+
+      // reports unused react / @ggts-sh/react unless they are in the graph.
+      "entry": [
+        "*/*/spec.ts",
+        "*/*/data.ts",
+        "*/*/Example.tsx",
+        "define.ts",
+        "rng.ts",
+        "manifest.ts",
+      ],
+      "project": ["**/*.ts", "**/*.tsx"],
     },
     "apps/docs": {
       // svelte.config.js / vite.config.ts are auto-entries via knip's
