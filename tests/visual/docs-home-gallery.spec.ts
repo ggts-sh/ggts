@@ -257,7 +257,7 @@ test("unknown gallery filter values reset without dropping unrelated params", as
 test("detail is specimen-first and orders Svelte, builder, then JSON without a React stub", async ({
   page,
 }) => {
-  await page.goto("/examples/point/scatter-color");
+  await page.goto("/examples/line/multi-series");
   await expect(page.locator(".gg-example-frame")).toBeVisible();
   const tabs = page.getByRole("tablist", { name: "Code representations" }).getByRole("tab");
   await expect(tabs).toHaveText(["Svelte", "Builder (TS)", "Spec (JSON)"]);
