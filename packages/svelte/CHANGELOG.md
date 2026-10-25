@@ -1,5 +1,16 @@
 # @ggts-sh/svelte
 
+## 0.43.1
+
+### Patch Changes
+
+- e31ec40: Bump the Svelte compiler dependency to ^5.57.0.
+- Updated dependencies [866a052]
+- Updated dependencies [3e1cf25]
+  - @ggts-sh/core@0.43.1
+  - @ggts-sh/compose@0.43.1
+  - @ggts-sh/spec@0.43.1
+
 ## 0.43.0
 
 ### Minor Changes

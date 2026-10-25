@@ -1,6 +1,6 @@
 {
   "name": "@ggts-sh/core",
-  "version": "0.43.0",
+  "version": "0.43.1",
   "description": "ggts core: framework-agnostic grammar-of-graphics pipeline, scale stability, layout, and the pure SVG-string renderer.",
   "keywords": [
     "canvas",
@@ -76,7 +76,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@ggts-sh/spec": "^0.43.0"
+    "@ggts-sh/spec": "^0.43.1"
   },
   "devDependencies": {
     "typescript": "^6.0.3"
