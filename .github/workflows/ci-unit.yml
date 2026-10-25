@@ -16,6 +16,9 @@ on:
 
 permissions: {}
 
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 jobs:
   unit:
     name: unit (bun test spec + core + cli)
@@ -51,9 +54,9 @@ jobs:
           --coverage-dir=coverage/unit
           packages/spec packages/core packages/cli benchmarks scripts tests/evals
       - name: Upload unit coverage to Codecov
-        # Custom if overrides default success() — keep the success gate so a
-        # failed suite does not upload a partial report or count as green.
-        if: success() && steps.content_hash.outputs.hit != 'true'
+        # Keep the success gate; Dependabot and forks have no token, so skip
+        # upload there rather than failing an otherwise green test job.
+        if: success() && steps.content_hash.outputs.hit != 'true' && env.CODECOV_TOKEN != ''
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
