@@ -68,14 +68,14 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           architecture: x64
 
-      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
         with:
           python-version: cpython-${{ env.PYTHON_VERSION }}-windows-x86_64-none
 
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         if: inputs.target == 'local'
         with:
-          bun-version: 1.4.0
+          bun-version: 1.4.2
 
       - name: Build the local release-shaped fixture
         if: inputs.target == 'local'

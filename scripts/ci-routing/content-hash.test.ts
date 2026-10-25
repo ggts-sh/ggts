@@ -331,7 +331,7 @@ describe("component_journeys content inputs cover llms modules", () => {
     // Split benchmark-charts subtree files hash via the subtree glob.
     for (const file of [
       "scripts/benchmark-charts/results.ts",
-      "scripts/benchmark-charts/write.ts",
+      "scripts/benchmark-charts/artifacts.ts",
     ]) {
       const matched = listJobContentPaths("component_journeys", [file]);
       expect(matched, file).toContain(file);

@@ -35,6 +35,7 @@ describe("R0 release wiring — dependencies", () => {
     expect(dependabot).toContain('dependency-name: "playwright"');
     expect(dependabot).toContain('dependency-name: "@playwright/test"');
     expect(dependabot).toContain('dependency-name: "pnpm"');
+    expect(dependabot).toContain('dependency-name: "@types/bun"');
     expect(dependabot).toContain('dependency-name: "@ggts-sh/*"');
     // Action bumps group by dependency name across workflows + composites.
     expect(dependabot).toContain("github-actions:");

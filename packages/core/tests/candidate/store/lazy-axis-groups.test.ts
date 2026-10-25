@@ -1,19 +1,7 @@
-/**
- * Axis-group tables (permutation + bucket boundaries behind `group()`) are
- * built LAZILY: first-hover queries (hitTest/nearest/traverse) must not pay
- * the O(u log u) token-rank sort and O(n) bucket-map construction on dense
- * plots. The build happens once, on first `group()` (or explicit
- * `axisGroups()`), and is memoized.
- *
- * Observable contract pinned here:
- * - indexes expose `axisGroups()` (memoized: identical object identity)
- *   instead of eager `permutations`/`buckets` own-properties;
- * - group() results are unchanged whether or not other queries ran first.
- */
+/** Group results do not depend on whether pointer queries ran first. */
 import { describe, expect, it } from "bun:test";
 
 import { buildCandidateStore } from "../../../src/candidate-store.ts";
-import { buildCandidateStoreIndexes } from "../../../src/candidate-store-indexes.ts";
 
 import { sceneWithPoints } from "../fixtures.ts";
 
@@ -37,19 +25,6 @@ function groupingStore() {
 }
 
 describe("lazy axis-group tables", () => {
-  it("exposes axisGroups() instead of eager permutation/bucket fields", () => {
-    const indexes = buildCandidateStoreIndexes(sceneWithPoints(POINTS), {});
-    expect("permutations" in indexes).toBe(false);
-    expect("buckets" in indexes).toBe(false);
-    expect(typeof indexes.axisGroups).toBe("function");
-  });
-
-  it("memoizes the build across calls", () => {
-    const indexes = buildCandidateStoreIndexes(sceneWithPoints(POINTS), {});
-    const first = indexes.axisGroups();
-    expect(indexes.axisGroups()).toBe(first);
-  });
-
   it("returns identical group() results whether or not hit queries ran first", () => {
     const groupedFirst = groupingStore();
     const direct = groupedFirst.group(0, "x");
@@ -60,7 +35,7 @@ describe("lazy axis-group tables", () => {
     hitFirst.traverse(0, "next");
     const afterQueries = hitFirst.group(0, "x");
 
+    expect(direct?.memberIds).toEqual(new Uint32Array([0, 1]));
     expect(afterQueries).toEqual(direct);
-    expect(afterQueries?.memberIds.length).toBeGreaterThan(0);
   });
 });

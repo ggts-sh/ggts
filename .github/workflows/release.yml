@@ -68,7 +68,7 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: 1.4.0
+          bun-version: 1.4.2
       # `changeset publish` shells out to npm for the actual publish; OIDC
       # trusted publishing needs npm >= 11.5 (bundled with Node 24) and a
       # registry-url so the OIDC/provenance exchange targets npmjs.org.
@@ -187,7 +187,7 @@ jobs:
       # Action v2 requires @changesets/cli v3, the version-script input name,
       # and github-token (env.GITHUB_TOKEN is ignored).
       - name: changesets — open/update Version Packages PR
-        uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           version-script: bun run version
           github-token: ${{ secrets.GITHUB_TOKEN }}

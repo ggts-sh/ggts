@@ -1,8 +1,22 @@
 import { compareTokens } from "./candidate-axis-token.js";
 import type { CanonicalAxisToken } from "./candidate-axis-token.js";
-import type { BucketBoundary, SeriesBoundary } from "./candidate-store-index-types.js";
+import { closestOrthInRange } from "./candidate-geometry-nearest.js";
+import type { CandidateStore } from "./candidate-store-types.js";
 import type { Scene } from "./scene.js";
+import type { CellValue } from "./table.js";
 
+type SeriesBoundary = Readonly<{
+  start: number;
+  end: number;
+  layerIndex: number;
+  seriesId: number;
+}>;
+
+type BucketBoundary = Readonly<{
+  start: number;
+  end: number;
+  series: readonly SeriesBoundary[];
+}>;
 type AxisGroupTables = {
   permutations: Record<"x" | "y", Uint32Array>;
   buckets: Record<"x" | "y", Map<number, BucketBoundary>>;
@@ -45,19 +59,17 @@ type LazyCandidateAxisGroupsInput = {
   readonly yTokenIds: Int32Array;
   readonly xs: Float32Array;
   readonly ys: Float32Array;
+  readonly logicalValue: (id: number, axis: "x" | "y") => CellValue;
 };
 
 /**
- * Axis-group tables (permutation + bucket boundaries) serve group() ONLY.
- * Building them eagerly cost an O(u log u) token-rank sort and O(n)
- * bucket-map writes on every store build — including first-hover sessions
- * that never group. Build once, on first group(), memoized. `valid` is a
- * fresh identity-filter (the eager path filtered `order`, which is scratch
- * and cleared below); contents are identical.
+ * Own axis-group indexing and member resolution. Build token ordering and
+ * buckets on the first valid group query, so pointer-only sessions avoid
+ * the O(u log u) token sort and O(n) bucket-map construction.
  */
 export function createLazyCandidateAxisGroups(
   input: LazyCandidateAxisGroupsInput,
-): () => AxisGroupTables {
+): CandidateStore["group"] {
   const {
     scene,
     n,
@@ -72,7 +84,13 @@ export function createLazyCandidateAxisGroups(
     yTokenIds,
     xs,
     ys,
+    logicalValue,
   } = input;
+  // Numeric keys avoid allocating strings for dense plots' O(n) buckets.
+  const tokenCount = Math.max(tokens.length, 1);
+  const bucketKey = (panel: number, tokenId: number): number => panel * tokenCount + tokenId;
+  const orthCoordinates = (axis: "x" | "y"): Float32Array =>
+    axis === "x" ? (flip ? xs : ys) : flip ? ys : xs;
   let axisGroupTables: AxisGroupTables | null = null;
   const axisGroups = (): AxisGroupTables => {
     if (axisGroupTables !== null) return axisGroupTables;
@@ -98,13 +116,9 @@ export function createLazyCandidateAxisGroups(
     // comparison.
     const layerPerCandidate = new Uint32Array(n);
     for (let id = 0; id < n; id++) layerPerCandidate[id] = scene.batches[batchIds[id]!]!.layerIndex;
-    // Bucket maps key on panel * tokenCount + tokenId (numeric, no per-bucket
-    // `${panel}|${key}` strings — dense plots have O(n) buckets).
-    const tokenCount = Math.max(tokens.length, 1);
-    const bucketKey = (panel: number, tokenId: number): number => panel * tokenCount + tokenId;
     for (const axis of ["x", "y"] as const) {
       const keys = axis === "x" ? xTokenIds : yTokenIds,
-        orth = axis === "x" ? (flip ? xs : ys) : flip ? ys : xs;
+        orth = orthCoordinates(axis);
       const valid: number[] = [];
       for (let id = 0; id < n; id++) if (keys[id] !== -1) valid.push(id);
       valid.sort(
@@ -159,5 +173,49 @@ export function createLazyCandidateAxisGroups(
     axisGroupTables = { permutations, buckets };
     return axisGroupTables;
   };
-  return axisGroups;
+  return (seedId, axis) => {
+    if (seedId < 0 || seedId >= n) return null;
+    const keys = axis === "x" ? xTokenIds : yTokenIds;
+    const key = keys[seedId];
+    if (key === -1 || key === undefined) return null;
+    const panel = panelIds[seedId]!;
+    const { permutations, buckets } = axisGroups();
+    const tuple = buckets[axis].get(bucketKey(panel, key));
+    if (tuple === undefined) return null;
+    const { start, end } = tuple;
+    const permutation = permutations[axis];
+    const orth = orthCoordinates(axis);
+    const seedLayer = scene.batches[batchIds[seedId]!]!.layerIndex;
+    const memberIds = new Uint32Array(tuple.series.length);
+    const seedOrth = orth[seedId]!;
+    for (let boundaryIndex = 0; boundaryIndex < tuple.series.length; boundaryIndex++) {
+      const boundary = tuple.series[boundaryIndex]!;
+      if (boundary.layerIndex === seedLayer && boundary.seriesId === series[seedId]) {
+        memberIds[boundaryIndex] = seedId;
+        continue;
+      }
+      // Rank precedes orth in the bucket sort; mixed ranks require a linear
+      // closest-member scan rather than a binary search of unsorted coordinates.
+      const firstId = permutation[boundary.start]!;
+      const lastId = permutation[boundary.end - 1]!;
+      memberIds[boundaryIndex] = closestOrthInRange(
+        permutation,
+        orth,
+        batchIds,
+        sources,
+        boundary.start,
+        boundary.end,
+        seedOrth,
+        ranks[firstId] === ranks[lastId],
+      );
+    }
+    return {
+      axis,
+      axisValue: logicalValue(seedId, axis),
+      token: tokens[key]!,
+      focusId: seedId,
+      memberIds,
+      range: { axis, panelIndex: panel, start, end, permutation },
+    };
+  };
 }

@@ -1,20 +1,7 @@
 import type { CanonicalAxisToken } from "./candidate-axis-token.js";
-import type { CandidateFacts } from "./candidate-store-types.js";
+import type { CandidateFacts, CandidateStore } from "./candidate-store-types.js";
 import type { Scene } from "./scene.js";
 import type { CellValue } from "./table.js";
-
-export type SeriesBoundary = Readonly<{
-  start: number;
-  end: number;
-  layerIndex: number;
-  seriesId: number;
-}>;
-
-export type BucketBoundary = Readonly<{
-  start: number;
-  end: number;
-  series: readonly SeriesBoundary[];
-}>;
 
 /** Compact typed-array indexes + traversal/group tables for an assembled candidate store. */
 export type CandidateStoreIndexes = {
@@ -46,14 +33,7 @@ export type CandidateStoreIndexes = {
   readonly orderByX: Uint32Array;
   readonly coincidentStack: (Uint32Array | undefined)[];
   readonly coincidentAt: Uint32Array;
-  /**
-   * Axis-group tables behind group(): permutation + bucket boundaries, built
-   * once on first call (memoized) — never on the first-hover path.
-   */
-  axisGroups(): {
-    permutations: Record<"x" | "y", Uint32Array>;
-    buckets: Record<"x" | "y", Map<number, BucketBoundary>>;
-  };
-  logicalValue(id: number, axis: "x" | "y"): CellValue;
+  /** Resolve groups through tables built on first group query, never first hover. */
+  group: CandidateStore["group"];
   fact(id: number): CandidateFacts | null;
 };
