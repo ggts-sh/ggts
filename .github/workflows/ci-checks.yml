@@ -25,7 +25,7 @@ jobs:
       - uses: ./.github/actions/ci-bun-install
         with:
           cache_key_prefix: bun
-      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       - run: uv tool install pre-commit
       # Pre-commit stage only. Pre-push parity (build, unit, svelte-check, knip,
       # type-aware lint, examples/docs check) is covered by dedicated jobs so we
