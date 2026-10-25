@@ -121,7 +121,7 @@
     },
     "packages/cli": {
       "name": "@ggts-sh/cli",
-      "version": "0.43.0",
+      "version": "0.43.1",
       "bin": {
         "ggts": "bin/ggts.js",
       },
@@ -131,7 +131,7 @@
     },
     "packages/compose": {
       "name": "@ggts-sh/compose",
-      "version": "0.43.0",
+      "version": "0.43.1",
       "dependencies": {
         "@ggts-sh/spec": "^0.43.0",
       },
@@ -141,7 +141,7 @@
     },
     "packages/core": {
       "name": "@ggts-sh/core",
-      "version": "0.43.0",
+      "version": "0.43.1",
       "dependencies": {
         "@ggts-sh/spec": "^0.43.0",
       },
@@ -151,7 +151,7 @@
     },
     "packages/react": {
       "name": "@ggts-sh/react",
-      "version": "0.43.0",
+      "version": "0.43.1",
       "dependencies": {
         "@ggts-sh/compose": "^0.43.0",
         "@ggts-sh/core": "^0.43.0",
@@ -177,11 +177,11 @@
     },
     "packages/skill": {
       "name": "@ggts-sh/skill",
-      "version": "0.43.0",
+      "version": "0.43.1",
     },
     "packages/spec": {
       "name": "@ggts-sh/spec",
-      "version": "0.43.0",
+      "version": "0.43.1",
       "dependencies": {
         "@js-temporal/polyfill": "^0.5.1",
         "typebox": "^1.3.8",
@@ -193,7 +193,7 @@
     },
     "packages/svelte": {
       "name": "@ggts-sh/svelte",
-      "version": "0.43.0",
+      "version": "0.43.1",
       "bin": {
         "ggts-codemod": "bin/ggts-codemod.js",
       },
