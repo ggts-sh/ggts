@@ -1,6 +1,6 @@
 # Svelte vs React comparison (local)
 
-Side-by-side live hosts for the three basic React spike examples:
+Side-by-side live hosts for nine basic React examples:
 
 - `col/basic`
 - `histogram/basic`
@@ -8,6 +8,9 @@ Side-by-side live hosts for the three basic React spike examples:
 - `hline/threshold`
 - `bar/horizontal`
 - `jitter/basic`
+- `area/basic`
+- `vline/cutoff`
+- `freqpoly/basic`
 
 Start from the repo root:
 

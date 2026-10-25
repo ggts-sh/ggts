@@ -221,14 +221,15 @@ export function PlotTooltip({
   const [node, setNode] = useState<HTMLDivElement | null>(null);
   const [measured, setMeasured] = useState({ width: 0, height: 0 });
   useEffect(() => {
-    if (node === null) return;
     const measure = () => {
-      setMeasured({ width: node.offsetWidth, height: node.offsetHeight });
+      if (node !== null) setMeasured({ width: node.offsetWidth, height: node.offsetHeight });
     };
     measure();
     const observer = new ResizeObserver(measure);
-    observer.observe(node);
-    return () => observer.disconnect();
+    if (node !== null) observer.observe(node);
+    return () => {
+      observer.disconnect();
+    };
   }, [node]);
   const { left, top } = tooltipCardPosition({
     anchorX: inspection.focus.anchor.x,

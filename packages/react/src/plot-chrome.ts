@@ -1,10 +1,11 @@
+export { shouldShowTooltipPinHint } from "@ggts-sh/core/interaction";
+
 const CHROME_STYLE_ID = "gg-react-plot-chrome";
 
 const REACT_PLOT_CHROME_CSS = `
 .gg-tooltip {
   position: absolute;
   pointer-events: none;
-  z-index: 2;
   background: var(--gg-tooltipPaper, var(--gg-tooltip-background, var(--gg-theme-tooltipPaper, var(--gg-paper, #fff))));
   color: var(--gg-tooltipInk, var(--gg-tooltip-foreground, var(--gg-theme-tooltipInk, var(--gg-ink, #1f2328))));
   border: 1px solid var(--gg-tooltipBorder, var(--gg-tooltip-border, var(--gg-theme-tooltipBorder, var(--gg-grid, #b8b8b8))));
@@ -42,6 +43,22 @@ const REACT_PLOT_CHROME_CSS = `
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+.gg-tooltip-focus {
+  font-weight: 600;
+}
+.gg-tooltip-total {
+  border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  padding-top: 4px;
+  margin-top: 2px;
+}
+.gg-tooltip-total-top {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+}
 .gg-tooltip-axis {
   margin-bottom: 6px;
   font-weight: 650;
@@ -50,18 +67,17 @@ const REACT_PLOT_CHROME_CSS = `
 .gg-tooltip-more,
 .gg-tooltip-hint {
   margin: 7px 0 0;
-  color: color-mix(in srgb, currentColor 72%, var(--gg-tooltipPaper, #fff));
+  color: color-mix(in srgb, currentColor 72%, var(--gg-tooltipPaper, var(--gg-tooltip-background, var(--gg-theme-tooltipPaper, var(--gg-paper, #fff)))));
+  font-size: 10px;
 }
 .gg-legend-chrome {
   position: absolute;
   inset: 0;
-  z-index: 5;
   pointer-events: none;
 }
 .gg-legend-targets {
   position: absolute;
   inset: 0;
-  z-index: 5;
   pointer-events: none;
 }
 .gg-legend-target {
@@ -96,7 +112,6 @@ const REACT_PLOT_CHROME_CSS = `
 }
 .gg-legend-clear {
   position: absolute;
-  z-index: 5;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -124,10 +139,4 @@ export function ensureReactPlotChrome(): void {
   style.id = CHROME_STYLE_ID;
   style.textContent = REACT_PLOT_CHROME_CSS;
   document.head.append(style);
-}
-
-export function shouldShowTooltipPinHint(input: { pin: boolean; tooltipBorder: string }): boolean {
-  if (!input.pin) return false;
-  const border = input.tooltipBorder.trim().toLowerCase();
-  return border !== "transparent" && border !== "none";
 }

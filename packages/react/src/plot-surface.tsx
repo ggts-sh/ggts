@@ -27,6 +27,7 @@ import {
   iterateCandidates,
   resolveSemanticKeysForPlot,
   sanitizePartialZoomDomains,
+  themeTokensToCssVars,
   uniqueKeysFromRowIndexes,
 } from "@ggts-sh/core/interaction";
 import type { BatchInteractionMask, RenderModel } from "@ggts-sh/core";
@@ -389,6 +390,7 @@ function PlotSurfaceView({ state }: { state: ReturnType<typeof usePlotSurface> }
           position: "relative",
           width: typeof props.width === "number" ? props.width : "100%",
           height,
+          ...(model === null ? {} : themeTokensToCssVars(model.scene.theme)),
         }}
       >
         <div
@@ -438,6 +440,17 @@ function PlotSurfaceView({ state }: { state: ReturnType<typeof usePlotSurface> }
             }}
           />
         )}
+        {legends.focusEntries.length > 0 && (
+          <ReactLegendChrome
+            model={model!}
+            entries={legends.focusEntries}
+            previewIdentity={legends.previewIdentity}
+            pressedIdentity={legends.pressedIdentity}
+            focusEntry={legends.focusEntry}
+            clearPreview={legends.clearPreview}
+            clearFocus={legends.clearFocus}
+          />
+        )}
         {model !== null &&
           assembled !== null &&
           config.inspect !== null &&
@@ -453,16 +466,6 @@ function PlotSurfaceView({ state }: { state: ReturnType<typeof usePlotSurface> }
               onLeave={interactions.onTooltipLeave}
             />
           )}
-        {legends.focusEntries.length > 0 && (
-          <ReactLegendChrome
-            entries={legends.focusEntries}
-            previewIdentity={legends.previewIdentity}
-            pressedIdentity={legends.pressedIdentity}
-            focusEntry={legends.focusEntry}
-            clearPreview={legends.clearPreview}
-            clearFocus={legends.clearFocus}
-          />
-        )}
         {interactive && (
           <>
             <p id={`${plotId}-description`} style={visuallyHidden}>

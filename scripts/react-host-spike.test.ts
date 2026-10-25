@@ -21,7 +21,9 @@ const PICKS = [
 ] as const;
 
 function grammarNames(source: string): string[] {
-  const names = source.matchAll(/\b(GGPlot|Geom\w+|Theme\w+|Scale\w+|Guide\w+|Labs|Inspect)\b/g);
+  const names = source.matchAll(
+    /\b(GGPlot|Geom\w+|Theme\w+|Scale\w+|Guide\w+|Coord\w+|Facet\w+|Legend|Labs|Inspect)\b/g,
+  );
   return [...new Set([...names].map((match) => match[1]!))].toSorted();
 }
 

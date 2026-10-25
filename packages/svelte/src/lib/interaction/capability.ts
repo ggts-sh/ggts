@@ -61,38 +61,13 @@ export type ChooseToolAction =
   | { readonly type: "request" }
   | { readonly type: "apply" };
 
-export type ShowToolRailInput = {
-  readonly interactive: boolean;
-  readonly availableToolCount: number;
-  /** Host: `interactionConfig.select?.type === "point"`. */
-  readonly canPublishPointSelection: boolean;
-  readonly selectedKeyCount: number;
-  readonly hasIntervalSelection: boolean;
-  readonly hasZoomDomains: boolean;
-};
+export { shouldShowToolRail } from "@ggts-sh/core/interaction";
 
-/**
- * True when every batch has zero rows (including an empty batches list).
- * Host still requires a live model before calling this.
- */
+/** True when every batch has zero rows (including an empty batches list). */
 export function isEmptyPlotScene(
   batches: readonly { readonly rowIndex: { readonly length: number } }[],
 ): boolean {
   return batches.every((batch) => batch.rowIndex.length === 0);
-}
-
-/**
- * Whether the tool rail chrome should mount.
- * Multi-tool mode, or any recovery control (point clear / interval clear / zoom reset).
- */
-export function shouldShowToolRail(input: ShowToolRailInput): boolean {
-  return (
-    input.interactive &&
-    (input.availableToolCount > 1 ||
-      (input.canPublishPointSelection && input.selectedKeyCount > 0) ||
-      input.hasIntervalSelection ||
-      input.hasZoomDomains)
-  );
 }
 
 export type InertSelectionOverlayInput = {

@@ -5,23 +5,11 @@ import type {
 } from "@ggts-sh/core/interaction";
 
 import { PlotControls } from "./plot-controls.js";
-
-export function shouldMountReactToolRail(input: {
-  interactive: boolean;
-  toolCount: number;
-  selectedCount: number;
-  intervalCount: number;
-  hasZoom: boolean;
-}): boolean {
-  return (
-    input.interactive &&
-    (input.toolCount > 1 || input.selectedCount > 0 || input.intervalCount > 0 || input.hasZoom)
-  );
-}
+import { shouldShowToolRail } from "@ggts-sh/core/interaction";
 
 interface ReactPlotControlsState {
   interactive: boolean;
-  config: { availableTools: readonly InteractionTool[] };
+  config: { availableTools: readonly InteractionTool[]; select: { type: string } | null };
   interactions: {
     activeTool: InteractionTool;
     chooseTool: (tool: InteractionTool) => void;
@@ -41,12 +29,13 @@ export function ReactPlotControls(
 ): ReturnType<typeof PlotControls> | null {
   const { interactive, config, interactions, zoom, onZoom, boundsInputs, applyBounds } = state;
   if (
-    !shouldMountReactToolRail({
+    !shouldShowToolRail({
       interactive,
-      toolCount: config.availableTools.length,
-      selectedCount: interactions.selected.length,
-      intervalCount: interactions.intervals.length,
-      hasZoom: zoom !== null,
+      availableToolCount: config.availableTools.length,
+      canPublishPointSelection: config.select?.type === "point",
+      selectedKeyCount: interactions.selected.length,
+      hasIntervalSelection: interactions.intervals.length > 0,
+      hasZoomDomains: zoom !== null,
     })
   ) {
     return null;

@@ -3,7 +3,7 @@
   "entries": {
     "area/basic": {
       "filename": "area-basic-light.png",
-      "sourceSha256": "522d4d73e456d36dc6874c8f0e81b02091394222cb1184bbaa9402963f1b5d13",
+      "sourceSha256": "1ac8edf556131fb051426de369c7470c74b3ca8f23f67d969e564fd0fba9c5ed",
       "pngSha256": "d2bd4c7eed9284655f8698cb41b9f2cef89c4d5040f3921e1d21d80a53ddba09"
     },
     "area/stacked": {
@@ -18,7 +18,7 @@
     },
     "bar/horizontal": {
       "filename": "bar-horizontal-light.png",
-      "sourceSha256": "e5316b56a46afb62f3d866260ba1f56c2e7fc959775a870ed0ea580d2da5ad2f",
+      "sourceSha256": "4f160611e9150ee4175fc78ba0715a9b46e35a39f14947c2153d1823210d12f1",
       "pngSha256": "30f46f034ebe95869e7791af2fb87c928e8a8942ab6c7131cb4b91d48d1c0729"
     },
     "bar/proportions": {
@@ -58,7 +58,7 @@
     },
     "col/basic": {
       "filename": "col-basic-light.png",
-      "sourceSha256": "6c1c47a7b7654f51e1c5e221f751eca7b7eb924a514ee7255d9642b3636ceebe",
+      "sourceSha256": "48d4557941fd55413062957840c12c885cfd84caad529ca8a4bf8afe389520aa",
       "pngSha256": "e2c3f434226b2e8327356da47cc031ec0713d454013f9e5bcfe22ae5c52917e2"
     },
     "col/long-labels": {
@@ -153,7 +153,7 @@
     },
     "freqpoly/basic": {
       "filename": "freqpoly-basic-light.png",
-      "sourceSha256": "1463360d4bb5f268e3330573382052688edcbe04911ed3bfee3becd1000c15b5",
+      "sourceSha256": "a461824833644ec2d4cf765e2e0c1258c78e03064844c648e83ece707f7dcabe",
       "pngSha256": "c17dc9a1f40985008b58116815ad915910acc0ea31ac99ba716ac7fd7d0c7053"
     },
     "hex/basic": {
@@ -163,12 +163,12 @@
     },
     "histogram/basic": {
       "filename": "histogram-basic-light.png",
-      "sourceSha256": "d308d5236ca55be1e42a25bcc45cfd6c08b29d9d77ea52b96b8974cd943bd8eb",
+      "sourceSha256": "bc15207dcbfc90baa8647e29b882e6c0edcbd5fa6f16c1eaf0496a68fde9f977",
       "pngSha256": "13a0517670e26475bb383decb1bcdf1fcaff6b9673c84922aabc23c09d89e481"
     },
     "hline/threshold": {
       "filename": "hline-threshold-light.png",
-      "sourceSha256": "689c805795a33157cede6b593b8378ba02f6060ec028fd8f3885c6e133393f8f",
+      "sourceSha256": "93d94b99de545b223265f63ebce2bb81eb80419180df6887f8c3adf31bea675f",
       "pngSha256": "63386a8771a9461ae93c2f55500a1642a6aaa5d715385c570fb8c69b165c8fe5"
     },
     "interaction/brush-zoom": {
@@ -203,7 +203,7 @@
     },
     "jitter/basic": {
       "filename": "jitter-basic-light.png",
-      "sourceSha256": "90160f1fc870a09c63fcfd7dac73f7c60a3895ec2c17039735f1fb96b80c6b54",
+      "sourceSha256": "f8c950c8c505cda00e93582f7191d787bcee4d520c8abee36971a34081015ca5",
       "pngSha256": "f4507da365e7ce02e6b781f3d2c428f67d7209aead31cc40ddfa3347bf5a48cb"
     },
     "jitter/spread": {
@@ -313,7 +313,7 @@
     },
     "point/scatter-color": {
       "filename": "point-scatter-color-light.png",
-      "sourceSha256": "8982e9bf1c681ad2af66505f3b2889d00219cee52b4166793d3d2f1fa71abf9d",
+      "sourceSha256": "32ccf1576dce892a61a0dd1310b00b29cb75d5311b24694f2a69d183be1c158c",
       "pngSha256": "32987736a7a14affe34ece882054e1e858cf97d718d3098f45e749feb6d36038"
     },
     "point/stat-manual-mean": {
@@ -468,7 +468,7 @@
     },
     "vline/cutoff": {
       "filename": "vline-cutoff-light.png",
-      "sourceSha256": "3d6d4fedb5624c48766d3aa5d387954ff4961732a206ae4a0f83df129636f42b",
+      "sourceSha256": "e5c5d523f5c13fcf862e861aeb03532d57f89c789de1f07454dec5d1f7bb55da",
       "pngSha256": "10c5a1b426a252c85956447c91d2e20e0a9bdd06d7ee1b1f2c7b88613cfcf6e9"
     }
   }

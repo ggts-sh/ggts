@@ -1,5 +1,10 @@
 import type { ReactNode } from "react";
-import type { InteractiveLegendEntry, InteractionSource } from "@ggts-sh/core/interaction";
+import type { RenderModel } from "@ggts-sh/core";
+import {
+  resolveClearControlLayout,
+  type InteractiveLegendEntry,
+  type InteractionSource,
+} from "@ggts-sh/core/interaction";
 
 import { ensureReactPlotChrome } from "./plot-chrome.js";
 
@@ -36,6 +41,7 @@ function sameIdentity(
 }
 
 export function ReactLegendChrome(props: {
+  model: RenderModel;
   entries: readonly InteractiveLegendEntry[];
   previewIdentity: InteractiveLegendEntry["identity"] | null;
   pressedIdentity: InteractiveLegendEntry["identity"] | null;
@@ -47,13 +53,13 @@ export function ReactLegendChrome(props: {
   const { entries } = props;
   if (entries.length === 0) return null;
   const pressed = entries.find((entry) => sameIdentity(props.pressedIdentity, entry.identity));
-  const clearLayout =
-    pressed === undefined
-      ? null
-      : {
-          left: pressed.legend.x,
-          top: pressed.legend.y + pressed.legend.height + 4,
-        };
+  const clearLayout = resolveClearControlLayout({
+    legendFocusEnabled: pressed !== undefined,
+    pressedScale: pressed?.identity.scale ?? null,
+    legends: props.model.scene.legends,
+    sceneWidth: props.model.scene.width,
+    sceneHeight: props.model.scene.height,
+  });
   return (
     <div className="gg-legend-chrome">
       <div className="gg-legend-targets" role="group" aria-label="Interactive legends">
