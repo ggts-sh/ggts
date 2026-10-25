@@ -258,6 +258,22 @@ export {
   type GlyphObstaclePanel,
   crosshairGlyphObstacles,
 } from "./host-geometry.js";
+export {
+  type InspectGuideAxes,
+  inspectGuideAxes,
+  type TooltipPinHintInput,
+  shouldShowTooltipPinHint,
+  type ShowToolRailInput,
+  shouldShowToolRail,
+  CLEAR_CONTROL_GAP_PX,
+  CLEAR_CONTROL_HEIGHT_PX,
+  type ClearControlLayoutInput,
+  type ClearControlLayout,
+  resolveClearControlLayout,
+  type PlotThemeCssTokens,
+  themeTokensToCssVars,
+  themeTokensToCss,
+} from "./host-chrome.js";
 
 export { resolveSemanticKeys, resolveSemanticKeysForPlot } from "./semantic-keys-resolve.js";
 export type { ResolveSemanticKeysResult } from "./semantic-keys-resolve.js";

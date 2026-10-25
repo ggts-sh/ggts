@@ -5533,6 +5533,14 @@
           "kind": "type",
           "lifecycle": "experimental"
         },
+        "CLEAR_CONTROL_GAP_PX": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "CLEAR_CONTROL_HEIGHT_PX": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "CROSSHAIR_BOX_GAP_PAD": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -5542,6 +5550,14 @@
           "lifecycle": "experimental"
         },
         "CandidateLookup": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ClearControlLayout": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "ClearControlLayoutInput": {
           "kind": "type",
           "lifecycle": "experimental"
         },
@@ -5611,6 +5627,10 @@
         },
         "INTERACTION_DIAGNOSTIC_CATALOG": {
           "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "InspectGuideAxes": {
+          "kind": "type",
           "lifecycle": "experimental"
         },
         "InspectInput": {
@@ -5809,6 +5829,10 @@
           "kind": "type",
           "lifecycle": "experimental"
         },
+        "PlotThemeCssTokens": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
         "PointSelection": {
           "kind": "type",
           "lifecycle": "experimental"
@@ -5905,6 +5929,10 @@
           "kind": "type",
           "lifecycle": "experimental"
         },
+        "ShowToolRailInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
         "TRANSIENT_MEMBER_LIMIT": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -5918,6 +5946,10 @@
           "lifecycle": "experimental"
         },
         "TooltipFieldLabs": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
+        "TooltipPinHintInput": {
           "kind": "type",
           "lifecycle": "experimental"
         },
@@ -6121,6 +6153,10 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "inspectGuideAxes": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "intervalQuerySceneFromModel": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -6237,6 +6273,10 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "resolveClearControlLayout": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "resolveInspection": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -6289,7 +6329,23 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "shouldShowToolRail": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "shouldShowTooltipPinHint": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "stableZoomDomains": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "themeTokensToCss": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "themeTokensToCssVars": {
           "kind": "value",
           "lifecycle": "experimental"
         },

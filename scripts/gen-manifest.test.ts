@@ -238,6 +238,7 @@ describe("discovery against the real corpus", () => {
     const examplesDir = join(import.meta.dir, "..", "examples");
     const discovered = discoverExamples(examplesDir);
     expect(discovered.length).toBeGreaterThanOrEqual(14);
+    expect(discovered.some((ex) => ex.id.startsWith("compare/"))).toBe(false);
     const source = buildManifestSource(discovered);
     const committed = await Bun.file(join(examplesDir, "manifest.ts")).text();
     expect(committed).toBe(source); // staleness guard (mirrors manifest:check)

@@ -316,10 +316,10 @@ export function usePlotInteractions(input: {
     }
     if (activeTool === "point") selectCandidate(candidate, sourceOf(event));
     else if (activeTool === "inspect" && config.inspect !== null) {
+      const source = sourceOf(event);
       const pinned =
-        config.inspect.pin &&
-        !(inspectionRef.current?.state === "pinned" && seedId.current === candidate.id);
-      inspectCandidate(candidate, sourceOf(event), pinned);
+        config.inspect.pin && (source === "touch" || inspectionRef.current?.state !== "pinned");
+      inspectCandidate(candidate, source, pinned);
     }
   };
   const navigate = (

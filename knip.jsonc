@@ -98,8 +98,12 @@
         "define.ts",
         "rng.ts",
         "manifest.ts",
+        "compare/main.ts",
+        "compare/vite.config.ts",
       ],
       "project": ["**/*.ts", "**/*.tsx"],
+      // compare/*.svelte imports @ggts-sh/svelte outside knip's TS graph.
+      "ignoreDependencies": ["@ggts-sh/svelte"],
     },
     "apps/docs": {
       // svelte.config.js / vite.config.ts are auto-entries via knip's

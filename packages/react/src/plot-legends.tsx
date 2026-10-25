@@ -214,21 +214,32 @@ export function usePlotLegends(input: {
     props.onlegendfilter?.(event);
     props.oninteraction?.(event);
   }, [capability.filter, props.legendFilter, filters]);
+  const previewIdentity = entries.find((entry) => same(preview, entry))?.identity ?? null;
+  const pressedIdentity = entries.find((entry) => isPressed(entry))?.identity ?? null;
+  const filterEntries = entries.filter(
+    (entry) => capability.filter.has(entry.legend.scale) || Boolean(props.legendFilter),
+  );
+  const focusEntries = entries.filter(
+    (entry) => capability.focus.has(entry.legend.scale) || Boolean(props.legendFocus),
+  );
   return {
     emphasis,
     entries,
+    focusEntries,
+    previewIdentity,
+    pressedIdentity,
+    focusEntry,
+    clearPreview,
     clearFocus,
     controls:
-      entries.length === 0 ? null : (
+      filterEntries.length === 0 && filters.length === 0 ? null : (
         <div
           className="gg-legend-controls"
           aria-label="Legend controls"
           style={{ display: "flex", flexWrap: "wrap", gap: 8, lineHeight: 1.4 }}
         >
-          {entries.map((entry) => {
+          {filterEntries.map((entry) => {
             const identity = legendIdentityKey(entry.identity);
-            const filter = capability.filter.has(entry.legend.scale) || Boolean(props.legendFilter);
-            const focus = capability.focus.has(entry.legend.scale) || Boolean(props.legendFocus);
             const field = fieldFor(entry);
             const clause = filters.find(
               (value) => value.scale === entry.legend.scale && value.field === field,
@@ -236,62 +247,25 @@ export function usePlotLegends(input: {
             const visible =
               clause === undefined ||
               isLegendValueVisible(clause.values, entry.entry.value as CellValue, clause.mode);
-            return (
-              <div key={identity}>
-                {focus && (
-                  <button
-                    type="button"
-                    aria-pressed={isPressed(entry)}
-                    onPointerEnter={() => {
-                      focusEntry(entry, "pointer", false);
-                    }}
-                    onPointerLeave={() => {
-                      clearPreview("pointer");
-                    }}
-                    onFocus={() => {
-                      focusEntry(entry, "keyboard", false);
-                    }}
-                    onBlur={() => {
-                      clearPreview("keyboard");
-                    }}
-                    onClick={(event) => {
-                      focusEntry(entry, event.detail === 0 ? "keyboard" : "pointer", true);
-                    }}
-                    style={{ minHeight: 44, minWidth: 44 }}
-                  >
-                    Focus {entry.entry.fullLabel ?? entry.entry.label}
-                  </button>
-                )}
-                {filter && field !== undefined && (
-                  <label
-                    style={{ display: "inline-flex", alignItems: "center", minHeight: 44, gap: 6 }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={visible}
-                      onChange={(event) => {
-                        filterEntry(
-                          entry,
-                          event.nativeEvent instanceof PointerEvent ? "pointer" : "keyboard",
-                        );
-                      }}
-                    />
-                    Show {entry.entry.fullLabel ?? entry.entry.label}
-                  </label>
-                )}
-              </div>
+            return field === undefined ? null : (
+              <label
+                key={identity}
+                style={{ display: "inline-flex", alignItems: "center", minHeight: 44, gap: 6 }}
+              >
+                <input
+                  type="checkbox"
+                  checked={visible}
+                  onChange={(event) => {
+                    filterEntry(
+                      entry,
+                      event.nativeEvent instanceof PointerEvent ? "pointer" : "keyboard",
+                    );
+                  }}
+                />
+                Show {entry.entry.fullLabel ?? entry.entry.label}
+              </label>
             );
           })}
-          {committed !== null && (
-            <button
-              type="button"
-              onClick={() => {
-                clearFocus("pointer");
-              }}
-            >
-              Clear legend focus
-            </button>
-          )}
           {filters.length > 0 && (
             <button
               type="button"

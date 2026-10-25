@@ -151,113 +151,15 @@ export function plotRootInlineStyle(input: PlotRootStyleInput): string | undefin
   return `${sizeCss}${input.themeStyle}` || undefined;
 }
 
-/** Edge/gap pad between a pressed legend box and the Clear recovery control. */
-export const CLEAR_CONTROL_GAP_PX = 4;
-/**
- * Compact control height — matches discrete legend row targets (min 24px AA
- * target size) rather than the old 44×44 AAA square that dwarfed swatches.
- */
-export const CLEAR_CONTROL_HEIGHT_PX = 24;
-/** Approximate painted width of the "Clear" label + horizontal padding (layout clamp only). */
-const CLEAR_CONTROL_WIDTH_PX = 44;
+export {
+  CLEAR_CONTROL_GAP_PX,
+  CLEAR_CONTROL_HEIGHT_PX,
+  resolveClearControlLayout,
+  type ClearControlLayout,
+} from "@ggts-sh/core/interaction";
+
 /** Grace period after pointer leaves legend chrome before Clear fades for screenshots. */
 export const CLEAR_HIDE_DELAY_MS = 2500;
-
-export type ClearControlLayoutInput = {
-  /**
-   * Host: `interactionConfig.legendFocus !== null`.
-   * Must stay even when `pressedScale` is non-null: controller emphasis can
-   * briefly leave a pressed scale after legend focus is disabled; Clear is
-   * intentionally suppressed then.
-   */
-  readonly legendFocusEnabled: boolean;
-  /** Host: `effectiveLegendPressed?.scale ?? null`. */
-  readonly pressedScale: string | null;
-  /** Scene legends — full box + position so Clear anchors off the pressed guide. */
-  readonly legends: readonly {
-    readonly scale: string;
-    readonly x: number;
-    readonly y: number;
-    readonly width: number;
-    readonly height: number;
-    readonly position?: "right" | "bottom";
-    readonly direction?: "vertical" | "horizontal";
-  }[];
-  readonly sceneWidth: number;
-  readonly sceneHeight: number;
-};
-
-export type ClearControlLayout = {
-  readonly left: number;
-  readonly top: number;
-};
-
-/**
- * Scene-local position for the legend Clear recovery control, or null to hide.
- *
- * Placement (collision-safe relative to the pressed legend):
- * - **right / vertical** — prefer **below** the stack; if that would clamp into
- *   the legend box (tall low guide), try **above**, then **left** of the box
- * - **bottom / horizontal** — prefer **right** of the strip; else under, then above
- *
- * Candidates are clamped into the scene, then the first that does not intersect
- * the pressed legend box wins. null when focus is off / nothing pressed / no match.
- */
-export function resolveClearControlLayout(
-  input: ClearControlLayoutInput,
-): ClearControlLayout | null {
-  if (!input.legendFocusEnabled || input.pressedScale === null) return null;
-  const legend = input.legends.find((entry) => entry.scale === input.pressedScale);
-  if (legend === undefined) return null;
-
-  const position = legend.position ?? "right";
-  const direction = legend.direction ?? (position === "bottom" ? "horizontal" : "vertical");
-  const gap = CLEAR_CONTROL_GAP_PX;
-  const btnW = CLEAR_CONTROL_WIDTH_PX;
-  const btnH = CLEAR_CONTROL_HEIGHT_PX;
-  const maxLeft = Math.max(gap, input.sceneWidth - btnW - gap);
-  const maxTop = Math.max(gap, input.sceneHeight - btnH - gap);
-
-  const clamp = (left: number, top: number): ClearControlLayout => ({
-    left: Math.min(Math.max(gap, left), maxLeft),
-    top: Math.min(Math.max(gap, top), maxTop),
-  });
-
-  const overlapsLegend = (layout: ClearControlLayout): boolean => {
-    const right = layout.left + btnW;
-    const bottom = layout.top + btnH;
-    const legRight = legend.x + legend.width;
-    const legBottom = legend.y + legend.height;
-    return !(
-      right <= legend.x ||
-      layout.left >= legRight ||
-      bottom <= legend.y ||
-      layout.top >= legBottom
-    );
-  };
-
-  const candidates: ClearControlLayout[] =
-    position === "bottom" || direction === "horizontal"
-      ? [
-          // beside, then under, then above the horizontal strip
-          clamp(legend.x + legend.width + gap, legend.y + Math.max(0, (legend.height - btnH) / 2)),
-          clamp(legend.x, legend.y + legend.height + gap),
-          clamp(legend.x, legend.y - gap - btnH),
-        ]
-      : [
-          // under, then above, then left of the vertical stack
-          clamp(legend.x, legend.y + legend.height + gap),
-          clamp(legend.x, legend.y - gap - btnH),
-          clamp(legend.x - gap - btnW, legend.y),
-        ];
-
-  for (const candidate of candidates) {
-    if (!overlapsLegend(candidate)) return candidate;
-  }
-  // Last resort: first candidate (still scene-clamped) when every park collides
-  // (degenerate: legend fills the scene). Prefer under/beside intent over hide.
-  return candidates[0] ?? null;
-}
 
 /**
  * Whether the Clear control should paint (opacity / pointer-events) while a

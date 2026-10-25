@@ -342,7 +342,7 @@ ${entries}
 const REQUIRED_FILES = ["spec.ts", "Example.svelte", "meta.json"] as const;
 
 /** Directories under examples/ that are not example categories. */
-const NON_CATEGORY = new Set(["node_modules"]);
+const NON_CATEGORY = new Set(["node_modules", "compare"]);
 
 export function discoverExamples(examplesDir: string): DiscoveredExample[] {
   const problems: string[] = [];
