@@ -1,6 +1,6 @@
 {
   "name": "@ggts-sh/compose",
-  "version": "0.43.0",
+  "version": "0.43.1",
   "description": "Framework-free plot composition: assemble PortableSpec from props and grammar layers.",
   "keywords": [
     "charts",
@@ -34,7 +34,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@ggts-sh/spec": "^0.43.0"
+    "@ggts-sh/spec": "^0.43.1"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

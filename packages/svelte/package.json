@@ -1,6 +1,6 @@
 {
   "name": "@ggts-sh/svelte",
-  "version": "0.43.0",
+  "version": "0.43.1",
   "description": "ggts: a layered grammar of graphics for Svelte 5 — ggplot2 semantics, JSON-serializable specs, agent-friendly validation, and hybrid SVG/canvas rendering. The ggts render CLI ships separately as @ggts-sh/cli.",
   "keywords": [
     "charts",
@@ -56,9 +56,9 @@
     "test:coverage": "vitest run --coverage --project chromium && vitest run --coverage --config vitest.ssr.config.ts"
   },
   "dependencies": {
-    "@ggts-sh/compose": "^0.43.0",
-    "@ggts-sh/core": "^0.43.0",
-    "@ggts-sh/spec": "^0.43.0"
+    "@ggts-sh/compose": "^0.43.1",
+    "@ggts-sh/core": "^0.43.1",
+    "@ggts-sh/spec": "^0.43.1"
   },
   "devDependencies": {
     "@sveltejs/package": "^2.5.8",

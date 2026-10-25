@@ -1,5 +1,16 @@
 # @ggts-sh/react
 
+## 0.43.1
+
+### Patch Changes
+
+- 3e1cf25: Match Svelte default inspect tooltip chrome, solid crosshair guides with axis values, and in-legend focus targets. Share theme, guide, tooltip, and legend layout policies through core. Resume transient inspection immediately when unpinning with the pointer.
+- Updated dependencies [866a052]
+- Updated dependencies [3e1cf25]
+  - @ggts-sh/core@0.43.1
+  - @ggts-sh/compose@0.43.1
+  - @ggts-sh/spec@0.43.1
+
 ## 0.43.0
 
 ### Minor Changes
