@@ -102,6 +102,20 @@ with `facet-form-missing`.
   (left/right strips take layout space rather than overlaying the panel);
   `show` (default true) — set false when direct labels are authored elsewhere.
 
+## Multi-chart layout review
+
+Allocate space by chart density and comparison relationships when composing
+independent charts into a dashboard:
+
+- Give dense time series and long-category charts a full-width or otherwise
+  spacious panel instead of forcing every chart into a 2×2 grid.
+- Choose panel spans from density and which charts readers compare. Repetition
+  of an appropriate encoding across panels is not a defect.
+- Align shared label gutters and keep heights matched within a comparison row;
+  mismatched fixed heights distort visual comparisons.
+- Inspect the whole dashboard and each chart at its final rendered size.
+  Repeat both inspections after resizing or responsive reflow.
+
 ## Guides, legend, labs
 
 Guides are keyed by aesthetic channel: `x`, `y`, `color`, `fill`, `size`,
@@ -113,13 +127,35 @@ channel). `<GuideLegend channel="color" position="bottom"/>` assembles
 `guides: {"color": {"type": "legend", "position": "bottom"}}`.
 
 - Top-level `guides` override a scale-local `guide`.
-- Shared options: `title`, `theme` (bounded size/gap overrides), `collision`;
-  non-position guides add integer `order` (placement rank), `position`
-  `"auto"|"right"|"bottom"`, `direction` `"auto"|"vertical"|"horizontal"`,
-  and `force` (show a guide suppressed by default, e.g. identity scales).
+- Shared options: `title`, `theme`, `collision`; non-position guides add
+  integer `order` (placement rank), `position` `"auto"|"right"|"bottom"`,
+  `direction` `"auto"|"vertical"|"horizontal"`, and `force` (show a guide
+  suppressed by default, e.g. identity scales).
+- Axis `collision`: on a horizontal band `x` axis, `auto` uses measured
+  band-label escalation and `ellipsis` forces single-line labels truncated to
+  fit. `preserve` keeps full single-line labels on either axis even when they
+  overlap or overflow. Setting any explicit collision value drops a scale-local
+  band guide pin; omitting `collision` leaves that pin in place, so the default
+  `auto` behavior does not override it. A `y` axis `ellipsis` value does not
+  select a separate band-collision path.
+- `GuideThemeSpec` bounds one guide's presentation:
+
+  | Option              | Range  | Controls                        |
+  | ------------------- | ------ | ------------------------------- |
+  | `titleSize`         | 8–32   | Guide title font size           |
+  | `labelSize`         | 8–24   | Guide label font size           |
+  | `keyGap`            | 0–32   | Gap between a key and its label |
+  | `rowGap`            | 0–32   | Gap between legend rows         |
+  | `blockGap`          | 0–64   | Gap between guide blocks        |
+  | `colorbarThickness` | 4–48   | Colorbar thickness              |
+  | `colorbarLength`    | 48–512 | Colorbar length                 |
+
 - Responsive rule: `auto`-positioned non-position guides move below the panel
   when the viewport is 480px wide or less, or when a right guide would leave
   under 320px of panel (after an estimated 80px of other chrome).
+- For long legends, shorten series names, remove redundant guide titles, use
+  direct labels where practical, or reduce the series/small-multiple structure.
+  Keep labels readable; change the content or layout before shrinking text.
 - `<Legend order="stable-domain"|"present-first-seen"|"sorted"/>` is the
   plot-wide legend ENTRY-SORT enum (default `stable-domain`; ordering never
   changes color assignments). Distinct from `<GuideLegend order={2}/>`, a
@@ -127,6 +163,12 @@ channel). `<GuideLegend channel="color" position="bottom"/>` assembles
 - `Labs` takes flat string props: `title`, `subtitle`, `caption`, `x`, `y`,
   `color`, `fill`, `size`, `linewidth`, `alpha`, `shape`, `linetype`. The
   spec type is re-exported from `@ggts-sh/svelte` as `LabsSpec`.
+  Give each text field one role: title carries the chart's message or subject;
+  optional subtitle carries measure, scope, period, or units; caption carries
+  only a unique source or caveat. Keep adjacent disclosures, axis titles,
+  subtitle content, and hedging prose out of the caption. Default tooltips and
+  humanized axis/legend titles also read from `labs`, so concise field labels
+  improve both chart chrome and tooltip content.
 
 ```svelte fragment
 <GGPlot
