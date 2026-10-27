@@ -19,6 +19,13 @@ params from `GEOM_PARAM_KEYS` — do not hand-edit `packages/svelte/src/lib/geom
 />
 ```
 
+`color` and `fill` are aesthetics, not geom `params` keys or direct component
+props. Use the canonical constant form, for example
+`aes: { fill: { value: "#0072B2" } }` in JSON or
+`aes={{ fill: { value: "#0072B2" } }}` on a component. Map a column of raw hex
+values only when the colors vary with the data; a repeated column adds an
+unnecessary identity mapping when a constant aesthetic would suffice.
+
 Omit `stat`/`position` to get the geom's defaults (normalize fills them in). Each layer
 declaration allows only its own stat and position values — anything else is a schema error.
 

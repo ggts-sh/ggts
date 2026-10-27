@@ -21,9 +21,15 @@ and Svelte adapters. A chart spec carries the same grammar between surfaces.
 4. In every agent sandbox, install `@ggts-sh/cli` and `@ggts-sh/skill`
    at matching local versions and keep the lockfile. Expose
    the installed skill to the agent, refreshing any copied skill on upgrades.
-   Run `ggts check chart.json`, apply relevant diagnostics, then
-   `ggts render chart.json > chart.svg` and inspect the output. A local npm
-   install exposes these commands through `npm exec -- ggts`.
+   Run `ggts check chart.json`, apply relevant diagnostics, then render at the
+   intended final width and height with
+   `ggts render chart.json --width W --height H > chart.svg` and inspect that
+   SVG. Re-render and visually inspect after every width, layout, or theme
+   change, including responsive reflow: label wrapping, rotation, thinning,
+   temporal ticks, and legend placement are width-dependent. Apply the ≤480px
+   viewport and <320px panel rules at that final size. Headless SVG cannot
+   validate tooltip content; hover and pin in a browser. A local npm install
+   exposes these commands through `npm exec -- ggts`.
 
 ## Registration (call these)
 
@@ -187,7 +193,7 @@ or linked-view code.
   [themes.md](references/themes.md) (every product theme name, shells,
   role overrides),
   [composition-surfaces.md](references/composition-surfaces.md) (coords,
-  facets, guides, merge semantics),
+  facets, multi-chart layout, guides, labs, merge semantics),
   [interactions.md](references/interactions.md) (tooltips, selection, linking),
   [recipes.md](references/recipes.md) (long-tail chart recipes).
   Registration calls live in the [registration reference](references/registration.md).

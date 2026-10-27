@@ -52,6 +52,33 @@ events use semantic values.
 "scales": { "x": { "type": "linear", "transform": "log10", "limits": [1, 1000] } }
 ```
 
+Band axes also accept a scale-local `guide` with `mode`, `angle`, and `wrap`:
+
+```json fragment
+"scales": {
+  "x": {
+    "type": "band",
+    "guide": { "mode": "auto", "angle": -45, "wrap": 2 }
+  }
+}
+```
+
+- `mode`: `auto` (default), `single`, `wrap`, `rotate`, or `off` (hide labels).
+  On a horizontal band axis, auto escalates from single-line labels to wrapping,
+  wrap-then-rotate, full-string rotation, truncation, and label thinning; if
+  labels still cannot fit, layout can warn about overlap or margin overflow.
+  An explicit mode pins that presentation instead of auto-escalating. On a
+  vertical band axis (native `y`, or categorical `x` after `coord_flip`), only
+  `off` changes label visibility; the other modes use the legacy vertical path.
+- `angle`: rotation in degrees, normalized to −90…0 (positive values mirror to
+  negative). It sets the angle for horizontal `rotate`; in `auto`, the
+  wrap-then-rotate stage can still choose −45°, so use `mode: "rotate"` when
+  the angle must be enforced.
+- `wrap`: maximum wrapped lines on a horizontal band axis, from 1–8 (default 2).
+
+The top-level axis guide's `collision` policy can override this layout; see
+[Guides, legend, labs](composition-surfaces.md#guides-legend-labs).
+
 ### Color and fill scales
 
 Five types, each gating its own option set (`ColorScaleSpec`; forbidden
