@@ -17,11 +17,7 @@ import {
 import { defaultTimeTickFormat, timeTicks } from "./time.js";
 import type { BandLayoutDomainContext, Domain, Tick, TickFormatter } from "./layout-types.js";
 
-/**
- * First-occurrence domain index by discrete identity (`encodeKey`, same as
- * trainBand.indexOf). O(D) build, O(1) lookup — replaces O(K·D) findIndex over
- * rawCategories for each explicit break.
- */
+/** First-occurrence domain index by discrete identity (`encodeKey`, trainBand parity). O(D) build, O(1) lookup. */
 export function firstDomainIndexByEncodeKey(
   rawCategories: readonly unknown[],
 ): (value: unknown) => number {
@@ -62,11 +58,11 @@ export interface AxisTicks {
   step: number;
   empty: boolean;
   guidePlan?: AxisGuidePlan;
-  /** Measured band planner: orthogonal (bottom) band height it requires, px. */
+  /** Measured band planner: orthogonal label extent it requires, px. */
   bandLabelBandHeight?: number;
-  /** Measured band planner: along-axis overhang past the RIGHT end tick, px. */
+  /** Measured band planner: along-axis overhang past the end-edge tick, px. */
   bandAlongOverhang?: number;
-  /** Measured band planner: along-axis overhang past the LEFT end tick, px. */
+  /** Measured band planner: along-axis overhang past the start-edge tick, px. */
   bandLeftOverhang?: number;
   /** Measured band planner: resolved thinning (1 = every category labeled). */
   bandLabelEvery?: number;
@@ -85,7 +81,7 @@ export interface DeriveTicksContext {
   quantum?: number;
   ellipsis?: string;
   /** Top-level band-axis collision override, resolved after scale-local guide settings. */
-  bandCollision?: "ellipsis" | "preserve";
+  bandCollision?: "auto" | "ellipsis" | "preserve";
   previousGuidePlan?: AxisGuidePlan;
 }
 
@@ -159,6 +155,22 @@ function requireBandAxisPlanner(): NonNullable<ReturnType<typeof getBandAxisPlan
     );
   }
   return plan;
+}
+
+function bandPlannerCaps(context: DeriveTicksContext): {
+  marginCapPx: number;
+  orthogonalMarginCapPx: number;
+} {
+  const vertical = context.orient === "vertical";
+  const orthogonalCap = vertical
+    ? context.marginCapPx
+    : (context.orthogonalMarginCapPx ?? context.marginCapPx);
+  return {
+    marginCapPx: vertical
+      ? (context.orthogonalMarginCapPx ?? context.marginCapPx)
+      : context.marginCapPx,
+    orthogonalMarginCapPx: Math.max(1, orthogonalCap - (context.orthogonalChromePx ?? 0)),
+  };
 }
 
 function ellipsizeBandPlan(
@@ -273,30 +285,31 @@ function deriveBandTicks(
   context: DeriveTicksContext,
 ): AxisTicks {
   const rawCategories = domain.rawCategories ?? domain.categories;
-  // Resolve break-filtered (or full-domain) entries once for both the measured
-  // horizontal planner and the legacy vertical path — O(D+K) via encodeKey map.
+  // Resolve entries once for the measured planner and bare-domain fallback — O(D+K).
   const resolved = resolveBandEntries(domain);
   const guide = bandGuideConfig(domain.band?.config.guide);
-  // mode:off must apply before the horizontal-only measured branch so vertical
-  // band axes (native Y, or x after coord_flip) also hide labels.
+  // mode:off must apply before the measured branch in either orientation.
   if (domain.band !== undefined && guide?.mode === "off") {
     return deriveHiddenBandTicks(domain, rawCategories, resolved, guide, format, context);
   }
-  // Measured planner: horizontal band axes with a planning context only (G1).
-  // Vertical band (native Y, or categorical-on-Y after coord_flip) falls through
-  // to the legacy thin/truncate path.
-  if (domain.band !== undefined && context.orient === "horizontal") {
-    // "preserve" renders full single-line labels downstream (presentForLayout),
-    // so the guide plan must reflect single-line mode too — otherwise the auto
-    // wrap/rotate plan leaks into the axis-title offset and wrap/rotate advisories
-    // for a layout that is never actually rendered.
+  // Measured planner: contextual axes either orientation; bare vertical domains when registered.
+  if (
+    domain.band !== undefined ||
+    (context.orient === "vertical" && getBandAxisPlanner() !== undefined)
+  ) {
+    const band = domain.band ?? {
+      aesthetic: "y" as const,
+      panelIndex: 0,
+      config: { type: "band" as const },
+    };
+    // "preserve" renders single-line labels downstream, so its guide plan must match.
     const resolvedGuide =
       context.bandCollision === "ellipsis" || context.bandCollision === "preserve"
         ? { ...guide, mode: "single" as const }
         : guide;
     const planned = requireBandAxisPlanner()({
-      aesthetic: domain.band.aesthetic,
-      panelIndex: domain.band.panelIndex,
+      aesthetic: band.aesthetic,
+      panelIndex: band.panelIndex,
       categoryCount: domain.categories.length,
       entries: resolved.map(({ value, domainIndex }) => ({
         value,
@@ -305,17 +318,10 @@ function deriveBandTicks(
       })),
       orient: context.orient,
       extentPx: context.extentPx,
-      reverse: domain.band.config.reverse === true,
+      reverse: band.config.reverse === true,
       measurer: context.measurer,
       fontSize: context.fontSize,
-      marginCapPx: context.marginCapPx,
-      // Reserve tick chrome: layoutPass adds tickLength+tickLabelGap to the band
-      // height and the renderer offsets labels by it, so the label band itself
-      // must fit the cap MINUS that chrome or it clips without truncating.
-      orthogonalMarginCapPx: Math.max(
-        1,
-        (context.orthogonalMarginCapPx ?? context.marginCapPx) - (context.orthogonalChromePx ?? 0),
-      ),
+      ...bandPlannerCaps(context),
       ...(context.quantum !== undefined && { quantum: context.quantum }),
       ...(context.ellipsis !== undefined && { ellipsis: context.ellipsis }),
       previousMode: context.previousGuidePlan?.bandLabelMode ?? null,
@@ -323,7 +329,7 @@ function deriveBandTicks(
       ...(resolvedGuide === undefined ? {} : { config: resolvedGuide }),
     });
     const plan =
-      context.bandCollision === "ellipsis"
+      context.bandCollision === "ellipsis" && context.orient === "horizontal"
         ? ellipsizeBandPlan(planned, domain.categories.length, context)
         : context.bandCollision === "preserve"
           ? sanitizePreserveBandPlan(planned)
@@ -341,7 +347,7 @@ function deriveBandTicks(
       ticks,
       step: NaN,
       empty: plan.ticks.length === 0,
-      guidePlan: bandGuidePlan(plan, domain.band, rawCategories),
+      guidePlan: bandGuidePlan(plan, band, rawCategories),
       bandLabelBandHeight: plan.labelBandHeight,
       bandAlongOverhang: plan.alongOverhang,
       bandLeftOverhang: plan.leftOverhang,

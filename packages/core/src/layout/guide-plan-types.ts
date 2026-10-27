@@ -37,11 +37,11 @@ export interface AxisGuidePlan {
   overlap: boolean;
   marginOverflow: boolean;
   degraded: readonly GuideDegradedCode[];
-  /** Band label layout (measured horizontal band axes only). */
+  /** Band label layout (measured band axes only). */
   bandLabelMode?: BandLabelMode;
   /** Band rotation in degrees (auto chooses −45/−90; authors may pin any finite angle). */
   bandLabelAngle?: number;
-  /** Measured orthogonal (bottom) band height the labels require, px. */
+  /** Measured orthogonal label extent the labels require, px. */
   bandLabelBandHeight?: number;
   /**
    * True when the author forced `scales.*.guide.mode` (not auto). Heuristic

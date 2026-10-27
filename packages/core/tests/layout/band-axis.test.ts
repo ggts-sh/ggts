@@ -59,7 +59,7 @@ describe("measured band x-axis (planner integration)", () => {
     expect(r.margins.bottom).toBeLessThanOrEqual(cap);
   });
 
-  it("does NOT plan a vertical band axis — categorical-on-Y keeps legacy truncation", () => {
+  it("plans a vertical band axis and keeps its left margin within the cap", () => {
     const yBand: Domain = {
       type: "band",
       categories: SPANISH,
@@ -67,8 +67,8 @@ describe("measured band x-axis (planner integration)", () => {
       band: { aesthetic: "y", panelIndex: 0, config: { type: "band" } },
     };
     const r = layout(base({ width: 300, height: 300, y: yBand }));
-    // The horizontal planner never runs on Y: no band mode, legacy path owns it.
-    expect(r.y.guidePlan?.bandLabelMode).toBeUndefined();
+    expect(r.y.guidePlan?.bandLabelMode).toBe("single-line");
+    expect(r.y.guidePlan?.bandLabelAngle).toBe(0);
     expect(r.margins.left).toBeLessThanOrEqual(theme.maxMarginFraction * 300);
   });
 });

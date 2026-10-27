@@ -43,8 +43,8 @@ describe("vertical band y: over-wide label does not hide short siblings (#1356)"
     expect(r.y.ticks).toHaveLength(MIXED.length);
     // Thinning must not fire when it cannot shrink max labeled width.
     expect(r.y.labelEvery).toBe(1);
-    expect(r.degradations).not.toContain("y:thin");
-    expect(r.degradations).toContain("y:truncate");
+    expect(r.degradations).not.toContain("band-label-overlap");
+    expect(r.degradations).toContain("band-label-margin-overflow");
     expect(r.y.truncated).toBe(true);
 
     for (const t of r.y.ticks) {
@@ -83,7 +83,7 @@ describe("vertical band y: over-wide label does not hide short siblings (#1356)"
       }),
     );
     expect(r.y.labelEvery).toBeGreaterThan(1);
-    expect(r.degradations).toContain("y:thin");
+    expect(r.degradations).toContain("band-label-margin-overflow");
     // Surviving labels are the short even-index ones — no need to truncate.
     const labeled = r.y.ticks.filter((t) => t.labeled);
     expect(labeled.length).toBeGreaterThan(0);
@@ -112,7 +112,7 @@ describe("vertical band y: over-wide label does not hide short siblings (#1356)"
     );
     expect(r.y.labelEvery).toBeGreaterThanOrEqual(4);
     expect(r.y.ticks.find((t) => t.value === cats[2])?.labeled).toBe(false);
-    expect(r.degradations).toContain("y:thin");
+    expect(r.degradations).toContain("band-label-margin-overflow");
   });
 
   it("density-thins many short categories when the plot is too short for all labels", () => {
@@ -126,8 +126,24 @@ describe("vertical band y: over-wide label does not hide short siblings (#1356)"
       }),
     );
     expect(r.y.labelEvery).toBeGreaterThan(1);
-    expect(r.degradations).toContain("y:thin");
+    expect(r.degradations).toContain("band-label-overlap");
     expect(r.y.ticks.filter((t) => t.labeled).length).toBeLessThan(cats.length);
+  });
+
+  it("keeps and flags overlapping labels below the density-thinning floor (#1846)", () => {
+    const cats = Array.from({ length: 8 }, (_, i) => `Category ${i}`);
+    const r = layout(
+      base({
+        width: 640,
+        height: 120,
+        x: lin(0, 10),
+        y: band(...cats),
+      }),
+    );
+    expect(r.y.labelEvery).toBe(1);
+    expect(r.y.ticks.every((t) => t.labeled)).toBe(true);
+    expect(r.degradations).toContain("band-label-overlap");
+    expect(r.y.guidePlan?.overlap).toBe(true);
   });
 
   it("does not density-thin sparse authored breaks that already have room", () => {

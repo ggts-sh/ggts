@@ -228,6 +228,118 @@ describe("responsive guide planning", () => {
   });
 });
 
+describe("vertical band guide planning (#1846)", () => {
+  const categoryRows = (count: number) =>
+    Array.from({ length: count }, (_, i) => ({ category: `Category ${i}`, value: i + 1 }));
+
+  it("plans and diagnoses density thinning on a categorical y axis", () => {
+    const result = runPipeline(
+      gg(categoryRows(20), aes({ x: "value", y: "category" }))
+        .geomPoint()
+        .scales({ y: { type: "band" } })
+        .spec(),
+      { width: 640, height: 200 },
+    );
+    const plan = result.guidePlans.find(
+      (candidate) => candidate.type === "axis" && candidate.aesthetic === "y",
+    );
+    expect(plan?.type).toBe("axis");
+    if (plan?.type !== "axis") return;
+    expect(plan.bandLabelMode).toBe("single-line");
+    expect(plan.degraded).toContain("band-label-overlap");
+    expect(plan.ticks.filter((tick) => tick.label !== "").length).toBeLessThan(20);
+    expect(result.scene.axes.y.ticks.filter((tick) => tick.label !== "").length).toBeLessThan(20);
+    const diagnostic = result.scaleDiagnostics.find(
+      (candidate) => candidate.code === "band-label-overlap" && candidate.path === "/scales/y",
+    );
+    expect(diagnostic?.problem).toMatch(/thinned/i);
+    expect(diagnostic?.fixes.some((fix) => fix.description.includes("guide.mode"))).toBe(true);
+  });
+
+  it("plans the flipped categorical x axis on its vertical display", () => {
+    const result = runPipeline(
+      gg(categoryRows(20), aes({ x: "category", y: "value" }))
+        .geomPoint()
+        .scales({ x: { type: "band" } })
+        .coordFlip()
+        .spec(),
+      { width: 640, height: 200 },
+    );
+    const plan = result.guidePlans.find(
+      (candidate) => candidate.type === "axis" && candidate.aesthetic === "x",
+    );
+    expect(plan?.type).toBe("axis");
+    if (plan?.type !== "axis") return;
+    expect(plan.bandLabelMode).toBe("single-line");
+    expect(plan.degraded).toContain("band-label-overlap");
+    expect(
+      result.scaleDiagnostics.some(
+        (diagnostic) => diagnostic.code === "band-label-overlap" && diagnostic.path === "/scales/x",
+      ),
+    ).toBe(true);
+  });
+
+  it("keeps every label when the author pins single-line or preserves collisions", () => {
+    const build = gg(categoryRows(20), aes({ x: "value", y: "category" }))
+      .geomPoint()
+      .scales({ y: { type: "band", guide: { mode: "single" } } });
+    const pinned = runPipeline(build.spec(), { width: 640, height: 200 });
+    const pinnedPlan = pinned.guidePlans.find(
+      (candidate) => candidate.type === "axis" && candidate.aesthetic === "y",
+    );
+    expect(pinnedPlan?.type).toBe("axis");
+    if (pinnedPlan?.type !== "axis") return;
+    expect(pinnedPlan.bandLabelAuthorPinned).toBe(true);
+    expect(pinnedPlan.overlap).toBe(true);
+    expect(pinned.scene.axes.y.ticks.every((tick) => tick.label !== "")).toBe(true);
+
+    const preserved = runPipeline(
+      build.guides({ y: guideAxis({ collision: "preserve" }) }).spec(),
+      { width: 640, height: 200 },
+    );
+    expect(preserved.scene.axes.y.ticks.every((tick) => tick.label !== "")).toBe(true);
+  });
+
+  it("keeps every vertical label under collision:ellipsis and truncates width", () => {
+    const longRows = Array.from({ length: 20 }, (_, i) => ({
+      category: `A very long category number ${i}`,
+      value: i + 1,
+    }));
+    const result = runPipeline(
+      gg(longRows, aes({ x: "value", y: "category" }))
+        .geomPoint()
+        .scales({ y: { type: "band" } })
+        .guides({ y: guideAxis({ collision: "ellipsis" }) })
+        .spec(),
+      { width: 300, height: 200 },
+    );
+    expect(result.scene.axes.y.ticks.every((tick) => tick.label !== "")).toBe(true);
+    expect(result.scene.axes.y.ticks.some((tick) => tick.label.endsWith("…"))).toBe(true);
+  });
+
+  it("flags overlap without thinning fewer than twelve categories", () => {
+    const result = runPipeline(
+      gg(categoryRows(8), aes({ x: "value", y: "category" }))
+        .geomPoint()
+        .scales({ y: { type: "band" } })
+        .spec(),
+      { width: 640, height: 120 },
+    );
+    const plan = result.guidePlans.find(
+      (candidate) => candidate.type === "axis" && candidate.aesthetic === "y",
+    );
+    expect(plan?.type).toBe("axis");
+    if (plan?.type !== "axis") return;
+    expect(plan.overlap).toBe(true);
+    expect(plan.degraded).toContain("band-label-overlap");
+    expect(result.scene.axes.y.ticks.every((tick) => tick.label !== "")).toBe(true);
+    const diagnostic = result.scaleDiagnostics.find(
+      (candidate) => candidate.code === "band-label-overlap" && candidate.path === "/scales/y",
+    );
+    expect(diagnostic?.fixes.some((fix) => fix.typescript === ".coordFlip()")).toBe(false);
+  });
+});
+
 /**
  * #700 — rug plots (vertical rules with only aes.x) train a synthetic y
  * domain of [0, 1] so panel-spanning marks have a range. Without an explicit

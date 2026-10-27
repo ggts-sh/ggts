@@ -31,7 +31,7 @@ export type Domain =
       categories: string[];
       rawCategories?: readonly unknown[];
       breaks?: readonly (number | string)[];
-      /** Present ⇒ this band axis gets the measured label planner (horizontal only). */
+      /** Present ⇒ this band axis gets the measured label planner. */
       band?: BandLayoutDomainContext;
     };
 
