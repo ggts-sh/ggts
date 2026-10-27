@@ -28,6 +28,11 @@ import {
   waitForNpmVersions,
 } from "./npm-publish-state.ts";
 
+// npm served 0.43.2 up to ~3 min after `changeset publish` exited 0.
+const NPM_VISIBILITY_WAIT = { retries: 40, retryDelayMs: 15_000 };
+const NPM_VISIBILITY_WAIT_MIN =
+  (NPM_VISIBILITY_WAIT.retries * NPM_VISIBILITY_WAIT.retryDelayMs) / 60_000;
+
 function run(
   command: string,
   args: string[],
@@ -91,15 +96,12 @@ async function main(): Promise<number> {
 
   // Exit 0 is the success signal: changeset publish exits 1 when any npm
   // publish fails, and v3 no longer prints parseable "New tag:" lines. npm can
-  // still take minutes to serve a new version, so wait (up to 10 min) before
-  // staging GitHub releases for it.
-  const stillMissing = await waitForNpmVersions(unpublished, {
-    retries: 40,
-    retryDelayMs: 15_000,
-  });
+  // still take minutes to serve a new version, so wait before staging GitHub
+  // releases for it.
+  const stillMissing = await waitForNpmVersions(unpublished, NPM_VISIBILITY_WAIT);
   if (stillMissing.length > 0) {
     console.error(
-      `publish-unpublished: changeset publish exited 0 but npm still lacks after 10 min:\n  - ${stillMissing.join("\n  - ")}`,
+      `publish-unpublished: changeset publish exited 0 but npm still lacks after ${String(NPM_VISIBILITY_WAIT_MIN)} min:\n  - ${stillMissing.join("\n  - ")}`,
     );
     return 1;
   }
