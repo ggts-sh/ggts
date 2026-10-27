@@ -115,24 +115,30 @@ export async function npmVersionExists(
   return false;
 }
 
+/**
+ * Poll npm until every version is served; return the "name@version" keys still
+ * missing when `opts.retries` runs out. Packages poll in parallel, so the
+ * total wait is one retry budget, not one per package.
+ *
+ * npm can serve a version minutes after `changeset publish` exits 0 (0.43.2:
+ * up to ~3 min), so callers that just published need a budget of minutes.
+ */
+export async function waitForNpmVersions(
+  pkgs: readonly PackageVersion[],
+  opts: Parameters<typeof npmVersionExists>[2] = {},
+): Promise<string[]> {
+  const present = await Promise.all(
+    pkgs.map((pkg) => npmVersionExists(pkg.name, pkg.version, opts)),
+  );
+  return pkgs.filter((_, i) => present[i] !== true).map((pkg) => `${pkg.name}@${pkg.version}`);
+}
+
 /** Packages whose local version is not in the set of "name@version" strings known on npm. */
 export function filterUnpublished(
   local: readonly PackageVersion[],
   publishedKeys: ReadonlySet<string>,
 ): PackageVersion[] {
   return local.filter((pkg) => !publishedKeys.has(`${pkg.name}@${pkg.version}`));
-}
-
-/** Parse `changeset publish` stdout for "New tag: <name>@<version>" lines. */
-export function parseNewTags(publishStdout: string): string[] {
-  const tags: string[] = [];
-  // changesets logs either "New tag: @scope/name@1.2.3" or "New tag: name@1.2.3"
-  const re = /New tag:\s+(\S+)/g;
-  for (const match of publishStdout.matchAll(re)) {
-    const tag = match[1];
-    if (tag !== undefined && tag.length > 0) tags.push(tag);
-  }
-  return tags;
 }
 
 /**
