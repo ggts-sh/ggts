@@ -1,5 +1,11 @@
 # @ggts-sh/skill
 
+## 0.43.2
+
+### Patch Changes
+
+- 56ca612: Teach band-axis label controls, final-size and multi-chart visual inspection, concise labs authoring, legend overflow controls, and constant color/fill aesthetics.
+
 ## 0.43.1
 
 No changes in this release.

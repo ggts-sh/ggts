@@ -1,5 +1,16 @@
 # @ggts-sh/svelte
 
+## 0.43.2
+
+### Patch Changes
+
+- ca0841c: Suppress non-informative constant identity and single-entry manual paint fields from default Inspect tooltip rows and exclude identity paint from axis-group series labels while retaining full fields on public inspection snapshots (#1844).
+- Updated dependencies [ca0841c]
+- Updated dependencies [18412d6]
+  - @ggts-sh/core@0.43.2
+  - @ggts-sh/compose@0.43.2
+  - @ggts-sh/spec@0.43.2
+
 ## 0.43.1
 
 ### Patch Changes
