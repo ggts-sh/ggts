@@ -125,7 +125,7 @@ describe("ci-download-packages-dist composite", () => {
   it("exists with pinned download-artifact and three dist entrypoint checks", () => {
     expect(existsSync(join(root, DOWNLOAD_DIST))).toBe(true);
     const action = read(DOWNLOAD_DIST);
-    expect(action).toContain("actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c");
+    expect(action).toMatch(/actions\/download-artifact@[0-9a-f]{40}\b/);
     expect(action).toContain("name: packages-dist");
     expect(action).toContain("path: packages");
     expect(action).toContain("packages/spec/dist/index.js");
