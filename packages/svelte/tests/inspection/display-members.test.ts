@@ -155,6 +155,21 @@ describe("fieldsForDefaultTooltip (#754)", () => {
     ]);
     expect(fieldsForDefaultTooltip(weightedBar, "x").map((f) => f.channel)).toEqual(["y", "fill"]);
   });
+
+  it("omits non-informative constant paint fields across all modes (#1844)", () => {
+    const constantFill = [
+      field("x", "label", "Alpha"),
+      field("y", "count", 30),
+      { ...field("fill", "color", "#0072B2"), constant: true, identityPaint: true },
+    ];
+    expect(fieldsForDefaultTooltip(constantFill, "exact").map((f) => f.channel)).toEqual([
+      "x",
+      "y",
+    ]);
+    expect(fieldsForDefaultTooltip(constantFill, "xy").map((f) => f.channel)).toEqual(["x", "y"]);
+    expect(fieldsForDefaultTooltip(constantFill, "x").map((f) => f.channel)).toEqual(["y"]);
+    expect(fieldsForDefaultTooltip(constantFill, "y").map((f) => f.channel)).toEqual(["x"]);
+  });
 });
 
 describe("tooltipDisplayPayloadToken", () => {

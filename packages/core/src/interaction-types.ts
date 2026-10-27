@@ -20,6 +20,19 @@ export interface TooltipField {
   readonly channel: string;
   readonly field: string;
   readonly value: CellValue;
+  /**
+   * True when the field maps a single-value non-informative paint domain
+   * (e.g. a constant hex column on an identity or single-entry manual scale).
+   * Retained on the public snapshot for custom tooltip content; omitted by
+   * default tooltip row builders (#1844).
+   */
+  readonly constant?: boolean;
+  /**
+   * True when `color` or `fill` is painted with an identity scale (raw CSS
+   * color values rather than semantic series names). Excluded from axis-group
+   * series-label selection so measures keep their field label (#1844).
+   */
+  readonly identityPaint?: boolean;
 }
 
 export interface PlotDatum<Row, Key> {

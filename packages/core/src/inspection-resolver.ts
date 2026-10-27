@@ -217,6 +217,25 @@ function datum<Row extends Record<string, CellValue>, Key extends PropertyKey>(
     if (firstLineageRow === null) return null;
     return firstLineageRow[fieldName] ?? null;
   };
+  const paintFlags = (channel: string): { constant?: true; identityPaint?: true } => {
+    if (channel !== "fill" && channel !== "color") return {};
+    const scale = channel === "fill" ? model.scales.fill : model.scales.color;
+    if (scale === null) return {};
+    if (scale.kind === "identity") {
+      return scale.scale.constant === true
+        ? { constant: true, identityPaint: true }
+        : { identityPaint: true };
+    }
+    if (scale.kind === "manual" && scale.scale.domain.length < 2) {
+      return { constant: true };
+    }
+    return {};
+  };
+  const withFieldValue = (field: RenderModel["layerFields"][number][number], value: CellValue) => ({
+    ...field,
+    value,
+    ...paintFlags(field.channel),
+  });
   const fields = (model.layerFields[candidate.layerIndex] ?? []).map((field) => {
     // after_stat channels never live on the source table under their generated
     // names (bindot keeps real source rowIndex for color/lineage while x/y are
@@ -224,8 +243,8 @@ function datum<Row extends Record<string, CellValue>, Key extends PropertyKey>(
     // do not look up "x"/"stackpos" on the observation row.
     if (field.source === "stat") {
       const fromCandidate = candidateValue(field.channel);
-      if (fromCandidate !== undefined) return { ...field, value: fromCandidate };
-      return { ...field, value: null };
+      if (fromCandidate !== undefined) return withFieldValue(field, fromCandidate);
+      return withFieldValue(field, null);
     }
     // Stack/fill publish the post-position measure on the candidate. The source
     // row still holds the pre-position column (counts / raw y), so identity
@@ -233,14 +252,14 @@ function datum<Row extends Record<string, CellValue>, Key extends PropertyKey>(
     const position = model.layerPositions?.[candidate.layerIndex];
     if ((position === "stack" || position === "fill") && field.channel === "y") {
       const fromCandidate = candidateValue(field.channel);
-      if (fromCandidate !== undefined) return { ...field, value: fromCandidate };
+      if (fromCandidate !== undefined) return withFieldValue(field, fromCandidate);
     }
     if (row !== null) {
-      return { ...field, value: row[field.field] ?? null };
+      return withFieldValue(field, row[field.field] ?? null);
     }
     const fromCandidate = candidateValue(field.channel);
-    if (fromCandidate !== undefined) return { ...field, value: fromCandidate };
-    return { ...field, value: lineageFieldValue(field.channel, field.field) };
+    if (fromCandidate !== undefined) return withFieldValue(field, fromCandidate);
+    return withFieldValue(field, lineageFieldValue(field.channel, field.field));
   });
   return Object.freeze({
     key,
