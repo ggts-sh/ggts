@@ -38,6 +38,8 @@ export interface TooltipField {
   readonly channel: string;
   readonly field: string;
   readonly value: CellValue;
+  readonly constant?: boolean;
+  readonly identityPaint?: boolean;
 }
 
 export interface PlotDatum<Row, Key> {

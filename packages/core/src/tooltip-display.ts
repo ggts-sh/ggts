@@ -155,6 +155,9 @@ export function fieldsForDefaultTooltip(
   return withoutAxis.filter((field) => {
     // Stat input, not a visual channel — y (or x on flipped) is the reading.
     if (field.channel === "weight") return false;
+    // Non-informative constant paint (single-value identity or manual color/fill)
+    // stays on the public snapshot for custom content, not default rows (#1844).
+    if (field.constant === true) return false;
     if (seenColumns.has(field.field)) return false;
     seenColumns.add(field.field);
     return true;
@@ -198,6 +201,7 @@ function seriesIdentityField(fields: readonly TooltipField[]): TooltipField | nu
   for (const channel of SERIES_IDENTITY_CHANNELS) {
     for (const field of fields) {
       if (field.channel !== channel) continue;
+      if (field.constant === true || field.identityPaint === true) continue;
       if (typeof field.value !== "string") continue;
       if (field.value.trim() === "") continue;
       return field;
