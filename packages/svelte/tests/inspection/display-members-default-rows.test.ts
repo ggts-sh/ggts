@@ -184,4 +184,31 @@ describe("defaultTooltipRows (series-centric axis groups)", () => {
     expect(rows.map((r) => r.label)).toEqual(["Price", "Volume"]);
     expect(rows.map((r) => r.value)).toEqual([41, 12345]);
   });
+
+  it("does not treat identity-scaled paint strings as series identity (#1844)", () => {
+    const constantPaint = [
+      field("x", "label", "Alpha"),
+      field("y", "count", 30),
+      { ...field("fill", "color", "#0072B2"), constant: true, identityPaint: true },
+    ];
+    expect(defaultTooltipRows(constantPaint, "x")).toEqual([
+      {
+        key: "y",
+        label: "count",
+        value: 30,
+        valueChannel: "y",
+        valueField: "count",
+      },
+    ]);
+
+    const varyingIdentityPaint = [
+      field("x", "label", "Alpha"),
+      field("y", "count", 30),
+      { ...field("fill", "color", "#0072B2"), identityPaint: true },
+    ];
+    expect(defaultTooltipRows(varyingIdentityPaint, "x").map((r) => r.label)).toEqual([
+      "count",
+      "color",
+    ]);
+  });
 });

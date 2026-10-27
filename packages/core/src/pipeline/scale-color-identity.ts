@@ -24,6 +24,20 @@ function uniqueValues(values: readonly CellValue[]): CellValue[] {
   return output;
 }
 
+function hasAtMostOneDistinctValue(values: readonly CellValue[]): boolean {
+  let firstKey: string | undefined;
+  for (const value of values) {
+    if (value === null) continue;
+    const key = encodeKey(value);
+    if (firstKey === undefined) {
+      firstKey = key;
+    } else if (key !== firstKey) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export function resolveIdentityColorScale(input: {
   name: "color" | "fill";
   values: readonly CellValue[];
@@ -33,10 +47,12 @@ export function resolveIdentityColorScale(input: {
 }): ColorResolution {
   const { name, values, config, legendTitle, warnings } = input;
   const { naValue, unknownValue } = fallbackColors(config);
+  const constant = hasAtMostOneDistinctValue(values);
   const scale: IdentityColorScale = Object.freeze({
     type: "identity" as const,
     naValue,
     unknownValue,
+    constant,
     colorOf(value: unknown): string | undefined {
       if (value === null || value === undefined) return naValue;
       if (typeof value !== "string") return unknownValue;

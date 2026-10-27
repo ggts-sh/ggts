@@ -5,6 +5,7 @@ import { runPipeline } from "@ggts-sh/core";
 
 import {
   collapseIdenticalDisplayMembers,
+  defaultTooltipRows,
   selectHoverDisplayMembers,
 } from "../../src/lib/inspection/display-members.js";
 import { TRANSIENT_MEMBER_LIMIT, resolveInspection } from "../../src/lib/inspection/resolver.js";
@@ -108,6 +109,111 @@ describe("line + point pipeline fixture (#385)", () => {
     const shown = display[0];
     expect(shown.fields.map((f) => f.field)).toEqual(["period", "value"]);
     expect(shown.fields.map((f) => f.value)).toEqual(["1985", 511]);
+
+    model.dispose();
+  });
+});
+
+describe("identity paint tooltip rows (#1844)", () => {
+  it("keeps mapped identity paint on the public snapshot but omits constant identity paint from default tooltip rows and series labels", () => {
+    const model = runPipeline(
+      {
+        data: {
+          values: [
+            { label: "Alpha", count: 30, color: "#0072B2" },
+            { label: "Beta", count: 18, color: "#0072B2" },
+          ],
+        },
+        aes: { x: { field: "label" }, y: { field: "count" } },
+        layers: [{ geom: "col", aes: { fill: { field: "color" } } }],
+        scales: {
+          x: { type: "band" },
+          y: { type: "linear" },
+          fill: { type: "identity" },
+        },
+      },
+      { width: 500, height: 300 },
+    );
+
+    const seed = model.candidates.candidate(0);
+    if (seed === null) throw new Error("expected candidate(0)");
+
+    for (const mode of ["exact", "xy"] as const) {
+      const inspection = resolveInspection({
+        model,
+        seed,
+        mode,
+        state: "transient",
+        source: "pointer",
+        keyOf: () => null,
+      });
+      expect(
+        inspection.focus.fields.map((f) => `${f.channel}:${f.field}:${String(f.value)}`),
+      ).toEqual(["x:label:Alpha", "y:count:30", "fill:color:#0072B2"]);
+      expect(
+        defaultTooltipRows(inspection.focus.fields, mode).map(
+          (r) => `${r.label}: ${String(r.value)}`,
+        ),
+      ).toEqual(["label: Alpha", "count: 30"]);
+    }
+
+    for (const [mode, expected] of [
+      ["x", "count: 30"],
+      ["y", "label: Alpha"],
+    ] as const) {
+      const inspection = resolveInspection({
+        model,
+        seed,
+        mode,
+        state: "transient",
+        source: "pointer",
+        keyOf: () => null,
+      });
+      expect(
+        defaultTooltipRows(inspection.focus.fields, mode).map(
+          (r) => `${r.label}: ${String(r.value)}`,
+        ),
+      ).toEqual([expected]);
+    }
+
+    model.dispose();
+  });
+
+  it("never uses identity paint as the axis-group series label even when paint varies across rows", () => {
+    const model = runPipeline(
+      {
+        data: {
+          values: [
+            { label: "Alpha", count: 30, color: "#0072B2" },
+            { label: "Beta", count: 18, color: "#D55E00" },
+          ],
+        },
+        aes: { x: { field: "label" }, y: { field: "count" } },
+        layers: [{ geom: "col", aes: { fill: { field: "color" } } }],
+        scales: {
+          x: { type: "band" },
+          y: { type: "linear" },
+          fill: { type: "identity" },
+        },
+      },
+      { width: 500, height: 300 },
+    );
+
+    const seed = model.candidates.candidate(0);
+    if (seed === null) throw new Error("expected candidate(0)");
+
+    const axis = resolveInspection({
+      model,
+      seed,
+      mode: "x",
+      state: "transient",
+      source: "pointer",
+      keyOf: () => null,
+    });
+    expect(
+      defaultTooltipRows(axis.focus.fields, "x").map((r) => `${r.label}: ${String(r.value)}`),
+    ).not.toContain("#0072B2: 30");
+    expect(defaultTooltipRows(axis.focus.fields, "x")[0]?.label).toBe("count");
 
     model.dispose();
   });

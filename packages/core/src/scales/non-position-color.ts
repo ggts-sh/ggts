@@ -28,5 +28,7 @@ export interface IdentityColorScale {
   type: "identity";
   naValue: string;
   unknownValue: string;
+  /** True when the mapped channel has at most one distinct non-null value. */
+  constant?: boolean;
   colorOf(value: unknown): string | undefined;
 }
