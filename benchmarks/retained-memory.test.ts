@@ -79,8 +79,8 @@ describe("retained-memory release gate", () => {
       "grouped inspection 1k two-slot retained",
     );
     expect(budget.maxRetainedBytes).toBe(16 * 1024 * 1024);
-    expect(budget.baselinePlatform).toBe("linux-x64-bun-1.4.2");
-    expect(budget.baselineRetainedBytes).toBeGreaterThanOrEqual(2_392_452);
+    expect(budget.baselinePlatform).toBe("linux-x64-bun-1.4.4");
+    expect(budget.baselineRetainedBytes).toBeGreaterThanOrEqual(2_388_048);
     expect(budget.maxRegressionRatio).toBe(1.2);
   });
 });

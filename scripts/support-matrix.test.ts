@@ -166,7 +166,10 @@ describe("consumer support matrix", () => {
     const consumerTag = `v${matrix.browsers.playwright}-noble`;
     const publisherTag = extractWorkflowEnvTag(buildCiImage, "PLAYWRIGHT_TAG");
     expect(rootManifest.packageManager).toBe(`bun@${matrix.packageManagers.bun}`);
-    expect(rootManifest.devDependencies["@types/bun"]).toBe(`^${matrix.packageManagers.bun}`);
+    expect(
+      rootManifest.devDependencies["@types/bun"],
+      "A Dependabot @types/bun bump means a new Bun release: move packageManagers.bun and every Bun pin to match",
+    ).toBe(`^${matrix.packageManagers.bun}`);
     expect(rootManifest.devDependencies["@playwright/test"]).toBe(matrix.browsers.playwright);
     expect(rootManifest.devDependencies["pnpm"]).toBe(matrix.packageManagers.pnpm);
     expect(svelteManifest.devDependencies["playwright"]).toBe(matrix.browsers.playwright);

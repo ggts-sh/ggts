@@ -27,7 +27,7 @@ tested support boundaries and what information helps the community respond.
 
 1. **bun** — the package manager, script runner, and unit-test runner.
    Pinned via `packageManager` in `package.json` and `mise.toml` (currently
-   **bun 1.4.2**). Install with `mise install` or <https://bun.sh> →
+   **bun 1.4.4**). Install with `mise install` or <https://bun.sh> →
    `~/.bun/bin/bun` must be on `PATH`.
 2. **Install dependencies**: `bun install` (text lockfile `bun.lock`; CI uses
    `--frozen-lockfile`).
@@ -79,7 +79,7 @@ upstream, `.md`/`.yaml`/`.svelte` can fold back into oxfmt (`.oxfmtrc.json`
 
 | Tool                                         | Version                | Role                                                                               |
 | -------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------- |
-| bun                                          | 1.4.2 (pinned)         | PM / runner / unit tests                                                           |
+| bun                                          | 1.4.4 (pinned)         | PM / runner / unit tests                                                           |
 | typescript                                   | 6.0.3                  | `tsc -b` project references (spec, core)                                           |
 | oxlint                                       | 1.73.0                 | JS/TS linting (correctness+suspicious error, pedantic warn)                        |
 | oxlint-tsgolint                              | 0.24.0                 | type-aware rules via `oxlint --type-aware` (no standalone CLI)                     |
@@ -121,6 +121,13 @@ Dependabot does **not** auto-bump these (human-authored locksteps / release flow
   (asserted in `scripts/support-matrix.test.ts`).
 - `@ggts-sh/*` — internal publish ranges are owned by Changesets, not registry
   bumps from Dependabot.
+
+Bun itself has no Dependabot ecosystem: nothing reads `packageManager`,
+`mise.toml`, or the `bun-version` pins. `@types/bun` publishes with each Bun
+release, so its Dependabot PR is the Bun release PR. `scripts/support-matrix.test.ts`
+keeps that PR red until it also moves `support-matrix.json`
+`packageManagers.bun` and every Bun pin. Move the pins on that branch, or in a
+new PR that replaces it.
 
 Majors for `svelte`, `vite`, `@sveltejs/*`, `typescript`, and `vitest` are also
 ignored — land those as deliberate migrations.
