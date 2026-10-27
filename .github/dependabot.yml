@@ -13,10 +13,14 @@
 #     (asserted in CI; see CONTRIBUTING.md tool roster)
 #   - pnpm — root pin must match support-matrix.json packageManagers.pnpm
 #     (asserted in scripts/support-matrix.test.ts)
-#   - @types/bun — declared range must be ^${packageManagers.bun}
-#     (asserted in scripts/support-matrix.test.ts). Bump with the Bun pin.
 #   - @ggts-sh/* — publish-range deps in packages/* are owned by Changesets,
 #     not Dependabot registry bumps
+#
+# Bun runtime pin: no Dependabot ecosystem reads packageManager, mise.toml,
+# setup-bun inputs, or Cloudflare BUN_VERSION. @types/bun publishes with each
+# Bun release, so its range bump is the Bun release PR. Do not ignore it.
+# scripts/support-matrix.test.ts keeps that PR red until it also moves
+# support-matrix.json packageManagers.bun and every pin that test checks.
 #
 # Majors for svelte / vite / @sveltejs/* / typescript / vitest / @types/* are
 # ignored so Dependabot does not open breaking migration PRs automatically.
@@ -88,7 +92,6 @@ updates:
           - "playwright"
           - "@playwright/test"
           - "pnpm"
-          - "@types/bun"
           - "@ggts-sh/*"
         group-by: dependency-name
     ignore:
@@ -107,8 +110,6 @@ updates:
       # @types/node majors track the Node line we choose to support (engines >=22).
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
-      # Declared range is ^${packageManagers.bun} (support-matrix.test.ts).
-      - dependency-name: "@types/bun"
       # Container lockstep — see header comment and CONTRIBUTING.md tool roster.
       - dependency-name: "playwright"
       - dependency-name: "@playwright/test"
