@@ -7,11 +7,11 @@ import {
   npmVersionExists,
   npmVersionUrl,
   packageReleaseTag,
-  parseNewTags,
   parsePackageReleaseTag,
   planGithubReleaseStaging,
   readPublishedPackageVersions,
   type PackageVersion,
+  waitForNpmVersions,
 } from "./npm-publish-state";
 import { commitForPackageVersion } from "./stage-github-releases";
 
@@ -67,27 +67,6 @@ describe("filterUnpublished", () => {
   it("returns empty when everything is published", () => {
     const published = new Set(["@ggts-sh/core@0.24.1", "@ggts-sh/spec@0.24.1"]);
     expect(filterUnpublished(local, published)).toEqual([]);
-  });
-});
-
-describe("parseNewTags", () => {
-  it("extracts scoped and unscoped tags from changeset publish output", () => {
-    const stdout = `
-🦋  info npm info @ggts-sh/core
-New tag: @ggts-sh/core@0.24.1
-New tag: @ggts-sh/spec@0.24.1
-Creating git tags...
-New tag:  left-pad@1.0.0
-`;
-    expect(parseNewTags(stdout)).toEqual([
-      "@ggts-sh/core@0.24.1",
-      "@ggts-sh/spec@0.24.1",
-      "left-pad@1.0.0",
-    ]);
-  });
-
-  it("returns empty when nothing was published", () => {
-    expect(parseNewTags("No unpublished packages to publish\n")).toEqual([]);
   });
 });
 
@@ -245,6 +224,37 @@ describe("npmVersionExists retries", () => {
     expect(ok).toBe(true);
     expect(calls).toBe(3);
     expect(sleeps.length).toBe(2);
+  });
+});
+
+describe("waitForNpmVersions", () => {
+  const pkgs: PackageVersion[] = [
+    { dir: "packages/core", name: "@ggts-sh/core", version: "0.43.2" },
+    { dir: "packages/skill", name: "@ggts-sh/skill", version: "0.43.2" },
+  ];
+
+  it("returns nothing once every lagging version appears", async () => {
+    // npm served 0.43.2 minutes after `changeset publish` reported success.
+    const callsByUrl = new Map<string, number>();
+    const fetchImpl = ((input: string) => {
+      const url = input.split("?")[0] ?? input;
+      const calls = (callsByUrl.get(url) ?? 0) + 1;
+      callsByUrl.set(url, calls);
+      return Promise.resolve(new Response("{}", { status: calls < 4 ? 404 : 200 }));
+    }) as unknown as typeof fetch;
+    expect(
+      await waitForNpmVersions(pkgs, { fetchImpl, retries: 5, sleep: () => Promise.resolve() }),
+    ).toEqual([]);
+  });
+
+  it("names each version npm still lacks after the last retry", async () => {
+    const fetchImpl = ((input: string) =>
+      Promise.resolve(
+        new Response("{}", { status: input.includes("skill") ? 404 : 200 }),
+      )) as unknown as typeof fetch;
+    expect(
+      await waitForNpmVersions(pkgs, { fetchImpl, retries: 2, sleep: () => Promise.resolve() }),
+    ).toEqual(["@ggts-sh/skill@0.43.2"]);
   });
 });
 

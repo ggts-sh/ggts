@@ -24,8 +24,8 @@ import {
   filterUnpublished,
   npmVersionExists,
   packageReleaseTag,
-  parseNewTags,
   readPublishedPackageVersions,
+  waitForNpmVersions,
 } from "./npm-publish-state.ts";
 
 function run(
@@ -89,28 +89,21 @@ async function main(): Promise<number> {
     return publish.status;
   }
 
-  let tags = parseNewTags(publish.stdout);
-  if (tags.length === 0) {
-    // Registry can race (another runner published between our check and publish).
-    // Re-check with retries; if still missing, fail loud. If present, treat the
-    // unpublished set as published for the staging hand-off.
-    const stillMissing: string[] = [];
-    for (const pkg of unpublished) {
-      if (!(await npmVersionExists(pkg.name, pkg.version, { retries: 5, retryDelayMs: 2000 }))) {
-        stillMissing.push(`${pkg.name}@${pkg.version}`);
-      }
-    }
-    if (stillMissing.length > 0) {
-      console.error(
-        `publish-unpublished: publish produced no "New tag:" lines and still missing:\n  - ${stillMissing.join("\n  - ")}`,
-      );
-      return 1;
-    }
-    console.log(
-      "publish-unpublished: versions appeared on npm without new tags (concurrent publish?)",
+  // Exit 0 is the success signal: changeset publish exits 1 when any npm
+  // publish fails, and v3 no longer prints parseable "New tag:" lines. npm can
+  // still take minutes to serve a new version, so wait (up to 10 min) before
+  // staging GitHub releases for it.
+  const stillMissing = await waitForNpmVersions(unpublished, {
+    retries: 40,
+    retryDelayMs: 15_000,
+  });
+  if (stillMissing.length > 0) {
+    console.error(
+      `publish-unpublished: changeset publish exited 0 but npm still lacks after 10 min:\n  - ${stillMissing.join("\n  - ")}`,
     );
-    tags = unpublished.map((pkg) => packageReleaseTag(pkg.name, pkg.version));
+    return 1;
   }
+  const tags = unpublished.map((pkg) => packageReleaseTag(pkg.name, pkg.version));
 
   // Hand just-published tags to stage-github-releases so registry lag cannot
   // drop them from the GitHub release list (negative CDN cache after 404 probes).
