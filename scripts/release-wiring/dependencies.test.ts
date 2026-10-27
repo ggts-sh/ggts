@@ -35,9 +35,7 @@ describe("R0 release wiring — dependencies", () => {
     expect(dependabot).toContain('dependency-name: "playwright"');
     expect(dependabot).toContain('dependency-name: "@playwright/test"');
     expect(dependabot).toContain('dependency-name: "pnpm"');
-    // @types/bun publishes with each Bun release. Its range bump is the only
-    // Dependabot signal for the Bun pin (support-matrix.test.ts fails it red
-    // until the PR moves every Bun pin), so it must not be ignored.
+    // @types/bun bumps are the Bun release signal (see the dependabot.yml header).
     expect(dependabot).not.toContain('dependency-name: "@types/bun"');
     expect(dependabot).toContain('dependency-name: "@ggts-sh/*"');
     // Action bumps group by dependency name across workflows + composites.

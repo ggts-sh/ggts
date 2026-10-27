@@ -122,6 +122,13 @@ Dependabot does **not** auto-bump these (human-authored locksteps / release flow
 - `@ggts-sh/*` — internal publish ranges are owned by Changesets, not registry
   bumps from Dependabot.
 
+Bun itself has no Dependabot ecosystem: nothing reads `packageManager`,
+`mise.toml`, or the `bun-version` pins. `@types/bun` publishes with each Bun
+release, so its Dependabot PR is the Bun release PR. `scripts/support-matrix.test.ts`
+keeps that PR red until it also moves `support-matrix.json`
+`packageManagers.bun` and every Bun pin. Move the pins on that branch, or in a
+new PR that replaces it.
+
 Majors for `svelte`, `vite`, `@sveltejs/*`, `typescript`, and `vitest` are also
 ignored — land those as deliberate migrations.
 
