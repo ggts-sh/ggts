@@ -21,13 +21,13 @@ describe("two-pass layout: fixtures", () => {
     );
     expect(r.margins.left).toBeLessThanOrEqual(theme.maxMarginFraction * 400);
     expect(r.y.truncated).toBe(true);
-    expect(r.degradations).toContain("y:truncate");
+    expect(r.degradations).toContain("band-label-margin-overflow");
     const truncated = r.y.ticks.filter((t) => t.label.endsWith(theme.ellipsis));
     expect(truncated.length).toBeGreaterThan(0);
     // Short labels survive untouched.
     expect(r.y.ticks.find((t) => t.value === "IT")?.label).toBe("IT");
-    // Every truncated label still fits the cap.
-    for (const t of r.y.ticks) {
+    // Every shown truncated label still fits the cap.
+    for (const t of r.y.ticks.filter((tick) => tick.labeled)) {
       const w = measurer.measureWidth(t.label, theme.fontSize);
       expect(w + theme.tickLength + theme.tickLabelGap).toBeLessThanOrEqual(
         theme.maxMarginFraction * 400 + theme.quantum,

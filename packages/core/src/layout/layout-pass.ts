@@ -33,6 +33,7 @@ function resolveVisibility(input: LayoutInput): Visibility {
     yTicksVisible: yVisible && yPresentation?.showTicks !== false,
     xPreserve: xLabelsVisible && xPresentation?.collision === "preserve",
     yPreserve: yLabelsVisible && yPresentation?.collision === "preserve",
+    yBandCollision: yLabelsVisible ? yPresentation?.collision : undefined,
   };
 }
 
@@ -114,6 +115,15 @@ function hideLabelPresentation(plan: AxisGuidePlan): AxisGuidePlan {
   });
 }
 
+const yOrthogonalChromePx = (theme: LayoutTheme, visibility: Visibility): number =>
+  visibility.yTicksVisible
+    ? theme.tickLength + (visibility.yLabelsVisible ? theme.tickLabelGap : 0)
+    : 0;
+const axisHasTruncatedTick = (axis: AxisTicks): boolean =>
+  axis.ticks.some(
+    (tick) => tick.labeled && tick.fullLabel !== undefined && tick.label !== tick.fullLabel,
+  );
+
 function deriveInitialAxes(
   input: LayoutInput,
   theme: LayoutTheme,
@@ -148,6 +158,10 @@ function deriveInitialAxes(
     fontSize: theme.fontSize,
     marginCapPx: caps.left,
     orthogonalMarginCapPx: caps.top,
+    orthogonalChromePx: yOrthogonalChromePx(theme, visibility),
+    quantum: theme.quantum,
+    ellipsis: theme.ellipsis,
+    ...(visibility.yBandCollision !== undefined && { bandCollision: visibility.yBandCollision }),
     ...(input.previousGuidePlans?.y !== undefined && {
       previousGuidePlan: input.previousGuidePlans.y,
     }),
@@ -176,7 +190,13 @@ function deriveInitialAxes(
       context: xContext,
       truncated: false,
     },
-    y: { axis: yAxis, count: yCount, every: 1, context: yContext, truncated: false },
+    y: {
+      axis: yAxis,
+      count: yCount,
+      every: yAxis.bandLabelEvery ?? 1,
+      context: yContext,
+      truncated: axisHasTruncatedTick(yAxis),
+    },
   };
 }
 
@@ -287,8 +307,7 @@ function fitYDensity(work: LayoutWork): void {
     visibility.yPreserve ||
     work.y.axis.empty ||
     input.y.type !== "band" ||
-    work.y.axis.guidePlan !== undefined ||
-    work.y.axis.ticks.length < BAND_THIN_MIN_CATEGORIES
+    work.y.axis.guidePlan !== undefined
   ) {
     return;
   }
@@ -296,6 +315,9 @@ function fitYDensity(work: LayoutWork): void {
   const bandUnit = work.innerH / Math.max(1, input.y.categories.length);
   const displayStep = bandUnit * minimumBandIndexGap(work.y.axis);
   const minimumStep = work.labelH + MIN_BAND_LABEL_GAP_PX;
+  if (work.y.every * displayStep >= minimumStep) return;
+  work.degradations.push("band-label-overlap");
+  if (count < BAND_THIN_MIN_CATEGORIES) return;
   let thinned = false;
   while (work.y.every * displayStep < minimumStep) {
     if (work.y.every * 2 >= count) break;

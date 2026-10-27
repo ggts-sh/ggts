@@ -136,9 +136,8 @@ describe("deriveTicks band breaks via encodeKey map", () => {
       breaks,
     };
     deriveTicks(domain, K, undefined, 1, verticalCtx());
-    // Build map: D reads. Must not approach K·D (900k).
-    expect(reads).toBe(D);
-    expect(reads).toBeLessThan(D + K); // no per-break rescan of categories
+    // Break map plus one frozen guide-plan domain copy: O(D+K), never K·D.
+    expect(reads).toBeLessThanOrEqual(2 * D + K);
   });
 });
 

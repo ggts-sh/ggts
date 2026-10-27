@@ -51414,7 +51414,8 @@ export const DOCS_SEARCH_INDEX = [
     id: "diagnostic:warning:band-label-overlap",
     kind: "diagnostic",
     title: "band-label-overlap · warning",
-    summary: "Categorical (band) axis labels overlap even after wrapping and rotation.",
+    summary:
+      "Categorical (band) axis labels cannot all be separated at the available axis extent; layout may thin them or leave overlap.",
     href: "/guide/errors#band-label-overlap",
     keywords: [
       "warning",

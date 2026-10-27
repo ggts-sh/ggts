@@ -40,8 +40,8 @@ describe("band y thinning rebuild cost (#1335)", () => {
 
   it("does not width-thin uniform long labels; density still thins crowded lists (#1356)", () => {
     // Width doubling cannot shrink maxLabeledWidth (index 0 always labeled), so
-    // the width loop truncates. Density thinning (separate pass) still raises
-    // labelEvery when band step is below label height + gap.
+    // the planner truncates. Density thinning still raises labelEvery when the
+    // band step is below label height + gap.
     const k = 64;
     const cats = longCategories(k);
     const r = layout(
@@ -55,8 +55,8 @@ describe("band y thinning rebuild cost (#1335)", () => {
     expect(r.y.ticks).toHaveLength(k);
     expect(r.y.ticks.map((t) => t.value)).toEqual(cats);
     expect(r.y.labelEvery).toBeGreaterThan(1);
-    expect(r.degradations).toContain("y:thin");
-    expect(r.degradations).toContain("y:truncate");
+    expect(r.degradations).toContain("band-label-overlap");
+    expect(r.degradations).toContain("band-label-margin-overflow");
     expect(r.y.truncated).toBe(true);
     for (let i = 0; i < k; i++) {
       expect(r.y.ticks[i]!.labeled).toBe(i % r.y.labelEvery === 0);
@@ -77,8 +77,8 @@ describe("band y thinning rebuild cost (#1335)", () => {
     );
     expect(r.y.labelEvery).toBe(1);
     expect(r.y.ticks.every((t) => t.labeled)).toBe(true);
-    expect(r.degradations).not.toContain("y:thin");
-    expect(r.degradations).toContain("y:truncate");
+    expect(r.degradations).not.toContain("band-label-overlap");
+    expect(r.degradations).toContain("band-label-margin-overflow");
   });
 
   it("stops doubling when the next every would cover the whole tick list", () => {

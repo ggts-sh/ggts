@@ -1,6 +1,6 @@
 /**
  * Measured categorical (band) axis label planner — the discrete analogue of
- * `planTemporalAxis`. Escalation ladder (horizontal only):
+ * `planTemporalAxis`. Horizontal escalation ladder:
  *
  *   single-line → wrapped (≤2 lines, top-aligned plane overlap; balanced
  *     breaks when greedy exceeds the line cap)
@@ -9,6 +9,10 @@
  *     → truncate + margin-overflow warning
  *     → thin (labelEvery)
  *     → overlap warning
+ *
+ * Vertical axes stay single-line: density-thin only at high cardinality,
+ * width-thin only when that shrinks the widest shown label, truncate any
+ * remaining left-margin overflow, and otherwise report overlap.
  *
  * Author pins via `scales.*.guide` (`mode` / `angle` / `wrap`) skip auto
  * escalation and report honest overlap/overflow when the pin cannot fit.
@@ -23,6 +27,7 @@
 import { neighbourOverlap, neighbourOverlapByPlane } from "./axis-overlap.js";
 import type { BandAxisPlan, BandAxisPlanInput, BandAxisPlanTick } from "./band-guide-types.js";
 import {
+  BAND_THIN_MIN_CATEGORIES,
   MAX_AUTHOR_WRAP_LINES,
   MAX_WRAP_LINES,
   MIN_BAND_LABEL_GAP_PX,
@@ -34,6 +39,7 @@ import {
 } from "./band-label-layout.js";
 import { createRotatedBandPlanner } from "./band-guide-rotated.js";
 import type { GuideDegradedCode } from "./guide-degraded-codes.js";
+import { truncateToFit } from "./truncate.js";
 
 export type {
   BandAxisPlan,
@@ -175,13 +181,98 @@ export function planBandAxis(input: BandAxisPlanInput): BandAxisPlan {
     authorPinned: true,
   });
 
+  const budget = (px: number) => (quantum > 0 ? Math.floor(px / quantum) * quantum : px);
+
+  const verticalPlan = (): BandAxisPlan => {
+    const widthCap = Math.max(1, budget(orthogonalMarginCapPx));
+    const byCenter = entries
+      .map((entry, index) => ({ index, center: entry.center }))
+      .toSorted((a, b) => a.center - b.center);
+    const overlaps = (every: number): boolean => {
+      let previous: number | undefined;
+      for (const entry of byCenter) {
+        if (entry.index % every !== 0) continue;
+        if (previous !== undefined && previous + lineHeight + gap > entry.center) return true;
+        previous = entry.center;
+      }
+      return false;
+    };
+    const maxShownWidth = (every: number): number => {
+      let max = 0;
+      for (let i = 0; i < entries.length; i += every) max = Math.max(max, entries[i]!.width);
+      return max;
+    };
+
+    let labelEvery = 1;
+    const crowded = overlaps(1);
+    let overlap = crowded;
+    if (guideMode === "auto" && crowded && entries.length >= BAND_THIN_MIN_CATEGORIES) {
+      while (overlaps(labelEvery) && labelEvery * 2 < entries.length) labelEvery *= 2;
+      overlap = overlaps(labelEvery);
+    }
+    const densityEvery = labelEvery;
+
+    let shownWidth = maxShownWidth(labelEvery);
+    if (guideMode === "auto") {
+      while (shownWidth > widthCap) {
+        let probe = labelEvery * 2;
+        let improvedEvery = 0;
+        let improvedWidth = shownWidth;
+        while (probe < entries.length) {
+          const width = maxShownWidth(probe);
+          if (width < shownWidth) {
+            improvedEvery = probe;
+            improvedWidth = width;
+            break;
+          }
+          if (probe * 2 >= entries.length) break;
+          probe *= 2;
+        }
+        if (improvedEvery === 0) break;
+        labelEvery = improvedEvery;
+        shownWidth = improvedWidth;
+        overlap = overlaps(labelEvery);
+      }
+    }
+
+    let startOverhang = 0;
+    let endOverhang = 0;
+    let marginOverflow = false;
+    for (let i = 0; i < entries.length; i += labelEvery) {
+      const center = entries[i]!.center;
+      startOverhang = Math.max(startOverhang, lineHeight / 2 - center);
+      endOverhang = Math.max(endOverhang, lineHeight / 2 - (extentPx - center));
+    }
+
+    const ticks = buildTicks(labelEvery, (entry, index) => {
+      if (index % labelEvery !== 0 || entry.width <= widthCap) return { label: entry.label };
+      const label = truncateToFit(entry.label, widthCap, measurer, fontSize, ellipsis);
+      if (label !== entry.label) marginOverflow = true;
+      return { label };
+    });
+    const degraded: GuideDegradedCode[] = crowded ? ["band-label-overlap"] : [];
+    if (marginOverflow || labelEvery > densityEvery) degraded.push("band-label-margin-overflow");
+
+    return withPin({
+      mode: "single-line",
+      angle: 0,
+      ticks,
+      labelEvery,
+      labelBandHeight: quantizeUp(Math.min(shownWidth, widthCap), quantum),
+      alongOverhang: Math.max(0, Math.min(marginCapPx, endOverhang)),
+      leftOverhang: Math.max(0, Math.min(marginCapPx, startOverhang)),
+      overlap,
+      marginOverflow,
+      degraded,
+    });
+  };
+
   // mode:off applies to every orientation (including vertical / coord_flip).
   if (guideMode === "off") return offPlan();
 
-  // Vertical band axes are not planned here (legacy path owns them).
-  if (input.orient === "vertical" || entries.length === 0) return withPin(singlePlan());
+  if (input.orient === "vertical") return verticalPlan();
+  if (entries.length === 0) return withPin(singlePlan());
 
-  const budget = (px: number) => (quantum > 0 ? Math.floor(px / quantum) * quantum : px);
   const bandBudget = budget(bandWidth);
   const orthoCap = budget(orthogonalMarginCapPx);
 

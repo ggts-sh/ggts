@@ -2,7 +2,6 @@
  * Assemble the public RenderModel (scene, scales, contracts, dispose/row).
  */
 import type { PanelCoordProjector } from "../coord-projector.js";
-import type { BandLabelMode } from "../layout/band-guide-types.js";
 import type { GuideDegradedCode } from "../layout/guide-degraded-codes.js";
 import type { TickFormatter } from "../layout/layout.js";
 import type { GuidePlan } from "../layout/temporal-guide.js";
@@ -91,46 +90,84 @@ type TemporalGuideDegradedCode = Extract<
 
 function bandGuideDiagnostic(
   code: BandGuideDegradedCode,
-  aesthetic: "x" | "y",
-  mode: BandLabelMode | undefined,
+  plan: Extract<GuidePlan, { type: "axis" }>,
+  vertical: boolean,
 ): ScaleDiagnostic {
+  const aesthetic = plan.aesthetic;
+  const mode = plan.bandLabelMode;
+  const thinned = plan.ticks.some((tick) => tick.label === "" && tick.fullLabel !== "");
+  const keepEveryFix = {
+    description: `Keep every label with scales.${aesthetic}.guide.mode = "single" or collision: "preserve"; labels may overlap or exceed the margin.`,
+  };
+  if (code === "band-label-overlap" && thinned) {
+    return {
+      code,
+      severity: "warning" as const,
+      path: `/scales/${aesthetic}`,
+      problem: plan.overlap
+        ? "Some categorical labels were thinned, but shown labels still overlap."
+        : "Some categorical labels were thinned to avoid overlap.",
+      cause: "The category pitch is smaller than one label line at the available axis extent.",
+      fixes: [
+        {
+          description:
+            "Allocate more space along the categorical axis or reduce the number of categories.",
+        },
+        keepEveryFix,
+      ],
+      documentationUrl: "/guide/discrete-scales#categorical-axis-labels",
+    };
+  }
+  if (code === "band-label-margin-overflow" && !plan.marginOverflow) {
+    return {
+      code,
+      severity: "warning" as const,
+      path: `/scales/${aesthetic}`,
+      problem: "Some categorical labels were thinned to fit the bounded axis margin.",
+      cause:
+        "The widest labels exceed the bounded axis margin; hiding them reduces the shown footprint.",
+      fixes: [
+        { description: "Use shorter category labels or allocate more chart width." },
+        keepEveryFix,
+      ],
+      documentationUrl: "/guide/discrete-scales#categorical-axis-labels",
+    };
+  }
   const margin = code === "band-label-margin-overflow";
-  // A margin overflow on a single-line axis is a HORIZONTAL end-cap problem (a
-  // wide end label past the panel edge), not a rotated-label bottom-margin one —
-  // so steer the user to width, not height, and never claim rotation.
-  // Forced wrap overflow is neither rotation nor truncation: over-tall wraps need
-  // height; side overhang from wide wrap lines needs width — mention both.
-  const horizontalCap = margin && mode === "single-line";
+  // A margin overflow on a single-line axis is a width-cap truncation, not a
+  // rotated-label bottom-margin problem — steer the user to label width and
+  // never claim rotation. Forced wrap overflow can need width and/or height.
+  const singleLineCap = margin && mode === "single-line";
   const wrappedCap = margin && mode === "wrapped";
   return {
     code,
     severity: "warning" as const,
     path: `/scales/${aesthetic}`,
-    problem: horizontalCap
-      ? "A categorical end label is truncated to fit the axis width."
+    problem: singleLineCap
+      ? "A categorical label is truncated to fit the bounded axis margin."
       : wrappedCap
         ? "A wrapped categorical label exceeds the axis margin budget."
         : margin
           ? "A rotated categorical label is truncated to fit the axis margin cap."
-          : "Categorical labels overlap even after wrapping and rotation.",
-    cause: horizontalCap
-      ? "The end label extends past the panel edge and the bounded side margin can't fit it."
+          : "Categorical labels overlap at the available axis extent.",
+    cause: singleLineCap
+      ? "The complete label is wider than the bounded axis margin allows."
       : wrappedCap
         ? "The forced wrap footprint is taller than the bottom margin and/or wider than the side margin allows."
         : margin
           ? "The full label is longer than the bounded bottom margin allows, even rotated."
-          : "There are more (or longer) categories than the axis width can separate.",
+          : "There are more categories than the available axis extent can separate.",
     fixes: [
       {
-        description: horizontalCap
+        description: singleLineCap
           ? "Use shorter category labels or allocate more chart width."
           : wrappedCap
             ? "Use shorter category labels, fewer wrap lines, or allocate more chart width/height."
             : margin
               ? "Use shorter category labels or allocate more chart height."
-              : "Reduce the number of categories or allocate more chart width.",
+              : "Reduce the number of categories or allocate more space along the categorical axis.",
       },
-      COORD_FLIP_FIX,
+      ...(vertical ? [] : [COORD_FLIP_FIX]),
     ],
     documentationUrl: "/guide/discrete-scales#categorical-axis-labels",
   };
@@ -179,7 +216,8 @@ function guidePlanDiagnostics(input: AssembleRenderModelInput): RenderModel["sca
           seen.add(key);
           if (plan.scaleType === "band") {
             if (code !== "band-label-overlap" && code !== "band-label-margin-overflow") return [];
-            return [bandGuideDiagnostic(code, plan.aesthetic, plan.bandLabelMode)];
+            const vertical = (plan.aesthetic === "y") !== input.flipped;
+            return [bandGuideDiagnostic(code, plan, vertical)];
           }
           if (
             code !== "temporal-label-overlap" &&

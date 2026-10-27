@@ -8,7 +8,7 @@ export type BandLabelMode = "single-line" | "wrapped" | "rotated";
 
 /**
  * Author override for band (categorical) axis label layout — from
- * `scales.x.guide` / `scaleXDiscrete({ guide })`. Mirrors ggplot2's
+ * `scales.*.guide` / `scale*Discrete({ guide })`. Mirrors ggplot2's
  * `guide_axis(angle=)` / discrete label wrap for pixel-stable output.
  */
 export type BandGuideConfig = {
@@ -34,15 +34,15 @@ export interface BandAxisPlanInput {
   categoryCount: number;
   /** Ticks to lay out, in display order, already break-filtered. */
   entries: readonly BandPlanEntry[];
-  /** Only "horizontal" is planned; "vertical" returns a single-line no-op plan. */
+  /** Both orientations are planned; vertical axes use the single-line ladder. */
   orient: "horizontal" | "vertical";
   extentPx: number;
   reverse: boolean;
   measurer: TextMeasurer;
   fontSize: number;
-  /** Cap for along-axis label overhang past the end ticks (right/left margin). */
+  /** Cap for along-axis overhang past either end tick. */
   marginCapPx: number;
-  /** Cap for the orthogonal label band (bottom margin for x). */
+  /** Cap for the orthogonal label band (bottom for x, left for y). */
   orthogonalMarginCapPx: number;
   /** Margin quantum; fitness budgets are floored to it so mode is A→B stable. */
   quantum?: number;
@@ -78,11 +78,11 @@ export interface BandAxisPlan {
   ticks: BandAxisPlanTick[];
   /** 1 = every category labeled; >1 = high-cardinality thinning. */
   labelEvery: number;
-  /** Orthogonal (bottom) band height the labels require, px. */
+  /** Orthogonal label extent required (bottom height or left width), px. */
   labelBandHeight: number;
-  /** Along-axis overhang past the RIGHT end tick (into the right margin), px. */
+  /** Along-axis overhang past the end-edge tick, px. */
   alongOverhang: number;
-  /** Along-axis overhang past the LEFT end tick (into the left margin), px. */
+  /** Along-axis overhang past the start-edge tick, px. */
   leftOverhang: number;
   overlap: boolean;
   marginOverflow: boolean;

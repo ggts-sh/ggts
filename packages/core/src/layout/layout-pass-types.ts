@@ -11,6 +11,7 @@ export interface LayoutVisibility {
   yTicksVisible: boolean;
   xPreserve: boolean;
   yPreserve: boolean;
+  yBandCollision: "auto" | "ellipsis" | "preserve" | undefined;
 }
 
 export interface LayoutCaps {

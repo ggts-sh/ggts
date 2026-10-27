@@ -176,7 +176,8 @@ export const PIPELINE_WARNING_CATALOG = {
     summary: "One or more explicit temporal breaks were outside the trained domain and omitted.",
   },
   "band-label-overlap": {
-    summary: "Categorical (band) axis labels overlap even after wrapping and rotation.",
+    summary:
+      "Categorical (band) axis labels cannot all be separated at the available axis extent; layout may thin them or leave overlap.",
   },
   "band-label-margin-overflow": {
     summary:
