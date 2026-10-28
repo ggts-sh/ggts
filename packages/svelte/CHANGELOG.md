@@ -1,5 +1,29 @@
 # @ggts-sh/svelte
 
+## 0.44.0
+
+### Minor Changes
+
+- 0042a00: Add three ggplot2 parity features for grouped charts (#1825):
+
+  - `facet.space` (`"fixed"`, `"free"`, `"free_x"`, `"free_y"`) on the grid form sizes each column or row by the length of its scale, as in `facet_grid(space = ...)`. `<FacetGrid space>` passes it through. `space` on the wrap form fails with `facet-space-without-grid`.
+  - `rule`, `hline`, and `vline` take a constant `params.linetype`, as in `geom_hline(linetype = "dashed")`. A constant `aes.linetype` still wins.
+  - Position-scale `labels` accepts an array of strings that names each explicit break in order. A length mismatch, or an array without explicit `breaks`, fails with `scale-labels-breaks-length`.
+
+  Migration: none — additive
+
+- 1ce2b48: Add `@ggts-sh/svelte/lean` and `@ggts-sh/react/lean`. These entries export the same API as the default entries but do not call `registerBasic()` on import. Apps register only the geoms and scale kinds their charts use. A point and line Svelte chart drops from 231.5 KB to 205.7 KB gzip; a React scatter drops from 187.4 KB to 157.7 KB. Both entries and the default entries now re-export the per-family register functions (`registerBasicPoints`, `registerOrdinalColor`, `registerDefaultOrdinalColor`, …), and `@ggts-sh/core` exports `registerDefaultOrdinalColor` from its main entry. Migration: none — additive. The default entries keep their behavior.
+
+### Patch Changes
+
+- Updated dependencies [0042a00]
+- Updated dependencies [1ce2b48]
+- Updated dependencies [f413d5f]
+- Updated dependencies [50ffc5e]
+  - @ggts-sh/spec@0.44.0
+  - @ggts-sh/core@0.44.0
+  - @ggts-sh/compose@0.44.0
+
 ## 0.43.2
 
 ### Patch Changes
