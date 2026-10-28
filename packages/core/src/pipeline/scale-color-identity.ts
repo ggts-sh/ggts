@@ -7,22 +7,9 @@ import type { IdentityColorScale } from "../scales/non-position-color.js";
 import { encodeKey } from "../scales/state.js";
 import type { CellValue } from "../table.js";
 
-import { fallbackColors, warnUnknownColors } from "./scale-color-family-helpers.js";
+import { fallbackColors, uniqueValues, warnUnknownColors } from "./scale-color-family-helpers.js";
 import type { ColorResolution } from "./scale-color-types.js";
 import type { PipelineWarning } from "./types.js";
-
-function uniqueValues(values: readonly CellValue[]): CellValue[] {
-  const seen = new Set<string>();
-  const output: CellValue[] = [];
-  for (const value of values) {
-    if (value === null) continue;
-    const key = encodeKey(value);
-    if (seen.has(key)) continue;
-    seen.add(key);
-    output.push(value);
-  }
-  return output;
-}
 
 function hasAtMostOneDistinctValue(values: readonly CellValue[]): boolean {
   let firstKey: string | undefined;

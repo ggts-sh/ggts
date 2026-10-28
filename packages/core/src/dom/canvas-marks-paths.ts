@@ -13,7 +13,7 @@ import { ringCuts } from "../ring-cuts.js";
 import type { ColorResolver } from "./canvas-dom.js";
 import { maskIncludes, type PrimitiveFocusMask } from "./canvas-marks-mask.js";
 
-function resolvePaintStyle(
+export function resolvePaintStyle(
   ctx: CanvasRenderingContext2D,
   solid: string,
   paint: ResolvedGradientPaint | undefined,
@@ -24,7 +24,7 @@ function resolvePaintStyle(
   return canvasGradientStyle(ctx, paint, bounds);
 }
 
-function applyGlow(ctx: CanvasRenderingContext2D, glow: PathsBatch["glow"]): () => void {
+export function applyGlow(ctx: CanvasRenderingContext2D, glow: PathsBatch["glow"]): () => void {
   if (glow === undefined) return () => {};
   const prevShadowColor = ctx.shadowColor;
   const prevShadowBlur = ctx.shadowBlur;
