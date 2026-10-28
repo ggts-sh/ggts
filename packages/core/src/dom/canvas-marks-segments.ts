@@ -6,13 +6,13 @@
  * Mark-space gradients use per-segment bounds so canvas matches SVG
  * objectBoundingBox mapping (one gradient box per <line>/<path>).
  */
-import { canvasGradientStyle, subpathBounds, type ResolvedGradientPaint } from "../mark-paint.js";
+import { subpathBounds, type ResolvedGradientPaint } from "../mark-paint.js";
 import { resolveSegmentMark, segmentStrokeAt } from "../mark-style.js";
 import type { SegmentsBatch } from "../scene.js";
 import type { ThemeTokens } from "../theme-construct.js";
 import { themeVar } from "../theme-resolve.js";
 import type { ColorResolver } from "./canvas-dom.js";
-import { applyDash } from "./canvas-marks-paths.js";
+import { applyDash, applyGlow, resolvePaintStyle } from "./canvas-marks-paths.js";
 
 function traceSegment(ctx: CanvasRenderingContext2D, batch: SegmentsBatch, j: number): void {
   if (batch.renderPositions !== undefined && batch.renderPathOffsets !== undefined) {
@@ -56,37 +56,6 @@ function segmentBounds(
   };
 }
 
-function resolveSegmentStroke(
-  ctx: CanvasRenderingContext2D,
-  solid: string,
-  paint: ResolvedGradientPaint | undefined,
-  bounds: { x: number; y: number; width: number; height: number },
-  resolve: ColorResolver,
-): string | CanvasGradient {
-  if (paint === undefined) return resolve(solid);
-  return canvasGradientStyle(ctx, paint, bounds);
-}
-
-function applyGlow(ctx: CanvasRenderingContext2D, glow: SegmentsBatch["glow"]): () => void {
-  if (glow === undefined) return () => {};
-  const prevShadowColor = ctx.shadowColor;
-  const prevShadowBlur = ctx.shadowBlur;
-  ctx.shadowColor = glow.color;
-  ctx.shadowBlur = glow.radius;
-  if (glow.opacity < 1) {
-    const hex = glow.color;
-    const full = hex.length === 4 ? `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}` : hex;
-    const r = Number.parseInt(full.slice(1, 3), 16);
-    const g = Number.parseInt(full.slice(3, 5), 16);
-    const b = Number.parseInt(full.slice(5, 7), 16);
-    ctx.shadowColor = `rgba(${String(r)},${String(g)},${String(b)},${String(glow.opacity)})`;
-  }
-  return () => {
-    ctx.shadowColor = prevShadowColor;
-    ctx.shadowBlur = prevShadowBlur;
-  };
-}
-
 function finishSegments(
   ctx: CanvasRenderingContext2D,
   restoreGlow: () => void,
@@ -108,7 +77,7 @@ function drawMappedSegments(
   for (let j = 0; j < batch.segments.length / 4; j++) {
     if (includes !== undefined && !includes(j)) continue;
     const mark = resolveSegmentMark(batch, j, themeInk);
-    ctx.strokeStyle = resolveSegmentStroke(
+    ctx.strokeStyle = resolvePaintStyle(
       ctx,
       mark.stroke,
       batch.strokePaint,
@@ -133,7 +102,7 @@ function panelStrokeStyle(
 ): string | CanvasGradient {
   return paint === undefined
     ? resolve(color)
-    : resolveSegmentStroke(ctx, color, paint, { x: 0, y: 0, width: 1, height: 1 }, resolve);
+    : resolvePaintStyle(ctx, color, paint, { x: 0, y: 0, width: 1, height: 1 }, resolve);
 }
 
 function drawMonoSegments(

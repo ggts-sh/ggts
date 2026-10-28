@@ -3,6 +3,7 @@
  * Coord: normalize-coord.ts. Layer/aes orchestration: normalize.ts.
  */
 
+import { normalizeHexColor } from "./normalize-paint.js";
 import type { ColorScaleSpec, PositionScaleSpec, Scales } from "./schema.js";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -16,15 +17,6 @@ function withGuide<T extends object>(scale: T): T {
     ...(isRecord(scale.guide["theme"]) && { theme: { ...scale.guide["theme"] } }),
   };
   return { ...scale, guide };
-}
-
-function normalizeHexColor(color: string): string {
-  const match = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color);
-  if (match === null) return color;
-  const digits = match[1]!.toLowerCase();
-  return digits.length === 3
-    ? `#${digits[0]}${digits[0]}${digits[1]}${digits[1]}${digits[2]}${digits[2]}`
-    : `#${digits}`;
 }
 
 function normalizeColorScale(scale: ColorScaleSpec): ColorScaleSpec {

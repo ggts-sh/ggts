@@ -4,7 +4,7 @@
  */
 import type { ColorStop, GlowSpec, GradientPaint, LayerSpec } from "./schema.js";
 
-function normalizeHexColor(color: string): string {
+export function normalizeHexColor(color: string): string {
   const match = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color);
   if (match === null) return color;
   const digits = match[1]!.toLowerCase();
