@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "ajv": "^8.20.0",
-    "typescript": "^6.0.3"
+    "typescript": "7.1.0-beta"
   },
   "engines": {
     "node": ">=22"

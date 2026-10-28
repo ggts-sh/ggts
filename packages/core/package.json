@@ -79,7 +79,7 @@
     "@ggts-sh/spec": "^0.43.2"
   },
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "typescript": "7.1.0-beta"
   },
   "engines": {
     "node": ">=22"

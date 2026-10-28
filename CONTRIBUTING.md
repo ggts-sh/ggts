@@ -80,7 +80,8 @@ upstream, `.md`/`.yaml`/`.svelte` can fold back into oxfmt (`.oxfmtrc.json`
 | Tool                                         | Version                | Role                                                                               |
 | -------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------- |
 | bun                                          | 1.4.4 (pinned)         | PM / runner / unit tests                                                           |
-| typescript                                   | 6.0.3                  | `tsc -b` project references (spec, core)                                           |
+| tsrs                                         | 0.20.1-ts7.1.0-beta    | type checks and `-b` builds in place of `tsc` (Rust port of TypeScript 7.1 beta)   |
+| typescript                                   | 7.1.0-beta / 6.0.3     | editors and `tsc` fallback; 6.0.3 stays in Svelte workspaces (svelte-check API)    |
 | oxlint                                       | 1.73.0                 | JS/TS linting (correctness+suspicious error, pedantic warn)                        |
 | oxlint-tsgolint                              | 0.24.0                 | type-aware rules via `oxlint --type-aware` (no standalone CLI)                     |
 | oxfmt                                        | 0.58.0                 | formatter for ts/js/json/jsonc/css/toml                                            |
@@ -97,6 +98,17 @@ upstream, `.md`/`.yaml`/`.svelte` can fold back into oxfmt (`.oxfmtrc.json`
 | @sveltejs/kit + @sveltejs/adapter-static     | 2.x / 3.x              | apps/docs static docs site (the VR screenshot target)                              |
 | svelte / vite / @sveltejs/vite-plugin-svelte | 5.56.4 / 8.1.4 / 7.2.0 | spike + adapter toolchain                                                          |
 | pre-commit                                   | 4.6.0                  | hook framework (both stages)                                                       |
+
+TypeScript 7 has no compiler API on its `typescript` main entry. svelte-check,
+svelte2tsx, and svelte-package need that API, so `packages/svelte`, `apps/docs`,
+and `spikes/browser` keep `typescript@6.0.3`. svelte-package imports
+`typescript` without declaring it, so root `packageExtensions` adds the peer.
+Without it, bun resolves the root TypeScript 7 and `bun run build` fails.
+
+Scripts call `tsrs` in its default mode, which follows TypeScript 7.1 beta
+checker settings. Do not add `--fast`: it can change diagnostics. To go back to
+Microsoft's compiler, replace `tsrs` with `tsc` in the scripts; both read the
+same tsconfig files and write the same output.
 
 ## Dependency updates (Dependabot)
 
@@ -193,7 +205,7 @@ a tag main never publishes). The lockstep test encodes that inequality.
 | `bun run test:temporal-pipeline`                                  | focused temporal pipeline and calendar-tick loop                                                                                                                       |
 | `bun run test:components`                                         | Svelte browser and SSR suites, React browser suite, then docs component tests                                                                                          |
 | `cd packages/svelte && bun run test:coverage`                     | browser (chromium) + SSR coverage reports; browser config enforces thresholds; CI runs the same chromium+ssr coverage and uploads lcov to Codecov                      |
-| `bun run check:examples`                                          | tsc over the examples corpus's .ts files (needs `bun run check` first: dist types)                                                                                     |
+| `bun run check:examples`                                          | tsrs over the examples corpus's .ts files (needs `bun run check` first: dist types)                                                                                    |
 | `bun run check:docs`                                              | svelte-kit sync + svelte-check for apps/docs (needs `bun run build` first)                                                                                             |
 | `bun run build:docs`                                              | static docs site → `apps/docs/build/` (needs `bun run build` first; the VR target)                                                                                     |
 | `bun run manifest:gen` / `bun run manifest:check`                 | (re)generate / staleness-check `examples/manifest.ts` from the corpus                                                                                                  |

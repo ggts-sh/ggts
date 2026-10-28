@@ -35,10 +35,10 @@ jobs:
         if: steps.content_hash.outputs.hit != 'true'
         with:
           cache_key_prefix: bun
-      - name: build packages (tsc -b + svelte-package)
+      - name: build packages (tsrs -b + svelte-package)
         if: steps.content_hash.outputs.hit != 'true'
         run: bun run build
-      - name: tsc examples corpus
+      - name: tsrs examples corpus
         if: steps.content_hash.outputs.hit != 'true'
         run: bun run check:examples
       # apps/docs/tsconfig.json extends ./.svelte-kit/tsconfig.json. Pre-split,

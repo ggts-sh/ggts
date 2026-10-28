@@ -52,7 +52,7 @@ describe("R0 release wiring — CI lanes", () => {
     // and tsc has never been run on it. ci-routing decides which jobs CI runs,
     // so it is the slice where a silent type error costs the most.
     const pkg = JSON.parse(read("package.json")) as { scripts: Record<string, string> };
-    expect(pkg.scripts["check:scripts-ci-routing"]).toContain("tsc -p scripts/ci-routing");
+    expect(pkg.scripts["check:scripts-ci-routing"]).toContain("tsrs -p scripts/ci-routing");
     // Chained into `check`, which ci-unit.yml runs and `build` re-enters.
     expect(pkg.scripts["check"]).toContain("bun run check:scripts-ci-routing");
     // Whole-line: `bun run check:pages-links` &c must not satisfy this.
@@ -86,7 +86,7 @@ describe("R0 release wiring — CI lanes", () => {
     // Right-boundary anchored throughout: "check:scripts" is a prefix of the
     // sibling "check:scripts-ci-routing", so a plain toContain passes on the
     // routing gate alone and this whole assertion goes vacuous.
-    expect(pkg.scripts["check:scripts"]).toMatch(/tsc -p scripts(?![\w./-])/u);
+    expect(pkg.scripts["check:scripts"]).toMatch(/tsrs -p scripts(?![\w./-])/u);
     // Chained into `check`, which ci-unit.yml runs and `build` re-enters.
     expect(pkg.scripts["check"]).toMatch(/bun run check:scripts(?![\w:-])/u);
     // Whole-line: `bun run check:pages-links` &c must not satisfy this.
