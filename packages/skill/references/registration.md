@@ -15,7 +15,8 @@ self-register only the piece they are.
 | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `<Geom*>` child                                                     | that geom + its **default** stat                                                                                              | `register<Family>()` for a `stat="…"` override (from `@ggts-sh/svelte`) — e.g. `<GeomErrorbar stat="summary" />` → `registerSummary()` |
 | `<ScaleXDate>` / `<ScaleYDatetime>` / other Temporal scale children | `installTemporal()`                                                                                                           | nothing                                                                                                                                |
-| `<GGPlot>` construction                                             | `registerBasic()` + `installCandidates()` (identity geoms/stats, every color/style kind, band-axis planner, host hit-testing) | `registerAll()` for specialty geoms/stats; `installTemporal()` for spec/`layers` temporal charts that have no Temporal child           |
+| `<GGPlot>` from `@ggts-sh/react` or `@ggts-sh/svelte`               | `registerBasic()` + `installCandidates()` (identity geoms/stats, every color/style kind, band-axis planner, host hit-testing) | `registerAll()` for specialty geoms/stats; `installTemporal()` for spec/`layers` temporal charts that have no Temporal child           |
+| `<GGPlot>` from `@ggts-sh/react/lean` or `@ggts-sh/svelte/lean`     | `installCandidates()` only                                                                                                    | every family the chart uses (list below), or `registerAll()`                                                                           |
 | `@ggts-sh/core/render` import                                       | same basic tier as `registerBasic()`                                                                                          | specialty families + Temporal                                                                                                          |
 | `@ggts-sh/core/temporal` import                                     | Temporal polyfill + guides                                                                                                    | the rest of the grammar                                                                                                                |
 | CLI `ggts render`                                                   | full grammar                                                                                                                  | nothing                                                                                                                                |
@@ -26,14 +27,17 @@ child. Call `installTemporal()` (from `@ggts-sh/svelte` or `@ggts-sh/core`)
 or `registerAll()` when those charts set `type: "time"`, a named parser,
 timezone, date interval, or full Temporal guide planning.
 
-**Lean headless** (`@ggts-sh/core/headless` + `@ggts-sh/core/headless/register`)
-is opt-in per family. One forgotten call fails at render:
+**Lean entries** are opt-in per family: `@ggts-sh/core/headless` +
+`@ggts-sh/core/headless/register`, `@ggts-sh/react/lean`, and
+`@ggts-sh/svelte/lean`. Both lean host entries export every function below.
+One import from `@ggts-sh/react` or `@ggts-sh/svelte` anywhere in the app
+brings back `registerBasic()`. One forgotten call fails at render:
 
 - Basic geoms: `registerBasicPoints()`, `registerBasicLines()`,
   `registerBasicAreas()`, `registerBasicBars()`, `registerBasicRects()`,
   `registerBasicGlyphs()`, `registerBasicSegments()`.
-- Specialty geoms/stats (same names from `@ggts-sh/core` /
-  `@ggts-sh/svelte`): `registerAbline()`, `registerAlign()`, `registerBin()`,
+- Specialty geoms/stats (same names from `@ggts-sh/core`, `@ggts-sh/react`,
+  and `@ggts-sh/svelte`): `registerAbline()`, `registerAlign()`, `registerBin()`,
   `registerBin2d()`, `registerBoxplot()`, `registerConnect()`,
   `registerContour()`, `registerCrossbar()`, `registerCurve()`,
   `registerDensity()`, `registerDensity2d()`, `registerDensity2dFilled()`,
@@ -64,7 +68,8 @@ is opt-in per family. One forgotten call fails at render:
   matching color register also pulls these).
 - Named themes: `@ggts-sh/core/headless` resolves only `default` and `void`.
   `dark`, `minimal`, and the rest need `@ggts-sh/core` or
-  `@ggts-sh/core/render` — not a `register*()` call.
+  `@ggts-sh/core/render` — not a `register*()` call. The lean host entries
+  resolve every named theme.
 
 `registerAll()` covers every stat frame, every geom batch, every color kind
 (with catalogs), every style kind, the band-axis planner, Temporal, and
