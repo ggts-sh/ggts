@@ -27,16 +27,25 @@ import { containedRightLegendY } from "./legend-right-y.js";
 import { resolvePanelLayoutChrome, type PanelLayoutChrome } from "./panel-layout-chrome.js";
 import { applyFixedAspectLayout, type FixedAspectCoordSpec } from "./panel-layout-fixed.js";
 import { buildPanelPlacements } from "./panel-layout-placements.js";
-import type { FacetScaleFreedom, PanelLayoutResult, PanelPlacement } from "./panel-layout-types.js";
+import type {
+  FacetScaleFreedom,
+  FacetSpaceFlags,
+  PanelLayoutResult,
+  PanelPlacement,
+} from "./panel-layout-types.js";
 import { PipelineError, type LayerFrame, type PipelineWarning, type RunOptions } from "./types.js";
 
 export type { FacetScaleFreedom, PanelLayoutResult, PanelPlacement } from "./panel-layout-types.js";
+
+const FIXED_SPACE: FacetSpaceFlags = Object.freeze({ x: false, y: false });
 
 /** Input to the panel-layout owner. Freedom is one value, not freeX/freeY per hop. */
 export interface PanelLayoutInput {
   flip: boolean;
   faceted: boolean;
   freedom: FacetScaleFreedom;
+  /** facet_grid `space`; omitted means "fixed" (equal panel sizes). */
+  space?: FacetSpaceFlags;
   coordFixed?: FixedAspectCoordSpec | undefined;
   nrow: number;
   ncol: number;
@@ -137,6 +146,7 @@ export function layoutPanels(input: PanelLayoutInput): PanelLayoutResult {
   const strip = input.strip ?? DEFAULT_FACET_STRIP;
   const freeX = freedom.freeX;
   const freeY = freedom.freeY;
+  const space = input.space ?? FIXED_SPACE;
 
   const chrome = resolvePanelLayoutChrome({
     flip: input.flip,
@@ -182,6 +192,7 @@ export function layoutPanels(input: PanelLayoutInput): PanelLayoutResult {
     strip,
     stripBand,
     chrome,
+    space,
     axis: { x: input.hGuide, y: input.vGuide },
     options,
   });
@@ -214,6 +225,7 @@ export function layoutPanels(input: PanelLayoutInput): PanelLayoutResult {
         strip,
         stripBand,
         chrome,
+        space,
         axis: { x: input.hGuide, y: input.vGuide },
         options,
       });

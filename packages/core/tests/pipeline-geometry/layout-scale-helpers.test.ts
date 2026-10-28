@@ -156,6 +156,7 @@ describe("placeFacetPanelsFromChrome", () => {
       strip: DEFAULT_FACET_STRIP,
       stripBand: 0,
       chrome,
+      space: { x: false, y: false },
       axis,
       options: { width: 400 },
     });

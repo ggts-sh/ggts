@@ -4,6 +4,7 @@
  */
 
 import Type from "typebox";
+import { LINETYPE_NAME_SCHEMAS } from "./schema-name-schemas.js";
 
 export const ParamsAreaAblineDecls = {
   AreaParams: Type.Object(
@@ -142,6 +143,12 @@ export const ParamsAreaAblineDecls = {
           description: "Stroke width in px. Must be greater than 0. Default 1.",
         }),
       ),
+      linetype: Type.Optional(
+        Type.Union(LINETYPE_NAME_SCHEMAS, {
+          description:
+            'Constant stroke pattern, as in geom_hline(linetype = "dashed"). One of "solid", "dashed", "dotted", "dotdash", "longdash", "twodash". Default "solid". A constant aes.linetype wins over this param.',
+        }),
+      ),
       strokePaint: Type.Optional(
         Type.Ref("GradientPaint", {
           description:
@@ -182,6 +189,12 @@ export const ParamsAreaAblineDecls = {
           description: "Stroke width in px. Must be greater than 0. Default 1.",
         }),
       ),
+      linetype: Type.Optional(
+        Type.Union(LINETYPE_NAME_SCHEMAS, {
+          description:
+            'Constant stroke pattern, as in geom_hline(linetype = "dashed"). One of "solid", "dashed", "dotted", "dotdash", "longdash", "twodash". Default "solid". A constant aes.linetype wins over this param.',
+        }),
+      ),
       strokePaint: Type.Optional(
         Type.Ref("GradientPaint", {
           description:
@@ -220,6 +233,12 @@ export const ParamsAreaAblineDecls = {
         Type.Number({
           exclusiveMinimum: 0,
           description: "Stroke width in px. Must be greater than 0. Default 1.",
+        }),
+      ),
+      linetype: Type.Optional(
+        Type.Union(LINETYPE_NAME_SCHEMAS, {
+          description:
+            'Constant stroke pattern, as in geom_hline(linetype = "dashed"). One of "solid", "dashed", "dotted", "dotdash", "longdash", "twodash". Default "solid". A constant aes.linetype wins over this param.',
         }),
       ),
       strokePaint: Type.Optional(

@@ -48,6 +48,7 @@
     facetCols = "b",
     facetNcol,
     facetScales,
+    facetSpace,
     facetStrip,
     genericFacet,
     useThemeDark = false,
@@ -81,6 +82,7 @@
     facetCols?: string | { field: string };
     facetNcol?: number;
     facetScales?: FacetInput["scales"];
+    facetSpace?: FacetInput["space"];
     facetStrip?: FacetInput["strip"];
     genericFacet?: FacetInput;
     useThemeDark?: boolean;
@@ -188,6 +190,7 @@
         rows={facetRows}
         cols={facetCols}
         scales={facetScales}
+        space={facetSpace}
         strip={facetStrip}
       />
     {/if}

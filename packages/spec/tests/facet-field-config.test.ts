@@ -99,6 +99,30 @@ describe("facet field config — PortableSpec seam (#590)", () => {
     expect(result.ok).toBe(false);
   });
 
+  it("normalizes and accepts facet_grid space on the grid form (#1825)", () => {
+    for (const space of ["fixed", "free", "free_x", "free_y"] as const) {
+      const spec = normalize({ ...base, facet: { cols: "g", scales: "free_x", space } });
+      expect(spec.facet).toEqual({ cols: { field: "g" }, scales: "free_x", space });
+      expect(validate(spec).ok).toBe(true);
+    }
+  });
+
+  it("rejects an unknown space value at tier 1", () => {
+    const result = validate({ ...base, facet: { cols: { field: "g" }, space: "wide" } });
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors.some((e) => e.path === "/facet/space")).toBe(true);
+  });
+
+  it("rejects space on the wrap form with facet-space-without-grid", () => {
+    const result = validate({ ...base, facet: { wrap: { field: "g" }, space: "free_x" } });
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors.map((e) => [e.code, e.path])).toEqual([
+      ["facet-space-without-grid", "/facet/space"],
+    ]);
+  });
+
   it("is idempotent with full facet field config", () => {
     const once = normalize({
       ...base,

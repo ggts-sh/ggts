@@ -69,6 +69,8 @@ export interface FacetInput {
   cols?: FacetFieldInput;
   ncol?: number;
   scales?: FacetScales;
+  /** GRID ONLY: panel sizes proportional to scale lengths (facet_grid `space`). */
+  space?: "fixed" | "free" | "free_x" | "free_y";
   /** Strip chrome: position (top/bottom/left/right) and visibility. */
   strip?: {
     position?: "top" | "bottom" | "left" | "right";

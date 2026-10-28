@@ -157,6 +157,12 @@ const TRIGGERS: Record<SpecErrorCode, Trigger> = {
     spec: { layers: [point], facet: { rows: { field: "g" }, ncol: 2 } },
     options: {},
   },
+  "facet-space-without-grid": {
+    spec: { layers: [point], facet: { wrap: { field: "g" }, space: "free_x" } },
+  },
+  "scale-labels-breaks-length": {
+    spec: { layers: [point], scales: { x: { breaks: [4, 14], labels: ["Group A"] } } },
+  },
   "unsupported-geom-aesthetic": {
     spec: {
       layers: [

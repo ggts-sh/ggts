@@ -164,6 +164,51 @@ describe("normalize — canonical type:log matrix", () => {
   });
 });
 
+describe("explicit tick labels (#1825)", () => {
+  const codes = (x: unknown): string[] => {
+    const result = validateScale(x);
+    return result.ok ? [] : result.errors.map((error) => error.code);
+  };
+
+  it("accepts a labels array the same length as explicit breaks", () => {
+    expect(accepts({ type: "linear", breaks: [4, 14], labels: ["Group A", "Group B"] })).toBe(true);
+    expect(accepts({ type: "band", breaks: ["b", "a"], labels: ["Bee", "Ay"] })).toBe(true);
+    expect(
+      accepts({ type: "time", breaks: ["2026-01-01", "2026-07-01"], labels: ["H1", "H2"] }),
+    ).toBe(true);
+  });
+
+  it("keeps format-string labels valid", () => {
+    expect(accepts({ type: "linear", labels: ".1f" })).toBe(true);
+  });
+
+  it("rejects a labels array whose length differs from breaks", () => {
+    expect(codes({ type: "linear", breaks: [4, 14], labels: ["Group A"] })).toEqual([
+      "scale-labels-breaks-length",
+    ]);
+  });
+
+  it("rejects a labels array without explicit breaks", () => {
+    expect(codes({ type: "linear", labels: ["Group A", "Group B"] })).toEqual([
+      "scale-labels-breaks-length",
+    ]);
+  });
+
+  it("rejects a non-string label entry at tier 1", () => {
+    expect(accepts({ type: "linear", breaks: [4], labels: [4] })).toBe(false);
+  });
+
+  it("normalizes a labels array idempotently and keeps it portable", () => {
+    const once = normalize({
+      layers: [{ geom: "point", aes: { x: "a", y: "b" } }],
+      scales: { x: { type: "linear", breaks: [4, 14], labels: ["Group A", "Group B"] } },
+    });
+    expect(once.scales?.x?.labels).toEqual(["Group A", "Group B"]);
+    expect(normalize(once)).toEqual(once);
+    expect(spec.isPortable(once)).toBe(true);
+  });
+});
+
 describe("portability of the new fields", () => {
   it("keeps a spec with new numeric fields portable", () => {
     const s = normalize({

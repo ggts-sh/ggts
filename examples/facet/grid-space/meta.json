@@ -1,0 +1,6 @@
+{
+  "title": "Grid facets sized by category count",
+  "description": "facet_grid space sizes each column by its number of categories, so every category column has the same width.",
+  "tags": ["facet", "free-scales", "grid", "point", "hline"],
+  "docsSection": "Facets"
+}

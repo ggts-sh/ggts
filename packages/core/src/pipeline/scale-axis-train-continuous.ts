@@ -35,7 +35,7 @@ function maybePercentLabelsAdvisory(
   advisories: Advisory[],
 ): void {
   const labels = config?.labels;
-  if (labels === undefined || !NUMERIC_PERCENT_LABELS.test(labels)) return;
+  if (typeof labels !== "string" || !NUMERIC_PERCENT_LABELS.test(labels)) return;
   const [lo, hi] = domain;
   const extreme = Math.max(Math.abs(lo), Math.abs(hi));
   if (!Number.isFinite(extreme) || extreme <= 2) return;

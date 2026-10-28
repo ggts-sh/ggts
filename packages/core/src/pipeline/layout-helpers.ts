@@ -24,6 +24,7 @@ import type { CellValue } from "../table.js";
 import { cellToNumber } from "../table.js";
 import type { SceneTick } from "../scene.js";
 
+import { positionConversionContext, positionValuesToNumeric } from "./temporal-position.js";
 import type { Advisory, AxisValueFormatter, PipelineWarning } from "./types.js";
 
 export const TITLE_BAND = 22;
@@ -151,6 +152,55 @@ function defaultAxisFormatter(
   return (value) => format(value as number);
 }
 
+/**
+ * Author-given labels: labels[i] names breaks[i] (validation pins equal
+ * lengths). A value that is not a break keeps the scale's default text.
+ */
+function breakLabelFormatter(
+  scale: PositionScale,
+  config: PositionScaleSpec,
+  labels: readonly string[],
+  base: TickFormatter | undefined,
+): TickFormatter {
+  const breaks = config.breaks ?? [];
+  if (scale.type === "band") {
+    const byKey = new Map(breaks.map((value, index) => [encodeKey(value), labels[index]!]));
+    return (value) => byKey.get(encodeKey(value)) ?? String(value);
+  }
+  const values = positionValuesToNumeric(breaks, positionConversionContext(config)).values;
+  const byValue = new Map(Array.from(values, (value, index) => [value, labels[index]!]));
+  const fallback: TickFormatter =
+    base ??
+    (scale.transform === "log10"
+      ? (value) => defaultLogTickFormat(value as number)
+      : (value, step) =>
+          defaultTickFormat(
+            Number.isFinite(step) ? step : tickStep(scale.domain[0], scale.domain[1], 5),
+          )(value as number));
+  return (value, step) => byValue.get(value as number) ?? fallback(value, step);
+}
+
+/** A time-scale label pattern: `dateLabels` compiles through the temporal runtime when present. */
+function timeAxisFormatter(
+  labels: string,
+  config: PositionScaleSpec | undefined,
+  kind: TemporalScaleKind,
+): TickFormatter {
+  if (config?.dateLabels !== undefined) {
+    const compile = getTemporalRuntime()?.compileLabelFormat;
+    if (compile === undefined) {
+      return (value) => formatTime(value as number, labels);
+    }
+    const format = compile(config.dateLabels, {
+      kind,
+      locale: config.locale ?? "en-US",
+      timezone: config.timezone ?? "UTC",
+    });
+    return (value) => format(value as number);
+  }
+  return (value) => formatTime(value as number, labels);
+}
+
 export function makeAxisFormatter(
   axis: "x" | "y",
   scale: PositionScale,
@@ -161,9 +211,17 @@ export function makeAxisFormatter(
 ): TickFormatter | undefined {
   warnUnusedScaleOptions(axis, config, warnings);
   const labels = config?.dateLabels ?? config?.labels;
+  const kind = resolvedTemporalKind ?? config?.temporalKind ?? "datetime";
   if (labels === undefined) {
-    const kind = resolvedTemporalKind ?? config?.temporalKind ?? "datetime";
     return defaultAxisFormatter(scale, config, kind, resolvedTemporalPrecision);
+  }
+  if (Array.isArray(labels)) {
+    return breakLabelFormatter(
+      scale,
+      config ?? {},
+      labels,
+      defaultAxisFormatter(scale, config, kind, resolvedTemporalPrecision),
+    );
   }
   if (scale.type === "band") {
     warnings.push({
@@ -172,21 +230,7 @@ export function makeAxisFormatter(
     });
     return undefined;
   }
-  if (scale.type === "time") {
-    if (config?.dateLabels !== undefined) {
-      const compile = getTemporalRuntime()?.compileLabelFormat;
-      if (compile === undefined) {
-        return (value) => formatTime(value as number, labels);
-      }
-      const format = compile(config.dateLabels, {
-        kind: resolvedTemporalKind ?? config.temporalKind ?? "datetime",
-        locale: config.locale ?? "en-US",
-        timezone: config.timezone ?? "UTC",
-      });
-      return (value) => format(value as number);
-    }
-    return (value) => formatTime(value as number, labels);
-  }
+  if (scale.type === "time") return timeAxisFormatter(labels, config, kind);
   const f = numberFormatter(labels);
   if (!f.ok) {
     warnings.push({

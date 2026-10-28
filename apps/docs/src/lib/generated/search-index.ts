@@ -17239,6 +17239,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["Facet a comparison"],
   },
   {
+    id: "heading:guide-facets-coordinates:size-grid-panels-by-scale-length",
+    kind: "heading",
+    title: "Size grid panels by scale length",
+    summary:
+      "Size grid panels by scale length in Facets and coordinates. Repeat one grammar across panels and choose how axes compose the view.",
+    href: "/guide/facets-coordinates#size-grid-panels-by-scale-length",
+    keywords: ["Facets and coordinates", "Core grammar"],
+    exact: ["Size grid panels by scale length"],
+  },
+  {
     id: "heading:guide-facets-coordinates:coordinates",
     kind: "heading",
     title: "Coordinates",
@@ -18242,6 +18252,26 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/errors#color-manual-domain-range",
     keywords: ["Errors reference", "Reference"],
     exact: ["color-manual-domain-range"],
+  },
+  {
+    id: "heading:guide-errors:scale-labels-breaks-length",
+    kind: "heading",
+    title: "scale-labels-breaks-length",
+    summary:
+      "scale-labels-breaks-length in Errors reference. Understand validation, render, interaction, and CLI diagnostics and recover safely.",
+    href: "/guide/errors#scale-labels-breaks-length",
+    keywords: ["Errors reference", "Reference"],
+    exact: ["scale-labels-breaks-length"],
+  },
+  {
+    id: "heading:guide-errors:facet-space-without-grid",
+    kind: "heading",
+    title: "facet-space-without-grid",
+    summary:
+      "facet-space-without-grid in Errors reference. Understand validation, render, interaction, and CLI diagnostics and recover safely.",
+    href: "/guide/errors#facet-space-without-grid",
+    keywords: ["Errors reference", "Reference"],
+    exact: ["facet-space-without-grid"],
   },
   {
     id: "heading:guide-errors:scale-binned-breaks",
@@ -21868,6 +21898,24 @@ export const DOCS_SEARCH_INDEX = [
       "stat",
     ],
     exact: ["Mean and standard error in each x class"],
+  },
+  {
+    id: "example:facet:grid-space",
+    kind: "example",
+    title: "Grid facets sized by category count",
+    summary:
+      "facet_grid space sizes each column by its number of categories, so every category column has the same width.",
+    href: "/examples/facet/grid-space",
+    keywords: [
+      "Grid facets sized by category count",
+      "Facets",
+      "facet",
+      "free-scales",
+      "grid",
+      "point",
+      "hline",
+    ],
+    exact: ["Grid facets sized by category count"],
   },
   {
     id: "example:facet:ordered-side-strips",
@@ -49410,6 +49458,33 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/errors#color-manual-domain-range",
     keywords: ["validation", "error", "Provide exactly one range color for every domain value."],
     exact: ["color-manual-domain-range", "validation:color-manual-domain-range"],
+  },
+  {
+    id: "diagnostic:validation:scale-labels-breaks-length",
+    kind: "diagnostic",
+    title: "scale-labels-breaks-length · validation",
+    summary:
+      "A position scale's labels array does not have exactly one label for each explicit break.",
+    href: "/guide/errors#scale-labels-breaks-length",
+    keywords: [
+      "validation",
+      "error",
+      "Set breaks to an explicit array and give labels the same length, in the same order.",
+    ],
+    exact: ["scale-labels-breaks-length", "validation:scale-labels-breaks-length"],
+  },
+  {
+    id: "diagnostic:validation:facet-space-without-grid",
+    kind: "diagnostic",
+    title: "facet-space-without-grid · validation",
+    summary: "facet.space is set on the wrap form; space sizes grid columns and rows only.",
+    href: "/guide/errors#facet-space-without-grid",
+    keywords: [
+      "validation",
+      "error",
+      "Remove space, or use the grid form (facet.rows / facet.cols).",
+    ],
+    exact: ["facet-space-without-grid", "validation:facet-space-without-grid"],
   },
   {
     id: "diagnostic:validation:scale-binned-breaks",

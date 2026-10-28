@@ -1103,3 +1103,56 @@ exports[`ERROR_CATALOG coverage [validation-limit] is reproducible; message + fi
   },
 }
 `;
+
+exports[`ERROR_CATALOG coverage [scale-labels-breaks-length] is reproducible; message + fix snapshot 1`] = `
+{
+  "catalog": {
+    "fix": "Set breaks to an explicit array and give labels the same length, in the same order.",
+    "summary": "A position scale's labels array does not have exactly one label for each explicit break.",
+    "tier": 1,
+  },
+  "instance": {
+    "code": "scale-labels-breaks-length",
+    "fix": {
+      "description": "Give exactly one label for each explicit break, in the same order.",
+      "example": {
+        "breaks": [
+          4,
+          14,
+        ],
+        "labels": [
+          "Group A",
+          "Group B",
+        ],
+      },
+    },
+    "message": "scales.x has 2 breaks but 1 labels.",
+    "path": "/scales/x/labels",
+  },
+}
+`;
+
+exports[`ERROR_CATALOG coverage [facet-space-without-grid] is reproducible; message + fix snapshot 1`] = `
+{
+  "catalog": {
+    "fix": "Remove space, or use the grid form (facet.rows / facet.cols).",
+    "summary": "facet.space is set on the wrap form; space sizes grid columns and rows only.",
+    "tier": 1,
+  },
+  "instance": {
+    "code": "facet-space-without-grid",
+    "fix": {
+      "description": "Remove space, or switch to the grid form (facet.rows / facet.cols).",
+      "example": {
+        "cols": {
+          "field": "group",
+        },
+        "scales": "free_x",
+        "space": "free_x",
+      },
+    },
+    "message": "facet.space sizes the columns and rows of the grid form; the wrap form has no columns or rows to size.",
+    "path": "/facet/space",
+  },
+}
+`;

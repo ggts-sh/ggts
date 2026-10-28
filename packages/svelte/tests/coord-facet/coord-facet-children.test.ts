@@ -122,17 +122,19 @@ describe("Coord/Facet children → assembled PortableSpec", () => {
     expect(fromChild.facet?.strip).toEqual({ position: "bottom", show: true });
   });
 
-  it("1i: <FacetGrid scales/strip> forwards every optional prop", async () => {
+  it("1i: <FacetGrid scales/space/strip> forwards every optional prop", async () => {
     const fromChild = await assembleWithProps({
       useFacetGrid: true,
       facetRows: "a",
       facetCols: "b",
       facetScales: "free",
+      facetSpace: "free_x",
       facetStrip: { position: "top", show: false },
     });
     expect(fromChild.facet?.rows).toEqual({ field: "a" });
     expect(fromChild.facet?.cols).toEqual({ field: "b" });
     expect(fromChild.facet?.scales).toBe("free");
+    expect(fromChild.facet?.space).toBe("free_x");
     expect(fromChild.facet?.strip).toEqual({ position: "top", show: false });
   });
 

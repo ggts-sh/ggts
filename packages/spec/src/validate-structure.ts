@@ -11,6 +11,14 @@
  */
 
 export { layerStructuralErrors } from "./validate-structure-layers.js";
-export { colorScaleStructuralErrors, guideStructuralErrors } from "./validate-structure-scales.js";
+export {
+  colorScaleStructuralErrors,
+  guideStructuralErrors,
+  positionLabelsStructuralErrors,
+} from "./validate-structure-scales.js";
 export { binnedStyleScaleStructuralErrors } from "./validate-structure-style-bins.js";
-export { coordFacetStructuralErrors, facetStructuralErrors } from "./validate-structure-facet.js";
+export {
+  coordFacetStructuralErrors,
+  facetSpaceStructuralErrors,
+  facetStructuralErrors,
+} from "./validate-structure-facet.js";

@@ -342,6 +342,17 @@ export const EXAMPLES: readonly ExampleManifestEntry[] = [
     hasReact: false,
   },
   {
+    id: "facet/grid-space",
+    category: "facet",
+    name: "grid-space",
+    title: "Grid facets sized by category count",
+    description: "facet_grid space sizes each column by its number of categories, so every category column has the same width.",
+    tags: ["facet", "free-scales", "grid", "point", "hline"],
+    docsSection: "Facets",
+    hasData: true,
+    hasReact: false,
+  },
+  {
     id: "facet/ordered-side-strips",
     category: "facet",
     name: "ordered-side-strips",

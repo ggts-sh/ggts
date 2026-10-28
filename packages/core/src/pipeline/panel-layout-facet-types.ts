@@ -15,6 +15,9 @@ export interface FacetGridLayoutInput {
   ncol: number;
   freeH: boolean;
   freeV: boolean;
+  /** Display-space facet_grid `space` flags: column widths / row heights follow scale length. */
+  spaceH: boolean;
+  spaceV: boolean;
   outerLeftTitle: string;
   outerBottomTitle: string;
   axisTitleBand: number;

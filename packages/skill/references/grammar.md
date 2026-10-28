@@ -86,8 +86,8 @@ All specs assume inline `"data": {"values": [...]}` or a named dataset.
 7. **Stacked / dodged / proportion bars** — recipe 5 + `"fill":{"field":"subgroup"}` in aes (stack is the default); `"position":"dodge"` for side-by-side, `"position":"fill"` for 100% stacked.
 8. **Histogram** — `{"layers":[{"geom":"histogram","aes":{"x":{"field":"measure"}},"params":{"bins":30}}]}` (or `"binwidth"`; never both `center` and `boundary`).
 9. **Boxplot by category** — `{"layers":[{"geom":"boxplot","aes":{"x":{"field":"group"},"y":{"field":"value"}}}]}` (x must be discrete).
-10. **Facets (small multiples)** — any recipe + `"facet":{"wrap":{"field":"panel"},"ncol":3}` (add `"scales":"free_y"` for per-panel y).
-11. **Reference line annotation** — add layer `{"geom":"rule","params":{"yintercept":0}}`.
+10. **Facets (small multiples)** — any recipe + `"facet":{"wrap":{"field":"panel"},"ncol":3}` (add `"scales":"free_y"` for per-panel y). Grouped columns: `"facet":{"cols":{"field":"group"},"scales":"free_x","space":"free_x"}` gives each column a width proportional to its x range (grid form only).
+11. **Reference line annotation** — add layer `{"geom":"rule","params":{"yintercept":0}}` (`"linetype":"dashed"` for a dashed line).
 12. **Finishing** — `"labs":{"title":...,"x":...,"y":...}`, `"width"`/`"height"` in px, `"theme":"minimal"`.
 
 The same charts as Svelte children, twice over:

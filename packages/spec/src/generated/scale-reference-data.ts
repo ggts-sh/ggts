@@ -8425,8 +8425,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -8529,8 +8529,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -8620,8 +8620,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -8767,8 +8767,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -8906,8 +8906,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -8990,8 +8990,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -9074,8 +9074,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -9228,8 +9228,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -9326,8 +9326,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -9410,8 +9410,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -9571,8 +9571,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -9675,8 +9675,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -9766,8 +9766,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -9913,8 +9913,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -10052,8 +10052,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -10136,8 +10136,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -10220,8 +10220,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -10374,8 +10374,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -10472,8 +10472,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {
@@ -10556,8 +10556,8 @@ export const SCALE_REFERENCE_DATA = {
       {
         name: "labels",
         description:
-          'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-        typeSummary: "string",
+          "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+        typeSummary: "string | Array<string>",
         required: false,
       },
       {

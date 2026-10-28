@@ -86,11 +86,22 @@ function buildTicks(
     ...(input.config.dateLabels !== undefined && { pattern: input.config.dateLabels }),
   });
   const labels = input.reverse ? formatted.toReversed() : formatted;
-  if (input.config.dateLabels === undefined && input.config.labels !== undefined) {
+  const authored = input.config.labels;
+  if (input.config.dateLabels === undefined && authored !== undefined) {
+    // An authored array names breaks[i] (parallel to config.breaks); a string is a pattern.
+    const named = Array.isArray(authored)
+      ? new Map((input.breaks ?? []).map((value, index) => [value, authored[index]!]))
+      : undefined;
     for (let index = 0; index < labels.length; index++) {
+      const value = values[index]!;
+      const label =
+        named === undefined
+          ? formatTime(value, authored as string)
+          : (named.get(value) ?? labels[index]!.label);
       labels[index] = {
         ...labels[index]!,
-        label: formatTime(values[index]!, input.config.labels),
+        label,
+        ...(named !== undefined && { fullLabel: label }),
       };
     }
   }
