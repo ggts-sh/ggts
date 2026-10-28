@@ -45,7 +45,8 @@ stat overrides still need the matching family. Spec-driven temporal options
 need `installTemporal()` or `registerAll()` because there is no Temporal child.
 Use the full default for agents. If the user requests a lean bundle, read the
 [registration reference](references/registration.md) for the exact family,
-color, theme, and headless entry-point rules before selecting imports.
+color, theme, lean host entry, and headless entry-point rules before selecting
+imports.
 
 ## Mental model
 
