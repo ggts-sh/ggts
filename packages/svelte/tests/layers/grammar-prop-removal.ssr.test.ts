@@ -52,7 +52,7 @@ describe("#704 grammar prop removal", () => {
 
   it("LayerDescriptor alias is removed (use MarkLayerDescriptor)", () => {
     const registry = readFileSync(join(root, "geoms/registry.svelte.ts"), "utf8");
-    const index = readFileSync(join(root, "index.ts"), "utf8");
+    const index = readFileSync(join(root, "lean.ts"), "utf8");
     expect(registry).not.toMatch(/\bexport type LayerDescriptor\b/);
     expect(index).not.toMatch(/\bLayerDescriptor\b/);
   });

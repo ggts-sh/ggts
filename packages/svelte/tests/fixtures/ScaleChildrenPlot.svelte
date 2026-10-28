@@ -9,6 +9,7 @@
   import type { PlotDiagnostic } from "../../src/lib/diagnostics/deprecation.js";
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import Scale from "../../src/lib/scale/Scale.svelte";
   import ScaleColorContinuous from "../../src/lib/scale/ScaleColorContinuous.svelte";

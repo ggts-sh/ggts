@@ -48,8 +48,11 @@ export const SURFACES: readonly { pkg: string; entry: string; file: string }[] =
   { pkg: "@ggts-sh/core", entry: "./dom", file: "packages/core/src/dom/index.ts" },
   { pkg: "@ggts-sh/core", entry: "./svg-live", file: "packages/core/src/svg-live/index.ts" },
   { pkg: "@ggts-sh/compose", entry: ".", file: "packages/compose/src/index.ts" },
-  { pkg: "@ggts-sh/svelte", entry: ".", file: "packages/svelte/src/lib/index.ts" },
-  { pkg: "@ggts-sh/react", entry: ".", file: "packages/react/src/index.ts" },
+  // The host default entries (index.ts) register the basics, then
+  // `export *` their lean file. "./lean" exports the same names, so one
+  // surface per host covers both subpaths without listing every name twice.
+  { pkg: "@ggts-sh/svelte", entry: ".", file: "packages/svelte/src/lib/lean.ts" },
+  { pkg: "@ggts-sh/react", entry: ".", file: "packages/react/src/lean.ts" },
   { pkg: "@ggts-sh/cli", entry: ".", file: "packages/cli/src/index.ts" },
 ];
 

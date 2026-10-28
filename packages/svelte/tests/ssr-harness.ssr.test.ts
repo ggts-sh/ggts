@@ -2,6 +2,7 @@ import { runPipeline, type AxisGuidePlan } from "@ggts-sh/core";
 import { describe, expect, it } from "vitest";
 
 import GGPlot from "../src/lib/GGPlot.svelte";
+import "../src/lib/host-init.js";
 import { createPlotInteraction } from "../src/lib/interaction/controller.svelte.js";
 import GGPlotHydrationFixture from "./fixtures/GGPlotHydrationFixture.svelte";
 import HydrationFixture from "./fixtures/HydrationFixture.svelte";

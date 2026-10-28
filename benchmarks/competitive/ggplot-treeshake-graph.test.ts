@@ -7,8 +7,11 @@
  * imports the matching <GeomX> component (which self-registers) or calls
  * registerAll() explicitly.
  *
- * Two fixtures:
- *   - fixtures/ggplot-scatter — point/line only: specialty modules excluded.
+ * Fixtures:
+ *   - fixtures/ggplot-scatter — point/line only: specialty modules excluded,
+ *     default-entry basic registration included.
+ *   - fixtures/ggplot-scatter-lean — the same app on @ggts-sh/svelte/lean:
+ *     only the registered families enter the graph.
  *   - fixtures/ggplot-smooth  — positive control: <GeomSmooth> pulls smooth
  *     modules in via component self-registration.
  */
@@ -59,6 +62,10 @@ async function buildFixture(fixtureName: string): Promise<{
           {
             find: /^@ggts-sh\/svelte$/,
             replacement: path.join(root, "../../packages/svelte/src/lib/index.ts"),
+          },
+          {
+            find: /^@ggts-sh\/svelte\/lean$/,
+            replacement: path.join(root, "../../packages/svelte/src/lib/lean.ts"),
           },
         ],
       },
@@ -114,6 +121,38 @@ describe("GGPlot point/line bundle (#1420)", () => {
     // installing the Temporal polyfill. Keep modest headroom without allowing
     // that dependency back into the default graph.
     expect(rawBytes).toBeLessThan(GGPLOT_SCATTER_MAX_RAW_BYTES);
+  }, 120_000);
+});
+
+/** Basic registration that only the default entry (host-init) brings in. */
+const DEFAULT_REGISTRATION_PATTERNS = [
+  "svelte/src/lib/host-init",
+  "pipeline/register-color-all",
+  "pipeline/register-style-all",
+  "pipeline/register-basic-areas",
+  "layout/register-band-guide",
+];
+
+describe("GGPlot default entry registers the basics (#1420)", () => {
+  it("keeps host-init and the basic registration in the graph", async () => {
+    const { moduleIds } = await buildFixture("ggplot-scatter");
+    for (const pattern of DEFAULT_REGISTRATION_PATTERNS) {
+      expect(included(moduleIds, pattern).length, pattern).toBeGreaterThan(0);
+    }
+  }, 120_000);
+});
+
+describe("GGPlot lean entry bundle", () => {
+  it("includes only the families the app registers", async () => {
+    const { moduleIds } = await buildFixture("ggplot-scatter-lean");
+    for (const pattern of DEFAULT_REGISTRATION_PATTERNS) {
+      expect(included(moduleIds, pattern), pattern).toEqual([]);
+    }
+    expect(included(moduleIds, "pipeline/register-basic-points").length).toBeGreaterThan(0);
+    expect(included(moduleIds, "pipeline/register-basic-lines").length).toBeGreaterThan(0);
+    for (const pattern of SPECIALTY_MODULE_PATTERNS) {
+      expect(included(moduleIds, pattern)).toEqual([]);
+    }
   }, 120_000);
 });
 

@@ -8,6 +8,7 @@ import { describe, expect, it, vi } from "vitest";
 import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import { createPlotRuntime } from "../../src/lib/runtime/runtime.svelte.js";
 import { withEffectRoot, withFlushedEffectRoot } from "../helpers/effect-root.svelte.js";
 import {

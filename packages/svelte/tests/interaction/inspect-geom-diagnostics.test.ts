@@ -13,6 +13,7 @@ import { registerErrorbar, registerViolin } from "@ggts-sh/core";
 import { describe, expect, it } from "vitest";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import InspectGeomAdvisoriesFixture from "../fixtures/InspectGeomAdvisoriesFixture.svelte";
 import { withGrammarAsSpec } from "../helpers/ggplot-input.js";
 import { render } from "../helpers/render.js";

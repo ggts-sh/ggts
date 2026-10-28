@@ -4,6 +4,7 @@ import { withGrammarAsSpec } from "./helpers/ggplot-input.js";
 import type { RenderModel } from "@ggts-sh/core";
 
 import GGPlot from "../src/lib/GGPlot.svelte";
+import "../src/lib/host-init.js";
 import LargePinnedTooltip from "./fixtures/LargePinnedTooltip.svelte";
 import { render } from "./helpers/render.js";
 

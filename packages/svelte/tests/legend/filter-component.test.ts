@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { withGrammarAsSpec } from "../helpers/ggplot-input.js";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import LegendFilterPlot from "../fixtures/LegendFilterPlot.svelte";
 import { expectAccessible } from "../helpers/accessibility.js";
 import { render } from "../helpers/render.js";

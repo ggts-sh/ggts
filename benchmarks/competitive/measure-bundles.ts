@@ -91,12 +91,17 @@ for (const job of uniqueJobs) {
       configFile: false,
       logLevel: "error",
       plugins: [
-        ...(job.lib.id === "tanstack-react" || job.lib.id === "ggsvelte-react" ? [react()] : []),
+        ...(job.lib.id === "tanstack-react" ||
+        job.lib.id === "ggsvelte-react" ||
+        job.lib.id === "ggsvelte-react-lean"
+          ? [react()]
+          : []),
         ...(job.lib.id === "svelteplot" ||
         job.lib.id === "layercake" ||
         job.lib.id === "unovis" ||
         job.lib.id === "tanstack-svelte" ||
-        job.lib.id === "ggsvelte-ggplot"
+        job.lib.id === "ggsvelte-ggplot" ||
+        job.lib.id === "ggsvelte-ggplot-lean"
           ? [svelte({ compilerOptions: { css: "injected" }, emitCss: false })]
           : []),
       ],

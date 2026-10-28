@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { RenderModel } from "@ggts-sh/core";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
 
   let plot: {
     setZoom: (domains: { x?: [number, number]; y?: [number, number] }) => void;

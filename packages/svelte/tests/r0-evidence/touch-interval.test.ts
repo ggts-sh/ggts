@@ -4,6 +4,7 @@ import { withGrammarAsSpec } from "../helpers/ggplot-input.js";
 import type { RenderModel } from "@ggts-sh/core";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import { render } from "../helpers/render.js";
 import { dragArea, nextFrame, pointEvent, rows, size, tool } from "./fixtures.js";
 

@@ -5182,6 +5182,10 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerDefaultOrdinalColor": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerDensity": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -7234,7 +7238,7 @@
     {
       "package": "@ggts-sh/svelte",
       "entry": ".",
-      "source": "packages/svelte/src/lib/index.ts",
+      "source": "packages/svelte/src/lib/lean.ts",
       "exports": {
         "A11yMode": {
           "kind": "type",
@@ -9344,7 +9348,47 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerAllColorKinds": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerAllStyleKinds": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBandGuide": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerBasic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicAreas": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicBars": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicGlyphs": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicLines": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicPoints": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicRects": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicSegments": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -9356,11 +9400,19 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerBinnedColor": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerBoxplot": {
           "kind": "value",
           "lifecycle": "experimental"
         },
         "registerConnect": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerContinuousLegend": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -9376,6 +9428,10 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerDefaultOrdinalColor": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerDensity": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -9385,6 +9441,10 @@
           "lifecycle": "experimental"
         },
         "registerDensity2dFilled": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerDiscreteLegend": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -9404,11 +9464,19 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerFiniteStyle": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerFunction": {
           "kind": "value",
           "lifecycle": "experimental"
         },
         "registerHex": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerIdentityColor": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -9424,7 +9492,19 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerManualColor": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerMap": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerNumericStyle": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerOrdinalColor": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -9457,6 +9537,10 @@
           "lifecycle": "experimental"
         },
         "registerRug": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSequentialColor": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -10305,7 +10389,7 @@
     {
       "package": "@ggts-sh/react",
       "entry": ".",
-      "source": "packages/react/src/index.ts",
+      "source": "packages/react/src/lean.ts",
       "exports": {
         "AesInput": {
           "kind": "type",
@@ -11547,7 +11631,47 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerAllColorKinds": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerAllStyleKinds": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBandGuide": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerBasic": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicAreas": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicBars": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicGlyphs": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicLines": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicPoints": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicRects": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerBasicSegments": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -11559,11 +11683,19 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerBinnedColor": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerBoxplot": {
           "kind": "value",
           "lifecycle": "experimental"
         },
         "registerConnect": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerContinuousLegend": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -11579,6 +11711,10 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerDefaultOrdinalColor": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerDensity": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -11588,6 +11724,10 @@
           "lifecycle": "experimental"
         },
         "registerDensity2dFilled": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerDiscreteLegend": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -11607,11 +11747,19 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerFiniteStyle": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerFunction": {
           "kind": "value",
           "lifecycle": "experimental"
         },
         "registerHex": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerIdentityColor": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -11623,7 +11771,19 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "registerManualColor": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "registerMap": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerNumericStyle": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerOrdinalColor": {
           "kind": "value",
           "lifecycle": "experimental"
         },
@@ -11652,6 +11812,10 @@
           "lifecycle": "experimental"
         },
         "registerRug": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "registerSequentialColor": {
           "kind": "value",
           "lifecycle": "experimental"
         },

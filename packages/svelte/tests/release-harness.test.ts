@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import GGPlot from "../src/lib/GGPlot.svelte";
+import "../src/lib/host-init.js";
 import GenericInteractionPlot from "./fixtures/GenericInteractionPlot.svelte";
 import {
   expectAccessible,

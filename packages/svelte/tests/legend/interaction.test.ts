@@ -5,6 +5,7 @@ import { withGrammarAsSpec } from "../helpers/ggplot-input.js";
 import type { SceneLegend, ThemeTokens } from "@ggts-sh/core";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import LegendHarness from "../fixtures/LegendHarness.svelte";
 import { render } from "../helpers/render.js";
 

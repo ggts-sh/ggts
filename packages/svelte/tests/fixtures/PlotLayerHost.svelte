@@ -10,6 +10,7 @@
 
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import PlotLayerChild from "./PlotLayerChild.svelte";
   import PlotLayerMarkWithData from "./PlotLayerMarkWithData.svelte";

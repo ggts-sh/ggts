@@ -55,6 +55,28 @@ Use a ref for `resetScales()` and `setZoom()`. Specialty geoms still
 need their family `register*` (or `registerAll`) when you override
 `stat`. Temporal scale children import `@ggts-sh/core/temporal`.
 
+## Smaller bundles: the lean entry
+
+`@ggts-sh/react` registers the basic geoms, stats, and color and style scale
+kinds when you import it. To ship only what your charts use, import from
+`@ggts-sh/react/lean` and call the register functions once at startup:
+
+```tsx
+import {
+  GGPlot,
+  registerBasicPoints,
+  registerDefaultOrdinalColor,
+} from "@ggts-sh/react/lean";
+
+registerBasicPoints();
+registerDefaultOrdinalColor();
+```
+
+For a scatter chart with mapped color, this saves about 30 KB gzip. If a
+chart needs a family that is not registered, `GGPlot` throws an error that
+names the register function to call. One import from `@ggts-sh/react`
+anywhere in the app brings back the full basic registration.
+
 Both adapters share inspection, selection, zoom, legends, and linked interaction
 controllers. React renders chart SVG on the server and measures its container
 after hydration. In server-component applications, use a client component

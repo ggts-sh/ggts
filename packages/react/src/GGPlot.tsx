@@ -6,7 +6,7 @@ import type { GGPlotHandle, GGPlotProps } from "./plot-props.js";
 import { PlotSurface } from "./plot-surface.js";
 import { LayerRegistry, PlotRegistryContext } from "./registry.js";
 
-import "./host-init.js";
+import "./host-runtime.js";
 
 function restWithoutChildren(props: GGPlotProps): Omit<GGPlotProps, "children" | "key"> {
   const { children: _children, ...rest } = props;

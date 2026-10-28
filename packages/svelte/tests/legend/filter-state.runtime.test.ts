@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 
 import { createLegendFilterState } from "../../src/lib/legend/filter-state.svelte.js";
 import { createPlotRuntime, type PlotRuntime } from "../../src/lib/runtime/runtime.svelte.js";
+import "../../src/lib/host-init.js";
 import { withFlushedEffectRoot } from "../helpers/effect-root.svelte.js";
 import { createReactiveRuntimeDeps } from "../helpers/runtime-deps.svelte.js";
 

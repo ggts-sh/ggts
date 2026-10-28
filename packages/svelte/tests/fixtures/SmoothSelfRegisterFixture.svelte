@@ -6,6 +6,7 @@
    */
   import GeomSmooth from "../../src/lib/geoms/GeomSmooth.svelte";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
 
   const data = [
     { x: 1, y: 10 },

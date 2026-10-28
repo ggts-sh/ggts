@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomLine from "../../src/lib/geoms/GeomLine.svelte";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
 

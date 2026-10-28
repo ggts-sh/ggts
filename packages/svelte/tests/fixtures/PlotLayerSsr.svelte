@@ -5,6 +5,7 @@
    * registry-consuming markup (ADR 0001 finding 1).
    */
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import PlotLayerChild from "./PlotLayerChild.svelte";
 

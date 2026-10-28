@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 import type { GeometryBatch, Scene } from "@ggts-sh/core";
 
 import SceneView from "../../src/lib/scene/SceneView.svelte";
+import "../../src/lib/host-init.js";
 import { render } from "../helpers/render.js";
 
 function pointsBatch(panelIndex: number, layerIndex: number): GeometryBatch {
