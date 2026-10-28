@@ -73,6 +73,18 @@ describe("facet grid space (#1825)", () => {
     expect(a!.width).toBeCloseTo(b!.width, 6);
   });
 
+  it("follows the data x axis under coord_flip, so free_x sizes rows", () => {
+    const flipped = runPipeline(
+      gg(dots, aes({ x: "item", y: "n" }))
+        .geomPoint()
+        .facet({ rows: "group", scales: "free_x", space: "free_x" })
+        .coordFlip()
+        .spec(),
+      size,
+    ).scene.panels;
+    expect(flipped[1]!.height / flipped[0]!.height).toBeCloseTo(3 / 2, 6);
+  });
+
   it("does not change heights under space free_x", () => {
     const [a, b] = panels({ cols: "group", scales: "free", space: "free_x" });
     expect(a!.height).toBeCloseTo(b!.height, 6);
