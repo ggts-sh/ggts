@@ -1,12 +1,14 @@
 import { measurementProvenance } from "./provenance";
 /**
  * Client bundle sizes across lib × scenario (default bundle cases, or COMPETITIVE_FULL=1).
- * Vite library mode, esbuild minify, gzip -9.
+ * Vite library mode with `process.env.NODE_ENV` set to "production", then a
+ * full oxc minify (Vite's ES library mode keeps whitespace), then gzip -9.
+ * The sizes match what an app build ships.
  *
  *   bun run measure-bundles.ts
  *   COMPETITIVE_FULL=1 bun run measure-bundles.ts
  */
-import { build } from "vite";
+import { build, minify } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import react from "@vitejs/plugin-react";
 import { gzipSync } from "node:zlib";
@@ -114,8 +116,15 @@ for (const job of uniqueJobs) {
       resolve: {
         conditions: ["svelte", "browser", "import", "module", "default"],
       },
+      // Library mode leaves process.env.NODE_ENV for the consumer, so React
+      // would ship its development build too.
+      define: { "process.env.NODE_ENV": JSON.stringify("production") },
     });
-    const raw = readFileSync(path.join(outDir, "bundle.js"));
+    const bundlePath = path.join(outDir, "bundle.js");
+    const minified = await minify(bundlePath, readFileSync(bundlePath, "utf8"), { module: true });
+    if (minified.errors.length > 0)
+      throw new Error(minified.errors.map((e) => e.message).join("\n"));
+    const raw = Buffer.from(minified.code);
     const gz = gzipSync(raw, { level: 9 });
     results.push({
       id,
@@ -142,7 +151,7 @@ for (const job of uniqueJobs) {
   }
 }
 
-console.log("\n=== Competitive bundles (Vite minify, gzip -9) ===\n");
+console.log("\n=== Competitive bundles (production, oxc minify, gzip -9) ===\n");
 console.log("id".padEnd(40), "raw KB".padStart(10), "gzip KB".padStart(10));
 console.log("-".repeat(62));
 for (const r of results) {

@@ -27,7 +27,7 @@ Internal mitata workloads in `benchmarks/` remain the self-regression gate. This
 ```sh
 # Install monorepo deps from repo root first: bun install
 
-bun run measure:bundles    # Vite minify + gzip -9
+bun run measure:bundles    # production build, full minify, gzip -9
 bun run measure:browser    # Playwright Chromium, default case matrix
 bun run measure:ssr        # server-side SVG render throughput (no browser)
 bun run measure            # bundles + browser
