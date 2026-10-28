@@ -92,6 +92,11 @@ charts. Or compose `GeomPoint`, `GeomSmooth`, scales, themes, and other
 layers as components. The TypeScript `gg()` builder produces the same spec.
 [Complete React and Svelte examples](https://ggts.sh/guide/getting-started).
 
+For a smaller bundle, import from `@ggts-sh/react/lean` or
+`@ggts-sh/svelte/lean` and register only the geoms and scales your charts use
+([React](packages/react#smaller-bundles-the-lean-entry),
+[Svelte](packages/svelte#smaller-bundles-the-lean-entry)).
+
 Node.js 22+; CI tests npm, pnpm, and Bun. Interactive charts also need browser
 checks for callbacks, keyboard use, and hydration.
 
@@ -114,18 +119,18 @@ SVG without a DOM. The same grammar powers React and Svelte components.
 
 Compare Svelte ecosystem capabilities:
 
-| Capability                                       | ggts                            | TanStack | SveltePlot | Unovis   | LayerCake |
-| ------------------------------------------------ | ------------------------------- | -------- | ---------- | -------- | --------- |
-| **Headless server-side SVG** (no DOM)            | ✅                              | ✅       | ❌         | ❌       | ⚠️ opt-in |
-| **Portable JSON spec + schema**                  | ✅                              | ❌       | ❌         | ❌       | ❌        |
-| **CLI validator + renderer**                     | ✅                              | ❌       | ❌         | ❌       | ❌        |
-| **Agent skill**                                  | ✅                              | ✅       | ❌         | ❌       | ❌        |
-| **Automatic temporal detection**                 | ✅                              | ❌       | ⚠️ Some    | ❌       | ❌        |
-| **Built-in interactions**                        | ✅                              | ✅       | ⚠️ Some    | ⚠️ Some  | ❌        |
-| **ggplot2 API**                                  | ✅                              | ❌       | ❌         | ❌       | ❌        |
-| **Scale, axis & coord control**                  | ✅                              | ✅       | ✅         | ✅       | ⚠️ d3     |
-| **Bundle size** (min+gzip, scatter import graph) | 106 KB core SVG / 273 KB Svelte | ✅ 57 KB | ⚠️ 109 KB  | ✅ 80 KB | ✅ 41 KB  |
-| **API stability**                                | ⚠️ v0.43.2                      | ⚠️ v0.14 | ⚠️ v0.14   | ✅ v1.6  | ✅ v10    |
+| Capability                                       | ggts                           | TanStack | SveltePlot | Unovis   | LayerCake |
+| ------------------------------------------------ | ------------------------------ | -------- | ---------- | -------- | --------- |
+| **Headless server-side SVG** (no DOM)            | ✅                             | ✅       | ❌         | ❌       | ⚠️ opt-in |
+| **Portable JSON spec + schema**                  | ✅                             | ❌       | ❌         | ❌       | ❌        |
+| **CLI validator + renderer**                     | ✅                             | ❌       | ❌         | ❌       | ❌        |
+| **Agent skill**                                  | ✅                             | ✅       | ❌         | ❌       | ❌        |
+| **Automatic temporal detection**                 | ✅                             | ❌       | ⚠️ Some    | ❌       | ❌        |
+| **Built-in interactions**                        | ✅                             | ✅       | ⚠️ Some    | ⚠️ Some  | ❌        |
+| **ggplot2 API**                                  | ✅                             | ❌       | ❌         | ❌       | ❌        |
+| **Scale, axis & coord control**                  | ✅                             | ✅       | ✅         | ✅       | ⚠️ d3     |
+| **Bundle size** (min+gzip, scatter import graph) | 94 KB core SVG / 232 KB Svelte | ✅ 43 KB | ⚠️ 90 KB   | ✅ 64 KB | ✅ 30 KB  |
+| **API stability**                                | ⚠️ v0.43.2                     | ⚠️ v0.14 | ⚠️ v0.14   | ✅ v1.6  | ✅ v10    |
 
 ## Reference
 
