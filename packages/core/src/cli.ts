@@ -153,6 +153,24 @@ interface ParsedArgs {
 
 class UsageError extends Error {}
 
+function numberFlag(flag: string, raw: string | undefined): number {
+  const n = Number(raw);
+  if (raw === undefined || !Number.isFinite(n) || n <= 0) {
+    throw new UsageError(`${flag} needs a positive number (got ${raw ?? "nothing"})`);
+  }
+  return n;
+}
+
+function inspectFlag(raw: string | undefined): InspectIntentMode {
+  if (raw === undefined) {
+    throw new UsageError("--inspect needs a mode (auto|exact|x|y|xy)");
+  }
+  if (!isInspectIntentMode(raw)) {
+    throw new UsageError(`--inspect mode must be auto|exact|x|y|xy (got ${JSON.stringify(raw)})`);
+  }
+  return raw;
+}
+
 function parseArgs(argv: readonly string[]): ParsedArgs {
   const out: ParsedArgs = {
     specPath: null,
@@ -171,22 +189,6 @@ function parseArgs(argv: readonly string[]): ParsedArgs {
       for (const alias of option.aliases) optionByFlag.set(alias, option);
     }
   }
-  const numberFlag = (flag: string, raw: string | undefined): number => {
-    const n = Number(raw);
-    if (raw === undefined || !Number.isFinite(n) || n <= 0) {
-      throw new UsageError(`${flag} needs a positive number (got ${raw ?? "nothing"})`);
-    }
-    return n;
-  };
-  const inspectFlag = (raw: string | undefined): InspectIntentMode => {
-    if (raw === undefined) {
-      throw new UsageError("--inspect needs a mode (auto|exact|x|y|xy)");
-    }
-    if (!isInspectIntentMode(raw)) {
-      throw new UsageError(`--inspect mode must be auto|exact|x|y|xy (got ${JSON.stringify(raw)})`);
-    }
-    return raw;
-  };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i]!;
     const option = optionByFlag.get(arg);
