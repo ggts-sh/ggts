@@ -82,7 +82,9 @@ function evidenceValue(value: unknown): string | number | boolean | null {
  * One full-column pass: non-null count, full-column number/boolean detection
  * (not sample-relative), and a representative sample of at most 64 non-null
  * values (all when ≤64; otherwise first 32 + last 32). Avoids allocating an
- * O(n) non-null array just to take a bounded sample.
+ * O(n) non-null array just to take a bounded sample. A number/boolean decides
+ * nominal, so after one the pass only counts and the sample is the head (the
+ * nominal decision reads its first 8 values as evidence).
  */
 function analyzeNonNull(values: readonly unknown[]): {
   sample: unknown[];
@@ -99,6 +101,10 @@ function analyzeNonNull(values: readonly unknown[]): {
   for (const value of values) {
     if (value === null || value === undefined) continue;
     nonNullCount++;
+    if (sawNumberOrBoolean) {
+      if (head.length < 8) head.push(value);
+      continue;
+    }
     if (typeof value === "number" || typeof value === "boolean") sawNumberOrBoolean = true;
     if (head.length < 64) head.push(value);
     ring[ringWrite] = value;
@@ -106,7 +112,7 @@ function analyzeNonNull(values: readonly unknown[]): {
     if (ringLen < 32) ringLen++;
   }
 
-  if (nonNullCount <= 64) {
+  if (sawNumberOrBoolean || nonNullCount <= 64) {
     return { sample: head, nonNullCount, sawNumberOrBoolean };
   }
 
@@ -271,7 +277,8 @@ export function parseTemporalColumn(
       semantic[index] = epochMs;
       valid[index] = 1;
     });
-    if (decision.status !== "temporal") {
+    // Only the whole-column scan writes; nominal/ambiguous never reach it.
+    if (decision.status === "invalid") {
       semantic.fill(Number.NaN);
       valid.fill(0);
     }

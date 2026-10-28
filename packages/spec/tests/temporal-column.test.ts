@@ -106,6 +106,33 @@ describe("value-driven temporal inference", () => {
     expect(inferTemporalColumn(dates).status).toBe("invalid");
   });
 
+  /** #1862: a number decides nominal early; evidence and counts stay full-column. */
+  it("keeps nominal evidence and counts when a number decides the column", () => {
+    const numbers = Array.from({ length: 200 }, (_, index) => (index % 3 === 0 ? null : index));
+    const numeric = parseTemporalColumn(numbers, "auto");
+    expect(numeric.decision).toMatchObject({ status: "nominal", nonNullCount: 133 });
+    expect(numeric.decision.evidence).toEqual([1, 2, 4, 5, 7, 8, 10, 11]);
+    expect(numeric.semantic.every(Number.isNaN)).toBe(true);
+    expect(numeric.valid.every((flag) => flag === 0)).toBe(true);
+
+    const years = Array.from<string | number | null>({ length: 200 }, (_, index) =>
+      index === 0 ? null : `${1800 + index}`,
+    );
+    years[150] = 7;
+    const late = inferTemporalColumn(years);
+    expect(late).toMatchObject({ status: "nominal", nonNullCount: 199 });
+    expect(late.evidence).toEqual(["1801", "1802", "1803", "1804", "1805", "1806", "1807", "1808"]);
+  });
+
+  it("clears values written before whole-column validation fails", () => {
+    const values = Array.from({ length: 100 }, (_, index) => `${1900 + index}`);
+    values[50] = "not-a-year";
+    const parsed = parseTemporalColumn(values, "auto");
+    expect(parsed.decision.status).toBe("invalid");
+    expect(parsed.semantic.every(Number.isNaN)).toBe(true);
+    expect(parsed.valid.every((flag) => flag === 0)).toBe(true);
+  });
+
   it("keeps head/tail sample evidence for large temporal columns", () => {
     const values = Array.from({ length: 200 }, (_, index) => `${1900 + index}`);
     const decision = inferTemporalColumn(values);
