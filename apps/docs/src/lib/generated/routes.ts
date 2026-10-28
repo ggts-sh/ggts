@@ -10888,6 +10888,11 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
+        id: "bundle-size",
+        title: "Bundle size",
+        level: 2,
+      },
+      {
         id: "server-and-export",
         title: "Server and export",
         level: 2,

@@ -17526,6 +17526,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["Rendering", "canvas selection"],
   },
   {
+    id: "heading:guide-production:bundle-size",
+    kind: "heading",
+    title: "Bundle size",
+    summary:
+      "Bundle size in Production. Responsive sizing, SVG/canvas rendering, SSR and export, and tested runtime support.",
+    href: "/guide/production#bundle-size",
+    keywords: ["Production", "Production"],
+    exact: ["Bundle size"],
+  },
+  {
     id: "heading:guide-production:server-and-export",
     kind: "heading",
     title: "Server and export",

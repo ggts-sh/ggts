@@ -31,6 +31,24 @@ Stable keys keep identity across SVG/canvas; renderer indices never appear in
 public callbacks. Measure with repo fixtures before forcing canvas globally.
 For a real-data scatter surface, see [scatter color](/examples/point/scatter-color).
 
+## Bundle size
+
+\`@ggts-sh/react\` and \`@ggts-sh/svelte\` register the basic geoms, stats, and
+color and style scale kinds on import. To ship only what your charts use, import
+from \`@ggts-sh/react/lean\` or \`@ggts-sh/svelte/lean\` and call the register
+functions once at startup:
+
+\`\`\`ts fragment
+import { GGPlot, registerBasicPoints, registerDefaultOrdinalColor } from "@ggts-sh/react/lean";
+
+registerBasicPoints();
+registerDefaultOrdinalColor();
+\`\`\`
+
+If a chart needs a family that is not registered, \`GGPlot\` throws an error
+that names the register function to call. One import from the default entry
+anywhere in the app brings back the full basic registration.
+
 ## Server and export
 
 One PortableSpec: React or Svelte SSR, pure \`renderToSVGString\`, CLI.
