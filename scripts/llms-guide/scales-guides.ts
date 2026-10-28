@@ -119,6 +119,22 @@ are omitted with
 [scale-break-outside-domain](/guide/errors#scale-break-outside-domain).
 Temporal \`dateMinorBreaks\` outranks generic \`minorBreaks\`.
 
+\`labels\` is a format string, or an array of author-given labels. An array
+names each explicit break in order, as in
+\`scale_x_continuous(breaks = c(4, 14), labels = c("Group A", "Group B"))\`:
+
+\`\`\`ts fragment
+gg(rows, aes({ x: "x", y: "y" }))
+  .geomPoint()
+  .scaleXContinuous({ breaks: [4, 14], labels: ["Group A", "Group B"] });
+\`\`\`
+
+The array works on linear, time, and band position scales. \`breaks\` must be
+an explicit array of the same length, or validation fails with
+[scale-labels-breaks-length](/guide/errors#scale-labels-breaks-length). A
+break outside the domain drops its label with its tick. A value that is not
+a break keeps the default format, for example in a tooltip.
+
 \`reverse\` changes the pixel direction but not semantic tick order. \`nice\`
 controls numeric domain rounding. Guides retain complete semantic values and
 apply the forward transform exactly once. For the full split between scale

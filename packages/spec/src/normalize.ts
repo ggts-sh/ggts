@@ -330,6 +330,7 @@ function normalizeFacet(facet: FacetInput): FacetSpec {
     ...(cols !== undefined && { cols }),
     ...(facet.ncol !== undefined && { ncol: facet.ncol }),
     ...(facet.scales !== undefined && { scales: facet.scales }),
+    ...(facet.space !== undefined && { space: facet.space }),
     ...(strip !== undefined && Object.keys(strip).length > 0 && { strip }),
   };
 }

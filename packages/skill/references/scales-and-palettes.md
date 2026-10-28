@@ -27,21 +27,21 @@ log10 x reshapes what `stat: "smooth"` sees). Coordinate transforms
 
 Options on any position scale (`PositionScaleSpec`):
 
-| Option        | Values / default                                            | Notes                                                                           |
-| ------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `type`        | linear, binned, time, band (+ authored alias log)           | Omit to infer from field type                                                   |
-| `transform`   | identity (default), log10 (values > 0), sqrt (values >= 0)  | Only identity on time scales                                                    |
-| `domain`      | `[min, max]` (continuous/time) or full category list (band) | Pins the scale; out-of-domain data drops with a warning                         |
-| `oob`         | censor (default) or squish                                  | Applied to explicit source limits, before stats                                 |
-| `nice`        | boolean, default true                                       | Rounds inferred domain to tick-friendly bounds; ignored with `domain`           |
-| `zero`        | boolean                                                     | Bars/cols/areas force true on the measure axis; set false to override           |
-| `expand`      | `{ mult, add }`                                             | Default `{mult: 0.05, add: 0}` non-temporal; time axes default to zero          |
-| `breaks`      | numbers, or ISO strings on time scales                      | Explicit ticks; on binned scales these are bin boundaries, at most 65 (64 bins) |
-| `minorBreaks` | numbers                                                     | Minor gridlines; time scales use `dateMinorBreaks` instead                      |
-| `reverse`     | boolean, default false                                      | Flips output direction                                                          |
-| `labels`      | format string                                               | Time: strftime-style; numeric: `",d"`, `".1f"`, `".0%"`, `"~s"`                 |
-| `naValue`     | number or null (default)                                    | Substitute for missing positional values, after OOB, before transform           |
-| `guide`       | GuideSpec                                                   | Axis styling; band axes accept BandAxisGuideSpec                                |
+| Option        | Values / default                                            | Notes                                                                                                |
+| ------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `type`        | linear, binned, time, band (+ authored alias log)           | Omit to infer from field type                                                                        |
+| `transform`   | identity (default), log10 (values > 0), sqrt (values >= 0)  | Only identity on time scales                                                                         |
+| `domain`      | `[min, max]` (continuous/time) or full category list (band) | Pins the scale; out-of-domain data drops with a warning                                              |
+| `oob`         | censor (default) or squish                                  | Applied to explicit source limits, before stats                                                      |
+| `nice`        | boolean, default true                                       | Rounds inferred domain to tick-friendly bounds; ignored with `domain`                                |
+| `zero`        | boolean                                                     | Bars/cols/areas force true on the measure axis; set false to override                                |
+| `expand`      | `{ mult, add }`                                             | Default `{mult: 0.05, add: 0}` non-temporal; time axes default to zero                               |
+| `breaks`      | numbers, or ISO strings on time scales                      | Explicit ticks; on binned scales these are bin boundaries, at most 65 (64 bins)                      |
+| `minorBreaks` | numbers                                                     | Minor gridlines; time scales use `dateMinorBreaks` instead                                           |
+| `reverse`     | boolean, default false                                      | Flips output direction                                                                               |
+| `labels`      | format string, or string array                              | Format: strftime / `",d"` `".1f"` `".0%"` `"~s"`; array: `labels[i]` names `breaks[i]` (same length) |
+| `naValue`     | number or null (default)                                    | Substitute for missing positional values, after OOB, before transform                                |
+| `guide`       | GuideSpec                                                   | Axis styling; band axes accept BandAxisGuideSpec                                                     |
 
 Helper functions additionally accept `limits` as authoring sugar for `domain`
 (supplying both throws). `scaleXReverse`/`scaleYReverse` omit the `transform`

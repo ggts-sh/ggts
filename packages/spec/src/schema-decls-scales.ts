@@ -171,10 +171,23 @@ export const ScaleDecls = {
           }),
         ),
         labels: Type.Optional(
-          Type.String({
-            description:
-              'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix). Omit for automatic formatting.',
-          }),
+          Type.Union(
+            [
+              Type.String({
+                description:
+                  'Tick label format string. Time scales: strftime-style ("%Y-%m", "%b %d", "%H:%M"). Numeric scales: ",d" (grouped integer), ".1f" (fixed decimals), ".0%" (percent), "~s" (SI prefix).',
+              }),
+              Type.Array(Type.String(), {
+                minItems: 1,
+                description:
+                  'Author-given tick labels, as in scale_x_continuous(breaks = c(4, 14), labels = c("Group A", "Group B")). labels[i] is the text for breaks[i]; breaks must be an explicit array of the same length.',
+              }),
+            ],
+            {
+              description:
+                "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting.",
+            },
+          ),
         ),
         expand: Type.Optional(
           Type.Ref("ScaleExpansion", {

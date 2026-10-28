@@ -120,6 +120,17 @@ export const ERROR_CATALOG = {
     tier: 1,
     ...DUAL_ERROR_PROSE["color-manual-domain-range"],
   },
+  "scale-labels-breaks-length": {
+    tier: 1,
+    summary:
+      "A position scale's labels array does not have exactly one label for each explicit break.",
+    fix: "Set breaks to an explicit array and give labels the same length, in the same order.",
+  },
+  "facet-space-without-grid": {
+    tier: 1,
+    summary: "facet.space is set on the wrap form; space sizes grid columns and rows only.",
+    fix: "Remove space, or use the grid form (facet.rows / facet.cols).",
+  },
   "scale-binned-breaks": {
     tier: 1,
     summary:

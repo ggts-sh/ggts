@@ -36,6 +36,18 @@ function applyMappedSegmentStyles(
   if (linetypeIndexes !== undefined) batch.linetypeIndexes = linetypeIndexes;
 }
 
+/** A constant aes.linetype wins over the rule `params.linetype` (#1825). */
+function constantLinetype(
+  binding: LayerFrame["binding"],
+  params: { linetype?: Linetype },
+): { linetype?: Linetype } {
+  const linetype =
+    typeof binding.linetype?.constant === "string"
+      ? (binding.linetype.constant as Linetype)
+      : params.linetype;
+  return linetype === undefined ? {} : { linetype };
+}
+
 export function packSegmentsBatch(input: {
   frame: LayerFrame;
   segments: Float32Array;
@@ -50,7 +62,11 @@ export function packSegmentsBatch(input: {
   const styles = input.styles ?? ({} as ResolvedStyleScales);
   if (rowIndex.length === 0) return null;
   const { binding } = frame;
-  const params = (binding.layer.params ?? {}) as { linewidth?: number; alpha?: number };
+  const params = (binding.layer.params ?? {}) as {
+    linewidth?: number;
+    alpha?: number;
+    linetype?: Linetype;
+  };
   const paint = layerPaintFromParams(binding.layer.params);
   const strokePaintResolved =
     paint.strokePaint === null
@@ -78,9 +94,7 @@ export function packSegmentsBatch(input: {
     stroke,
     linewidth: constantStyle(binding, params, "linewidth", DEFAULT_RULE_LINEWIDTH),
     alpha: constantStyle(binding, params, "alpha", 1),
-    ...(typeof binding.linetype?.constant === "string" && {
-      linetype: binding.linetype.constant as Linetype,
-    }),
+    ...constantLinetype(binding, params),
     ...(strokePaintResolved !== undefined && { strokePaint: strokePaintResolved }),
     ...(glowResolved !== undefined && { glow: glowResolved }),
   };

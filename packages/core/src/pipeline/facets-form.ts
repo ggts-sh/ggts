@@ -16,6 +16,15 @@ export function facetFreeFlags(scales: FacetSpec["scales"] | undefined): {
   };
 }
 
+/** facet_grid `space` uses the same fixed/free/free_x/free_y vocabulary as `scales`. */
+export function facetSpaceFlags(space: FacetSpec["space"] | undefined): {
+  x: boolean;
+  y: boolean;
+} {
+  const { freeX, freeY } = facetFreeFlags(space);
+  return { x: freeX, y: freeY };
+}
+
 export function assertFacetForm(input: {
   wrapField: string | null;
   rowsField: string | null;

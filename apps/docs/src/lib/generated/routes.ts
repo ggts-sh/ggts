@@ -10706,6 +10706,11 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
+        id: "size-grid-panels-by-scale-length",
+        title: "Size grid panels by scale length",
+        level: 2,
+      },
+      {
         id: "coordinates",
         title: "Coordinates",
         level: 2,
@@ -11266,6 +11271,16 @@ export const DOCS_ROUTES = [
       {
         id: "color-manual-domain-range",
         title: "color-manual-domain-range",
+        level: 3,
+      },
+      {
+        id: "scale-labels-breaks-length",
+        title: "scale-labels-breaks-length",
+        level: 3,
+      },
+      {
+        id: "facet-space-without-grid",
+        title: "facet-space-without-grid",
         level: 3,
       },
       {
@@ -13162,6 +13177,17 @@ export const DOCS_ROUTES = [
     title: "Mean and standard error in each x class — ggts gallery",
     description: "Summary error bars after binning x when you need mean and uncertainty together.",
     canonicalPath: "/examples/errorbar/summary-bin",
+    kind: "page",
+    index: true,
+    sitemap: true,
+    shell: "site",
+  },
+  {
+    path: "/examples/facet/grid-space",
+    title: "Grid facets sized by category count — ggts gallery",
+    description:
+      "facet_grid space sizes each column by its number of categories, so every category column has the same width.",
+    canonicalPath: "/examples/facet/grid-space",
     kind: "page",
     index: true,
     sitemap: true,

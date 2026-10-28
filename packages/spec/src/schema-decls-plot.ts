@@ -99,6 +99,20 @@ export const PlotDecls = {
         }),
       ),
       scales: Type.Optional(Type.Ref("FacetScales")),
+      space: Type.Optional(
+        Type.Union(
+          [
+            Type.Literal("fixed"),
+            Type.Literal("free"),
+            Type.Literal("free_x"),
+            Type.Literal("free_y"),
+          ],
+          {
+            description:
+              'GRID ONLY: panel sizes, as in facet_grid(space = ...). "fixed" (default) gives every panel the same size. "free_x" makes each column width proportional to the length of its x scale; "free_y" makes each row height proportional to the length of its y scale; "free" does both. A band scale\'s length is its category count, so every category gets the same width. Takes effect only with the matching free facet scales.',
+          },
+        ),
+      ),
       strip: Type.Optional(Type.Ref("FacetStripSpec")),
     },
     {

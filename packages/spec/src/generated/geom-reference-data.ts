@@ -711,6 +711,13 @@ export const GEOM_REFERENCE_DATA = {
         required: false,
       },
       {
+        name: "linetype",
+        description:
+          'Constant stroke pattern, as in geom_hline(linetype = "dashed"). One of "solid", "dashed", "dotted", "dotdash", "longdash", "twodash". Default "solid". A constant aes.linetype wins over this param.',
+        typeSummary: '"solid" | "dashed" | "dotted" | "dotdash" | "longdash" | "twodash"',
+        required: false,
+      },
+      {
         name: "strokePaint",
         description:
           "Within-mark gradient stroke paint (not a data scale). Requires a solid fallback.",
@@ -754,6 +761,13 @@ export const GEOM_REFERENCE_DATA = {
         name: "linewidth",
         description: "Stroke width in px. Must be greater than 0. Default 1.",
         typeSummary: "number",
+        required: false,
+      },
+      {
+        name: "linetype",
+        description:
+          'Constant stroke pattern, as in geom_hline(linetype = "dashed"). One of "solid", "dashed", "dotted", "dotdash", "longdash", "twodash". Default "solid". A constant aes.linetype wins over this param.',
+        typeSummary: '"solid" | "dashed" | "dotted" | "dotdash" | "longdash" | "twodash"',
         required: false,
       },
       {
@@ -801,6 +815,13 @@ export const GEOM_REFERENCE_DATA = {
         name: "linewidth",
         description: "Stroke width in px. Must be greater than 0. Default 1.",
         typeSummary: "number",
+        required: false,
+      },
+      {
+        name: "linetype",
+        description:
+          'Constant stroke pattern, as in geom_hline(linetype = "dashed"). One of "solid", "dashed", "dotted", "dotdash", "longdash", "twodash". Default "solid". A constant aes.linetype wins over this param.',
+        typeSummary: '"solid" | "dashed" | "dotted" | "dotdash" | "longdash" | "twodash"',
         required: false,
       },
       {

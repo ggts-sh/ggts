@@ -9,7 +9,9 @@ import {
   binnedStyleScaleStructuralErrors,
   colorScaleStructuralErrors,
   coordFacetStructuralErrors,
+  facetSpaceStructuralErrors,
   guideStructuralErrors,
+  positionLabelsStructuralErrors,
 } from "./validate-structure.js";
 
 function isRecord(v: unknown): v is Record<string, unknown> {
@@ -27,11 +29,16 @@ export function structuralGateErrors(input: unknown): SpecError[] {
     errors.push(
       ...colorScaleStructuralErrors(input["scales"]),
       ...binnedStyleScaleStructuralErrors(input["scales"]),
+      ...positionLabelsStructuralErrors(input["scales"]),
     );
   }
   const guides = isRecord(input["guides"]) ? input["guides"] : {};
   const scales = isRecord(input["scales"]) ? input["scales"] : undefined;
-  errors.push(...guideStructuralErrors(guides, scales), ...coordFacetStructuralErrors(input));
+  errors.push(
+    ...guideStructuralErrors(guides, scales),
+    ...coordFacetStructuralErrors(input),
+    ...facetSpaceStructuralErrors(input),
+  );
   return errors;
 }
 

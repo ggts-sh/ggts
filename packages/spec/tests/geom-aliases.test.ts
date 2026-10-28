@@ -67,6 +67,28 @@ describe("geom aliases (#1042)", () => {
     }
   });
 
+  it("keeps a constant rule linetype through the hline and vline rewrites (#1825)", () => {
+    const spec = normalize({
+      layers: [
+        { geom: "hline", params: { yintercept: 7.3, linetype: "dashed" } },
+        { geom: "vline", params: { xintercept: 2, linetype: "dotted" } },
+        { geom: "rule", params: { yintercept: 1, linetype: "longdash" } },
+      ],
+    });
+    expect(spec.layers.map((layer) => [layer.geom, layer.params])).toEqual([
+      ["rule", { yintercept: 7.3, linetype: "dashed" }],
+      ["rule", { xintercept: 2, linetype: "dotted" }],
+      ["rule", { yintercept: 1, linetype: "longdash" }],
+    ]);
+    expect(validate(spec).ok).toBe(true);
+    const bad = validate(
+      normalize({
+        layers: [{ geom: "hline", params: { yintercept: 1, linetype: "wavy" } }],
+      } as SpecInput),
+    );
+    expect(bad.ok).toBe(false);
+  });
+
   it("rejects an unknown geom with the did-you-mean error, whatever it is named", () => {
     for (const geom of ["constructor", "toString", "poimt"]) {
       const result = validate(normalize({ layers: [{ geom, aes: xy }] } as SpecInput));

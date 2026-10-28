@@ -276,3 +276,29 @@ function addColorRangeErrors(
     });
   }
 }
+
+/** An array of position-scale labels names each explicit break, so the lengths must match. */
+export function positionLabelsStructuralErrors(scales: Record<string, unknown>): SpecError[] {
+  const errors: SpecError[] = [];
+  for (const axis of ["x", "y"] as const) {
+    const scale = scales[axis];
+    if (typeof scale !== "object" || scale === null || Array.isArray(scale)) continue;
+    const labels = (scale as Record<string, unknown>)["labels"];
+    if (!Array.isArray(labels)) continue;
+    const breaks = (scale as Record<string, unknown>)["breaks"];
+    const breakCount = Array.isArray(breaks) ? breaks.length : 0;
+    if (breakCount === labels.length) continue;
+    errors.push({
+      code: "scale-labels-breaks-length",
+      path: `/scales/${axis}/labels`,
+      message: Array.isArray(breaks)
+        ? `scales.${axis} has ${String(breakCount)} breaks but ${String(labels.length)} labels.`
+        : `scales.${axis}.labels is an array, but scales.${axis}.breaks is not an explicit array.`,
+      fix: {
+        description: "Give exactly one label for each explicit break, in the same order.",
+        example: { breaks: [4, 14], labels: ["Group A", "Group B"] },
+      },
+    });
+  }
+  return errors;
+}

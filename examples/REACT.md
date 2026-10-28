@@ -23,7 +23,7 @@ Regenerate with `bun run manifest:gen`.
 - `smooth/loess-scatter` — Cocoa percent against bar rating
 - `vline/cutoff` — One vertical cutoff
 
-## Remaining (80)
+## Remaining (81)
 
 Write and check `Example.tsx` before the React tab can appear.
 
@@ -51,6 +51,7 @@ Write and check `Example.tsx` before the React tab can appear.
 - `errorbar/caps` — Capped error bars
 - `errorbar/mean-se` — Mean and standard error by group
 - `errorbar/summary-bin` — Mean and standard error in each x class
+- `facet/grid-space` — Grid facets sized by category count
 - `facet/ordered-side-strips` — Facets with ordered side strips
 - `facet/wrap` — One panel per parent–child pair type
 - `facet/wrap-free-y` — Facets with free y scales

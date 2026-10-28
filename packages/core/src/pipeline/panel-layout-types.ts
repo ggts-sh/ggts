@@ -19,6 +19,12 @@ export type FacetScaleFreedom = {
   readonly freeY: boolean;
 };
 
+/** Data-space facet_grid `space` flags (all false for "fixed" or no facet). */
+export type FacetSpaceFlags = {
+  readonly x: boolean;
+  readonly y: boolean;
+};
+
 export interface PanelPlacement {
   x: number;
   y: number;

@@ -21,6 +21,7 @@ import { layoutDomain } from "./layout-helpers.js";
 import type { PanelLayoutChrome } from "./panel-layout-chrome.js";
 import { computeFacetGridGeometry } from "./panel-layout-facet-geometry.js";
 import type { FacetGridLayoutInput } from "./panel-layout-facet-types.js";
+import type { FacetSpaceFlags } from "./panel-layout-types.js";
 import type {
   DisplayBandFn,
   DisplayScalesFn,
@@ -143,8 +144,8 @@ function mapFacetPanelPlacements(input: {
   displayBand: DisplayBandFn;
   mMax: Margins;
   previousGuidePlans: readonly Readonly<{ x?: AxisGuidePlan; y?: AxisGuidePlan }>[];
-  panelW: number;
-  panelH: number;
+  colW: number[];
+  rowH: number[];
   colX: number[];
   rowY: number[];
   bottomMostRow: number[];
@@ -165,8 +166,8 @@ function mapFacetPanelPlacements(input: {
     displayBand,
     mMax,
     previousGuidePlans,
-    panelW,
-    panelH,
+    colW,
+    rowH,
     colX,
     rowY,
     bottomMostRow,
@@ -195,8 +196,8 @@ function mapFacetPanelPlacements(input: {
       ...(previousGuidePlans[p] !== undefined && {
         previousGuidePlans: previousGuidePlans[p],
       }),
-      panelW,
-      panelH,
+      panelW: colW[def.col]!,
+      panelH: rowH[def.row]!,
       colX: colX[def.col]!,
       rowY: rowY[def.row]!,
       freeH,
@@ -224,8 +225,8 @@ function placeFacetPanels(input: FacetGridLayoutInput): PanelPlacement[] {
     displayBand: input.displayBand,
     mMax: geometry.mMax,
     previousGuidePlans: geometry.previousGuidePlans,
-    panelW: geometry.panelW,
-    panelH: geometry.panelH,
+    colW: geometry.colW,
+    rowH: geometry.rowH,
     colX: geometry.colX,
     rowY: geometry.rowY,
     bottomMostRow: geometry.bottomMostRow,
@@ -246,16 +247,19 @@ export function placeFacetPanelsFromChrome(input: {
   strip: FacetStripConfig;
   stripBand: number;
   chrome: PanelLayoutChrome;
+  space: FacetSpaceFlags;
   axis: Readonly<{ x: LayoutAxisPresentation; y: LayoutAxisPresentation }>;
   options: Pick<RunOptions, "width">;
 }): PanelPlacement[] {
-  const { nrow, ncol, facetPanels, strip, stripBand, chrome, axis, options } = input;
+  const { nrow, ncol, facetPanels, strip, stripBand, chrome, space, axis, options } = input;
   return placeFacetPanels({
     facetPanels,
     nrow,
     ncol,
     freeH: chrome.freeH,
     freeV: chrome.freeV,
+    spaceH: chrome.flip ? space.y : space.x,
+    spaceV: chrome.flip ? space.x : space.y,
     outerLeftTitle: chrome.vTitle,
     outerBottomTitle: chrome.hTitle,
     axisTitleBand: chrome.axisTitleBand,

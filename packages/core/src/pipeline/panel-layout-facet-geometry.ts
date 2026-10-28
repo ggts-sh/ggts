@@ -1,5 +1,6 @@
 /**
- * Facet-grid geometry: outer chrome, shared margins, panel size, col/row origins.
+ * Facet-grid geometry: outer chrome, shared margins, panel sizes (facet_grid
+ * `space`), col/row origins.
  */
 import type {
   LayoutAxisPresentation,
@@ -11,6 +12,7 @@ import { layout } from "../layout/layout.js";
 import type { TextMeasurer } from "../layout/measure.js";
 import type { AxisGuidePlan } from "../layout/temporal-guide.js";
 import { PANEL_SPACING } from "../scene.js";
+import type { PositionScale } from "../scales/train.js";
 
 import type { FacetPanelDef } from "./facets.js";
 import { DEFAULT_FACET_STRIP, type FacetStripConfig } from "./facets-types.js";
@@ -43,8 +45,8 @@ interface FacetSharedMarginsResult {
 }
 
 interface FacetCellGeometry {
-  panelW: number;
-  panelH: number;
+  colW: number[];
+  rowH: number[];
   colX: number[];
   rowY: number[];
   bottomMostRow: number[];
@@ -53,11 +55,43 @@ interface FacetCellGeometry {
 export interface FacetGridGeometry {
   mMax: Margins;
   previousGuidePlans: readonly Readonly<{ x?: AxisGuidePlan; y?: AxisGuidePlan }>[];
-  panelW: number;
-  panelH: number;
+  colW: number[];
+  rowH: number[];
   colX: number[];
   rowY: number[];
   bottomMostRow: number[];
+}
+
+/** Display-axis length of a panel scale: band category count, or the expanded continuous span. */
+function scaleLength(scale: PositionScale): number {
+  return scale.type === "band"
+    ? scale.domain.length
+    : Math.abs(scale.transformedDomain[1] - scale.transformedDomain[0]);
+}
+
+/**
+ * facet_grid(space = "free_*") size multipliers for each column (or row). They
+ * average 1 and follow the longest panel scale in that column, so one data unit
+ * has the same physical size in every panel. Fixed space, or no measurable
+ * length, gives every column the same size.
+ */
+function spaceShares(input: {
+  free: boolean;
+  count: number;
+  facetPanels: readonly FacetPanelDef[];
+  slotOf: (def: FacetPanelDef) => number;
+  lengthOf: (panelIndex: number) => number;
+}): number[] {
+  const lengths = Array.from({ length: input.count }, () => 0);
+  if (input.free) {
+    input.facetPanels.forEach((def, p) => {
+      const slot = input.slotOf(def);
+      lengths[slot] = Math.max(lengths[slot]!, input.lengthOf(p));
+    });
+  }
+  const total = lengths.reduce((sum, length) => sum + length, 0);
+  if (!(total > 0)) return lengths.map(() => 1);
+  return lengths.map((length) => (length * input.count) / total);
 }
 
 function computeFacetOuterChrome(input: {
@@ -117,8 +151,7 @@ function computeFacetOuterChrome(input: {
 
 function computeFacetSharedMargins(input: {
   facetPanels: readonly FacetPanelDef[];
-  approxW: number;
-  approxH: number;
+  sizeOf: (def: FacetPanelDef) => { width: number; height: number };
   displayScales: DisplayScalesFn;
   displayTemporal: DisplayTemporalFn;
   displayBand: DisplayBandFn;
@@ -132,8 +165,7 @@ function computeFacetSharedMargins(input: {
 }): FacetSharedMarginsResult {
   const {
     facetPanels,
-    approxW,
-    approxH,
+    sizeOf,
     displayScales,
     displayTemporal,
     displayBand,
@@ -153,8 +185,7 @@ function computeFacetSharedMargins(input: {
     const temporal = displayTemporal(p);
     const band = displayBand(p);
     const run = layout({
-      width: approxW,
-      height: approxH,
+      ...sizeOf(facetPanels[p]!),
       x: layoutDomain(h, hBreaks, temporal.h, band.h),
       y: layoutDomain(v, vBreaks, temporal.v, band.v),
       ...(formatH !== undefined && { formatX: formatH }),
@@ -229,8 +260,8 @@ function computeFacetColRowPlacements(input: {
   spacing: number;
   strip: number;
   stripConfig?: FacetStripConfig;
-  panelW: number;
-  panelH: number;
+  colW: readonly number[];
+  rowH: readonly number[];
 }): { colX: number[]; rowY: number[]; bottomMostRow: number[] } {
   const {
     facetPanels,
@@ -244,8 +275,8 @@ function computeFacetColRowPlacements(input: {
     spacing,
     strip,
     stripConfig = DEFAULT_FACET_STRIP,
-    panelW,
-    panelH,
+    colW,
+    rowH,
   } = input;
 
   const colX: number[] = [];
@@ -254,7 +285,7 @@ function computeFacetColRowPlacements(input: {
     if (stripConfig.position === "left") xCursor += strip;
     if (c === 0 || freeV) xCursor += mMax.left;
     colX.push(xCursor);
-    xCursor += panelW;
+    xCursor += colW[c]!;
     if (stripConfig.position === "right") xCursor += strip;
     xCursor += spacing;
   }
@@ -264,7 +295,7 @@ function computeFacetColRowPlacements(input: {
   for (let r = 0; r < nrow; r++) {
     if (stripConfig.position === "top") yCursor += strip;
     rowY.push(yCursor);
-    yCursor += panelH;
+    yCursor += rowH[r]!;
     if (r === nrow - 1 || freeH) yCursor += mMax.bottom;
     if (stripConfig.position === "bottom") yCursor += strip;
     yCursor += spacing;
@@ -292,14 +323,14 @@ function computeFacetCellGeometry(input: {
   stripConfig: FacetStripConfig;
   gridW: number;
   gridH: number;
+  colShare: readonly number[];
+  rowShare: readonly number[];
 }): FacetCellGeometry {
   const { panelW, panelH } = computeFacetPanelSize(input);
-  const { colX, rowY, bottomMostRow } = computeFacetColRowPlacements({
-    ...input,
-    panelW,
-    panelH,
-  });
-  return { panelW, panelH, colX, rowY, bottomMostRow };
+  const colW = input.colShare.map((share) => Math.max(1, panelW * share));
+  const rowH = input.rowShare.map((share) => Math.max(1, panelH * share));
+  const { colX, rowY, bottomMostRow } = computeFacetColRowPlacements({ ...input, colW, rowH });
+  return { colW, rowH, colX, rowY, bottomMostRow };
 }
 
 function hasBandPlan(shared: FacetSharedMarginsResult): boolean {
@@ -337,6 +368,21 @@ export function computeFacetGridGeometry(input: FacetGridLayoutInput): FacetGrid
     axis: input.axis,
   };
 
+  const colShare = spaceShares({
+    free: input.spaceH,
+    count: input.ncol,
+    facetPanels: input.facetPanels,
+    slotOf: (def) => def.col,
+    lengthOf: (p) => scaleLength(input.displayScales(p).h),
+  });
+  const rowShare = spaceShares({
+    free: input.spaceV,
+    count: input.nrow,
+    facetPanels: input.facetPanels,
+    slotOf: (def) => def.row,
+    lengthOf: (p) => scaleLength(input.displayScales(p).v),
+  });
+
   const cellInput = {
     facetPanels: input.facetPanels,
     nrow: input.nrow,
@@ -350,20 +396,26 @@ export function computeFacetGridGeometry(input: FacetGridLayoutInput): FacetGrid
     stripConfig: outer.stripConfig,
     gridW: outer.gridW,
     gridH: outer.gridH,
+    colShare,
+    rowShare,
   };
 
   const shared = computeFacetSharedMargins({
     ...sharedInput,
-    approxW: outer.approxW,
-    approxH: outer.approxH,
+    sizeOf: (def) => ({
+      width: outer.approxW * colShare[def.col]!,
+      height: outer.approxH * rowShare[def.row]!,
+    }),
   });
   const cells = computeFacetCellGeometry({ ...cellInput, mMax: shared.margins });
 
   if (hasBandPlan(shared)) {
     const shared2 = computeFacetSharedMargins({
       ...sharedInput,
-      approxW: cells.panelW + shared.margins.left + shared.margins.right,
-      approxH: cells.panelH + shared.margins.top + shared.margins.bottom,
+      sizeOf: (def) => ({
+        width: cells.colW[def.col]! + shared.margins.left + shared.margins.right,
+        height: cells.rowH[def.row]! + shared.margins.top + shared.margins.bottom,
+      }),
     });
     const mMax = elementwiseMaxMargins(shared.margins, shared2.margins);
     const cells2 = computeFacetCellGeometry({ ...cellInput, mMax });

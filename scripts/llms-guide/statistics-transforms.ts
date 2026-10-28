@@ -19,16 +19,21 @@ assemble them into \`positionParams\` at the builder/component boundary.
 suppress plot-aes inheritance (ggplot2 \`inherit.aes = FALSE\`). Data-driven
 forms drop the orthogonal axis so the one-axis rule contract holds.
 
+\`rule\`, \`hline\`, and \`vline\` take a constant \`linetype\` param, as in
+\`geom_hline(linetype = "dashed")\`: \`"solid"\` (default), \`"dashed"\`,
+\`"dotted"\`, \`"dotdash"\`, \`"longdash"\`, or \`"twodash"\`. A constant
+\`aes.linetype\` wins over the param.
+
 \`\`\`svelte fragment
 <GeomJitter width={0.2} height={0.2} />
-<GeomHline yintercept={0} />
+<GeomHline yintercept={0} linetype="dashed" />
 <GeomVline xintercept={10} />
 \`\`\`
 
 \`\`\`ts fragment
 gg(data, aes({ x: "x", y: "y" }))
   .geomJitter({ width: 0.2, height: 0.2 })
-  .geomHline({ yintercept: 0 })
+  .geomHline({ yintercept: 0, linetype: "dashed" })
   .geomVline({ xintercept: 10 })
   .spec();
 \`\`\`

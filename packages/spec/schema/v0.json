@@ -2240,6 +2240,35 @@
           "exclusiveMinimum": 0,
           "description": "Stroke width in px. Must be greater than 0. Default 1."
         },
+        "linetype": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "solid"
+            },
+            {
+              "type": "string",
+              "const": "dashed"
+            },
+            {
+              "type": "string",
+              "const": "dotted"
+            },
+            {
+              "type": "string",
+              "const": "dotdash"
+            },
+            {
+              "type": "string",
+              "const": "longdash"
+            },
+            {
+              "type": "string",
+              "const": "twodash"
+            }
+          ],
+          "description": "Constant stroke pattern, as in geom_hline(linetype = \"dashed\"). One of \"solid\", \"dashed\", \"dotted\", \"dotdash\", \"longdash\", \"twodash\". Default \"solid\". A constant aes.linetype wins over this param."
+        },
         "strokePaint": {
           "$ref": "#/$defs/GradientPaint",
           "description": "Within-mark gradient stroke paint (not a data scale). Requires a solid fallback."
@@ -2270,6 +2299,35 @@
           "exclusiveMinimum": 0,
           "description": "Stroke width in px. Must be greater than 0. Default 1."
         },
+        "linetype": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "solid"
+            },
+            {
+              "type": "string",
+              "const": "dashed"
+            },
+            {
+              "type": "string",
+              "const": "dotted"
+            },
+            {
+              "type": "string",
+              "const": "dotdash"
+            },
+            {
+              "type": "string",
+              "const": "longdash"
+            },
+            {
+              "type": "string",
+              "const": "twodash"
+            }
+          ],
+          "description": "Constant stroke pattern, as in geom_hline(linetype = \"dashed\"). One of \"solid\", \"dashed\", \"dotted\", \"dotdash\", \"longdash\", \"twodash\". Default \"solid\". A constant aes.linetype wins over this param."
+        },
         "strokePaint": {
           "$ref": "#/$defs/GradientPaint",
           "description": "Within-mark gradient stroke paint (not a data scale). Requires a solid fallback."
@@ -2299,6 +2357,35 @@
           "type": "number",
           "exclusiveMinimum": 0,
           "description": "Stroke width in px. Must be greater than 0. Default 1."
+        },
+        "linetype": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "solid"
+            },
+            {
+              "type": "string",
+              "const": "dashed"
+            },
+            {
+              "type": "string",
+              "const": "dotted"
+            },
+            {
+              "type": "string",
+              "const": "dotdash"
+            },
+            {
+              "type": "string",
+              "const": "longdash"
+            },
+            {
+              "type": "string",
+              "const": "twodash"
+            }
+          ],
+          "description": "Constant stroke pattern, as in geom_hline(linetype = \"dashed\"). One of \"solid\", \"dashed\", \"dotted\", \"dotdash\", \"longdash\", \"twodash\". Default \"solid\". A constant aes.linetype wins over this param."
         },
         "strokePaint": {
           "$ref": "#/$defs/GradientPaint",
@@ -5789,8 +5876,21 @@
               "description": "Explicit tick positions in data units (numbers, or ISO date strings for time scales); for binned scales these are the bin boundaries. Omit for automatic ticks. Binned scales allow at most 65 boundaries (64 bins); non-binned explicit ticks are not capped."
             },
             "labels": {
-              "type": "string",
-              "description": "Tick label format string. Time scales: strftime-style (\"%Y-%m\", \"%b %d\", \"%H:%M\"). Numeric scales: \",d\" (grouped integer), \".1f\" (fixed decimals), \".0%\" (percent), \"~s\" (SI prefix). Omit for automatic formatting."
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "Tick label format string. Time scales: strftime-style (\"%Y-%m\", \"%b %d\", \"%H:%M\"). Numeric scales: \",d\" (grouped integer), \".1f\" (fixed decimals), \".0%\" (percent), \"~s\" (SI prefix)."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "description": "Author-given tick labels, as in scale_x_continuous(breaks = c(4, 14), labels = c(\"Group A\", \"Group B\")). labels[i] is the text for breaks[i]; breaks must be an explicit array of the same length."
+                }
+              ],
+              "description": "Tick label text: a format string, or an array of labels that names each explicit break in order. Omit for automatic formatting."
             },
             "expand": {
               "$ref": "#/$defs/ScaleExpansion",
@@ -9270,6 +9370,27 @@
         },
         "scales": {
           "$ref": "#/$defs/FacetScales"
+        },
+        "space": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "fixed"
+            },
+            {
+              "type": "string",
+              "const": "free"
+            },
+            {
+              "type": "string",
+              "const": "free_x"
+            },
+            {
+              "type": "string",
+              "const": "free_y"
+            }
+          ],
+          "description": "GRID ONLY: panel sizes, as in facet_grid(space = ...). \"fixed\" (default) gives every panel the same size. \"free_x\" makes each column width proportional to the length of its x scale; \"free_y\" makes each row height proportional to the length of its y scale; \"free\" does both. A band scale's length is its category count, so every category gets the same width. Takes effect only with the matching free facet scales."
         },
         "strip": {
           "$ref": "#/$defs/FacetStripSpec"

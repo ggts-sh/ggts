@@ -16,6 +16,7 @@
     rows?: FacetFieldInput;
     cols?: FacetFieldInput;
     scales?: FacetInput["scales"];
+    space?: FacetInput["space"];
     strip?: FacetInput["strip"];
   };
 
@@ -26,6 +27,7 @@
       ...(defined.rows !== undefined && { rows: defined.rows }),
       ...(defined.cols !== undefined && { cols: defined.cols }),
       ...(defined.scales !== undefined && { scales: defined.scales }),
+      ...(defined.space !== undefined && { space: defined.space }),
       ...(defined.strip !== undefined && { strip: defined.strip }),
     };
   });

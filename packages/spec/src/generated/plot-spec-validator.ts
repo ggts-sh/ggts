@@ -68,15 +68,15 @@ let External = [
   /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/u,
   /(^geom$|^stat$|^position$|^render$|^aes$|^data$|^params$|^inspect$)/,
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$|^group$|^label$|^weight$|^sample$|^ymin$|^ymax$|^xmin$|^xmax$|^xend$|^yend$|^width$|^height$|^z$|^map_id$|^angle$|^radius$)/,
-  /(^xintercept$|^yintercept$|^alpha$|^linewidth$|^strokePaint$|^glow$)/,
+  /(^xintercept$|^yintercept$|^alpha$|^linewidth$|^linetype$|^strokePaint$|^glow$)/,
   /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/u,
   /(^geom$|^stat$|^position$|^render$|^aes$|^data$|^params$|^inspect$)/,
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$|^group$|^label$|^weight$|^sample$|^ymin$|^ymax$|^xmin$|^xmax$|^xend$|^yend$|^width$|^height$|^z$|^map_id$|^angle$|^radius$)/,
-  /(^yintercept$|^alpha$|^linewidth$|^strokePaint$|^glow$)/,
+  /(^yintercept$|^alpha$|^linewidth$|^linetype$|^strokePaint$|^glow$)/,
   /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/u,
   /(^geom$|^stat$|^position$|^render$|^aes$|^data$|^params$|^inspect$)/,
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$|^group$|^label$|^weight$|^sample$|^ymin$|^ymax$|^xmin$|^xmax$|^xend$|^yend$|^width$|^height$|^z$|^map_id$|^angle$|^radius$)/,
-  /(^xintercept$|^alpha$|^linewidth$|^strokePaint$|^glow$)/,
+  /(^xintercept$|^alpha$|^linewidth$|^linetype$|^strokePaint$|^glow$)/,
   /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/u,
   /(^geom$|^stat$|^position$|^positionParams$|^render$|^aes$|^data$|^params$|^inspect$)/,
   /(^width$|^height$|^seed$|^x$|^y$)/,
@@ -205,7 +205,7 @@ let External = [
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$|^group$|^label$|^weight$|^sample$|^ymin$|^ymax$|^xmin$|^xmax$|^xend$|^yend$|^width$|^height$|^z$|^map_id$|^angle$|^radius$)/,
   /(^sides$|^length$|^alpha$|^linewidth$)/,
   /^[bltr]+$/u,
-  /(^wrap$|^rows$|^cols$|^ncol$|^scales$|^strip$)/,
+  /(^wrap$|^rows$|^cols$|^ncol$|^scales$|^space$|^strip$)/,
   /(^field$|^levels$|^labels$)/,
   /^.*$/u,
   /(^position$|^show$)/,
@@ -1765,6 +1765,13 @@ const check_101 = (value) =>
   (!("yintercept" in value) || check_102(value.yintercept)) &&
   (!("alpha" in value) || (Number.isFinite(value.alpha) && value.alpha <= 1 && value.alpha >= 0)) &&
   (!("linewidth" in value) || (Number.isFinite(value.linewidth) && value.linewidth > 0)) &&
+  (!("linetype" in value) ||
+    (typeof value.linetype === "string" && value.linetype === "solid") ||
+    (typeof value.linetype === "string" && value.linetype === "dashed") ||
+    (typeof value.linetype === "string" && value.linetype === "dotted") ||
+    (typeof value.linetype === "string" && value.linetype === "dotdash") ||
+    (typeof value.linetype === "string" && value.linetype === "longdash") ||
+    (typeof value.linetype === "string" && value.linetype === "twodash")) &&
   (!("strokePaint" in value) || check_103(value.strokePaint)) &&
   (!("glow" in value) || check_104(value.glow));
 
@@ -1865,6 +1872,13 @@ const check_109 = (value) =>
   (!("yintercept" in value) || check_110(value.yintercept)) &&
   (!("alpha" in value) || (Number.isFinite(value.alpha) && value.alpha <= 1 && value.alpha >= 0)) &&
   (!("linewidth" in value) || (Number.isFinite(value.linewidth) && value.linewidth > 0)) &&
+  (!("linetype" in value) ||
+    (typeof value.linetype === "string" && value.linetype === "solid") ||
+    (typeof value.linetype === "string" && value.linetype === "dashed") ||
+    (typeof value.linetype === "string" && value.linetype === "dotted") ||
+    (typeof value.linetype === "string" && value.linetype === "dotdash") ||
+    (typeof value.linetype === "string" && value.linetype === "longdash") ||
+    (typeof value.linetype === "string" && value.linetype === "twodash")) &&
   (!("strokePaint" in value) || check_111(value.strokePaint)) &&
   (!("glow" in value) || check_112(value.glow));
 
@@ -1969,6 +1983,13 @@ const check_117 = (value) =>
   (!("xintercept" in value) || check_118(value.xintercept)) &&
   (!("alpha" in value) || (Number.isFinite(value.alpha) && value.alpha <= 1 && value.alpha >= 0)) &&
   (!("linewidth" in value) || (Number.isFinite(value.linewidth) && value.linewidth > 0)) &&
+  (!("linetype" in value) ||
+    (typeof value.linetype === "string" && value.linetype === "solid") ||
+    (typeof value.linetype === "string" && value.linetype === "dashed") ||
+    (typeof value.linetype === "string" && value.linetype === "dotted") ||
+    (typeof value.linetype === "string" && value.linetype === "dotdash") ||
+    (typeof value.linetype === "string" && value.linetype === "longdash") ||
+    (typeof value.linetype === "string" && value.linetype === "twodash")) &&
   (!("strokePaint" in value) || check_119(value.strokePaint)) &&
   (!("glow" in value) || check_120(value.glow));
 
@@ -5457,6 +5478,11 @@ const check_341 = (value) =>
     (Number.isInteger(value.ncol) &&
       (!(Number.isFinite(value.ncol) || typeof value.ncol === "bigint") || value.ncol >= 1))) &&
   (!("scales" in value) || check_344(value.scales)) &&
+  (!("space" in value) ||
+    (typeof value.space === "string" && value.space === "fixed") ||
+    (typeof value.space === "string" && value.space === "free") ||
+    (typeof value.space === "string" && value.space === "free_x") ||
+    (typeof value.space === "string" && value.space === "free_y")) &&
   (!("strip" in value) || check_345(value.strip));
 
 // @ts-ignore
@@ -5715,7 +5741,11 @@ const check_354 = (value) =>
         (element, index) => Number.isFinite(element) || typeof element === "string",
       ) &&
       value.breaks.length >= 1)) &&
-  (!("labels" in value) || typeof value.labels === "string") &&
+  (!("labels" in value) ||
+    typeof value.labels === "string" ||
+    (Array.isArray(value.labels) &&
+      value.labels.every((element, index) => typeof element === "string") &&
+      value.labels.length >= 1)) &&
   (!("expand" in value) || check_357(value.expand)) &&
   (!("oob" in value) ||
     (typeof value.oob === "string" && value.oob === "censor") ||

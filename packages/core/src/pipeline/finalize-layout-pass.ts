@@ -10,6 +10,7 @@ import { perfMark, perfMeasure } from "../perf.js";
 import type { ThemeTokens } from "../theme.js";
 
 import { TemporalGuideIntervalError } from "../layout/temporal-guide.js";
+import { facetSpaceFlags } from "./facets-form.js";
 import { prepareLegendInputs, resolveAxisGuide } from "./guide-config.js";
 import { layoutPanels } from "./panel-layout.js";
 import type { PanelLayoutResult } from "./panel-layout.js";
@@ -206,6 +207,7 @@ export function finalizePanelLayoutPass(input: {
     flip,
     faceted,
     freedom: { freeX, freeY },
+    space: facetSpaceFlags(normalized.facet?.space),
     ...((normalized.coord?.type === "fixed" || normalized.coord?.type === "sf") && {
       coordFixed: normalized.coord,
     }),

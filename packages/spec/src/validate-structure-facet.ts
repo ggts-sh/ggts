@@ -36,6 +36,26 @@ export function coordFacetStructuralErrors(input: Record<string, unknown>): Spec
   ];
 }
 
+/** facet.space is facet_grid-only (ggplot2 limits `space` to the grid form). */
+export function facetSpaceStructuralErrors(input: Record<string, unknown>): SpecError[] {
+  const facet = input["facet"];
+  if (typeof facet !== "object" || facet === null || Array.isArray(facet)) return [];
+  const record = facet as Record<string, unknown>;
+  if (record["space"] === undefined || record["wrap"] === undefined) return [];
+  return [
+    {
+      code: "facet-space-without-grid",
+      path: "/facet/space",
+      message:
+        "facet.space sizes the columns and rows of the grid form; the wrap form has no columns or rows to size.",
+      fix: {
+        description: "Remove space, or switch to the grid form (facet.rows / facet.cols).",
+        example: { cols: { field: "group" }, scales: "free_x", space: "free_x" },
+      },
+    },
+  ];
+}
+
 export function facetStructuralErrors(facet: Record<string, unknown>): SpecError[] {
   const errors: SpecError[] = [];
   const hasWrap = facet["wrap"] !== undefined;

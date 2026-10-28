@@ -171,6 +171,12 @@ export const GALLERY_PREVIEWS = [
     sha256: "d7976f316ae4950012d6d3cdc93806c00f7145a168f617597123b1b61792adfe",
   },
   {
+    id: "facet/grid-space",
+    filename: "facet-grid-space-light.png",
+    path: "/previews/facet-grid-space-light.png",
+    sha256: "cdebe5c46310058832d3d2216ab90191158c826103f59ae0235eb901e4a5cd33",
+  },
+  {
     id: "facet/ordered-side-strips",
     filename: "facet-ordered-side-strips-light.png",
     path: "/previews/facet-ordered-side-strips-light.png",

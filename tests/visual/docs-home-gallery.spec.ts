@@ -221,8 +221,9 @@ test("gallery exposes every generated preview exactly once", async ({ page }) =>
   // qq_line/match), line/labor-cost-of-wheat (Playfair ratio companion).
   // Drops to 91 when point/style-scales was retired (its Minard content is
   // subsumed by path/trajectory, #1460). Drops to 90 after deleting synthetic
-  // point/canvas-scatter and color/continuous; +1 labor-cost → 91.
-  const exampleCount = 91;
+  // point/canvas-scatter and color/continuous; +1 labor-cost → 91; +1
+  // facet/grid-space (#1825) → 92.
+  const exampleCount = 92;
   await expect(page.locator(".example-grid li")).toHaveCount(exampleCount);
   await expect(page.locator('img[src*="/previews/"]')).toHaveCount(exampleCount);
 });
