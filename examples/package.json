@@ -21,7 +21,7 @@
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.1.0",
     "svelte": "^5.57.2",
-    "typescript": "^6.0.3",
+    "typescript": "7.1.0-beta",
     "vite": "^8.2.0"
   }
 }

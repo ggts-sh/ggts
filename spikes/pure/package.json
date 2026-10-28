@@ -5,6 +5,6 @@
   "type": "module",
   "description": "Throwaway M0a spikes that need no browser: scale-state codec (M0a-2), metrics-table layout half (M0a-3), grouping parity fixtures (M0a-5). Run with `bun test`.",
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "typescript": "7.1.0-beta"
   }
 }

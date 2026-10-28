@@ -11,13 +11,13 @@
   ],
   "type": "module",
   "scripts": {
-    "check": "tsc -b packages/spec packages/core packages/compose packages/cli packages/react && bun run check:type-contracts && bun run check:scripts-ci-routing && bun run check:scripts && bun run lifecycle:check && bun run comparison:versions:check",
-    "check:scripts-ci-routing": "bun node_modules/.bin/tsc -p scripts/ci-routing --noEmit",
-    "check:scripts": "bun node_modules/.bin/tsc -p scripts --noEmit",
-    "check:type-contracts": "tsc -p packages/spec/type-tests/tsconfig.json",
+    "check": "tsrs -b packages/spec packages/core packages/compose packages/cli packages/react && bun run check:type-contracts && bun run check:scripts-ci-routing && bun run check:scripts && bun run lifecycle:check && bun run comparison:versions:check",
+    "check:scripts-ci-routing": "bun node_modules/.bin/tsrs -p scripts/ci-routing --noEmit",
+    "check:scripts": "bun node_modules/.bin/tsrs -p scripts --noEmit",
+    "check:type-contracts": "tsrs -p packages/spec/type-tests/tsconfig.json",
     "check:svelte": "cd packages/svelte && bun run --bun check",
-    "check:react": "tsc -b packages/react",
-    "check:examples": "bun node_modules/.bin/tsc -p examples --noEmit",
+    "check:react": "tsrs -b packages/react",
+    "check:examples": "bun node_modules/.bin/tsrs -p examples --noEmit",
     "examples:compare": "bun run --bun --filter @ggts-sh/examples compare",
     "check:docs": "cd apps/docs && bun run --bun check",
     "check:pages-links": "bun scripts/check-pages-links.ts",
@@ -116,11 +116,19 @@
     "prettier": "3.9.10",
     "prettier-plugin-svelte": "4.1.1",
     "publint": "0.3.24",
-    "typescript": "^6.0.3",
+    "tsrs": "0.20.1-ts7.1.0-beta",
+    "typescript": "7.1.0-beta",
     "wrangler": "4.152.0"
   },
   "overrides": {
     "vite": "^8.0.0"
   },
-  "packageManager": "bun@1.4.4"
+  "packageManager": "bun@1.4.4",
+  "packageExtensions": {
+    "@sveltejs/package": {
+      "peerDependencies": {
+        "typescript": "*"
+      }
+    }
+  }
 }

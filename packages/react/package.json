@@ -38,8 +38,8 @@
     "provenance": true
   },
   "scripts": {
-    "build": "tsc -b",
-    "check": "tsc -b --pretty false",
+    "build": "tsrs -b",
+    "check": "tsrs -b --pretty false",
     "test": "vitest run",
     "test:ssr": "vitest run --config vitest.ssr.config.ts"
   },
@@ -57,7 +57,8 @@
     "playwright": "1.61.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "typescript": "^6.0.3",
+    "tsrs": "0.20.1-ts7.1.0-beta",
+    "typescript": "7.1.0-beta",
     "vite": "^8.2.0",
     "vitest": "^4.1.12"
   },
