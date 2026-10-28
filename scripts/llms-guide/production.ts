@@ -46,8 +46,8 @@ registerDefaultOrdinalColor();
 \`\`\`
 
 If a chart needs a family that is not registered, \`GGPlot\` throws an error
-that names the register function to call. One import from the default entry
-anywhere in the app brings back the full basic registration.
+that names the register function to call. One import from \`@ggts-sh/react\` or
+\`@ggts-sh/svelte\` anywhere in the app brings back the full basic registration.
 
 ## Server and export
 
