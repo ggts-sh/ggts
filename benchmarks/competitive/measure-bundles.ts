@@ -122,7 +122,8 @@ for (const job of uniqueJobs) {
     });
     const bundlePath = path.join(outDir, "bundle.js");
     const minified = await minify(bundlePath, readFileSync(bundlePath, "utf8"), { module: true });
-    if (minified.errors.length > 0) throw new Error(minified.errors.map((e) => e.message).join("\n"));
+    if (minified.errors.length > 0)
+      throw new Error(minified.errors.map((e) => e.message).join("\n"));
     const raw = Buffer.from(minified.code);
     const gz = gzipSync(raw, { level: 9 });
     results.push({
