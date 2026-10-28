@@ -16,9 +16,9 @@ import { makeRows } from "./test-helpers.ts";
 
 const rows = makeRows();
 
-describe("gate G8 — annotations that do not fight the chart", () => {
-  const finishedSpec = () => foldSakura(SAKURA_STEPS.length, rows).spec;
+const finishedSpec = () => foldSakura(SAKURA_STEPS.length, rows).spec;
 
+describe("gate G8 — annotations that do not fight the chart", () => {
   it("labels the baseline where the least data sits", () => {
     // The reference tags the rule with the single word "median", below it.
     // Measured placement search over the rendered scene: below the rule at

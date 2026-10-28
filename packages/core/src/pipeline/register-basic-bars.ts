@@ -11,6 +11,9 @@ function single(batch: GeometryBatch | null): GeometryBatch[] {
   return batch === null ? [] : [batch];
 }
 
+const rects: GeometryBatchBuilder = (frame, fx, _color, fill, styles, warnings) =>
+  single(rectsBatch(frame, fx, fill, styles, warnings));
+
 let registered = false;
 
 /** Register col/bar geometry, count/sum stats, and the band-axis planner. Idempotent. */
@@ -18,8 +21,6 @@ export function registerBasicBars(): void {
   if (registered) return;
   registered = true;
   registerBandGuide();
-  const rects: GeometryBatchBuilder = (frame, fx, _color, fill, styles, warnings) =>
-    single(rectsBatch(frame, fx, fill, styles, warnings));
   registerGeomBatch("col", rects);
   registerGeomBatch("bar", rects);
   registerStatFrame("count", (binding, table, groups, warnings) =>

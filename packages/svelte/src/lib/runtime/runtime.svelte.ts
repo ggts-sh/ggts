@@ -62,18 +62,18 @@ export function createPlotRuntime(deps: PlotRuntimeDeps): PlotRuntime {
   // ------------------------------------------------- container width (RO)
   let containerWidth = $state<number | null>(null);
   let containerHasPositiveWidth = $state(false);
+  const commitWidth = (nextWidth: number): void => {
+    // Commit readiness and the measured model width in one reactive turn so
+    // data-gg-ready does not flip true on a stale pre-measure fallback.
+    containerHasPositiveWidth = nextWidth > 0;
+    if (nextWidth > 0) containerWidth = nextWidth;
+  };
 
   $effect(() => {
     // No-op cleanup keeps every code path returning a teardown (consistent-return).
     if (!isContainerWidthProp(deps.widthProp()) || deps.root() === null) return () => {};
     const el = deps.root()!;
     let frame = 0;
-    const commitWidth = (nextWidth: number): void => {
-      // Commit readiness and the measured model width in one reactive turn so
-      // data-gg-ready does not flip true on a stale pre-measure fallback.
-      containerHasPositiveWidth = nextWidth > 0;
-      if (nextWidth > 0) containerWidth = nextWidth;
-    };
     // Synchronous first measure: do not wait a frame (or a late RO delivery)
     // when the host already has a laid-out width.
     const initial = Math.round(el.getBoundingClientRect().width);

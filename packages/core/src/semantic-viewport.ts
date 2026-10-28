@@ -248,6 +248,17 @@ function projectedSpan(
   ];
 }
 
+function resolveAxis(
+  scale: PositionScale,
+  axis: SemanticViewportAxisSelection | undefined,
+  bandValuesByKey: ReadonlyMap<string, BandKeyEntry>,
+): readonly [CellValue, CellValue] | undefined {
+  if (axis === undefined) return undefined;
+  if (axis.kind === "continuous") return axis.domain;
+  if (scale.type !== "band") return undefined;
+  return bandSpanForKeys(bandValuesByKey, axis.keys);
+}
+
 function axisEditModelForScale(scale: PositionScale): AxisEditModel {
   if (scale.type === "band") {
     const reversed = scale.rawDomain.length > 1 && (scale.normalize(scale.rawDomain[0]) ?? 0) > 0.5;
@@ -351,16 +362,6 @@ function createPanel(
       };
     },
     resolve(selection) {
-      const resolveAxis = (
-        scale: PositionScale,
-        axis: SemanticViewportAxisSelection | undefined,
-        bandValuesByKey: ReadonlyMap<string, BandKeyEntry>,
-      ): readonly [CellValue, CellValue] | undefined => {
-        if (axis === undefined) return undefined;
-        if (axis.kind === "continuous") return axis.domain;
-        if (scale.type !== "band") return undefined;
-        return bandSpanForKeys(bandValuesByKey, axis.keys);
-      };
       const x = resolveAxis(scales.x, selection.x, xBandValuesByKey);
       const y = resolveAxis(scales.y, selection.y, yBandValuesByKey);
       return {

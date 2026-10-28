@@ -30,6 +30,8 @@ async function spawnCiRoutingCli(
   return { stdout, stderr, exitCode };
 }
 
+const spawnCiGate = (env: Record<string, string>) => spawnCiRoutingCli(["ci-gate"], env);
+
 /**
  * Spawn the routing CLI in a throwaway cwd so marker writes land there rather
  * than in the repo tree.
@@ -239,8 +241,6 @@ describe("CLI entrypoint", () => {
   });
 
   test("ci-gate CLI reads env vars, aggregates component shards, and evaluates the PR guard rule", async () => {
-    const spawnCiGate = (env: Record<string, string>) => spawnCiRoutingCli(["ci-gate"], env);
-
     const ok = await spawnCiGate({
       EVENT_NAME: "pull_request",
       CHECKS_REQ: "true",

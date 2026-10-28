@@ -104,31 +104,31 @@ describe("package README npm front doors", () => {
   });
 });
 
-describe("package README TypeScript fences run", () => {
-  /**
-   * Rewrite bare @ggts-sh/* imports to local dist file URLs so the fence
-   * executes without a workspace install in /tmp.
-   */
-  function rewriteImports(source: string): string {
-    const dist = {
-      "@ggts-sh/spec/schema/v0.json": join(ROOT, "packages/spec/schema/v0.json"),
-      "@ggts-sh/spec": join(ROOT, "packages/spec/dist/index.js"),
-      "@ggts-sh/core/dom": join(ROOT, "packages/core/dist/dom/index.js"),
-      "@ggts-sh/core": join(ROOT, "packages/core/dist/index.js"),
-      "@ggts-sh/cli": join(ROOT, "packages/cli/dist/index.js"),
-    } as const;
-    let out = source;
-    // Longer prefixes first so /schema wins over the package root.
-    for (const [specifier, filePath] of Object.entries(dist).toSorted(
-      (a, b) => b[0].length - a[0].length,
-    )) {
-      const url = pathToFileURL(filePath).href;
-      out = out.replaceAll(`from "${specifier}"`, `from "${url}"`);
-      out = out.replaceAll(`from '${specifier}'`, `from '${url}'`);
-    }
-    return out;
+/**
+ * Rewrite bare @ggts-sh/* imports to local dist file URLs so the fence
+ * executes without a workspace install in /tmp.
+ */
+function rewriteImports(source: string): string {
+  const dist = {
+    "@ggts-sh/spec/schema/v0.json": join(ROOT, "packages/spec/schema/v0.json"),
+    "@ggts-sh/spec": join(ROOT, "packages/spec/dist/index.js"),
+    "@ggts-sh/core/dom": join(ROOT, "packages/core/dist/dom/index.js"),
+    "@ggts-sh/core": join(ROOT, "packages/core/dist/index.js"),
+    "@ggts-sh/cli": join(ROOT, "packages/cli/dist/index.js"),
+  } as const;
+  let out = source;
+  // Longer prefixes first so /schema wins over the package root.
+  for (const [specifier, filePath] of Object.entries(dist).toSorted(
+    (a, b) => b[0].length - a[0].length,
+  )) {
+    const url = pathToFileURL(filePath).href;
+    out = out.replaceAll(`from "${specifier}"`, `from "${url}"`);
+    out = out.replaceAll(`from '${specifier}'`, `from '${url}'`);
   }
+  return out;
+}
 
+describe("package README TypeScript fences run", () => {
   for (const pkg of ["spec", "core"] as const) {
     it(`${pkg}: every complete TypeScript fence executes`, async () => {
       const markdown = readFileSync(join(PACKAGES, pkg, "README.md"), "utf8");
