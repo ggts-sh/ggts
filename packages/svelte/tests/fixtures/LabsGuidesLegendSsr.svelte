@@ -4,6 +4,7 @@
    * must land in the first server pass, not after hydration (#659 slice 6).
    */
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import Labs from "../../src/lib/labs/Labs.svelte";
   import GuideNone from "../../src/lib/guides/GuideNone.svelte";

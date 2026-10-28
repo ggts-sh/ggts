@@ -56,6 +56,35 @@ stay in the DOM. Prefer `<Inspect />` and `<GuideLegend channel focus>` /
 `<GuideLegend channel filter>` for interaction — not plot-level `inspect`,
 `legendFocus`, or `legendFilter`.
 
+## Smaller bundles: the lean entry
+
+`@ggts-sh/svelte` registers the basic geoms, stats, and color and style
+scale kinds when you import it. To ship only what your charts use, import
+from `@ggts-sh/svelte/lean` and call the register functions once at startup:
+
+```svelte
+<script lang="ts" module>
+  import {
+    registerBasicLines,
+    registerBasicPoints,
+    registerDefaultOrdinalColor,
+  } from "@ggts-sh/svelte/lean";
+
+  registerBasicPoints();
+  registerBasicLines();
+  registerDefaultOrdinalColor();
+</script>
+
+<script lang="ts">
+  import { GeomLine, GeomPoint, GGPlot } from "@ggts-sh/svelte/lean";
+</script>
+```
+
+For a point and line chart with mapped color, this saves about 26 KB gzip.
+If a chart needs a family that is not registered, `GGPlot` throws an error
+that names the register function to call. One import from `@ggts-sh/svelte`
+anywhere in the app brings back the full basic registration.
+
 ## Agent skill
 
 Published separately as

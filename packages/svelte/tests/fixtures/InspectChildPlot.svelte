@@ -6,6 +6,7 @@
   import type { PlotDiagnostic } from "../../src/lib/diagnostics/deprecation.js";
   import type { PortableSpec } from "../../src/lib/index.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import Inspect from "../../src/lib/inspection/Inspect.svelte";
   import type { LayerRegistry } from "../../src/lib/geoms/registry.svelte.js";

@@ -282,6 +282,8 @@ export type LibId =
   | "tanstack-react"
   | "ggsvelte-ggplot"
   | "ggsvelte-react"
+  | "ggsvelte-ggplot-lean"
+  | "ggsvelte-react-lean"
   | "ggsvelte-full";
 
 export type LibMeta = {
@@ -347,6 +349,24 @@ export const LIBS: readonly LibMeta[] = [
     bundle: true,
     scenarios: ["scatter-color", "line-multiseries", "area-multiseries", "bars-stacked"],
     note: "Shipped @ggts-sh/react GGPlot with spec prop and SVG marks",
+  },
+  {
+    id: "ggsvelte-ggplot-lean",
+    label: "ggts GGPlot lean (Svelte)",
+    form: "svg",
+    browser: false,
+    bundle: true,
+    scenarios: ["scatter-color"],
+    note: "@ggts-sh/svelte/lean GGPlot with point + line children; registers points, lines and default ordinal color",
+  },
+  {
+    id: "ggsvelte-react-lean",
+    label: "ggts GGPlot lean (React)",
+    form: "svg",
+    browser: false,
+    bundle: true,
+    scenarios: ["scatter-color"],
+    note: "@ggts-sh/react/lean GGPlot with spec prop; registers points and manual color",
   },
   {
     id: "d3",

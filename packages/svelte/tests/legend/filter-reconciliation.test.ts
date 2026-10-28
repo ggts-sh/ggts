@@ -2,6 +2,7 @@ import { fromAny } from "@total-typescript/shoehorn";
 import { expect, test } from "vitest";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import type { LegendFilterEvent } from "../../src/lib/legend/filter.js";
 import { render } from "../helpers/render.js";
 import { until } from "../helpers/until.js";

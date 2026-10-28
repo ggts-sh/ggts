@@ -21,7 +21,7 @@ import { SHELL_MANIFEST, type ShellSpec } from "./gen-geom-children-manifest.ts"
 // ---------------------------------------------------------------------------
 
 export const GEOM_DIR = "packages/svelte/src/lib/geoms";
-export const INDEX_PATH = "packages/svelte/src/lib/index.ts";
+export const INDEX_PATH = "packages/svelte/src/lib/lean.ts";
 
 export const REGION_START = "// <generated:geom-children> — bun run geom:children:gen";
 export const REGION_END = "// </generated:geom-children>";

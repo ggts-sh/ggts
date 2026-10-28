@@ -25,12 +25,21 @@
   ],
   "type": "module",
   "sideEffects": [
-    "./dist/host-init.js"
+    "./dist/index.js",
+    "./dist/host-init.js",
+    "./dist/host-runtime.js",
+    "./src/index.ts",
+    "./src/host-init.ts",
+    "./src/host-runtime.ts"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./lean": {
+      "types": "./dist/lean.d.ts",
+      "default": "./dist/lean.js"
     }
   },
   "publishConfig": {

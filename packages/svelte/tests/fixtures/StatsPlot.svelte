@@ -3,6 +3,7 @@
    *  points) for the equivalence gate. */
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import GeomSmooth from "../../src/lib/geoms/GeomSmooth.svelte";
 

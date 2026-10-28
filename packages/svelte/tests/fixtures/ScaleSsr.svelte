@@ -4,6 +4,7 @@
    * the first server pass (children register before registry-consuming markup).
    */
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import ScaleColorManual from "../../src/lib/scale/ScaleColorManual.svelte";
 

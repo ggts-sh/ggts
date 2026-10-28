@@ -1,5 +1,6 @@
 <script lang="ts">
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
 
   const data = [
     { id: "a", x: 1, y: 3 },

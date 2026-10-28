@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import type { Scene } from "@ggts-sh/core";
 
 import SceneView from "../../src/lib/scene/SceneView.svelte";
+import "../../src/lib/host-init.js";
 import { render } from "../helpers/render.js";
 
 function sceneWithYTitle(gridLeft: number, titleOffset?: number): Scene {

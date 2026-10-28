@@ -11,6 +11,7 @@ import { sceneLabel } from "@ggts-sh/core";
 import { aes, gg } from "@ggts-sh/spec";
 
 import SceneView from "../../src/lib/scene/SceneView.svelte";
+import "../../src/lib/host-init.js";
 import { modelFor } from "../helpers/model.js";
 import { render } from "../helpers/render.js";
 

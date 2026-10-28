@@ -8,6 +8,7 @@
   import type { PlotDiagnostic } from "../../src/lib/diagnostics/deprecation.js";
   import type { InspectInput } from "../../src/lib/interaction/interaction.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomCol from "../../src/lib/geoms/GeomCol.svelte";
   import GeomText from "../../src/lib/geoms/GeomText.svelte";
 

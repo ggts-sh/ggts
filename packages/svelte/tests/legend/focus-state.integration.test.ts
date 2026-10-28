@@ -12,6 +12,7 @@ import { describe, expect, it } from "vitest";
 import type { RenderModel } from "@ggts-sh/core";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import type { LegendFocusEvent } from "../../src/lib/interaction/interaction.js";
 import { createLegendEntryKeyIndex } from "../../src/lib/legend/entry-key-index.svelte.js";
 import { createLegendFocusState } from "../../src/lib/legend/focus-state.svelte.js";

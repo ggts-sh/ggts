@@ -9,6 +9,7 @@
   import type { PlotDiagnostic } from "../../src/lib/diagnostics/deprecation.js";
   import type { PortableSpec, RenderModel } from "../../src/lib/index.js";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import GeomCol from "../../src/lib/geoms/GeomCol.svelte";
   import GeomPoint from "../../src/lib/geoms/GeomPoint.svelte";
   import Coord from "../../src/lib/coord/Coord.svelte";

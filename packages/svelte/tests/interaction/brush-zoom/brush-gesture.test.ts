@@ -3,6 +3,7 @@ import { withGrammarAsSpec } from "../../helpers/ggplot-input.js";
 
 import { encodeKey, type RenderModel } from "@ggts-sh/core";
 import GGPlot from "../../../src/lib/GGPlot.svelte";
+import "../../../src/lib/host-init.js";
 import { createPlotInteraction } from "../../../src/lib/interaction/controller.svelte.js";
 import { render } from "../../helpers/render.js";
 import { until } from "../../helpers/until.js";

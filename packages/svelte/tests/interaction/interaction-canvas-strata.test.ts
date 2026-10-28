@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { withGrammarAsSpec } from "../helpers/ggplot-input.js";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import { render } from "../helpers/render.js";
 import { until } from "../helpers/until.js";
 import { rows, size } from "./interaction-harness.js";

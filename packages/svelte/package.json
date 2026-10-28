@@ -31,12 +31,22 @@
     "bin"
   ],
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/index.js",
+    "./dist/host-init.js",
+    "./src/lib/index.ts",
+    "./src/lib/host-init.ts"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./lean": {
+      "types": "./dist/lean.d.ts",
+      "svelte": "./dist/lean.js",
+      "default": "./dist/lean.js"
     },
     "./data": {
       "types": "./dist/data/index.d.ts",

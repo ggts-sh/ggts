@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { RenderModel } from "@ggts-sh/core";
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import type { PlotInspectionChange } from "../../src/lib/interaction/interaction.js";
 
   const data = [

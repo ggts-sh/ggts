@@ -11,6 +11,7 @@ import type { RenderModel } from "@ggts-sh/core";
 
 import { LayerRegistry } from "../src/lib/geoms/registry.svelte.js";
 import { createPlotEngine } from "../src/lib/plot-engine.svelte.js";
+import "../src/lib/host-init.js";
 import type { EnginePlotProps } from "../src/lib/plot-props.js";
 import { withEffectRoot, withFlushedEffectRoot } from "./helpers/effect-root.svelte.js";
 import { reactiveBox } from "./helpers/reactive-box.svelte.js";

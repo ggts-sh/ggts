@@ -40,6 +40,7 @@ export { registerBinnedColor } from "./pipeline/register-color-binned.js";
 export { registerIdentityColor } from "./pipeline/register-color-identity.js";
 export { registerManualColor } from "./pipeline/register-color-manual.js";
 export { registerOrdinalColor } from "./pipeline/register-color-ordinal.js";
+export { registerDefaultOrdinalColor } from "./pipeline/register-color-ordinal-default.js";
 export { registerSequentialColor } from "./pipeline/register-color-sequential.js";
 export { registerBasicAreas } from "./pipeline/register-basic-areas.js";
 export { registerBasicBars } from "./pipeline/register-basic-bars.js";

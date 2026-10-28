@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
 
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
 
   const rows = [
     { id: "a", x: 1, y: 2 },

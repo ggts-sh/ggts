@@ -2,6 +2,7 @@
   import type { PortableSpec, SpecInput } from "@ggts-sh/spec";
 
   import GGPlot from "../../src/lib/GGPlot.svelte";
+  import "../../src/lib/host-init.js";
   import { createPlotInteraction } from "../../src/lib/interaction/controller.svelte.js";
 
   interface Datum {

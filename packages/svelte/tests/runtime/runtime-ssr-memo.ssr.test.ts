@@ -15,6 +15,7 @@ import { aes, gg, type PortableSpec } from "@ggts-sh/spec";
 import { describe, expect, it } from "vitest";
 
 import { createPlotRuntime } from "../../src/lib/runtime/runtime.svelte.js";
+import "../../src/lib/host-init.js";
 
 const minimalSpec: PortableSpec = gg(
   [

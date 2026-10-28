@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import type { RenderModel } from "@ggts-sh/core";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import "../../src/lib/host-init.js";
 import InteractiveTooltipPlot from "../fixtures/InteractiveTooltipPlot.svelte";
 import LongTooltipPlot from "../fixtures/LongTooltipPlot.svelte";
 import ProgrammaticZoomPlot from "../fixtures/ProgrammaticZoomPlot.svelte";

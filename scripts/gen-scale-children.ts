@@ -20,7 +20,7 @@ import { SHELL_MANIFEST, manifestAliases, type ShellSpec } from "./gen-scale-chi
 // ---------------------------------------------------------------------------
 
 export const SCALE_DIR = "packages/svelte/src/lib/scale";
-export const INDEX_PATH = "packages/svelte/src/lib/index.ts";
+export const INDEX_PATH = "packages/svelte/src/lib/lean.ts";
 
 export const REGION_START = "// <generated:scale-children> — bun run scale:children:gen";
 export const REGION_END = "// </generated:scale-children>";

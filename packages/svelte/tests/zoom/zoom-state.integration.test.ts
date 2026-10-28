@@ -7,6 +7,7 @@ import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
 import { createPlotRuntime } from "../../src/lib/runtime/runtime.svelte.js";
+import "../../src/lib/host-init.js";
 import { withFlushedEffectRoot } from "../helpers/effect-root.svelte.js";
 import { testInteractionContext } from "../helpers/interaction-context.js";
 import { reactiveBox } from "../helpers/reactive-box.svelte.js";

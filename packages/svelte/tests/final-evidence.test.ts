@@ -6,6 +6,7 @@ import type { RenderModel } from "@ggts-sh/core";
 
 import type { PlotDiagnostic } from "../src/lib/diagnostics/deprecation.js";
 import GGPlot from "../src/lib/GGPlot.svelte";
+import "../src/lib/host-init.js";
 import type {
   IntervalSelection,
   PlotInspection,
