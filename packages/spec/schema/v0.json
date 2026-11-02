@@ -2800,10 +2800,14 @@
         "dy": {
           "type": "number",
           "description": "Vertical offset in px applied after positioning (positive = down). Default 0."
+        },
+        "checkOverlap": {
+          "type": "boolean",
+          "description": "Drop labels that overlap an earlier retained label in the same layer and panel (greedy, draw order). Default false: labels draw exactly where placed. Overlaps emit a text-label-overlap warning naming the layer index and overlapping mark count."
         }
       },
       "additionalProperties": false,
-      "description": "Styling parameters for the text geom (no collision detection: labels draw exactly where placed)."
+      "description": "Styling parameters for the text geom (labels draw where placed; set checkOverlap to skip colliding labels)."
     },
     "LabelParams": {
       "type": "object",
@@ -2844,6 +2848,10 @@
           "type": "number",
           "description": "Vertical offset in px applied after positioning (positive = down). Default 0."
         },
+        "checkOverlap": {
+          "type": "boolean",
+          "description": "Drop labels that overlap an earlier retained label in the same layer and panel (greedy, draw order). Default false: labels draw exactly where placed. Overlaps emit a text-label-overlap warning naming the layer index and overlapping mark count."
+        },
         "padding": {
           "type": "number",
           "exclusiveMinimum": 0,
@@ -2861,7 +2869,7 @@
         }
       },
       "additionalProperties": false,
-      "description": "Styling parameters for the label geom (text with background box; no collision detection)."
+      "description": "Styling parameters for the label geom (text with background box; set checkOverlap to skip colliding labels)."
     },
     "RenderBackend": {
       "anyOf": [
@@ -4627,7 +4635,7 @@
         "geom": {
           "type": "string",
           "const": "text",
-          "description": "Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels."
+          "description": "Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels."
         },
         "stat": {
           "$ref": "#/$defs/IdentityOrUniqueStat"
@@ -4679,7 +4687,7 @@
         "geom": {
           "type": "string",
           "const": "label",
-          "description": "Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection."
+          "description": "Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones."
         },
         "stat": {
           "type": "string",

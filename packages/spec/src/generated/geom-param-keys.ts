@@ -86,8 +86,8 @@ export const GEOM_PARAM_KEYS_DATA = {
   rule: ["xintercept", "yintercept", "alpha", "linewidth", "linetype", "strokePaint", "glow"],
   hline: ["yintercept", "alpha", "linewidth", "linetype", "strokePaint", "glow"],
   vline: ["xintercept", "alpha", "linewidth", "linetype", "strokePaint", "glow"],
-  text: ["alpha", "size", "anchor", "dx", "dy"],
-  label: ["alpha", "size", "anchor", "dx", "dy", "padding", "radius", "linewidth"],
+  text: ["alpha", "size", "anchor", "dx", "dy", "checkOverlap"],
+  label: ["alpha", "size", "anchor", "dx", "dy", "checkOverlap", "padding", "radius", "linewidth"],
   smooth: [
     "method",
     "se",

@@ -1682,7 +1682,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "page",
     title: "GeomText",
     summary:
-      "GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     href: "/reference/geoms/text",
     keywords: [],
     exact: ["GeomText"],
@@ -1692,7 +1692,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Defaults",
     summary:
-      "Defaults in GeomText. GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "Defaults in GeomText. GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     href: "/reference/geoms/text#defaults",
     keywords: ["GeomText", "documentation"],
     exact: ["Defaults"],
@@ -1702,7 +1702,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Svelte component",
     summary:
-      "Svelte component in GeomText. GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "Svelte component in GeomText. GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     href: "/reference/geoms/text#svelte",
     keywords: ["GeomText", "documentation"],
     exact: ["Svelte component"],
@@ -1712,7 +1712,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "JSON layer",
     summary:
-      "JSON layer in GeomText. GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "JSON layer in GeomText. GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     href: "/reference/geoms/text#json",
     keywords: ["GeomText", "documentation"],
     exact: ["JSON layer"],
@@ -1722,7 +1722,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Params",
     summary:
-      "Params in GeomText. GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "Params in GeomText. GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     href: "/reference/geoms/text#params",
     keywords: ["GeomText", "documentation"],
     exact: ["Params"],
@@ -1732,7 +1732,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Allowed stats",
     summary:
-      "Allowed stats in GeomText. GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "Allowed stats in GeomText. GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     href: "/reference/geoms/text#allowed-stats",
     keywords: ["GeomText", "documentation"],
     exact: ["Allowed stats"],
@@ -1742,7 +1742,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Allowed positions",
     summary:
-      "Allowed positions in GeomText. GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "Allowed positions in GeomText. GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     href: "/reference/geoms/text#allowed-positions",
     keywords: ["GeomText", "documentation"],
     exact: ["Allowed positions"],
@@ -1752,7 +1752,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Examples",
     summary:
-      "Examples in GeomText. GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "Examples in GeomText. GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     href: "/reference/geoms/text#examples",
     keywords: ["GeomText", "documentation"],
     exact: ["Examples"],
@@ -1762,7 +1762,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "page",
     title: "GeomLabel",
     summary:
-      "GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     href: "/reference/geoms/label",
     keywords: [],
     exact: ["GeomLabel"],
@@ -1772,7 +1772,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Defaults",
     summary:
-      "Defaults in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "Defaults in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     href: "/reference/geoms/label#defaults",
     keywords: ["GeomLabel", "documentation"],
     exact: ["Defaults"],
@@ -1782,7 +1782,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Svelte component",
     summary:
-      "Svelte component in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "Svelte component in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     href: "/reference/geoms/label#svelte",
     keywords: ["GeomLabel", "documentation"],
     exact: ["Svelte component"],
@@ -1792,7 +1792,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "JSON layer",
     summary:
-      "JSON layer in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "JSON layer in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     href: "/reference/geoms/label#json",
     keywords: ["GeomLabel", "documentation"],
     exact: ["JSON layer"],
@@ -1802,7 +1802,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Params",
     summary:
-      "Params in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "Params in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     href: "/reference/geoms/label#params",
     keywords: ["GeomLabel", "documentation"],
     exact: ["Params"],
@@ -1812,7 +1812,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Allowed stats",
     summary:
-      "Allowed stats in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "Allowed stats in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     href: "/reference/geoms/label#allowed-stats",
     keywords: ["GeomLabel", "documentation"],
     exact: ["Allowed stats"],
@@ -1822,7 +1822,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Allowed positions",
     summary:
-      "Allowed positions in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "Allowed positions in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     href: "/reference/geoms/label#allowed-positions",
     keywords: ["GeomLabel", "documentation"],
     exact: ["Allowed positions"],
@@ -1832,7 +1832,7 @@ export const DOCS_SEARCH_INDEX = [
     kind: "heading",
     title: "Examples",
     summary:
-      "Examples in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "Examples in GeomLabel. GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     href: "/reference/geoms/label#examples",
     keywords: ["GeomLabel", "documentation"],
     exact: ["Examples"],
@@ -19852,6 +19852,16 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/errors#band-label-margin-overflow",
     keywords: ["Errors reference", "Reference"],
     exact: ["band-label-margin-overflow"],
+  },
+  {
+    id: "heading:guide-errors:text-label-overlap",
+    kind: "heading",
+    title: "text-label-overlap",
+    summary:
+      "text-label-overlap in Errors reference. Understand validation, render, interaction, and CLI diagnostics and recover safely.",
+    href: "/guide/errors#text-label-overlap",
+    keywords: ["Errors reference", "Reference"],
+    exact: ["text-label-overlap"],
   },
   {
     id: "heading:guide-errors:coord-tessellation-cap",
@@ -51891,6 +51901,20 @@ export const DOCS_SEARCH_INDEX = [
       "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
     ],
     exact: ["band-label-margin-overflow", "warning:band-label-margin-overflow"],
+  },
+  {
+    id: "diagnostic:warning:text-label-overlap",
+    kind: "diagnostic",
+    title: "text-label-overlap · warning",
+    summary:
+      "Text or label marks overlap within the same layer and panel after final projection; the message names the layer and panel indices and the unique overlapping mark count. Set params.checkOverlap: true to drop later collisions instead.",
+    href: "/guide/errors#text-label-overlap",
+    keywords: [
+      "warning",
+      "warning",
+      "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
+    ],
+    exact: ["text-label-overlap", "warning:text-label-overlap"],
   },
   {
     id: "diagnostic:warning:coord-tessellation-cap",
