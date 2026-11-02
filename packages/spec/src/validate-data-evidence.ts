@@ -33,12 +33,6 @@ export interface FieldEvidenceEntry {
 
 export type FieldEvidenceMap = Map<string, FieldEvidenceEntry>;
 
-/** Result of resolving profile/inline data into a field evidence map. */
-export type ResolveFieldEvidenceResult =
-  | { status: "ok"; fields: FieldEvidenceMap }
-  | { status: "none" }
-  | { status: "errors"; errors: SpecError[] };
-
 /** Plot + per-layer field evidence from one pass over inline tables / profile. */
 export type ResolveLayerFieldEvidenceResult =
   /**
@@ -355,65 +349,3 @@ function estimateBytes(columns: Record<string, readonly CellValue[]>, rowCount: 
   return Math.round((sampleBytes / sample) * rowCount);
 }
 
-/**
- * Resolve profile or inline data into a field evidence map (one pivot + type
- * inference pass). Shared by dataChecks and lintSpec via validate().
- */
-export function resolveFieldEvidence(
-  spec: Record<string, unknown>,
-  options: ValidateOptions,
-  limits: ValidateLimits,
-): ResolveFieldEvidenceResult {
-  if (options.profile !== undefined) {
-    const bad = profileErrors(options.profile);
-    if (bad.length > 0) return { status: "errors", errors: bad };
-    const fields: FieldEvidenceMap = new Map();
-    for (const f of options.profile.fields) {
-      fields.set(f.name, { type: f.type, allNull: false, values: null, temporal: null });
-    }
-    return { status: "ok", fields };
-  }
-
-  const columns = inlineColumns(spec);
-  if (columns === null) return { status: "none" };
-
-  const names = Object.keys(columns);
-  const rowCount = names.length === 0 ? 0 : (columns[names[0]!]?.length ?? 0);
-  if (rowCount > limits.maxRows) {
-    return {
-      status: "errors",
-      errors: [
-        {
-          code: "validation-limit",
-          path: "/data",
-          message: `Inline data has ${rowCount} rows, more than the documented maxRows limit (${limits.maxRows}); data-aware checks skipped. Validate with a DataProfile instead.`,
-        },
-      ],
-    };
-  }
-  if (estimateBytes(columns, rowCount) > limits.maxBytes) {
-    return {
-      status: "errors",
-      errors: [
-        {
-          code: "validation-limit",
-          path: "/data",
-          message: `Inline data exceeds the documented maxBytes limit (${limits.maxBytes} bytes, estimated); data-aware checks skipped. Validate with a DataProfile instead.`,
-        },
-      ],
-    };
-  }
-
-  const fields: FieldEvidenceMap = new Map();
-  for (const name of names) {
-    const column = columns[name]!;
-    const inferred = inferProfileType(column);
-    fields.set(name, {
-      type: inferred.type,
-      allNull: column.length > 0 && inferred.type === null,
-      values: column,
-      temporal: inferred.temporal,
-    });
-  }
-  return { status: "ok", fields };
-}
