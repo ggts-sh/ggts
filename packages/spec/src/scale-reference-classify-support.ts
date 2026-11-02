@@ -273,7 +273,7 @@ export function withViridisOption(base: ScaleParamDoc[]): ScaleParamDoc[] {
   return [
     sugarParam(
       "option",
-      '"viridis" | "magma" | "plasma" | "inferno" | "cividis" | "turbo"',
+      '"viridis" | "plasma" | "inferno" | "cividis" | "turbo"',
       "Viridis family option (default viridis).",
     ),
     ...base.filter((p) => p.name !== "scheme"),

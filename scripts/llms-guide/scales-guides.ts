@@ -183,7 +183,7 @@ use \`scaleColorGrey()\` / \`<ScaleColorGrey />\` for greyscale discrete color.
 
 Quantitative color/fill defaults to a continuous viridis colorbar. Named
 viridis-family constructors match ggplot2 \`scale_*_viridis_{c,d,b}\`
-(\`option\` selects \`viridis\`/\`magma\`/\`plasma\`/\`inferno\`/\`cividis\`/\`turbo\`;
+(\`option\` selects \`viridis\`/\`plasma\`/\`inferno\`/\`cividis\`/\`turbo\`;
 \`direction: -1\` reverses). Discrete viridis samples evenly across the ramp.
 The \`identity\`, \`log10\`, and \`sqrt\` transforms run before color-domain
 training; they do not change position statistics. Explicit reference

@@ -20981,6 +20981,26 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["Five-minute path"],
   },
   {
+    id: "heading:guide-upgrading:0-44-to-0-45",
+    kind: "heading",
+    title: "0.44 to 0.45",
+    summary:
+      "0.44 to 0.45 in Upgrade guide. Check versions, apply fixture-backed changes, and verify each 0.x transition.",
+    href: "/guide/upgrading#0-44-to-0-45",
+    keywords: ["Upgrade guide", "Release"],
+    exact: ["0.44 to 0.45"],
+  },
+  {
+    id: "heading:guide-upgrading:removed-the-magma-sequential-scheme",
+    kind: "heading",
+    title: "Removed the magma sequential scheme",
+    summary:
+      "Removed the magma sequential scheme in Upgrade guide. Check versions, apply fixture-backed changes, and verify each 0.x transition.",
+    href: "/guide/upgrading#removed-the-magma-sequential-scheme",
+    keywords: ["Upgrade guide", "Release"],
+    exact: ["Removed the magma sequential scheme"],
+  },
+  {
     id: "heading:guide-upgrading:0-42-to-0-43",
     kind: "heading",
     title: "0.42 to 0.43",

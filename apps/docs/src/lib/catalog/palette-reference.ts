@@ -34,7 +34,7 @@ const CONTINUOUS_HELPERS = [
 
 const COLORBREWER_QUALITATIVE = new Set(["Dark2"]);
 
-const VIRIDIS_FAMILY = new Set(["viridis", "magma", "plasma", "inferno", "cividis", "turbo"]);
+const VIRIDIS_FAMILY = new Set(["viridis", "plasma", "inferno", "cividis", "turbo"]);
 
 const COLORBREWER_SEQUENTIAL = new Set([
   "Blues",

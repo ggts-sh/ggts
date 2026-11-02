@@ -360,9 +360,10 @@ test("sequential color compares direction, custom stops, and a pinned domain on 
 }) => {
   await page.goto("/palettes/ramps?theme=light");
 
-  // Every registered sequential scheme gets a strip on the index.
+  // The consolidated catalog retains inferno without the redundant magma choice.
   const index = page.getByRole("list", { name: "Sequential color schemes" });
-  await expect(index.locator(":scope > li")).toHaveCount(60);
+  await expect(index.getByText("inferno", { exact: true })).toBeVisible();
+  await expect(index.getByText("magma", { exact: true })).toHaveCount(0);
 
   const region = page.getByRole("region", { name: "Sequential color scales" });
   const cards = region

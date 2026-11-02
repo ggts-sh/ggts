@@ -6215,7 +6215,6 @@ const check_369 = (value) =>
     (typeof value.scheme === "string" && value.scheme === "tokyoS") ||
     (typeof value.scheme === "string" && value.scheme === "turkuS") ||
     (typeof value.scheme === "string" && value.scheme === "viridis") ||
-    (typeof value.scheme === "string" && value.scheme === "magma") ||
     (typeof value.scheme === "string" && value.scheme === "plasma") ||
     (typeof value.scheme === "string" && value.scheme === "inferno") ||
     (typeof value.scheme === "string" && value.scheme === "cividis") ||

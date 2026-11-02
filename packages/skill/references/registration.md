@@ -53,7 +53,7 @@ brings back `registerBasic()`. One forgotten call fails at render:
 - Color: `registerDefaultOrdinalColor()` for the built-in palette or an
   explicit `range`. A named **categorical** scheme (`observable10`,
   `colorblind`, `Dark2`, …) needs `registerOrdinalColor()`. A named
-  **sequential or diverging** scheme (`viridis`, `magma`, `Blues`, `RdBu`,
+  **sequential or diverging** scheme (`viridis`, `inferno`, `Blues`, `RdBu`,
   Crameri `batlow`, cyclic `romaO`, …) needs `registerSequentialColor()`
   — a sequential name with no `type` infers sequential, so
   `registerOrdinalColor()` is not enough. Cyclic `*O` names are sequential
