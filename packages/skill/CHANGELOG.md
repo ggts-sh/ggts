@@ -1,5 +1,27 @@
 # @ggts-sh/skill
 
+## 0.45.0
+
+### Patch Changes
+
+- ede3ce2: Add the `node-link-layout` spec-lint advisory. On data-bearing specs it warns when a `segment` layer's endpoints mostly coincide with `point` rows and at least one node joins three or more non-axis-parallel segments — the shape of a graph drawn from an externally computed layout. `lintSpec()` and `validate(spec, { lint: true })` surface it; the advisory never blocks a render.
+
+  Migration: none — additive.
+
+- 5d793ac: Legend titles can now sit on any side of a legend, and short or wide plots report panel proportion problems without failing the render.
+
+  Legend guides gain `titlePosition` with `"top" | "bottom" | "left" | "right"`. `left` and `right` put a horizontal legend title on the key row, removing the separate title band; `top` retains the previous arrangement. `ThemeSpec` gains `legendTitlePosition` for the plot-wide default, resolved adaptively per legend when omitted.
+
+  Renders now warn with `panel-aspect-extreme` when a panel exceeds 4:1 or falls under 0.25:1, and with `panel-height-share-low` when the panel receives under half the plot height. The warnings are non-blocking. `ThemeSpec.panelAspect: "free"` silences them for intentional strips. Fixed, sf, and radial coordinates are excluded.
+
+  Bottom-legend spacing is compact on short plots, so the panel keeps more of the available height. The improvement is density-dependent; there is no fixed target share.
+
+  To restore the previous title-above-keys arrangement, set `titlePosition: "top"` on a legend guide or `legendTitlePosition: "top"` on the theme.
+
+  Migration: none — additive options; existing specifications remain valid.
+
+- 1e66ae9: State that ggts does not support node-link diagrams or compute graph layouts. Direct agents to a user-chosen graph library or a supported matrix, degree distribution, or group-edge heatmap before they write a spec.
+
 ## 0.44.0
 
 ### Patch Changes
