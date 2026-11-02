@@ -113,4 +113,20 @@ describe("text-label-overlap", () => {
       runPipeline(input, size).warnings.filter((w) => w.code === "text-label-overlap"),
     ).toEqual([]);
   });
+  it("includes visible label boxes even when their text is empty", () => {
+    const input = spec("label");
+    input.data = {
+      values: [
+        { x: 0, y: 0, label: "" },
+        { x: 0, y: 0, label: "visible" },
+      ],
+    };
+    expect(
+      runPipeline(input, size).warnings.find((w) => w.code === "text-label-overlap")?.message,
+    ).toMatch(/2 labels/);
+    input.layers[0]!.params = { checkOverlap: true };
+    const model = runPipeline(input, size);
+    expect(model.scene.batches.find((b) => b.kind === "glyphs")?.texts).toEqual([""]);
+    expect(model.warnings.filter((w) => w.code === "text-label-overlap")).toEqual([]);
+  });
 });

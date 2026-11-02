@@ -66,7 +66,7 @@ function glyphBounds(batch: GlyphsBatch, options: OverlapOptions): Float64Array 
   const extra = withBox ? (batch.boxStrokeWidth ?? 0.5) / 2 : -padding;
   const boxes = new Float64Array(n * 4);
   for (let i = 0; i < n; i++) {
-    if (batch.texts[i] === "" || (batch.alphas?.[i] ?? batch.alpha) <= 0) continue;
+    if ((!withBox && batch.texts[i] === "") || (batch.alphas?.[i] ?? batch.alpha) <= 0) continue;
     const width = batch.boxWidths![i]! + 2 * extra;
     const height = batch.boxHeights![i]! + 2 * extra;
     const x = batch.positions[i * 2]!;
