@@ -19984,6 +19984,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["panel-height-share-low"],
   },
   {
+    id: "heading:guide-errors:stack-band-hidden",
+    kind: "heading",
+    title: "stack-band-hidden",
+    summary:
+      "stack-band-hidden in Errors reference. Understand validation, render, interaction, and CLI diagnostics and recover safely.",
+    href: "/guide/errors#stack-band-hidden",
+    keywords: ["Errors reference", "Reference"],
+    exact: ["stack-band-hidden"],
+  },
+  {
     id: "heading:guide-errors:interaction-diagnostics-ggts-sh-svelte",
     kind: "heading",
     title: "Interaction diagnostics (@ggts-sh/svelte)",
@@ -20421,6 +20431,16 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/advisories#fractional-calendar-years-needs-data",
     keywords: ["Advisories", "Reference"],
     exact: ["fractional-calendar-years (needs: data)"],
+  },
+  {
+    id: "heading:guide-advisories:area-over-period-totals-needs-data",
+    kind: "heading",
+    title: "area-over-period-totals (needs: data)",
+    summary:
+      "area-over-period-totals (needs: data) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#area-over-period-totals-needs-data",
+    keywords: ["Advisories", "Reference"],
+    exact: ["area-over-period-totals (needs: data)"],
   },
   {
     id: "heading:guide-advisories:pipeline-heuristic-advisories-ggts-sh-core",
@@ -52111,6 +52131,20 @@ export const DOCS_SEARCH_INDEX = [
       "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
     ],
     exact: ["panel-height-share-low", "warning:panel-height-share-low"],
+  },
+  {
+    id: "diagnostic:warning:stack-band-hidden",
+    kind: "diagnostic",
+    title: "stack-band-hidden · warning",
+    summary:
+      "One or more groups of a stacked area/col/bar layer never reach 2 px of band thickness at the rendered size; the legend keeps keys the panel hides.",
+    href: "/guide/errors#stack-band-hidden",
+    keywords: [
+      "warning",
+      "warning",
+      "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
+    ],
+    exact: ["stack-band-hidden", "warning:stack-band-hidden"],
   },
   {
     id: "diagnostic:interaction:INTERACTION_INTERVAL_FACET_UNSUPPORTED",

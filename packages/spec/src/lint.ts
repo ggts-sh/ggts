@@ -28,6 +28,7 @@
  *  - lint-scale-rules.ts — scale-level transform-domain-data and
  *    fractional-calendar-years (year+month/12 linear pitfall)
  *  - lint-node-link.ts — cross-layer, panel-local endpoint matching
+ *  - lint-area-period.ts — area layers over totals on a regular period grid
  *
  * Wired into `validate(spec, { lint: true })` (advisories ride the result)
  * and into the `ggts render` CLI (stderr JSON lines, kind "advisory",
@@ -46,6 +47,7 @@ import type { LintAdvisoryCode } from "./lint-catalog.js";
 import { collectLayerLintAdvisories } from "./lint-layer-rules.js";
 import { collectScaleLintAdvisories } from "./lint-scale-rules.js";
 import { collectNodeLinkAdvisories } from "./lint-node-link.js";
+import { collectAreaPeriodAdvisories } from "./lint-area-period.js";
 
 export { LINT_CATALOG, type LintAdvisoryCode, type LintCatalogEntry } from "./lint-catalog.js";
 
@@ -126,6 +128,9 @@ export function lintSpec(
     ...collectScaleLintAdvisories({ layers, scales, fieldOf }),
     ...(layerEvidence === undefined
       ? []
-      : collectNodeLinkAdvisories(spec, layerEvidence, evidence)),
+      : [
+          ...collectNodeLinkAdvisories(spec, layerEvidence, evidence),
+          ...collectAreaPeriodAdvisories(spec, layerEvidence, evidence),
+        ]),
   ];
 }

@@ -16,6 +16,7 @@ import { collectPanelLayoutWarnings } from "./panel-diagnostics.js";
 import { layoutPanels } from "./panel-layout.js";
 import type { PanelLayoutResult } from "./panel-layout.js";
 import type { PreparedPanels } from "./prepare-panels.js";
+import { collectStackBandWarnings } from "./stack-band-diagnostics.js";
 import type { TrainedPipelineScales } from "./train-pipeline-scales.js";
 import { PipelineError, type PipelineWarning, type RunOptions } from "./types.js";
 
@@ -267,6 +268,13 @@ export function finalizePanelLayoutPass(input: {
       viewport: { width: options.width, height: options.height },
       coordConstrained: coord?.type === "fixed" || coord?.type === "sf" || coord?.type === "radial",
       suppressed: typeof normalized.theme === "object" && normalized.theme.panelAspect === "free",
+    }),
+    ...collectStackBandWarnings({
+      prepared,
+      trained,
+      panelLayout,
+      flip,
+      coord: normalized.coord,
     }),
   );
   return panelLayout;

@@ -138,7 +138,7 @@ checks against a `DataProfile` —
 valid-but-questionable specs (line over unordered categories, >10 discrete
 colors, stacked negative areas, discrete×discrete scatter, transform-domain
 mixed-sign data, fractional calendar years on a linear scale, node-link layouts
-built from segment + point layers); `lintSpec(spec)`
+built from segment + point layers, areas over period totals); `lintSpec(spec)`
 is the standalone equivalent. Advisories never block; fix them when they match
 intent. `normalize(input)` canonicalizes
 authoring sugar into a `PortableSpec`; `isPortable`/`toPortable` check and

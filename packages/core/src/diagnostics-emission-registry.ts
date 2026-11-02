@@ -102,6 +102,7 @@ export const WARNING_EMISSION_REGISTRY = {
   "ydensity-group-dropped": { channel: "warning" },
   "panel-aspect-extreme": { channel: "warning" },
   "panel-height-share-low": { channel: "warning" },
+  "stack-band-hidden": { channel: "warning" },
 } as const satisfies Record<PipelineWarningCode, EmissionRegistryEntry>;
 
 /** Every advisory code must appear exactly once. */
