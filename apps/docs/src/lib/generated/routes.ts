@@ -12139,6 +12139,11 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "stack-band-hidden",
+        title: "stack-band-hidden",
+        level: 3,
+      },
+      {
         id: "interaction-diagnostics-ggts-sh-svelte",
         title: "Interaction diagnostics (@ggts-sh/svelte)",
         level: 2,
@@ -12368,6 +12373,11 @@ export const DOCS_ROUTES = [
       {
         id: "fractional-calendar-years-needs-data",
         title: "fractional-calendar-years (needs: data)",
+        level: 3,
+      },
+      {
+        id: "area-over-period-totals-needs-data",
+        title: "area-over-period-totals (needs: data)",
         level: 3,
       },
       {

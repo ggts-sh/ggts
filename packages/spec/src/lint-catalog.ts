@@ -1,7 +1,8 @@
 /**
  * Spec lint-advisory catalog — pure data for docs and code identity.
  * Runtime SpecAdvisory instances and lintSpec() live in lint.ts;
- * Rule emission sites: lint-layer-rules.ts, lint-scale-rules.ts, lint-node-link.ts.
+ * Rule emission sites: lint-layer-rules.ts, lint-scale-rules.ts, lint-node-link.ts,
+ * lint-area-period.ts.
  */
 
 /** One entry of the lint catalog (docs render straight from it). */
@@ -57,6 +58,13 @@ export const LINT_CATALOG = {
     needs: "data",
     rationale:
       'Encoding calendar months as 1854.25 / 1855.917 makes linear tick and tooltip formatters print decimals like 1855.9 — a silent unit lie. Store ISO year-month or date strings ("1854-04" / "1854-04-01") and use a time scale (ScaleXDate, labels "%b %Y") so axes and Inspect pins read as calendar months.',
+  },
+  "area-over-period-totals": {
+    summary:
+      "An area layer's x sits on a regular calendar grid (year/quarter/month starts or integer years) with a totals-per-period shape.",
+    needs: "data",
+    rationale:
+      'An area interpolates between x values, but a total per period has no value between periods. Use `col` with `position: "stack"` for totals per period, or a `line` or `area` of a cumulative or rate series.',
   },
 } as const satisfies Record<string, LintCatalogEntry>;
 

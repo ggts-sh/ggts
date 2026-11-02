@@ -98,6 +98,9 @@ stat bin; `jitter` → point + position jitter; `hline`/`vline` → rule. Annota
 rule/hline/vline (fixed intercepts in params) inherit NO plot aes. Any geom absent from
 GEOM_DEFAULTS notes above defaults to identity + identity.
 
+`area` suits a quantity measured over continuous x, or a cumulative total; counts per
+period use `col` (the `area-over-period-totals` lint advisory flags the mismatch).
+
 ## Stat inventory
 
 There are NO `Stat*` components — `stat` is a prop on geom components and a field on JSON

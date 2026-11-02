@@ -15,7 +15,7 @@ function isRecord(v: unknown): v is Record<string, unknown> {
 // ---------------------------------------------------------------------------
 
 /** Four-digit Gregorian-ish years; excludes tiny indices and huge scientific IDs. */
-const YEAR_LIKE_MIN = 1000;
+export const YEAR_LIKE_MIN = 1000;
 const YEAR_LIKE_MAX = 10_000;
 /**
  * Distance from k/12 allowed when classifying a fractional part as a month
@@ -24,7 +24,7 @@ const YEAR_LIKE_MAX = 10_000;
  */
 const MONTH_FRAC_TOLERANCE = 0.02;
 /** Need several points so a lone mid-year value cannot trip the rule. */
-const MIN_YEAR_LIKE_SAMPLES = 6;
+export const MIN_YEAR_LIKE_SAMPLES = 6;
 /** At least this many non-integer year-likes (months between Januaries). */
 const MIN_FRACTIONAL_SAMPLES = 3;
 /** Share of finite numbers that must be year-like (column is a calendar series). */

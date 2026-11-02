@@ -233,6 +233,12 @@ export const PIPELINE_WARNING_CATALOG = {
     summary:
       "The rendered panel grid takes less than half the plot height; title, axis, and guide chrome dominate the viewport.",
   },
+  "stack-band-hidden": {
+    // The "2 px" here mirrors MIN_STACK_BAND_PX in pipeline/stack-band-diagnostics.ts;
+    // change both together (this catalog stays free of pipeline imports).
+    summary:
+      "One or more groups of a stacked area/col/bar layer never reach 2 px of band thickness at the rendered size; the legend keeps keys the panel hides.",
+  },
 } as const satisfies Record<string, { summary: string }>;
 
 export type PipelineWarningCode = keyof typeof PIPELINE_WARNING_CATALOG;
