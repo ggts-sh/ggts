@@ -104,6 +104,20 @@ export const GuidesThemeDecls = {
       direction: Type.Optional(
         Type.Union([Type.Literal("auto"), Type.Literal("vertical"), Type.Literal("horizontal")]),
       ),
+      titlePosition: Type.Optional(
+        Type.Union(
+          [
+            Type.Literal("top"),
+            Type.Literal("bottom"),
+            Type.Literal("left"),
+            Type.Literal("right"),
+          ],
+          {
+            description:
+              "Legend title placement. Omit for adaptive placement from the resolved theme and available width.",
+          },
+        ),
+      ),
       keySize: Type.Optional(Type.Number({ minimum: 4, maximum: 48 })),
       collision: Type.Optional(
         Type.Union([Type.Literal("ellipsis"), Type.Literal("wrap"), Type.Literal("error")]),
@@ -234,6 +248,12 @@ export const GuidesThemeDecls = {
       ),
       grid: Type.Optional(Type.String({ description: "Panel grid line color (CSS color)." })),
       panel: Type.Optional(Type.String({ description: "Panel background color (CSS color)." })),
+      panelAspect: Type.Optional(
+        Type.Union([Type.Literal("auto"), Type.Literal("free")], {
+          description:
+            'Panel aspect policy: "free" suppresses panel aspect diagnostics; "auto" (default) reports them.',
+        }),
+      ),
       letterboxFill: Type.Optional(
         Type.String({
           description:
@@ -283,6 +303,20 @@ export const GuidesThemeDecls = {
       axisTitleSize: Type.Optional(Type.Number({ minimum: 1 })),
       axisTitleWeight: Type.Optional(Type.Number({ minimum: 1, maximum: 1000 })),
       guideTitleSize: Type.Optional(Type.Number({ minimum: 8, maximum: 32 })),
+      legendTitlePosition: Type.Optional(
+        Type.Union(
+          [
+            Type.Literal("top"),
+            Type.Literal("bottom"),
+            Type.Literal("left"),
+            Type.Literal("right"),
+          ],
+          {
+            description:
+              "Default discrete legend title placement. Omit for adaptive placement; a guide's titlePosition overrides this.",
+          },
+        ),
+      ),
       legendKeySize: Type.Optional(Type.Number({ minimum: 4, maximum: 48 })),
       legendKeyGap: Type.Optional(Type.Number({ minimum: 0, maximum: 32 })),
       legendRowGap: Type.Optional(Type.Number({ minimum: 0, maximum: 32 })),

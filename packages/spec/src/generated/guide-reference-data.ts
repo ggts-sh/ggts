@@ -46,6 +46,13 @@ export const GUIDE_REFERENCE_DATA = {
         required: false,
       },
       {
+        name: "titlePosition",
+        description:
+          "Legend title placement. Omit for adaptive placement from the resolved theme and available width.",
+        typeSummary: '"top" | "bottom" | "left" | "right"',
+        required: false,
+      },
+      {
         name: "keySize",
         description: "Legend key glyph size in pixels (4…48).",
         typeSummary: "number",

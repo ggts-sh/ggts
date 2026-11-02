@@ -11,7 +11,8 @@ import { aes, gg, normalize } from "@ggts-sh/spec";
 import { PipelineError } from "../src/pipeline.ts";
 import { renderToSVGString } from "../src/render-svg-full.ts";
 import { resolveTheme } from "../src/theme.ts";
-import type { GeometryBatch, Scene, ScenePanel } from "../src/scene.ts";
+import type { GeometryBatch, Scene, SceneDiscreteLegend, ScenePanel } from "../src/scene.ts";
+import { renderLegend } from "../src/render-svg-legend.ts";
 
 const rows = [
   { x: 1, y: 10, cls: "a" },
@@ -164,6 +165,58 @@ describe("render-svg public facade", () => {
     type _Opts = import("../src/index.ts").RenderSVGOptions;
     const opts: _Opts = { width: 1, height: 1 };
     expect(opts.width).toBe(1);
+  });
+});
+
+describe("render-svg discrete legend titles", () => {
+  it("uses explicit side-title baselines and keeps entry rows at their measured x/y", () => {
+    const legend: SceneDiscreteLegend = {
+      type: "discrete",
+      scale: "color",
+      title: "Group",
+      titleX: 4,
+      titleY: 16,
+      titleHeight: 0,
+      direction: "vertical",
+      position: "right",
+      x: 0,
+      y: 0,
+      width: 180,
+      height: 90,
+      swatchSize: 10,
+      entries: [{ value: "a", label: "A", color: "#123456", x: 40, y: 4, height: 24 }],
+    };
+    const svg = renderLegend(legend, resolveTheme({ name: "light" }), "gg-ramp-test");
+    expect(svg).toContain('class="gg-legend-title" x="4" y="16"');
+    expect(svg).toContain('class="gg-legend-swatch" x="44" y="11"');
+  });
+
+  it("shows the shortened title while keeping the full title accessible", () => {
+    const legend: SceneDiscreteLegend = {
+      type: "discrete",
+      scale: "color",
+      title: "Monthly revenue by region and channel",
+      titleLabel: "Monthly revenue…",
+      titleX: 92,
+      titleY: 16,
+      titleHeight: 0,
+      direction: "vertical",
+      position: "right",
+      x: 0,
+      y: 0,
+      width: 180,
+      height: 90,
+      swatchSize: 10,
+      entries: [{ value: "a", label: "A", color: "#123456", x: 40, y: 4, height: 24 }],
+    };
+    const svg = renderLegend(legend, resolveTheme({ name: "light" }), "gg-ramp-test");
+    const titleMarkup = svg.match(/<text class="gg-legend-title"[^>]*>([\s\S]*?)<\/text>/)?.[1];
+    expect(titleMarkup).toBe(
+      "Monthly revenue…<title>Monthly revenue by region and channel</title>",
+    );
+    // The title sits at its authored side position, past the row content.
+    expect(svg).toContain('class="gg-legend-title" x="92" y="16"');
+    expect(svg).toContain('class="gg-legend-swatch" x="44" y="11"');
   });
 });
 

@@ -218,6 +218,138 @@ describe("LegendTargets", () => {
     expect(targets.item(1)?.style.width).toBe("100px");
   });
 
+  it("starts a left-title target at the key, leaving the title outside", () => {
+    const leftTitle = {
+      ...discreteFill,
+      titleHeight: 0,
+      titleX: 4,
+      width: 180,
+      entries: [{ ...webEntry, x: 60, y: 4, height: 24 }],
+    };
+    const leftEntries: InteractiveLegendEntry[] = [
+      {
+        legend: leftTitle,
+        entry: leftTitle.entries[0],
+        identity: { scale: "fill", entryIndex: 0 },
+      },
+    ];
+    const { container } = render(LegendTargets, {
+      entries: leftEntries,
+      sceneWidth: 400,
+      sceneHeight: 300,
+      clearLayout: null,
+      ...noopHandlers,
+    });
+    const target = container.querySelector<HTMLButtonElement>("[data-gg-legend-target]")!;
+    const left = target.offsetLeft;
+    const width = target.offsetWidth;
+    // Scene draws the side-title key glyph starting at entry.x + 4.
+    const keyLeft = leftTitle.x + leftTitle.entries[0].x + 4;
+    const keyRight = keyLeft + leftTitle.swatchSize;
+    // The whole key is hit-testable...
+    expect(left).toBeLessThanOrEqual(keyLeft);
+    expect(left + width).toBeGreaterThanOrEqual(keyRight);
+    // ...while the title column and the shifted title text stay outside.
+    expect(left).toBeGreaterThan(leftTitle.x + leftTitle.titleX);
+    expect(left).toBeGreaterThanOrEqual(leftTitle.x + leftTitle.entries[0].x);
+    // Clipping at the key shifts the left edge only: the right edge stays put.
+    expect(left + width).toBeCloseTo(leftTitle.x + leftTitle.width);
+  });
+
+  it("butts adjacent horizontal left-title targets together at the key glyphs", () => {
+    const horizontal = {
+      ...discreteFill,
+      direction: "horizontal" as const,
+      titleHeight: 0,
+      titleX: 4,
+      width: 240,
+      entries: [
+        { ...webEntry, x: 60, y: 4 },
+        { ...storeEntry, x: 140, y: 4 },
+      ],
+    };
+    const horizontalEntries: InteractiveLegendEntry[] = horizontal.entries.map((entry, index) => ({
+      legend: horizontal,
+      entry,
+      identity: { scale: "fill", entryIndex: index },
+    }));
+    const { container } = render(LegendTargets, {
+      entries: horizontalEntries,
+      sceneWidth: 400,
+      sceneHeight: 300,
+      clearLayout: null,
+      ...noopHandlers,
+    });
+    const targets = container.querySelectorAll<HTMLButtonElement>("[data-gg-legend-target]");
+    const first = targets.item(0);
+    const second = targets.item(1);
+    const firstLeft = first.offsetLeft;
+    const firstRight = firstLeft + first.offsetWidth;
+    const secondLeft = second.offsetLeft;
+    // No dead strip between neighbouring keys in a row.
+    expect(firstRight).toBeCloseTo(secondLeft);
+    // Both keys stay inside their own target.
+    expect(firstLeft).toBeLessThanOrEqual(horizontal.x + horizontal.entries[0].x + 4);
+    expect(secondLeft).toBeLessThanOrEqual(horizontal.x + horizontal.entries[1].x + 4);
+    expect(secondLeft + second.offsetWidth).toBeCloseTo(horizontal.x + horizontal.width);
+  });
+
+  it("stops vertical hit targets before a right-hand title", () => {
+    const rightTitle = {
+      ...discreteFill,
+      titleHeight: 0,
+      titleX: 120,
+      width: 180,
+      entries: [{ ...webEntry, x: 0, y: 4, height: 24 }],
+    };
+    const rightEntries: InteractiveLegendEntry[] = [
+      {
+        legend: rightTitle,
+        entry: rightTitle.entries[0],
+        identity: { scale: "fill", entryIndex: 0 },
+      },
+    ];
+    const { container } = render(LegendTargets, {
+      entries: rightEntries,
+      sceneWidth: 400,
+      sceneHeight: 300,
+      clearLayout: null,
+      ...noopHandlers,
+    });
+    const target = container.querySelector<HTMLButtonElement>("[data-gg-legend-target]")!;
+    expect(target.style.left).toBe("100px");
+    expect(target.style.width).toBe("120px");
+  });
+
+  it("stops a row-ending horizontal target at a right-hand title", () => {
+    const horizontal = {
+      ...discreteFill,
+      direction: "horizontal" as const,
+      titleHeight: 0,
+      titleX: 150,
+      width: 180,
+      entries: [
+        { ...webEntry, x: 0, y: 18 },
+        { ...storeEntry, x: 80, y: 18 },
+      ],
+    };
+    const horizontalEntries: InteractiveLegendEntry[] = horizontal.entries.map((entry, index) => ({
+      legend: horizontal,
+      entry,
+      identity: { scale: "fill", entryIndex: index },
+    }));
+    const { container } = render(LegendTargets, {
+      entries: horizontalEntries,
+      sceneWidth: 400,
+      sceneHeight: 300,
+      clearLayout: null,
+      ...noopHandlers,
+    });
+    const targets = container.querySelectorAll<HTMLButtonElement>("[data-gg-legend-target]");
+    expect(targets.item(1)?.style.left).toBe("180px");
+    expect(targets.item(1)?.style.width).toBe("70px");
+  });
+
   it("wires preview enter for non-touch pointers", () => {
     const onPreviewIndex = vi.fn();
     const { container } = render(LegendTargets, {

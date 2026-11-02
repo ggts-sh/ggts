@@ -73,9 +73,18 @@ export function renderLegend(legend: SceneLegend, theme: ThemeTokens, gradientId
     `<g class="gg-legend gg-legend-${legend.scale} gg-legend-${legend.position ?? "right"} gg-legend-${legend.direction ?? "vertical"}" transform="translate(${px(legend.x)},${px(legend.y)})">`,
   ];
   const contentTop = legend.title === "" ? 0 : (legend.titleHeight ?? 18);
+  const titleX = legend.type === "discrete" ? (legend.titleX ?? 4) : 4;
+  const titleY =
+    legend.type === "discrete"
+      ? (legend.titleY ?? Math.max(11, contentTop - 7))
+      : Math.max(11, contentTop - 7);
   if (legend.title !== "") {
+    const displayTitle =
+      legend.type === "discrete" ? (legend.titleLabel ?? legend.title) : legend.title;
+    const fullTitle =
+      displayTitle === legend.title ? "" : `<title>${escapeXML(legend.title)}</title>`;
     parts.push(
-      `<text class="gg-legend-title" x="4" y="${px(Math.max(11, contentTop - 7))}" font-size="${px(titleSize)}" font-weight="bold" fill="${ink}">${escapeXML(legend.title)}</text>`,
+      `<text class="gg-legend-title" x="${px(titleX)}" y="${px(titleY)}" font-size="${px(titleSize)}" font-weight="bold" fill="${ink}">${escapeXML(displayTitle)}${fullTitle}</text>`,
     );
   }
   if (legend.type === "discrete") {

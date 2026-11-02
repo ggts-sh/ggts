@@ -22,16 +22,22 @@ const RAMP_WIDTH = 12;
 const HORIZONTAL_RAMP_LENGTH = 180;
 
 /** Ellipsis for legend entry truncation (same glyph as axis paths). */
-const LEGEND_ELLIPSIS = "…";
+export const LEGEND_ELLIPSIS = "…";
 
 /** Binary-search truncation shared with axis layout, honoring guide typography. */
-function truncate(
+function truncateOrThrow(
   label: string,
   maxWidth: number,
   measurer: TextMeasurer,
   fontSize: number,
+  appearance: ResolvedLegendAppearance | undefined,
+  scale: string,
+  detail?: string,
 ): string {
-  return truncateToFit(label, maxWidth, measurer, fontSize, LEGEND_ELLIPSIS);
+  const truncated = truncateToFit(label, maxWidth, measurer, fontSize, LEGEND_ELLIPSIS);
+  if (appearance?.collision === "error" && truncated !== label)
+    throw new LegendLayoutError(scale, label, detail);
+  return truncated;
 }
 
 /** Greedy, lossless wrapping. Over-wide tokens are split instead of ellipsized. */
@@ -72,6 +78,14 @@ function wrapLegendLabel(
   return lines;
 }
 
+export interface PresentedDiscreteLabel {
+  label: string;
+  lines?: string[];
+  width: number;
+  height: number;
+  lineHeight: number;
+}
+
 export function presentedDiscreteLabel(
   fullLabel: string,
   maxWidth: number,
@@ -79,7 +93,7 @@ export function presentedDiscreteLabel(
   fontSize: number,
   appearance: ResolvedLegendAppearance | undefined,
   scale: string,
-): { label: string; lines?: string[]; width: number; height: number; lineHeight: number } {
+): PresentedDiscreteLabel {
   const lineHeight = measurer.measureHeight(fontSize);
   if (appearance?.collision === "wrap") {
     const lines = wrapLegendLabel(fullLabel, maxWidth, measurer, fontSize);
@@ -91,9 +105,7 @@ export function presentedDiscreteLabel(
       lineHeight,
     };
   }
-  const label = truncate(fullLabel, maxWidth, measurer, fontSize);
-  if (appearance?.collision === "error" && label !== fullLabel)
-    throw new LegendLayoutError(scale, fullLabel);
+  const label = truncateOrThrow(fullLabel, maxWidth, measurer, fontSize, appearance, scale);
   return {
     label,
     width: measurer.measureWidth(label, fontSize),
@@ -106,7 +118,32 @@ export function legendTitleHeight(title: string, titleSize: number): number {
   return title === "" ? 0 : Math.max(TITLE_HEIGHT, titleSize + TITLE_DESCENDER_GAP);
 }
 
-function legendSettingsMetrics(input: LegendInput): {
+/** Display title for side slots; `title` stays the full semantic string. */
+export function presentedLegendTitle(
+  title: string,
+  maxWidth: number,
+  measurer: TextMeasurer,
+  fontSize: number,
+  appearance: ResolvedLegendAppearance | undefined,
+  scale: string,
+): string {
+  return truncateOrThrow(
+    title,
+    maxWidth,
+    measurer,
+    fontSize,
+    appearance,
+    scale,
+    `The ${scale} guide title "${title}" cannot fit without truncation.`,
+  );
+}
+
+/** Resolved guide layout settings shared by the legend builders. */
+export interface LegendSettings {
+  appearance: ResolvedLegendAppearance | undefined;
+  position: "right" | "bottom";
+  direction: "vertical" | "horizontal";
+  titlePosition: "top" | "bottom" | "left" | "right" | undefined;
   title: string;
   titleSize: number;
   labelSize: number;
@@ -116,7 +153,14 @@ function legendSettingsMetrics(input: LegendInput): {
   blockGap: number;
   rampThickness: number;
   rampLength: number;
-} {
+}
+
+type LegendMetrics = Omit<
+  LegendSettings,
+  "appearance" | "position" | "direction" | "titlePosition"
+>;
+
+function legendMetrics(input: LegendInput): LegendMetrics {
   const appearance = input.appearance;
   const theme = appearance?.theme;
   return {
@@ -132,7 +176,7 @@ function legendSettingsMetrics(input: LegendInput): {
   };
 }
 
-export function settings(input: LegendInput, position: "right" | "bottom") {
+export function settings(input: LegendInput, position: "right" | "bottom"): LegendSettings {
   const appearance = input.appearance;
   const direction =
     appearance?.direction === undefined || appearance.direction === "auto"
@@ -144,8 +188,9 @@ export function settings(input: LegendInput, position: "right" | "bottom") {
     appearance,
     position,
     direction,
-    ...legendSettingsMetrics(input),
-  } as const;
+    titlePosition: appearance?.titlePosition,
+    ...legendMetrics(input),
+  };
 }
 
 export function presentedContinuousLabel(input: {
@@ -158,8 +203,12 @@ export function presentedContinuousLabel(input: {
   scale: string;
 }): string {
   if (!input.show) return "";
-  const label = truncate(input.fullLabel, input.availableWidth, input.measurer, input.fontSize);
-  if (input.appearance?.collision === "error" && label !== input.fullLabel)
-    throw new LegendLayoutError(input.scale, input.fullLabel);
-  return label;
+  return truncateOrThrow(
+    input.fullLabel,
+    input.availableWidth,
+    input.measurer,
+    input.fontSize,
+    input.appearance,
+    input.scale,
+  );
 }

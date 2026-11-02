@@ -362,8 +362,22 @@ export interface SceneDiscreteLegend {
   position?: "right" | "bottom";
   direction?: "vertical" | "horizontal";
   titleSize?: number;
-  /** Measured title band height, including descender gap. */
+  /**
+   * Reserved title band height, including descender gap. This is the band
+   * above the entries only: 0 for side/bottom titles, which reserve space
+   * horizontally or below instead.
+   */
   titleHeight?: number;
+  /**
+   * Display-only title text when `title` had to be shortened to fit a side
+   * slot. `title` remains the complete semantic string for accessibility and
+   * merging.
+   */
+  titleLabel?: string;
+  /** Title text baseline start x, legend-local px (discrete guides only). */
+  titleX?: number;
+  /** Title text baseline y, legend-local px (discrete guides only). */
+  titleY?: number;
   labelSize?: number;
   keyGap?: number;
   /** False when entries are representative ticks/bins rather than raw value identities. */

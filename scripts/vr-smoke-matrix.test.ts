@@ -3,6 +3,7 @@ import { readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { EXAMPLES } from "../examples/manifest.ts";
+import { LEGEND_TITLE_SCENARIOS } from "../tests/visual/legend-title-scenarios.ts";
 import {
   INTERACTION_HANDLERS,
   SMOKE_BASE_NAMES,
@@ -79,8 +80,8 @@ describe("SMOKE_SCENARIOS inventory", () => {
   });
 });
 
-describe("committed smoke baseline directory", () => {
-  test("when baselines exist, PNG set equals smoke basenames exactly", () => {
+describe("committed VR baseline directory", () => {
+  test("when baselines exist, PNG set equals enforced VR basenames exactly", () => {
     const dir = join(import.meta.dir, "../tests/visual/__screenshots__");
     let files: string[];
     try {
@@ -92,6 +93,12 @@ describe("committed smoke baseline directory", () => {
       return;
     }
     if (files.length === 0) return;
-    expect(files).toEqual([...SMOKE_BASE_NAMES].toSorted());
+    // The core-rendered legend-title seats live in their own inventory
+    // (legend-title-scenarios.ts) but share the pinned baseline directory.
+    const expected = [
+      ...SMOKE_BASE_NAMES,
+      ...LEGEND_TITLE_SCENARIOS.map((scenario) => scenario.basename),
+    ];
+    expect(files).toEqual(expected.toSorted());
   });
 });

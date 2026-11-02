@@ -135,6 +135,8 @@ function appearanceOf(guide: NonPositionGuide, title: string): ResolvedLegendApp
     order: guide.order ?? 0,
     position: guide.position ?? "auto",
     direction: guide.direction ?? "auto",
+    ...(guide.type === "legend" &&
+      guide.titlePosition !== undefined && { titlePosition: guide.titlePosition }),
     ...(guide.type === "legend" && guide.keySize !== undefined && { keySize: guide.keySize }),
     ...(guide.collision !== undefined && { collision: guide.collision }),
     ...(guide.force !== undefined && { force: guide.force }),
@@ -153,6 +155,7 @@ function appearanceIdentity(appearance: ResolvedLegendAppearance) {
     order: appearance.order,
     position: appearance.position,
     direction: appearance.direction,
+    titlePosition: appearance.titlePosition ?? null,
     keySize: appearance.keySize ?? null,
     collision: appearance.collision ?? null,
     force: appearance.force ?? false,

@@ -14,7 +14,7 @@ import { layout } from "../layout/layout.js";
 import type { TextMeasurer } from "../layout/measure.js";
 import type { PositionScale } from "../scales/train.js";
 
-import { LEGEND_EDGE_PAD, LEGEND_GAP, layoutDomain } from "./layout-helpers.js";
+import { LEGEND_EDGE_PAD, LEGEND_GAP, layoutDomain, legendGapFor } from "./layout-helpers.js";
 import type { PanelLayoutChrome } from "./panel-layout-chrome.js";
 import type { PanelPlacement } from "./panel-layout-types.js";
 import type { RunOptions } from "./types.js";
@@ -25,12 +25,15 @@ export function singlePanelMarginReserve(
   axisTitleBand: number,
   legendWidth: number,
   legendBottomHeight: number,
+  layoutHeight = 800,
 ): Partial<Margins> {
   return {
     ...((hTitle !== "" || legendBottomHeight > 0) && {
       bottom:
         (hTitle === "" ? 0 : axisTitleBand) +
-        (legendBottomHeight > 0 ? legendBottomHeight + LEGEND_GAP + LEGEND_EDGE_PAD : 0),
+        (legendBottomHeight > 0
+          ? legendBottomHeight + legendGapFor(layoutHeight) + LEGEND_EDGE_PAD
+          : 0),
     }),
     ...(vTitle !== "" && { left: axisTitleBand }),
     ...(legendWidth > 0 && { right: legendWidth + LEGEND_GAP + LEGEND_EDGE_PAD }),
@@ -120,6 +123,7 @@ function placeSinglePanel(input: {
       axisTitleBand,
       legendWidth,
       legendBottomHeight,
+      layoutHeight,
     ),
     theme: layoutTheme,
   });

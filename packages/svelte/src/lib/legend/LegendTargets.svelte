@@ -162,22 +162,41 @@
     return `${target.legend.title || scale}: ${target.entry.fullLabel ?? target.entry.label} (${aesthetics.join(" + ")} legend)`;
   }
 
+  /**
+   * Side titles shift keys via entry.x, and scene keys draw at entry.x + 4.
+   * Left side-titles reserve PADDING (4) that keys skip; targets start at the
+   * actual key glyph so title text stays outside the hit area.
+   */
+  function targetStart(target: InteractiveLegendEntry): number {
+    const { titleHeight, titleX, entries: legendEntries } = target.legend;
+    const leading =
+      titleHeight === 0 && titleX === 4 && (legendEntries[0]?.x ?? 0) > 0
+        ? 4
+        : 0;
+    return leading + (target.entry.x ?? 0);
+  }
+
   function targetLeft(target: InteractiveLegendEntry): number {
-    return (
-      target.legend.x +
-      (target.legend.direction === "horizontal" ? (target.entry.x ?? 0) : 0)
-    );
+    return target.legend.x + targetStart(target);
+  }
+
+  /** Right-hand titles occupy the box beyond this x; hit targets stop before it. */
+  function contentRight(target: InteractiveLegendEntry): number {
+    const { titleHeight, titleX, width } = target.legend;
+    return titleHeight === 0 && titleX !== undefined && titleX > 4
+      ? Math.min(width, titleX)
+      : width;
   }
 
   function targetWidth(target: InteractiveLegendEntry, index: number): number {
+    const start = targetStart(target);
     if (target.legend.direction !== "horizontal")
-      return Math.max(24, target.legend.width);
-    const start = target.entry.x ?? 0;
+      return Math.max(24, contentRight(target) - start);
     const next = entries[index + 1];
     const end =
       next?.legend === target.legend && next.entry.y === target.entry.y
-        ? (next.entry.x ?? target.legend.width)
-        : target.legend.width;
+        ? targetStart(next)
+        : contentRight(target);
     return Math.max(24, end - start);
   }
 </script>

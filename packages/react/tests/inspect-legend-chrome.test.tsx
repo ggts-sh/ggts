@@ -29,6 +29,22 @@ function hoverFirstMark(container: HTMLElement): void {
   });
 }
 
+function expectContains(outer: DOMRect, inner: DOMRect, tolerance = 1.5): void {
+  expect(inner.left).toBeGreaterThanOrEqual(outer.left - tolerance);
+  expect(inner.top).toBeGreaterThanOrEqual(outer.top - tolerance);
+  expect(inner.right).toBeLessThanOrEqual(outer.right + tolerance);
+  expect(inner.bottom).toBeLessThanOrEqual(outer.bottom + tolerance);
+}
+
+function overlaps(left: DOMRect, right: DOMRect, tolerance = 1.5): boolean {
+  return (
+    left.left < right.right - tolerance &&
+    left.right > right.left + tolerance &&
+    left.top < right.bottom - tolerance &&
+    left.bottom > right.top + tolerance
+  );
+}
+
 describe("React inspect tooltip chrome", () => {
   it("matches Svelte default tooltip: compact theme card, pin hint, no Close", async () => {
     const view = render(
@@ -206,4 +222,75 @@ describe("React legend focus chrome", () => {
     const circles = view.container.querySelectorAll<SVGCircleElement>(".gg-points circle");
     expect([...circles].some((mark) => mark.style.opacity === "0.36")).toBe(true);
   });
+
+  const tinyRows = [
+    { x: 1, y: 10, id: "a", group: "i" },
+    { x: 2, y: 20, id: "b", group: "j" },
+  ];
+
+  it.each([
+    ["left", "vertical"],
+    ["right", "vertical"],
+    ["left", "horizontal"],
+    ["right", "horizontal"],
+  ] as const)(
+    "aligns a %s side-titled %s legend hit target with its row",
+    async (titlePosition, direction) => {
+      // Tiny keys and zero gap shrink the right-title content below the 24px
+      // hit-target minimum; left titles keep the default sizing as a control.
+      const tiny = titlePosition === "right";
+      const view = render(
+        <div style={{ width: 480 }}>
+          <GGPlot
+            data={tiny ? tinyRows : rows}
+            aes={{ x: "x", y: "y", color: "group" }}
+            width={480}
+            height={320}
+          >
+            <GeomPoint />
+            <GuideLegend
+              channel="color"
+              focus
+              title="Group"
+              titlePosition={titlePosition}
+              position="right"
+              direction={direction}
+              {...(tiny ? { keySize: 4, theme: { labelSize: 8, keyGap: 0 } } : {})}
+            />
+          </GGPlot>
+        </div>,
+      );
+      const targets = await view.findAllByRole("button", { name: /\(color legend\)$/ });
+      const title = view.container.querySelector<SVGTextElement>(".gg-legend-title");
+      const labels = view.container.querySelectorAll<SVGTextElement>(".gg-legend-label");
+      const keys = view.container.querySelectorAll<SVGElement>(".gg-legend-key, .gg-legend-swatch");
+      if (title === null || labels.length !== targets.length || keys.length !== targets.length) {
+        throw new Error("missing legend chrome");
+      }
+      const titleRect = title.getBoundingClientRect();
+      targets.forEach((target, index) => {
+        const targetRect = target.getBoundingClientRect();
+        expectContains(targetRect, labels.item(index).getBoundingClientRect());
+        expectContains(targetRect, keys.item(index).getBoundingClientRect());
+        // Keep the 24px minimum hit area without letting it cover the title.
+        expect(targetRect.width).toBeGreaterThanOrEqual(24);
+        expect(
+          overlaps(targetRect, titleRect),
+          JSON.stringify({
+            target: { left: targetRect.left, right: targetRect.right },
+            title: { left: titleRect.left, right: titleRect.right },
+          }),
+        ).toBe(false);
+        if (titlePosition === "left") {
+          expect(targetRect.left).toBeGreaterThanOrEqual(titleRect.right - 1.5);
+        } else {
+          expect(targetRect.right).toBeLessThanOrEqual(titleRect.left + 1.5);
+        }
+      });
+      for (const target of targets) {
+        fireEvent.click(target);
+        expect(target.getAttribute("aria-pressed")).toBe("true");
+      }
+    },
+  );
 });

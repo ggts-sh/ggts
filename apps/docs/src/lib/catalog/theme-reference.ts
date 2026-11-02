@@ -7,7 +7,7 @@
  */
 import { THEME_NAME_ALIASES, THEME_NAMES, type ThemeName } from "@ggts-sh/spec";
 
-export type ThemeRoleKind = "color" | "opacity" | "type" | "length" | "boolean" | "dash";
+export type ThemeRoleKind = "color" | "opacity" | "type" | "length" | "boolean" | "dash" | "choice";
 
 export interface ThemeRoleRef {
   readonly name: string;
@@ -238,6 +238,20 @@ export const THEME_TYPE_AND_GEOMETRY_ROLES = [
     kind: "length",
     affects: "Gap between stacked guide blocks.",
     css: "resolved tokens",
+  },
+  {
+    name: "legendTitlePosition",
+    kind: "choice",
+    affects:
+      'Plot-wide legend title placement: "top", "bottom", "left", or "right". Omitted adapts per legend.',
+    css: "authored layout option (no CSS token)",
+  },
+  {
+    name: "panelAspect",
+    kind: "choice",
+    affects:
+      'Panel proportion policy: "auto" (warn on extreme ratios) or "free" (silence the warnings for intentional strips). Layout input, not a visual token.',
+    css: "authored layout option (no CSS token)",
   },
   {
     name: "colorbarThickness",

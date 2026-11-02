@@ -8570,6 +8570,27 @@
             }
           ]
         },
+        "titlePosition": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "top"
+            },
+            {
+              "type": "string",
+              "const": "bottom"
+            },
+            {
+              "type": "string",
+              "const": "left"
+            },
+            {
+              "type": "string",
+              "const": "right"
+            }
+          ],
+          "description": "Legend title placement. Omit for adaptive placement from the resolved theme and available width."
+        },
         "keySize": {
           "type": "number",
           "minimum": 4,
@@ -9007,6 +9028,19 @@
           "type": "string",
           "description": "Panel background color (CSS color)."
         },
+        "panelAspect": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "auto"
+            },
+            {
+              "type": "string",
+              "const": "free"
+            }
+          ],
+          "description": "Panel aspect policy: \"free\" suppresses panel aspect diagnostics; \"auto\" (default) reports them."
+        },
         "letterboxFill": {
           "type": "string",
           "description": "Fixed-aspect gutter color (CSS color). Defaults to the resolved paper role."
@@ -9118,6 +9152,27 @@
           "type": "number",
           "minimum": 8,
           "maximum": 32
+        },
+        "legendTitlePosition": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "top"
+            },
+            {
+              "type": "string",
+              "const": "bottom"
+            },
+            {
+              "type": "string",
+              "const": "left"
+            },
+            {
+              "type": "string",
+              "const": "right"
+            }
+          ],
+          "description": "Default discrete legend title placement. Omit for adaptive placement; a guide's titlePosition overrides this."
         },
         "legendKeySize": {
           "type": "number",

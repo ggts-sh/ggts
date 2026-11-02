@@ -22,6 +22,7 @@ import {
   LEGEND_EDGE_PAD,
   LEGEND_GAP,
   layoutDomain,
+  legendGapFor,
 } from "./layout-helpers.js";
 import type { FacetGridLayoutInput } from "./panel-layout-facet-types.js";
 import type { DisplayBandFn, DisplayScalesFn, DisplayTemporalFn } from "./panel-layout-types.js";
@@ -125,7 +126,9 @@ function computeFacetOuterChrome(input: {
   const outerLeft = outerLeftTitle === "" ? 0 : axisTitleBand;
   const outerBottom =
     (outerBottomTitle === "" ? 0 : axisTitleBand) +
-    (legendBottomHeight > 0 ? legendBottomHeight + LEGEND_GAP + LEGEND_EDGE_PAD : 0);
+    (legendBottomHeight > 0
+      ? legendBottomHeight + legendGapFor(layoutHeight) + LEGEND_EDGE_PAD
+      : 0);
   const outerRight = legendWidth > 0 ? legendWidth + LEGEND_GAP + LEGEND_EDGE_PAD : 0;
   const gridW = Math.max(40, optionsWidth - outerLeft - outerRight);
   const gridH = Math.max(40, layoutHeight - outerBottom);

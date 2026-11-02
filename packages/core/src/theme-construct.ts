@@ -57,6 +57,8 @@ export interface ThemeTokens {
   axisTitleSize: number;
   axisTitleWeight: number;
   guideTitleSize: number;
+  /** Default discrete legend title placement; absent = adaptive. */
+  legendTitlePosition?: "top" | "bottom" | "left" | "right";
   legendKeySize: number;
   legendKeyGap: number;
   legendRowGap: number;

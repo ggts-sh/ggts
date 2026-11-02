@@ -225,6 +225,14 @@ export const PIPELINE_WARNING_CATALOG = {
     summary:
       "geom_violin needs at least two data points per group to estimate a density; smaller groups are dropped.",
   },
+  "panel-aspect-extreme": {
+    summary:
+      "A rendered panel is far from 2:1 at the current viewport; change the plot dimensions for a readable data area.",
+  },
+  "panel-height-share-low": {
+    summary:
+      "The rendered panel grid takes less than half the plot height; title, axis, and guide chrome dominate the viewport.",
+  },
 } as const satisfies Record<string, { summary: string }>;
 
 export type PipelineWarningCode = keyof typeof PIPELINE_WARNING_CATALOG;

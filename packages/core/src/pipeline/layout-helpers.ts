@@ -33,6 +33,20 @@ export const CAPTION_BAND = 14;
 export const AXIS_TITLE_BAND = 18;
 export const LEGEND_GAP = 12;
 export const LEGEND_EDGE_PAD = 2;
+const LEGEND_GAP_MIN = 4;
+
+/**
+ * Gap between the panel and a bottom legend. Compact plots reclaim vertical
+ * space without shrinking text; tall plots keep the standard 12px breathing
+ * room (reached at 800px of layout height).
+ */
+export function legendGapFor(layoutHeight: number): number {
+  if (!Number.isFinite(layoutHeight)) return LEGEND_GAP;
+  return Math.max(
+    LEGEND_GAP_MIN,
+    Math.min(LEGEND_GAP, Math.round(LEGEND_GAP * Math.min(1, layoutHeight / 800))),
+  );
+}
 
 export function layoutDomain(
   scale: PositionScale,

@@ -64,6 +64,41 @@ describe("responsive guide authoring API", () => {
     ).toBe(false);
   });
 
+  it("accepts the four legend title positions and rejects an auto escape", () => {
+    for (const titlePosition of ["top", "bottom", "left", "right"] as const) {
+      expect(
+        Value.Check(
+          SpecModule.Import("PlotSpec"),
+          portable({ color: { type: "legend", titlePosition } }),
+        ),
+      ).toBe(true);
+    }
+    expect(
+      Value.Check(
+        SpecModule.Import("PlotSpec"),
+        portable({ color: { type: "legend", titlePosition: "auto" } }),
+      ),
+    ).toBe(false);
+    expect(
+      Value.Check(
+        SpecModule.Import("PlotSpec"),
+        portable({ color: { type: "legend", titlePosition: "center" } }),
+      ),
+    ).toBe(false);
+  });
+
+  it("accepts theme guide title placement and the panel aspect escape", () => {
+    for (const legendTitlePosition of ["top", "bottom", "left", "right"] as const) {
+      expect(Value.Check(SpecModule.Import("ThemeSpec"), { legendTitlePosition })).toBe(true);
+    }
+    expect(Value.Check(SpecModule.Import("ThemeSpec"), { legendTitlePosition: "auto" })).toBe(
+      false,
+    );
+    expect(Value.Check(SpecModule.Import("ThemeSpec"), { panelAspect: "auto" })).toBe(true);
+    expect(Value.Check(SpecModule.Import("ThemeSpec"), { panelAspect: "free" })).toBe(true);
+    expect(Value.Check(SpecModule.Import("ThemeSpec"), { panelAspect: "fixed" })).toBe(false);
+  });
+
   it("keeps theme-owned guide roles bounded in runtime schema", () => {
     expect(
       Value.Check(SpecModule.Import("ThemeSpec"), {

@@ -117,9 +117,9 @@ describe("GGPlot point/line bundle (#1420)", () => {
     for (const pattern of TEMPORAL_RUNTIME_PATTERNS) {
       expect(included(moduleIds, pattern)).toEqual([]);
     }
-    // Production raw is ~1046 KB after the numeric GGPlot graph stopped
-    // installing the Temporal polyfill. Keep modest headroom without allowing
-    // that dependency back into the default graph.
+    // Production raw is 1,104,460 bytes with adaptive legend titles and panel
+    // diagnostics. Keep modest headroom; the module checks above independently
+    // exclude specialty geoms and the Temporal polyfill.
     expect(rawBytes).toBeLessThan(GGPLOT_SCATTER_MAX_RAW_BYTES);
   }, 120_000);
 });
@@ -172,4 +172,4 @@ describe("GGPlot temporal scale bundle (positive control)", () => {
   }, 120_000);
 });
 
-const GGPLOT_SCATTER_MAX_RAW_BYTES = 1_100_000;
+const GGPLOT_SCATTER_MAX_RAW_BYTES = 1_110_000;

@@ -107,8 +107,19 @@ with `facet-form-missing`.
 Allocate space by chart density and comparison relationships when composing
 independent charts into a dashboard:
 
+- Targets, not requirements: size a time-series panel near 2:1 (width:height).
+  Cleveland's banking to 45° is the reference for how line slopes read, not a
+  guarantee that one ratio suits every series or comparison.
 - Give dense time series and long-category charts a full-width or otherwise
   spacious panel instead of forcing every chart into a 2×2 grid.
+- With `width="container"`, derive the height from the measured width plus the
+  chart's chrome (axes, legend, titles), then inspect the final rendered panel.
+  A fixed height stretches the panel ratio as the container grows.
+- Intentional strips (sparklines, event bands) set `theme.panelAspect: "free"`.
+  The escape is a theme field; there is no host `aspect` prop. Without it,
+  renders warn non-blockingly with `panel-aspect-extreme` when a panel exceeds
+  4:1 or falls under 0.25:1, and `panel-height-share-low` when the panel gets
+  under half the plot height. Fixed, sf, and radial coordinates are excluded.
 - Choose panel spans from density and which charts readers compare. Repetition
   of an appropriate encoding across panels is not a defect.
 - Align shared label gutters and keep heights matched within a comparison row;
@@ -130,7 +141,16 @@ channel). `<GuideLegend channel="color" position="bottom"/>` assembles
 - Shared options: `title`, `theme`, `collision`; non-position guides add
   integer `order` (placement rank), `position` `"auto"|"right"|"bottom"`,
   `direction` `"auto"|"vertical"|"horizontal"`, and `force` (show a guide
-  suppressed by default, e.g. identity scales).
+  suppressed by default, e.g. identity scales). `right` and `bottom` remain
+  the supported explicit placements.
+- Legend guides add `titlePosition`: `"top" | "bottom" | "left" | "right"`.
+  `left` and `right` put the title on the key row of a horizontal legend and
+  remove the separate title row height. `top` restores the previous
+  title-above-the-keys arrangement. The theme field
+  `legendTitlePosition` supplies the plot-wide default. When omitted, a
+  horizontal legend uses `left` only if its title and every key fit one row
+  untruncated; otherwise it uses `top`. Vertical legends default to `top`.
+  A guide-level `titlePosition` wins over the theme field.
 - Axis `collision`: on a horizontal band `x` axis, `auto` uses measured
   band-label escalation and `ellipsis` forces single-line labels truncated to
   fit. `preserve` keeps full single-line labels on either axis even when they

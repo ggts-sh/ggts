@@ -11,7 +11,8 @@ import type { ThemeTokens } from "../theme.js";
 
 import { TemporalGuideIntervalError } from "../layout/temporal-guide.js";
 import { facetSpaceFlags } from "./facets-form.js";
-import { prepareLegendInputs, resolveAxisGuide } from "./guide-config.js";
+import { prepareLegendInputs, resolveAxisGuide, type AxisGuideAppearance } from "./guide-config.js";
+import { collectPanelLayoutWarnings } from "./panel-diagnostics.js";
 import { layoutPanels } from "./panel-layout.js";
 import type { PanelLayoutResult } from "./panel-layout.js";
 import type { PreparedPanels } from "./prepare-panels.js";
@@ -139,6 +140,26 @@ function legendInputsForLayout(
   });
 }
 
+/** Max theme/guide axis text sizes: the layout reserves the loosest channel. */
+function axisTypography(
+  theme: ThemeTokens,
+  xGuide: AxisGuideAppearance,
+  yGuide: AxisGuideAppearance,
+): { layoutAxisTitleSize: number; layoutAxisTextSize: number } {
+  return {
+    layoutAxisTitleSize: Math.max(
+      theme.axisTitleSize,
+      xGuide.theme?.titleSize ?? 0,
+      yGuide.theme?.titleSize ?? 0,
+    ),
+    layoutAxisTextSize: Math.max(
+      theme.axisTextSize,
+      xGuide.theme?.labelSize ?? 0,
+      yGuide.theme?.labelSize ?? 0,
+    ),
+  };
+}
+
 function runLayoutPanels(input: Parameters<typeof layoutPanels>[0]): PanelLayoutResult {
   try {
     return layoutPanels(input);
@@ -193,6 +214,7 @@ export function finalizePanelLayoutPass(input: {
 
   const xGuide = resolveAxisGuide("x", scalesConfig, normalized.guides, theme);
   const yGuide = resolveAxisGuide("y", scalesConfig, normalized.guides, theme);
+  const coord = normalized.coord;
   const labs = guideLabels(normalized, xGuide, yGuide);
   const legendInputs = legendInputsForLayout(trained, prepared, normalized);
 
@@ -208,15 +230,10 @@ export function finalizePanelLayoutPass(input: {
     faceted,
     freedom: { freeX, freeY },
     space: facetSpaceFlags(normalized.facet?.space),
-    ...((normalized.coord?.type === "fixed" || normalized.coord?.type === "sf") && {
-      coordFixed: normalized.coord,
-    }),
+    ...((coord?.type === "fixed" || coord?.type === "sf") && { coordFixed: coord }),
     // Polar panel aspect = polar_bbox height/width (1 for a full circle).
-    ...(normalized.coord?.type === "radial" && {
-      coordFixed: {
-        type: "radial" as const,
-        aspect: radialPanelAspect(normalized.coord),
-      },
+    ...(coord?.type === "radial" && {
+      coordFixed: { type: "radial" as const, aspect: radialPanelAspect(coord) },
     }),
     nrow,
     ncol,
@@ -237,20 +254,20 @@ export function finalizePanelLayoutPass(input: {
     legendInputs,
     legendOrder: normalized.legend?.order ?? "stable-domain",
     theme,
-    layoutAxisTitleSize: Math.max(
-      theme.axisTitleSize,
-      xGuide.theme?.titleSize ?? 0,
-      yGuide.theme?.titleSize ?? 0,
-    ),
-    layoutAxisTextSize: Math.max(
-      theme.axisTextSize,
-      xGuide.theme?.labelSize ?? 0,
-      yGuide.theme?.labelSize ?? 0,
-    ),
+    ...axisTypography(theme, xGuide, yGuide),
     options,
     warnings,
   });
   perfMark("ggts:layout:end");
   perfMeasure("ggts:layout", "ggts:layout:start", "ggts:layout:end");
+
+  warnings.push(
+    ...collectPanelLayoutWarnings({
+      panelLayout,
+      viewport: { width: options.width, height: options.height },
+      coordConstrained: coord?.type === "fixed" || coord?.type === "sf" || coord?.type === "radial",
+      suppressed: typeof normalized.theme === "object" && normalized.theme.panelAspect === "free",
+    }),
+  );
   return panelLayout;
 }
