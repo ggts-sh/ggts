@@ -105,7 +105,6 @@ export function jsonDepth(value: unknown, cap: number): number {
 
 export {
   effectiveChannel,
-  resolveFieldEvidence,
   resolveLayerFieldEvidence,
   type FieldEvidenceEntry,
   type FieldEvidenceMap,
