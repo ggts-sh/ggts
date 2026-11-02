@@ -41,8 +41,8 @@ Two rules worth keeping in working memory:
   `type:"log"` canonicalizes to linear+log10. Scale transforms run before
   stats and positions; coord transforms run after stats.
 - color/fill families: `ordinal`, `sequential`, `binned`, `manual`,
-  `identity`. 107 named schemes — 47 categorical (`observable10`, `colorblind`,
-  `Dark2`, Crameri `batlowS`…) and 60 sequential/diverging (`viridis`, `magma`,
+  `identity`. 106 named schemes — 47 categorical (`observable10`, `colorblind`,
+  `Dark2`, Crameri `batlowS`…) and 59 sequential/diverging (`viridis`,
   `Blues`, `RdBu`, Crameri `batlow`, cyclic `romaO`…).
   Size/linewidth/alpha and shape/linetype have their own scale families.
 - Three equivalent skins:

@@ -17,7 +17,6 @@ import { sequentialSchemeRamp } from "../../../../../packages/core/src/scales/se
 /** Mirrors SEQUENTIAL_SCHEME_NAMES in @ggts-sh/spec (registry order). */
 const SEQUENTIAL_SCHEME_NAME_LIST = [
   "viridis",
-  "magma",
   "plasma",
   "inferno",
   "cividis",

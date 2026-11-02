@@ -97,7 +97,6 @@ export const CYCLIC_SCHEME_NAMES = ["bamO", "brocO", "corkO", "romaO", "vikO"] a
  */
 export const SEQUENTIAL_SCHEME_NAMES = [
   "viridis",
-  "magma",
   "plasma",
   "inferno",
   "cividis",

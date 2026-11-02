@@ -5,7 +5,7 @@
  * spec surface through trainDiscrete: explicit domain = pinned mode
  * (suspends stored assignments), domainMode, scheme/range, onExhaust.
  *
- * Continuous-family schemes (viridis/magma/… and Crameri scientific maps)
+ * Continuous-family schemes (viridis/inferno/… and Crameri scientific maps)
  * sample k evenly spaced colors across the ramp for the trained domain size
  * (#828 scale_*_viridis_d), matching the ggplot2 discrete-viridis contract
  * rather than taking the first k dark stops of a fixed table.

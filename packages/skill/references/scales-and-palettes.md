@@ -266,12 +266,11 @@ does). Cyclic `*O` names are sequential only.
 restarts the palette and emits the bounded `palette-exhausted` warning once;
 `error` throws the `palette-exhausted` pipeline error instead.
 
-### Sequential schemes (60)
+### Sequential schemes (59)
 
 | Scheme   | Description                                            |
 | -------- | ------------------------------------------------------ |
 | viridis  | Default sequential: perceptually uniform purple→yellow |
-| magma    | Perceptually uniform black→red→pale yellow             |
 | plasma   | Perceptually uniform blue→magenta→yellow               |
 | inferno  | Perceptually uniform black→orange→yellow               |
 | cividis  | Colorblind-optimized blue→yellow                       |

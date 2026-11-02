@@ -38,7 +38,7 @@
   const sequentialExample = [
     `<ScaleColorContinuous scheme="viridis" />`,
     `<!-- or family shell: -->`,
-    `<ScaleColorViridisC option="magma" />`,
+    `<ScaleColorViridisC option="inferno" />`,
   ].join("\n");
 </script>
 

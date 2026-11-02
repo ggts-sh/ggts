@@ -2,26 +2,13 @@
  * Named sequential / diverging-ish continuous color schemes (viridis family).
  *
  * 10-stop tables are public-domain / CC0 matplotlib-style samples of the
- * viridis, magma, plasma, inferno, and cividis maps (clean-room hex tables —
- * not ggplot2 R source). Turbo is Google's colormap (Apache-2.0); see NOTICE.
+ * viridis, plasma, inferno, and cividis maps (clean-room hex tables — not
+ * ggplot2 R source). Turbo is Google's colormap (Apache-2.0); see NOTICE.
  *
  * {@link VIRIDIS_RAMP_10} is re-exported as the `viridis` entry so edition
  * identity checks (`=== VIRIDIS_RAMP_10`) remain valid.
  */
 import { VIRIDIS_RAMP_10 } from "./viridis-ramp.js";
-
-const MAGMA_RAMP_10: readonly string[] = [
-  "#000004",
-  "#1b0c41",
-  "#4a0c6b",
-  "#781c6d",
-  "#a52c60",
-  "#cf4446",
-  "#ed6925",
-  "#fb9b06",
-  "#f7d13d",
-  "#fcfdbf",
-];
 
 const PLASMA_RAMP_10: readonly string[] = [
   "#0d0887",
@@ -83,7 +70,6 @@ const TURBO_RAMP_10: readonly string[] = [
  */
 const SEQUENTIAL_SCHEME_RAMPS = {
   viridis: VIRIDIS_RAMP_10,
-  magma: MAGMA_RAMP_10,
   plasma: PLASMA_RAMP_10,
   inferno: INFERNO_RAMP_10,
   cividis: CIVIDIS_RAMP_10,

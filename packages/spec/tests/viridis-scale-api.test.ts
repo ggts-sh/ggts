@@ -45,16 +45,23 @@ describe("viridis named scale helpers (#828)", () => {
     });
   });
 
-  it("maps option and direction helper fields without leaking them into PortableSpec", () => {
-    expect(scaleColorViridisC({ option: "magma", direction: -1 })).toEqual({
-      color: { type: "sequential", scheme: "magma", reverse: true },
-    });
-    expect(scaleColorViridisD({ option: "turbo", reverse: true })).toEqual({
-      color: { type: "ordinal", scheme: "turbo", reverse: true },
-    });
-    const json = scaleColorViridisC({ option: "cividis", direction: 1 });
-    expect(json.color).not.toHaveProperty("option");
-    expect(json.color).not.toHaveProperty("direction");
+  it("rejects the removed magma option and portable scheme", () => {
+    expect(() => scaleColorViridisC({ option: "magma" as "viridis" })).toThrow(
+      /Unknown viridis option/,
+    );
+    for (const channel of ["color", "fill"]) {
+      for (const type of ["sequential", "ordinal", "binned"]) {
+        const spec = {
+          data: { values: [{ x: 1, y: 2 }] },
+          aes: { x: { field: "x" }, y: { field: "y" } },
+          layers: [point],
+          scales: { [channel]: { type, scheme: "magma" } },
+        };
+        expect(validate(spec).ok).toBe(false);
+        spec.scales[channel]!.scheme = "inferno";
+        expect(validate(spec).ok).toBe(true);
+      }
+    }
   });
 
   it("rejects unknown option names loudly", () => {

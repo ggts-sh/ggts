@@ -21,6 +21,37 @@ The accepted lifecycle and deprecation policy remains in
 [Lifecycle and editions](/guide/lifecycle#lifecycle-tags); this page applies it
 rather than creating a second policy.
 
+## 0.44 to 0.45
+
+### Removed the \`magma\` sequential scheme
+
+\`magma\` is gone from the sequential scheme registry because its ramp was a
+near-duplicate of \`inferno\`. \`inferno\` is unchanged and remains the
+replacement. No alias is registered: a spec or helper that still names
+\`magma\` fails validation, so change every use rather than relying on a
+deprecation shim.
+
+\`\`\`json fragment
+// Before
+{
+  "scales": { "color": { "type": "sequential", "scheme": "magma" } }
+}
+\`\`\`
+
+\`\`\`json fragment
+// After
+{
+  "scales": { "color": { "type": "sequential", "scheme": "inferno" } }
+}
+\`\`\`
+
+The viridis-family constructors take the same names: replace
+\`option: "magma"\` with \`option: "inferno"\` in \`scaleColorViridisC()\`,
+\`scaleColorViridisD()\`, \`scaleColorViridisB()\` and their fill equivalents.
+Ordinal scales that sampled \`magma\` take the same substitution. The removed
+name is also gone from \`SEQUENTIAL_SCHEME_NAMES\`, so typed code that indexes
+the registry needs the same edit.
+
 ## 0.42 to 0.43
 
 ### ggsvelte is now ggts

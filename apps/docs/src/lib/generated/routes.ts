@@ -12665,6 +12665,16 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
+        id: "0-44-to-0-45",
+        title: "0.44 to 0.45",
+        level: 2,
+      },
+      {
+        id: "removed-the-magma-sequential-scheme",
+        title: "Removed the magma sequential scheme",
+        level: 3,
+      },
+      {
         id: "0-42-to-0-43",
         title: "0.42 to 0.43",
         level: 2,
