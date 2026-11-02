@@ -1,12 +1,25 @@
 ---
 name: ggts
-description: Build data visualizations with ggts, a grammar-of-graphics charting library (ggplot2 semantics, React and Svelte 5 components, TypeScript builders, JSON specs, headless SVG rendering). Use whenever creating, editing, validating, or debugging charts, plots, graphs, scatter plots, bar charts, histograms, line charts, boxplots, density plots, violins, heatmaps, maps, faceted/small-multiple charts, or data visualization in a JavaScript/TypeScript/React/Svelte project; when code imports from "@ggts-sh/react", "@ggts-sh/svelte", "@ggts-sh/spec", or "@ggts-sh/core"; when composing GGPlot with Geom*/Scale*/Theme*/Facet*/Coord*/Guide*/Labs children; when emitting a ggts plot spec JSON; or when rendering charts server-side/headless to SVG.
+description: Build data visualizations with ggts, a grammar-of-graphics charting library (ggplot2 semantics, React and Svelte 5 components, TypeScript builders, JSON specs, headless SVG rendering). Use whenever creating, editing, validating, or debugging charts, plots, statistical graphs, scatter plots, bar charts, histograms, line charts, boxplots, density plots, violins, heatmaps, maps, faceted/small-multiple charts, or data visualization in a JavaScript/TypeScript/React/Svelte project; when code imports from "@ggts-sh/react", "@ggts-sh/svelte", "@ggts-sh/spec", or "@ggts-sh/core"; when composing GGPlot with Geom*/Scale*/Theme*/Facet*/Coord*/Guide*/Labs children; when emitting a ggts plot spec JSON; or when rendering charts server-side/headless to SVG.
 ---
 
 # ggts
 
 ggplot2’s layered grammar for TypeScript, with headless rendering and React
 and Svelte adapters. A chart spec carries the same grammar between surfaces.
+
+## Outside ggts
+
+ggts does not support node-link diagrams or compute graph layouts
+(force-directed, layered, or circular). For a node-link request, state this
+limit before writing a spec. Use a graph library the user picks, or offer:
+
+- An adjacency matrix: `tile`, with rows and columns sorted by cluster or degree.
+- A degree distribution: `histogram` for node degrees or `col` for degree counts.
+- Edge counts between groups: a `tile` heatmap.
+
+Do not imitate a node-link diagram with `segment` + `point` or write a custom
+graph layout; use the chosen graph library or a supported chart instead.
 
 ## Choose the target
 
