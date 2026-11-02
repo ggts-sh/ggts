@@ -92,6 +92,83 @@ describe("Legend scene rendering", () => {
     expect(container.querySelector(".gg-legend-swatch")?.getAttribute("y")).toBe("46");
   });
 
+  it("honors explicit side-title coordinates without reserving a top band", () => {
+    const legend: SceneDiscreteLegend = {
+      type: "discrete",
+      scale: "color",
+      title: "Group",
+      titleX: 4,
+      titleY: 16,
+      titleHeight: 0,
+      position: "right",
+      direction: "vertical",
+      x: 0,
+      y: 0,
+      width: 180,
+      height: 90,
+      swatchSize: 10,
+      entries: [{ value: "a", label: "A", color: "#123456", x: 40, y: 4, height: 24 }],
+    };
+    const { container } = render(Legend, { legend, theme });
+    const title = container.querySelector(".gg-legend-title");
+    expect(title?.getAttribute("x")).toBe("4");
+    expect(title?.getAttribute("y")).toBe("16");
+    // The title is beside the rows: the key keeps its measured x/y, not a top band.
+    expect(container.querySelector(".gg-legend-swatch")?.getAttribute("x")).toBe("44");
+    expect(container.querySelector(".gg-legend-swatch")?.getAttribute("y")).toBe("11");
+    expect(container.querySelector(".gg-legend-label")?.getAttribute("x")).toBe("60");
+  });
+
+  it("honors an explicit right-title x past the row content", () => {
+    const legend: SceneDiscreteLegend = {
+      type: "discrete",
+      scale: "color",
+      title: "Group",
+      titleX: 132,
+      titleY: 16,
+      titleHeight: 0,
+      position: "right",
+      direction: "vertical",
+      x: 0,
+      y: 0,
+      width: 180,
+      height: 90,
+      swatchSize: 10,
+      entries: [{ value: "a", label: "A", color: "#123456", y: 4, height: 24 }],
+    };
+    const { container } = render(Legend, { legend, theme });
+    expect(container.querySelector(".gg-legend-title")?.getAttribute("x")).toBe("132");
+    expect(container.querySelector(".gg-legend-title")?.getAttribute("y")).toBe("16");
+  });
+
+  it("displays the shortened title and keeps the full title accessible", () => {
+    const legend: SceneDiscreteLegend = {
+      type: "discrete",
+      scale: "color",
+      title: "Monthly revenue by region and channel",
+      titleLabel: "Monthly revenue…",
+      titleX: 92,
+      titleY: 16,
+      titleHeight: 0,
+      position: "right",
+      direction: "vertical",
+      x: 0,
+      y: 0,
+      width: 180,
+      height: 90,
+      swatchSize: 10,
+      entries: [{ value: "a", label: "A", color: "#123456", x: 40, y: 4, height: 24 }],
+    };
+    const { container } = render(Legend, { legend, theme });
+    const title = container.querySelector(".gg-legend-title");
+    expect(title?.firstChild?.textContent).toBe("Monthly revenue…");
+    expect(title?.querySelector("title")?.textContent).toBe(
+      "Monthly revenue by region and channel",
+    );
+    expect(title?.getAttribute("x")).toBe("92");
+    expect(container.querySelector(".gg-legend-swatch")?.getAttribute("x")).toBe("44");
+  });
+
   it("exposes a truncated colorstep entry's complete semantic label", () => {
     const legend: SceneStepsLegend = {
       type: "steps",

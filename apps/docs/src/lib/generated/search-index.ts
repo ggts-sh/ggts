@@ -19954,6 +19954,26 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["ydensity-group-dropped"],
   },
   {
+    id: "heading:guide-errors:panel-aspect-extreme",
+    kind: "heading",
+    title: "panel-aspect-extreme",
+    summary:
+      "panel-aspect-extreme in Errors reference. Understand validation, render, interaction, and CLI diagnostics and recover safely.",
+    href: "/guide/errors#panel-aspect-extreme",
+    keywords: ["Errors reference", "Reference"],
+    exact: ["panel-aspect-extreme"],
+  },
+  {
+    id: "heading:guide-errors:panel-height-share-low",
+    kind: "heading",
+    title: "panel-height-share-low",
+    summary:
+      "panel-height-share-low in Errors reference. Understand validation, render, interaction, and CLI diagnostics and recover safely.",
+    href: "/guide/errors#panel-height-share-low",
+    keywords: ["Errors reference", "Reference"],
+    exact: ["panel-height-share-low"],
+  },
+  {
     id: "heading:guide-errors:interaction-diagnostics-ggts-sh-svelte",
     kind: "heading",
     title: "Interaction diagnostics (@ggts-sh/svelte)",
@@ -52029,6 +52049,34 @@ export const DOCS_SEARCH_INDEX = [
       "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
     ],
     exact: ["ydensity-group-dropped", "warning:ydensity-group-dropped"],
+  },
+  {
+    id: "diagnostic:warning:panel-aspect-extreme",
+    kind: "diagnostic",
+    title: "panel-aspect-extreme · warning",
+    summary:
+      "A rendered panel is far from 2:1 at the current viewport; change the plot dimensions for a readable data area.",
+    href: "/guide/errors#panel-aspect-extreme",
+    keywords: [
+      "warning",
+      "warning",
+      "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
+    ],
+    exact: ["panel-aspect-extreme", "warning:panel-aspect-extreme"],
+  },
+  {
+    id: "diagnostic:warning:panel-height-share-low",
+    kind: "diagnostic",
+    title: "panel-height-share-low · warning",
+    summary:
+      "The rendered panel grid takes less than half the plot height; title, axis, and guide chrome dominate the viewport.",
+    href: "/guide/errors#panel-height-share-low",
+    keywords: [
+      "warning",
+      "warning",
+      "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
+    ],
+    exact: ["panel-height-share-low", "warning:panel-height-share-low"],
   },
   {
     id: "diagnostic:interaction:INTERACTION_INTERVAL_FACET_UNSUPPORTED",

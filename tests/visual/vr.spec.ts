@@ -6,7 +6,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { rows as legendFocusRows } from "../../examples/interaction/legend-focus/data.js";
+import { renderToSVGString, runPipeline } from "../../packages/core/src/render-entry.js";
+import type { SceneDiscreteLegend } from "../../packages/core/src/scene.js";
 import { settleVisualState } from "./helpers/deterministic";
+import { LEGEND_TITLE_SCENARIOS } from "./legend-title-scenarios";
 import {
   SMOKE_SCENARIOS,
   type InteractionHandlerId,
@@ -175,3 +178,100 @@ for (const scenario of SMOKE_SCENARIOS) {
     await handler(page, scenario);
   });
 }
+
+/**
+ * Discrete legend titles, rendered by the public core pipeline into a
+ * standalone white page. The wide seat keeps the adaptive title on the key
+ * row; the narrow seat moves it above the keys. Geometry is asserted before
+ * the screenshot so a placement regression fails on the property, not only on
+ * pixels (#1884–#1886). No gallery example is changed for these seats.
+ */
+test.describe("legend title placement", () => {
+  for (const scenario of LEGEND_TITLE_SCENARIOS) {
+    test(`discrete legend title — ${scenario.id}`, async ({ page }) => {
+      await page.setViewportSize({ width: scenario.width, height: scenario.height });
+
+      const model = runPipeline(scenario.spec, {
+        width: scenario.width,
+        height: scenario.height,
+      });
+      const legend = model.scene.legends.find(
+        (candidate): candidate is SceneDiscreteLegend =>
+          candidate.type === "discrete" && candidate.direction === "horizontal",
+      );
+      if (legend === undefined) {
+        throw new Error("expected a horizontal discrete legend in the scene");
+      }
+      const firstKey = legend.entries[0];
+      if (firstKey === undefined) throw new Error("expected at least one legend key");
+      const titleX = legend.titleX;
+      const titleY = legend.titleY;
+      if (titleX === undefined || titleY === undefined) {
+        throw new Error("expected discrete legend title baselines in the scene");
+      }
+      const keyRows = new Set(legend.entries.map((entry) => entry.y));
+      if (scenario.expected === "same-row") {
+        expect(keyRows.size, "wide scenario keeps every key on one row").toBe(1);
+        expect(titleX, "wide title sits left of the keys").toBeLessThan(firstKey.x);
+        expect(titleY, "wide title baseline sits in the key row").toBeGreaterThan(firstKey.y);
+        expect(titleY).toBeLessThan(firstKey.y + (firstKey.height ?? 24));
+      } else {
+        expect(keyRows.size, "narrow scenario wraps keys onto several rows").toBeGreaterThan(1);
+        expect(titleY, "narrow title baseline sits above the keys").toBeLessThan(firstKey.y);
+      }
+
+      const svg = renderToSVGString(scenario.spec, {
+        width: scenario.width,
+        height: scenario.height,
+      });
+      await page.setContent(
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+          "<style>html,body{margin:0;padding:0;background:#ffffff;color-scheme:light}" +
+          "svg.gg-plot{display:block}</style></head><body>" +
+          `${svg}</body></html>`,
+      );
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+      });
+
+      const plot = page.locator("svg.gg-plot");
+      const legendNode = plot.locator(".gg-legend");
+      await expect(legendNode).toHaveClass(/gg-legend-bottom/);
+      await expect(legendNode).toHaveClass(/gg-legend-horizontal/);
+
+      const titleBox = await legendNode.locator(".gg-legend-title").boundingBox();
+      if (titleBox === null) throw new Error("expected a visible legend title");
+      const labels = await legendNode.locator(".gg-legend-label").evaluateAll((nodes) =>
+        nodes.map((node) => {
+          const rect = node.getBoundingClientRect();
+          return {
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height,
+            row: Number(node.getAttribute("y")),
+          };
+        }),
+      );
+      expect(labels.length, "one rendered label per legend key").toBe(legend.entries.length);
+      const firstLabel = labels[0];
+      if (firstLabel === undefined) throw new Error("expected at least one legend label");
+      // Rows come from the laid-out SVG baseline, not glyph ink, so labels with
+      // different ascenders cannot split one visual row.
+      const renderedRows = new Set(labels.map((label) => label.row));
+
+      if (scenario.expected === "same-row") {
+        expect(renderedRows.size, "wide scenario renders one label row").toBe(1);
+        expect(
+          Math.abs(titleBox.y + titleBox.height / 2 - (firstLabel.y + firstLabel.height / 2)),
+        ).toBeLessThanOrEqual(3);
+        expect(titleBox.x + titleBox.width).toBeLessThanOrEqual(firstLabel.x);
+      } else {
+        expect(renderedRows.size, "narrow scenario renders several label rows").toBeGreaterThan(1);
+        expect(titleBox.y + titleBox.height).toBeLessThanOrEqual(firstLabel.y);
+      }
+
+      await expect(plot).toHaveScreenshot(scenario.basename);
+    });
+  }
+});

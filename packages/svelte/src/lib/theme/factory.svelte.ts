@@ -48,6 +48,8 @@ const THEME_ROLE_KEYS = [
   "axisTitleSize",
   "axisTitleWeight",
   "guideTitleSize",
+  "legendTitlePosition",
+  "panelAspect",
   "legendKeySize",
   "legendKeyGap",
   "legendRowGap",

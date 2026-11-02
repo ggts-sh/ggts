@@ -9,7 +9,13 @@ import type { LayoutTheme, TickFormatter } from "../layout/layout.js";
 import { DEFAULT_LAYOUT_THEME } from "../layout/layout.js";
 import type { TextMeasurer } from "../layout/measure.js";
 import { MetricsTableMeasurer } from "../layout/measure.js";
-import { buildLegends, LegendLayoutError, type LegendInput, type LegendOrder } from "../legend.js";
+import {
+  buildLegends,
+  LegendLayoutError,
+  type LegendInput,
+  type LegendOrder,
+  type ResolvedLegendAppearance,
+} from "../legend.js";
 import type { PositionScale } from "../scales/train.js";
 import type { ThemeTokens } from "../theme.js";
 
@@ -338,6 +344,42 @@ function resolvePanelLayoutDisplay(input: {
   };
 }
 
+function legendArtworkType(legend: LegendInput): ResolvedLegendAppearance["type"] {
+  return (
+    legend.appearance?.type ??
+    (legend.kind === "ramp" ? "colorbar" : legend.kind === "steps" ? "colorsteps" : "legend")
+  );
+}
+
+function legendAppearance(legend: LegendInput, theme: ThemeTokens): ResolvedLegendAppearance {
+  return {
+    type: legendArtworkType(legend),
+    title: legend.appearance?.title ?? legend.title,
+    order: legend.appearance?.order ?? 0,
+    position: legend.appearance?.position ?? "auto",
+    direction: legend.appearance?.direction ?? "auto",
+    ...legend.appearance,
+    ...(legend.kind === "discrete" &&
+      legend.appearance?.titlePosition === undefined &&
+      theme.legendTitlePosition !== undefined && {
+        titlePosition: theme.legendTitlePosition,
+      }),
+    ...(legend.kind === "discrete" && {
+      keySize: legend.appearance?.keySize ?? theme.legendKeySize,
+    }),
+    theme: {
+      titleSize: theme.guideTitleSize,
+      labelSize: theme.axisTextSize,
+      keyGap: theme.legendKeyGap,
+      rowGap: theme.legendRowGap,
+      blockGap: theme.guideBlockGap,
+      colorbarThickness: theme.colorbarThickness,
+      colorbarLength: theme.colorbarLengthMin,
+      ...legend.appearance?.theme,
+    },
+  };
+}
+
 function resolvePanelLayoutLegends(input: {
   legendInputs: readonly LegendInput[];
   legendOrder: LegendOrder;
@@ -359,29 +401,7 @@ function resolvePanelLayoutLegends(input: {
   };
   const legendInputs = input.legendInputs.map((legend) => ({
     ...legend,
-    appearance: {
-      type:
-        legend.appearance?.type ??
-        (legend.kind === "ramp" ? "colorbar" : legend.kind === "steps" ? "colorsteps" : "legend"),
-      title: legend.appearance?.title ?? legend.title,
-      order: legend.appearance?.order ?? 0,
-      position: legend.appearance?.position ?? "auto",
-      direction: legend.appearance?.direction ?? "auto",
-      ...legend.appearance,
-      ...(legend.kind === "discrete" && {
-        keySize: legend.appearance?.keySize ?? theme.legendKeySize,
-      }),
-      theme: {
-        titleSize: theme.guideTitleSize,
-        labelSize: theme.axisTextSize,
-        keyGap: theme.legendKeyGap,
-        rowGap: theme.legendRowGap,
-        blockGap: theme.guideBlockGap,
-        colorbarThickness: theme.colorbarThickness,
-        colorbarLength: theme.colorbarLengthMin,
-        ...legend.appearance?.theme,
-      },
-    },
+    appearance: legendAppearance(legend, theme),
   })) as typeof input.legendInputs;
   try {
     const legendBlock = buildLegends(

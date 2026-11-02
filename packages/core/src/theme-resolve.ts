@@ -44,6 +44,7 @@ type FoundationBag = {
   axisTitleSize: number;
   axisTitleWeight: number;
   guideTitleSize: number;
+  legendTitlePosition?: "top" | "bottom" | "left" | "right";
   legendKeySize: number;
   legendKeyGap: number;
   legendRowGap: number;
@@ -93,6 +94,9 @@ function foundationFromTokens(t: ThemeTokens): FoundationBag {
     axisTitleSize: t.axisTitleSize,
     axisTitleWeight: t.axisTitleWeight,
     guideTitleSize: t.guideTitleSize,
+    ...(t.legendTitlePosition !== undefined && {
+      legendTitlePosition: t.legendTitlePosition,
+    }),
     legendKeySize: t.legendKeySize,
     legendKeyGap: t.legendKeyGap,
     legendRowGap: t.legendRowGap,
@@ -187,6 +191,7 @@ function mergeFoundationLegendLayout(
   fromBase: FoundationBag,
 ): Pick<
   FoundationBag,
+  | "legendTitlePosition"
   | "legendKeySize"
   | "legendKeyGap"
   | "legendRowGap"
@@ -197,7 +202,9 @@ function mergeFoundationLegendLayout(
   | "stripSize"
   | "stripWeight"
 > {
+  const legendTitlePosition = theme.legendTitlePosition ?? fromBase.legendTitlePosition;
   return {
+    ...(legendTitlePosition !== undefined && { legendTitlePosition }),
     legendKeySize: theme.legendKeySize ?? fromBase.legendKeySize,
     legendKeyGap: theme.legendKeyGap ?? fromBase.legendKeyGap,
     legendRowGap: theme.legendRowGap ?? fromBase.legendRowGap,

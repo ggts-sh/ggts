@@ -14,6 +14,8 @@ export interface ResolvedLegendAppearance {
   order: number;
   position: GuidePosition;
   direction: GuideDirection;
+  /** Explicit guide title placement; absent = resolve from theme/adaptive rules. */
+  titlePosition?: "top" | "bottom" | "left" | "right";
   keySize?: number;
   collision?: "ellipsis" | "wrap" | "error";
   force?: boolean;

@@ -8,8 +8,21 @@ import {
 
 import { ensureReactPlotChrome } from "./plot-chrome.js";
 
+/** Left side titles reserve leading legend padding that keys skip; start at the key. */
+function targetStart(target: InteractiveLegendEntry): number {
+  const { titleHeight, titleX, entries } = target.legend;
+  const leading = titleHeight === 0 && titleX === 4 && (entries[0]?.x ?? 0) > 0 ? 4 : 0;
+  return leading + (target.entry.x ?? 0);
+}
+
 function targetLeft(target: InteractiveLegendEntry): number {
-  return target.legend.x + (target.legend.direction === "horizontal" ? (target.entry.x ?? 0) : 0);
+  return target.legend.x + targetStart(target);
+}
+
+/** Right-hand titles occupy the box beyond this x; hit targets stop before it. */
+function contentRight(target: InteractiveLegendEntry): number {
+  const { titleHeight, titleX, width } = target.legend;
+  return titleHeight === 0 && titleX !== undefined && titleX > 4 ? Math.min(width, titleX) : width;
 }
 
 function targetWidth(
@@ -17,13 +30,15 @@ function targetWidth(
   index: number,
   entries: readonly InteractiveLegendEntry[],
 ): number {
-  if (target.legend.direction !== "horizontal") return Math.max(24, target.legend.width);
-  const start = target.entry.x ?? 0;
+  const start = targetStart(target);
+  if (target.legend.direction !== "horizontal") {
+    return Math.max(24, contentRight(target) - start);
+  }
   const next = entries[index + 1];
   const end =
     next?.legend === target.legend && next.entry.y === target.entry.y
-      ? (next.entry.x ?? target.legend.width)
-      : target.legend.width;
+      ? targetStart(next)
+      : contentRight(target);
   return Math.max(24, end - start);
 }
 

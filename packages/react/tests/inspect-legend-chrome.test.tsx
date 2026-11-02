@@ -29,6 +29,22 @@ function hoverFirstMark(container: HTMLElement): void {
   });
 }
 
+function expectContains(outer: DOMRect, inner: DOMRect, tolerance = 1.5): void {
+  expect(inner.left).toBeGreaterThanOrEqual(outer.left - tolerance);
+  expect(inner.top).toBeGreaterThanOrEqual(outer.top - tolerance);
+  expect(inner.right).toBeLessThanOrEqual(outer.right + tolerance);
+  expect(inner.bottom).toBeLessThanOrEqual(outer.bottom + tolerance);
+}
+
+function overlaps(left: DOMRect, right: DOMRect, tolerance = 1.5): boolean {
+  return (
+    left.left < right.right - tolerance &&
+    left.right > right.left + tolerance &&
+    left.top < right.bottom - tolerance &&
+    left.bottom > right.top + tolerance
+  );
+}
+
 describe("React inspect tooltip chrome", () => {
   it("matches Svelte default tooltip: compact theme card, pin hint, no Close", async () => {
     const view = render(
@@ -206,4 +222,47 @@ describe("React legend focus chrome", () => {
     const circles = view.container.querySelectorAll<SVGCircleElement>(".gg-points circle");
     expect([...circles].some((mark) => mark.style.opacity === "0.36")).toBe(true);
   });
+
+  it.each(["left", "right"] as const)(
+    "aligns a %s side-titled vertical legend hit target with its row",
+    async (titlePosition) => {
+      const view = render(
+        <div style={{ width: 480 }}>
+          <GGPlot data={rows} aes={{ x: "x", y: "y", color: "group" }} width={480} height={320}>
+            <GeomPoint />
+            <GuideLegend
+              channel="color"
+              focus
+              title="Group"
+              titlePosition={titlePosition}
+              position="right"
+              direction="vertical"
+            />
+          </GGPlot>
+        </div>,
+      );
+      const target = await view.findByRole("button", { name: /A \(.*legend\)/ });
+      const title = view.container.querySelector<SVGTextElement>(".gg-legend-title");
+      const label = view.container.querySelector<SVGTextElement>(".gg-legend-label");
+      const key = view.container.querySelector<SVGElement>(".gg-legend-key");
+      if (title === null || label === null || key === null) {
+        throw new Error("missing legend chrome");
+      }
+      const targetRect = target.getBoundingClientRect();
+      const titleRect = title.getBoundingClientRect();
+      expectContains(targetRect, label.getBoundingClientRect());
+      expectContains(targetRect, key.getBoundingClientRect());
+      expect(
+        overlaps(targetRect, titleRect),
+        JSON.stringify({ target: targetRect.toJSON(), title: titleRect.toJSON() }),
+      ).toBe(false);
+      if (titlePosition === "left") {
+        expect(targetRect.left).toBeGreaterThanOrEqual(titleRect.right - 1.5);
+      } else {
+        expect(targetRect.right).toBeLessThanOrEqual(titleRect.left + 1.5);
+      }
+      fireEvent.click(target);
+      expect(target.getAttribute("aria-pressed")).toBe("true");
+    },
+  );
 });

@@ -17,6 +17,19 @@
   );
   const titleSize = $derived(legend.titleSize ?? 11);
   const labelSize = $derived(legend.labelSize ?? 11);
+  const titleX = $derived(
+    legend.type === "discrete" ? (legend.titleX ?? 4) : 4,
+  );
+  const titleY = $derived(
+    legend.type === "discrete"
+      ? (legend.titleY ?? Math.max(11, contentTop - 7))
+      : Math.max(11, contentTop - 7),
+  );
+  const displayTitle = $derived(
+    legend.type === "discrete"
+      ? (legend.titleLabel ?? legend.title)
+      : legend.title,
+  );
 </script>
 
 <g
@@ -26,11 +39,14 @@
   {#if legend.title !== ""}
     <text
       class="gg-legend-title"
-      x="4"
-      y={Math.max(11, contentTop - 7)}
+      x={titleX}
+      y={titleY}
       font-size={titleSize}
       font-weight="bold"
-      fill={ink}>{legend.title}</text
+      fill={ink}
+      >{displayTitle}{#if displayTitle !== legend.title}<title
+          >{legend.title}</title
+        >{/if}</text
     >
   {/if}
   {#if legend.type === "discrete"}

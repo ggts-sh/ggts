@@ -12124,6 +12124,16 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "panel-aspect-extreme",
+        title: "panel-aspect-extreme",
+        level: 3,
+      },
+      {
+        id: "panel-height-share-low",
+        title: "panel-height-share-low",
+        level: 3,
+      },
+      {
         id: "interaction-diagnostics-ggts-sh-svelte",
         title: "Interaction diagnostics (@ggts-sh/svelte)",
         level: 2,

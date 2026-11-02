@@ -222,7 +222,7 @@ let External = [
   /(^mult$|^add$)/,
   /(^type$|^title$|^showTicks$|^showLabels$|^collision$|^theme$)/,
   /(^titleSize$|^labelSize$|^keyGap$|^rowGap$|^blockGap$|^colorbarThickness$|^colorbarLength$)/,
-  /(^type$|^title$|^order$|^position$|^direction$|^keySize$|^collision$|^force$|^theme$)/,
+  /(^type$|^title$|^order$|^position$|^direction$|^titlePosition$|^keySize$|^collision$|^force$|^theme$)/,
   /(^titleSize$|^labelSize$|^keyGap$|^rowGap$|^blockGap$|^colorbarThickness$|^colorbarLength$)/,
   /(^type$|^title$|^order$|^position$|^direction$|^showTicks$|^showLabels$|^collision$|^force$|^theme$)/,
   /(^titleSize$|^labelSize$|^keyGap$|^rowGap$|^blockGap$|^colorbarThickness$|^colorbarLength$)/,
@@ -241,7 +241,7 @@ let External = [
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$)/,
   /(^order$)/,
   /(^title$|^subtitle$|^caption$|^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$)/,
-  /(^name$|^ink$|^paper$|^accent$|^grid$|^panel$|^letterboxFill$|^axisText$|^axisLine$|^tickColor$|^panelBorder$|^interactionInk$|^interactionMuted$|^focusRing$|^crosshair$|^selectionFill$|^selectionStroke$|^tooltipPaper$|^tooltipInk$|^tooltipBorder$|^toolActive$|^fontFamily$|^fontSize$|^axisTextSize$|^fontWeight$|^titleSize$|^titleWeight$|^subtitleSize$|^subtitleWeight$|^axisTitleSize$|^axisTitleWeight$|^guideTitleSize$|^legendKeySize$|^legendKeyGap$|^legendRowGap$|^guideBlockGap$|^colorbarThickness$|^colorbarLengthMin$|^captionSize$|^stripSize$|^stripWeight$|^axisLineWidth$|^tickWidth$|^tickLength$|^gridWidth$|^panelBorderWidth$|^gridDasharray$|^axisLineX$|^axisLineY$|^ticksX$|^ticksY$|^labelsX$|^labelsY$|^gridX$|^gridY$|^showPanelBorder$)/,
+  /(^name$|^ink$|^paper$|^accent$|^grid$|^panel$|^panelAspect$|^letterboxFill$|^axisText$|^axisLine$|^tickColor$|^panelBorder$|^interactionInk$|^interactionMuted$|^focusRing$|^crosshair$|^selectionFill$|^selectionStroke$|^tooltipPaper$|^tooltipInk$|^tooltipBorder$|^toolActive$|^fontFamily$|^fontSize$|^axisTextSize$|^fontWeight$|^titleSize$|^titleWeight$|^subtitleSize$|^subtitleWeight$|^axisTitleSize$|^axisTitleWeight$|^guideTitleSize$|^legendTitlePosition$|^legendKeySize$|^legendKeyGap$|^legendRowGap$|^guideBlockGap$|^colorbarThickness$|^colorbarLengthMin$|^captionSize$|^stripSize$|^stripWeight$|^axisLineWidth$|^tickWidth$|^tickLength$|^gridWidth$|^panelBorderWidth$|^gridDasharray$|^axisLineX$|^axisLineY$|^ticksX$|^ticksY$|^labelsX$|^labelsY$|^gridX$|^gridY$|^showPanelBorder$)/,
 ];
 
 // @ts-ignore
@@ -5924,6 +5924,11 @@ const check_361 = (value) =>
     (typeof value.direction === "string" && value.direction === "auto") ||
     (typeof value.direction === "string" && value.direction === "vertical") ||
     (typeof value.direction === "string" && value.direction === "horizontal")) &&
+  (!("titlePosition" in value) ||
+    (typeof value.titlePosition === "string" && value.titlePosition === "top") ||
+    (typeof value.titlePosition === "string" && value.titlePosition === "bottom") ||
+    (typeof value.titlePosition === "string" && value.titlePosition === "left") ||
+    (typeof value.titlePosition === "string" && value.titlePosition === "right")) &&
   (!("keySize" in value) ||
     (Number.isFinite(value.keySize) && value.keySize <= 48 && value.keySize >= 4)) &&
   (!("collision" in value) ||
@@ -7238,6 +7243,9 @@ const check_392 = (value) =>
   (!("accent" in value) || typeof value.accent === "string") &&
   (!("grid" in value) || typeof value.grid === "string") &&
   (!("panel" in value) || typeof value.panel === "string") &&
+  (!("panelAspect" in value) ||
+    (typeof value.panelAspect === "string" && value.panelAspect === "auto") ||
+    (typeof value.panelAspect === "string" && value.panelAspect === "free")) &&
   (!("letterboxFill" in value) || typeof value.letterboxFill === "string") &&
   (!("axisText" in value) || typeof value.axisText === "string") &&
   (!("axisLine" in value) || typeof value.axisLine === "string") &&
@@ -7281,6 +7289,11 @@ const check_392 = (value) =>
     (Number.isFinite(value.guideTitleSize) &&
       value.guideTitleSize <= 32 &&
       value.guideTitleSize >= 8)) &&
+  (!("legendTitlePosition" in value) ||
+    (typeof value.legendTitlePosition === "string" && value.legendTitlePosition === "top") ||
+    (typeof value.legendTitlePosition === "string" && value.legendTitlePosition === "bottom") ||
+    (typeof value.legendTitlePosition === "string" && value.legendTitlePosition === "left") ||
+    (typeof value.legendTitlePosition === "string" && value.legendTitlePosition === "right")) &&
   (!("legendKeySize" in value) ||
     (Number.isFinite(value.legendKeySize) &&
       value.legendKeySize <= 48 &&

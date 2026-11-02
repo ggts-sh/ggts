@@ -66,7 +66,6 @@ describe("responsive guide planning", () => {
         .toSorted((left, right) => (left ?? "").localeCompare(right ?? "")),
     ).toEqual(["bottom", "right"]);
     expect(result.scene.panels[0]?.width).toBeLessThan(620);
-    expect(result.scene.panels[0]?.height).toBeLessThan(260);
     const bottomLegend = result.scene.legends.find((legend) => legend.position === "bottom");
     expect(bottomLegend!.width).toBeLessThanOrEqual(result.scene.panels[0]!.width);
     expect(bottomLegend!.y).toBeGreaterThanOrEqual(
@@ -248,5 +247,204 @@ describe("responsive guide planning", () => {
     expect(result.scene.axes.x.titleSize).toBe(16);
     expect(result.scene.axes.x.ticks.every((tick) => tick.labelSize === 12)).toBe(true);
     expect(result.scene.panels[0]!.height).toBeLessThan(baseline.scene.panels[0]!.height);
+  });
+
+  it("places legend titles on the requested side without reserving side bands", () => {
+    const legendFor = (titlePosition: "top" | "bottom" | "left" | "right") => {
+      const legend = runPipeline(
+        gg(rows, aes({ x: "x", y: "y", color: "region" }))
+          .geomPoint()
+          .guides({
+            color: guideLegend({
+              title: "Region",
+              position: "bottom",
+              direction: "horizontal",
+              titlePosition,
+            }),
+          })
+          .spec(),
+        { width: 720, height: 360 },
+      ).scene.legends[0];
+      if (legend?.type !== "discrete") throw new Error("expected a discrete legend");
+      return legend;
+    };
+
+    const left = legendFor("left");
+    expect(left.titleHeight).toBe(0);
+    expect(left.titleX).toBeDefined();
+    expect(left.titleY).toBeDefined();
+    expect(left.entries[0]!.x ?? 0).toBeGreaterThan(left.titleX!);
+
+    const top = legendFor("top");
+    expect(top.titleHeight).toBeGreaterThan(0);
+    expect(top.entries[0]!.y).toBeGreaterThanOrEqual(top.titleHeight!);
+    expect(top.titleY!).toBeLessThan(top.entries[0]!.y);
+
+    const bottom = legendFor("bottom");
+    expect(bottom.titleHeight).toBe(0);
+    expect(bottom.titleY!).toBeGreaterThan(bottom.entries.at(-1)!.y);
+
+    const right = legendFor("right");
+    expect(right.titleHeight).toBe(0);
+    expect(right.titleX).toBeDefined();
+    expect(right.titleY).toBeDefined();
+  });
+
+  it("uses theme title placement and keeps the adaptive horizontal default", () => {
+    const themed = (legendTitlePosition: "top" | "bottom" | "left" | "right") => {
+      const legend = runPipeline(
+        gg(rows, aes({ x: "x", y: "y", color: "region" }))
+          .geomPoint()
+          .theme({ name: "light", legendTitlePosition })
+          .guides({ color: guideLegend({ position: "bottom", direction: "horizontal" }) })
+          .spec(),
+        { width: 720, height: 360 },
+      ).scene.legends[0];
+      if (legend?.type !== "discrete") throw new Error("expected a discrete legend");
+      return legend;
+    };
+    expect(themed("left").titleHeight).toBe(0);
+    expect(themed("top").titleHeight).toBeGreaterThan(0);
+
+    const adaptive = (width: number, labels: string[]) =>
+      runPipeline(
+        gg(
+          labels.map((region, index) => ({ x: index, y: index + 1, region })),
+          aes({ x: "x", y: "y", color: "region" }),
+        )
+          .geomPoint()
+          .guides({ color: guideLegend({ position: "bottom", direction: "horizontal" }) })
+          .spec(),
+        { width, height: 360 },
+      ).scene.legends[0]!;
+    const oneRow = adaptive(720, ["North", "South"]);
+    if (oneRow.type !== "discrete") throw new Error("expected a discrete legend");
+    expect(oneRow.titleHeight).toBe(0);
+    const wrapped = adaptive(190, [
+      "A deliberately long northern category label",
+      "A deliberately long southern category label",
+    ]);
+    if (wrapped.type !== "discrete") throw new Error("expected a discrete legend");
+    expect(wrapped.titleHeight).toBeGreaterThan(0);
+  });
+
+  it("separates guide precedence from same-type field and theme merging", () => {
+    const merged = runPipeline(
+      gg(rows, aes({ x: "x", y: "y", color: "region" }))
+        .geomPoint()
+        .scales(
+          scaleColorDiscrete({
+            guide: guideLegend({
+              title: "Local",
+              position: "bottom",
+              direction: "horizontal",
+              titlePosition: "left",
+              theme: { labelSize: 11 },
+            }),
+          }),
+        )
+        .guides({ color: guideLegend({ title: "Top", theme: { keyGap: 8 } }) })
+        .spec(),
+      { width: 720, height: 360 },
+    ).scene.legends[0];
+    expect(merged).toMatchObject({
+      title: "Top",
+      position: "bottom",
+      direction: "horizontal",
+      labelSize: 11,
+      keyGap: 8,
+      titleHeight: 0,
+    });
+
+    const overridden = runPipeline(
+      gg(rows, aes({ x: "x", y: "y", color: "region" }))
+        .geomPoint()
+        .scales(scaleColorDiscrete({ guide: guideLegend({ titlePosition: "left" }) }))
+        .guides({ color: guideLegend({ titlePosition: "top" }) })
+        .spec(),
+      { width: 720, height: 360 },
+    ).scene.legends[0];
+    expect(overridden?.type).toBe("discrete");
+    if (overridden?.type === "discrete") expect(overridden.titleHeight).toBeGreaterThan(0);
+
+    const split = runPipeline(
+      gg(rows, aes({ x: "x", y: "y", color: "region", shape: "region" }))
+        .geomPoint()
+        .scales({ ...scaleColorDiscrete(), ...scaleShapeDiscrete() })
+        .labs({ color: "Region", shape: "Region" })
+        .guides({
+          color: guideLegend({ position: "bottom", titlePosition: "left" }),
+          shape: guideLegend({ position: "bottom", titlePosition: "top" }),
+        })
+        .spec(),
+      { width: 720, height: 360 },
+    ).scene.legends;
+    expect(split).toHaveLength(2);
+    const bands = split.flatMap((legend) =>
+      legend.type === "discrete" ? [legend.titleHeight ?? 0] : [],
+    );
+    expect(Math.min(...bands)).toBe(0);
+    expect(Math.max(...bands)).toBeGreaterThan(0);
+  });
+
+  it("warns about extreme panel proportions without blocking the render", () => {
+    const spec = gg(rows, aes({ x: "x", y: "y", color: "region" }))
+      .geomPoint()
+      .spec();
+    const wide = runPipeline(spec, { width: 1600, height: 260 });
+    expect(wide.warnings.some((warning) => warning.code === "panel-aspect-extreme")).toBe(true);
+    expect(wide.scene.panels[0]!.width / wide.scene.panels[0]!.height).toBeGreaterThanOrEqual(4);
+
+    const tall = runPipeline(spec, { width: 200, height: 900 });
+    expect(tall.warnings.some((warning) => warning.code === "panel-aspect-extreme")).toBe(true);
+    expect(tall.scene.panels[0]!.width / tall.scene.panels[0]!.height).toBeLessThan(0.25);
+  });
+
+  it("warns when a short plot leaves the panel under half its height", () => {
+    const spec = gg(rows, aes({ x: "x", y: "y", color: "region" }))
+      .geomPoint()
+      .labs({ title: "Title", subtitle: "Subtitle", x: "X", y: "Y", color: "Region" })
+      .guides({ color: guideLegend({ position: "bottom", direction: "horizontal" }) })
+      .spec();
+    const result = runPipeline(spec, { width: 1200, height: 200 });
+    expect(result.warnings.some((warning) => warning.code === "panel-height-share-low")).toBe(true);
+    expect(result.scene.panels[0]!.height / result.scene.height).toBeLessThan(0.5);
+
+    const compact = runPipeline(spec, { width: 1200, height: 300 });
+    expect(compact.scene.panels[0]!.height).toBeGreaterThanOrEqual(174);
+  });
+
+  it("lets the theme mark an intended strip and excludes fixed and radial coords", () => {
+    const extreme = gg(rows, aes({ x: "x", y: "y", color: "region" })).geomPoint();
+    const free = runPipeline(extreme.theme({ name: "light", panelAspect: "free" }).spec(), {
+      width: 1600,
+      height: 260,
+    });
+    expect(
+      free.warnings.some(
+        (warning) =>
+          warning.code === "panel-aspect-extreme" || warning.code === "panel-height-share-low",
+      ),
+    ).toBe(false);
+    expect(free.scene.panels).toHaveLength(1);
+
+    for (const spec of [
+      gg(rows, aes({ x: "x", y: "y" }))
+        .geomPoint()
+        .coordFixed({ ratio: 0.1 })
+        .spec(),
+      gg(rows, aes({ x: "x", y: "y" }))
+        .geomPoint()
+        .coordRadial()
+        .spec(),
+    ]) {
+      const result = runPipeline(spec, { width: 1600, height: 260 });
+      expect(
+        result.warnings.some(
+          (warning) =>
+            warning.code === "panel-aspect-extreme" || warning.code === "panel-height-share-low",
+        ),
+      ).toBe(false);
+    }
   });
 });
