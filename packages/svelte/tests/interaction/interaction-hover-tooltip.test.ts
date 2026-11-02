@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { RenderModel } from "@ggts-sh/core";
+import type { CandidateFacts, RenderModel } from "@ggts-sh/core";
 import GGPlot from "../../src/lib/GGPlot.svelte";
 import "../../src/lib/host-init.js";
 import { render } from "../helpers/render.js";
@@ -25,6 +25,19 @@ describe("hover + tooltip (overlays, never a pipeline re-run)", () => {
         clientY: rect.top + (y / plotH) * rect.height,
         bubbles: true,
       }),
+    );
+  }
+
+  function pointerMoveIntoRect(capture: Element, model: RenderModel, seed: CandidateFacts): void {
+    const batch = model.scene.batches[seed.batchIndex];
+    if (batch.kind !== "rects") throw new Error("expected rect batch");
+    const panel = model.scene.panels[seed.panelIndex];
+    const offset = seed.primitiveIndex * 4;
+    // Bar anchors lie on an edge; exact-hit tooltip tests need an interior point.
+    pointerMoveAt(
+      capture,
+      panel.x + batch.rects[offset] + batch.rects[offset + 2] / 2,
+      panel.y + batch.rects[offset + 1] + batch.rects[offset + 3] / 2,
     );
   }
 
@@ -266,7 +279,7 @@ describe("hover + tooltip (overlays, never a pipeline re-run)", () => {
     }
     if (seed === null || seed.kind !== "rects") throw new Error("expected rect candidate");
     const capture = container.querySelector(".gg-capture")!;
-    pointerMoveAt(capture, seed.x, seed.y);
+    pointerMoveIntoRect(capture, m, seed);
     await until(() => container.querySelector(".gg-tooltip") !== null);
     expect(container.querySelector(".gg-tooltip-axis")).toBeNull();
     const total = container.querySelector(".gg-tooltip-total");
@@ -296,7 +309,7 @@ describe("hover + tooltip (overlays, never a pipeline re-run)", () => {
     const m = requireModel(model);
     const seed = m.candidates.candidate(0);
     if (seed === null) throw new Error("expected candidate");
-    pointerMoveAt(container.querySelector(".gg-capture")!, seed.x, seed.y);
+    pointerMoveIntoRect(container.querySelector(".gg-capture")!, m, seed);
     await until(() => container.querySelector(".gg-tooltip") !== null);
     expect(container.querySelector(".gg-tooltip-total")).toBeNull();
   });
