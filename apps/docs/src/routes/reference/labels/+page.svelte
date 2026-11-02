@@ -60,10 +60,11 @@
   <h2 id="geom-text"><code>GeomText</code></h2>
   <p>
     One text mark per data row at <code>(x, y)</code>. Requires
-    <code>x</code>, <code>y</code>, and <code>label</code> channels. There is
-    <strong>no collision detection</strong> — labels draw exactly where placed.
-    Offset with <code>dx</code>/<code>dy</code> or
-    <code>position="nudge"</code> plus
+    <code>x</code>, <code>y</code>, and <code>label</code> channels. Labels draw
+    exactly where placed unless you opt into <code>checkOverlap</code>
+    (<code>params.checkOverlap</code> in JSON), which drops labels that would
+    overlap an earlier one in the same layer and panel. Offset with
+    <code>dx</code>/<code>dy</code> or <code>position="nudge"</code> plus
     <code>positionParams</code>.
   </p>
   <p>
@@ -78,9 +79,10 @@
 
   <h2 id="geom-label"><code>GeomLabel</code></h2>
   <p>
-    Same placement contract as text, with a rounded rectangular background box.
-    Still no collision detection. <code>color</code> paints ink and box stroke;
-    <code>fill</code> paints the box background when mapped.
+    Same placement contract as text, including opt-in
+    <code>checkOverlap</code>, with a rounded rectangular background box.
+    <code>color</code> paints ink and box stroke; <code>fill</code> paints the box
+    background when mapped.
   </p>
   <p>
     Full reference:
@@ -108,7 +110,7 @@
     </li>
   </ul>
   <p>
-    Runnable contracts:
+    The SF variants do not take <code>checkOverlap</code>. Runnable contracts:
     <a href={`${base}/examples/sf/labels`}>SF region labels</a> and
     <a href={`${base}/examples/sf/boxed-labels`}>SF boxed labels</a>.
   </p>
@@ -118,10 +120,24 @@
     Guide collision policies only apply to guide chrome. Axes use
     <code>auto</code> / <code>preserve</code> / <code>ellipsis</code>; legends
     and colorbars may use <code>ellipsis</code>, <code>wrap</code>, or
-    <code>error</code>. Data-label geoms never auto-dodge or drop overlapping
-    marks — you author placement. A guide with <code>collision: "error"</code>
+    <code>error</code>. A guide with <code>collision: "error"</code>
     that cannot fit fails with a guide-collision diagnostic rather than silently clipping
     (see <a href={`${base}/guide/errors`}>Errors reference</a>).
+  </p>
+  <p>
+    Data-label geoms measure each rendered text box after stats, positions, and
+    coordinate projection. For <code>GeomText</code> the box is the glyph
+    bounds; <code>GeomLabel</code> adds its padding and half the box stroke.
+    Within one layer and one panel, overlapping marks emit the
+    <code>text-label-overlap</code> warning; the message names the layer index
+    and the number of unique overlapping marks. <code>checkOverlap</code>
+    defaults to <code>false</code>, which draws every label and only warns. With
+    <code>checkOverlap: true</code>, labels are kept greedily in draw order: a
+    label that would overlap an earlier retained label is dropped, so earlier
+    rows win, later collisions disappear, and the warning stays silent. Overlaps
+    are never nudged or repelled — the opt-in only skips colliding marks. Layers
+    and panels are measured independently, so labels in different layers or
+    facets do not count as colliding.
   </p>
 
   <h2 id="related">Related surfaces</h2>

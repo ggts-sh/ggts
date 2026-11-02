@@ -1185,7 +1185,7 @@ export const DOCS_ROUTES = [
     path: "/reference/geoms/text",
     title: "GeomText — ggts",
     description:
-      "GeomText: Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "GeomText: Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     canonicalPath: "/reference/geoms/text",
     kind: "page",
     index: true,
@@ -1233,7 +1233,7 @@ export const DOCS_ROUTES = [
     path: "/reference/geoms/label",
     title: "GeomLabel — ggts",
     description:
-      "GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "GeomLabel: Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     canonicalPath: "/reference/geoms/label",
     kind: "page",
     index: true,
@@ -12074,6 +12074,11 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "text-label-overlap",
+        title: "text-label-overlap",
+        level: 3,
+      },
+      {
         id: "coord-tessellation-cap",
         title: "coord-tessellation-cap",
         level: 3,
@@ -12329,6 +12334,11 @@ export const DOCS_ROUTES = [
         id: "spec-lint-advisories-ggts-sh-spec-lintspec",
         title: "Spec-lint advisories (@ggts-sh/spec lintSpec)",
         level: 2,
+      },
+      {
+        id: "node-link-layout-needs-data",
+        title: "node-link-layout (needs: data)",
+        level: 3,
       },
       {
         id: "line-over-nominal-x-needs-data-or-profile",

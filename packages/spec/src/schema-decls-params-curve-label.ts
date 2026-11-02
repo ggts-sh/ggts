@@ -239,11 +239,17 @@ export const ParamsCurveLabelDecls = {
             "Vertical offset in px applied after positioning (positive = down). Default 0.",
         }),
       ),
+      checkOverlap: Type.Optional(
+        Type.Boolean({
+          description:
+            "Drop labels that overlap an earlier retained label in the same layer and panel (greedy, draw order). Default false: labels draw exactly where placed. Overlaps emit a text-label-overlap warning naming the layer index and overlapping mark count.",
+        }),
+      ),
     },
     {
       additionalProperties: false,
       description:
-        "Styling parameters for the text geom (no collision detection: labels draw exactly where placed).",
+        "Styling parameters for the text geom (labels draw where placed; set checkOverlap to skip colliding labels).",
     },
   ),
 
@@ -279,6 +285,12 @@ export const ParamsCurveLabelDecls = {
             "Vertical offset in px applied after positioning (positive = down). Default 0.",
         }),
       ),
+      checkOverlap: Type.Optional(
+        Type.Boolean({
+          description:
+            "Drop labels that overlap an earlier retained label in the same layer and panel (greedy, draw order). Default false: labels draw exactly where placed. Overlaps emit a text-label-overlap warning naming the layer index and overlapping mark count.",
+        }),
+      ),
       padding: Type.Optional(
         Type.Number({
           exclusiveMinimum: 0,
@@ -301,7 +313,7 @@ export const ParamsCurveLabelDecls = {
     {
       additionalProperties: false,
       description:
-        "Styling parameters for the label geom (text with background box; no collision detection).",
+        "Styling parameters for the label geom (text with background box; set checkOverlap to skip colliding labels).",
     },
   ),
 

@@ -89,6 +89,7 @@ export const WARNING_EMISSION_REGISTRY = {
   "temporal-break-outside-domain": { channel: "warning" },
   "band-label-overlap": { channel: "warning" },
   "band-label-margin-overflow": { channel: "warning" },
+  "text-label-overlap": { channel: "warning" },
   "coord-tessellation-cap": { channel: "warning" },
   "coord-invalid-geometry": { channel: "warning" },
   "coord-fixed-degraded": { channel: "warning" },
