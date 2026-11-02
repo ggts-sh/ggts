@@ -20323,6 +20323,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["Spec-lint advisories (@ggts-sh/spec lintSpec)"],
   },
   {
+    id: "heading:guide-advisories:node-link-layout-needs-data",
+    kind: "heading",
+    title: "node-link-layout (needs: data)",
+    summary:
+      "node-link-layout (needs: data) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#node-link-layout-needs-data",
+    keywords: ["Advisories", "Reference"],
+    exact: ["node-link-layout (needs: data)"],
+  },
+  {
     id: "heading:guide-advisories:line-over-nominal-x-needs-data-or-profile",
     kind: "heading",
     title: "line-over-nominal-x (needs: data-or-profile)",

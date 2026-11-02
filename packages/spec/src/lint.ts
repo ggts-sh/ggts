@@ -27,6 +27,7 @@
  *  - lint-layer-rules.ts — layer-scoped rules
  *  - lint-scale-rules.ts — scale-level transform-domain-data and
  *    fractional-calendar-years (year+month/12 linear pitfall)
+ *  - lint-node-link.ts — cross-layer, panel-local endpoint matching
  *
  * Wired into `validate(spec, { lint: true })` (advisories ride the result)
  * and into the `ggts render` CLI (stderr JSON lines, kind "advisory",
@@ -38,12 +39,13 @@ import type { FieldEvidenceEntry, FieldEvidenceMap, ValidateOptions } from "./va
 import {
   DEFAULT_VALIDATE_LIMITS,
   effectiveChannel,
-  resolveFieldEvidence,
+  resolveLayerFieldEvidence,
 } from "./validate-data.js";
 
 import type { LintAdvisoryCode } from "./lint-catalog.js";
 import { collectLayerLintAdvisories } from "./lint-layer-rules.js";
 import { collectScaleLintAdvisories } from "./lint-scale-rules.js";
+import { collectNodeLinkAdvisories } from "./lint-node-link.js";
 
 export { LINT_CATALOG, type LintAdvisoryCode, type LintCatalogEntry } from "./lint-catalog.js";
 
@@ -73,13 +75,10 @@ function isRecord(v: unknown): v is Record<string, unknown> {
  * does, so callers can raise or lower maxRows/maxBytes and data-aware rules
  * honor the override (skip over-limit; never fabricate a complaint).
  */
-function buildEvidence(
-  spec: Record<string, unknown>,
-  options: ValidateOptions | undefined,
-): FieldEvidenceMap | null {
+function buildEvidence(spec: Record<string, unknown>, options: ValidateOptions | undefined) {
   const limits = { ...DEFAULT_VALIDATE_LIMITS, ...options?.limits };
-  const resolved = resolveFieldEvidence(spec, options ?? {}, limits);
-  return resolved.status === "ok" ? resolved.fields : null;
+  const resolved = resolveLayerFieldEvidence(spec, options ?? {}, limits);
+  return resolved.status === "ok" ? resolved : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -94,16 +93,19 @@ function buildEvidence(
  * is missing (including over-limit inline data) skip silently — lint never
  * fabricates a complaint.
  *
- * When called from validate({ lint: true }), pass `sharedEvidence` so field
- * types/columns are not rebuilt after dataChecks already resolved them.
+ * When called from validate({ lint: true }), pass `sharedEvidence` and
+ * `sharedLayerEvidence` so columns are not rebuilt after dataChecks.
  */
 export function lintSpec(
   spec: unknown,
   options?: ValidateOptions,
   sharedEvidence?: FieldEvidenceMap | null,
+  sharedLayerEvidence?: readonly (FieldEvidenceMap | null)[] | null,
 ): SpecAdvisory[] {
   if (!isRecord(spec) || !Array.isArray(spec["layers"])) return [];
-  const evidence = sharedEvidence === undefined ? buildEvidence(spec, options) : sharedEvidence;
+  const resolved = sharedEvidence === undefined ? buildEvidence(spec, options) : null;
+  const evidence = sharedEvidence === undefined ? (resolved?.plot ?? null) : sharedEvidence;
+  const layerEvidence = sharedLayerEvidence ?? resolved?.layers;
   const plotAes = isRecord(spec["aes"]) ? (spec["aes"] as Aes) : undefined;
   const layers = spec["layers"] as unknown[];
   const scales = isRecord(spec["scales"]) ? spec["scales"] : undefined;
@@ -122,5 +124,6 @@ export function lintSpec(
   return [
     ...collectLayerLintAdvisories({ layers, fieldOf }),
     ...collectScaleLintAdvisories({ layers, scales, fieldOf }),
+    ...collectNodeLinkAdvisories(spec, layerEvidence),
   ];
 }

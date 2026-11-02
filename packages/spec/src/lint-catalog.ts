@@ -1,7 +1,7 @@
 /**
  * Spec lint-advisory catalog — pure data for docs and code identity.
  * Runtime SpecAdvisory instances and lintSpec() live in lint.ts;
- * rule emission sites: lint-layer-rules.ts and lint-scale-rules.ts.
+ * Rule emission sites: lint-layer-rules.ts, lint-scale-rules.ts, lint-node-link.ts.
  */
 
 /** One entry of the lint catalog (docs render straight from it). */
@@ -14,6 +14,12 @@ export interface LintCatalogEntry {
 
 /** The lint-advisory catalog — the single source for the docs page. */
 export const LINT_CATALOG = {
+  "node-link-layout": {
+    summary: "Segments connect point rows in a node-link layout.",
+    needs: "data",
+    rationale:
+      "ggts has no graph layout. Segments between points placed by an external layout draw a node-link diagram whose axes mean nothing. Use a graph library, or show the network as an adjacency matrix (`tile`) or a degree distribution (`histogram`).",
+  },
   "line-over-nominal-x": {
     summary: "A line layer connects points across a nominal (unordered) x field.",
     needs: "data-or-profile",
