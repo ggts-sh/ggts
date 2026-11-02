@@ -15,6 +15,7 @@ import { buildBatch, flipBatchInPlace } from "./geometry.js";
 import type { PanelPlacement } from "./panel-layout.js";
 import type { ResolvedStyleScales } from "./geometry-style.js";
 import type { LayerFrame, PipelineWarning, ResolvedColorScale } from "./types.js";
+import { checkTextLabelOverlap } from "./text-label-overlap.js";
 
 /**
  * Which geoms defer projection so path topology survives to
@@ -179,20 +180,37 @@ export function buildGeometryBatches(input: {
     for (let p = 0; p < facetPanels.length; p++) {
       const frame = panelFrames[p]?.[index];
       if (frame === undefined) continue;
-      batches.push(
-        ...buildPanelGeometryBatches({
-          frame,
-          placement: placements[p]!,
-          panelScale: panelScales[p]!,
-          color,
-          fill,
-          styles,
-          flip,
-          projector: coordProjectors[p],
+      const placement = placements[p]!;
+      const projector = coordProjectors[p];
+      const panelBatches = buildPanelGeometryBatches({
+        frame,
+        placement,
+        panelScale: panelScales[p]!,
+        color,
+        fill,
+        styles,
+        flip,
+        projector,
+        warnings,
+        panelIndex: p,
+      });
+      batches.push(...panelBatches);
+      const layer = frame.binding.layer;
+      if (layer.geom !== "text" && layer.geom !== "label") continue;
+      for (const batch of panelBatches) {
+        if (batch.kind !== "glyphs") continue;
+        checkTextLabelOverlap(
+          batch,
+          {
+            withBox: layer.geom === "label",
+            checkOverlap: layer.params?.checkOverlap === true,
+            width: placement.width,
+            height: placement.height,
+            clip: projector?.clip ?? true,
+          },
           warnings,
-          panelIndex: p,
-        }),
-      );
+        );
+      }
     }
   }
   return batches;

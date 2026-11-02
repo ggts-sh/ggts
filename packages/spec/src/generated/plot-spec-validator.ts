@@ -85,11 +85,11 @@ let External = [
   /(^geom$|^stat$|^position$|^positionParams$|^render$|^aes$|^data$|^params$|^inspect$)/,
   /(^width$|^height$|^seed$|^x$|^y$)/,
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$|^group$|^label$|^weight$|^sample$|^ymin$|^ymax$|^xmin$|^xmax$|^xend$|^yend$|^width$|^height$|^z$|^map_id$|^angle$|^radius$)/,
-  /(^alpha$|^size$|^anchor$|^dx$|^dy$)/,
+  /(^alpha$|^size$|^anchor$|^dx$|^dy$|^checkOverlap$)/,
   /(^geom$|^stat$|^position$|^positionParams$|^render$|^aes$|^data$|^params$|^inspect$)/,
   /(^width$|^height$|^seed$|^x$|^y$)/,
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$|^group$|^label$|^weight$|^sample$|^ymin$|^ymax$|^xmin$|^xmax$|^xend$|^yend$|^width$|^height$|^z$|^map_id$|^angle$|^radius$)/,
-  /(^alpha$|^size$|^anchor$|^dx$|^dy$|^padding$|^radius$|^linewidth$)/,
+  /(^alpha$|^size$|^anchor$|^dx$|^dy$|^checkOverlap$|^padding$|^radius$|^linewidth$)/,
   /(^geom$|^stat$|^position$|^render$|^aes$|^data$|^params$|^inspect$)/,
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$|^group$|^label$|^weight$|^sample$|^ymin$|^ymax$|^xmin$|^xmax$|^xend$|^yend$|^width$|^height$|^z$|^map_id$|^angle$|^radius$)/,
   /(^method$|^se$|^level$|^span$|^degree$|^n$|^linewidth$|^alpha$|^strokePaint$|^glow$)/,
@@ -2241,7 +2241,8 @@ const check_133 = (value) =>
     (typeof value.anchor === "string" && value.anchor === "middle") ||
     (typeof value.anchor === "string" && value.anchor === "end")) &&
   (!("dx" in value) || Number.isFinite(value.dx)) &&
-  (!("dy" in value) || Number.isFinite(value.dy));
+  (!("dy" in value) || Number.isFinite(value.dy)) &&
+  (!("checkOverlap" in value) || typeof value.checkOverlap === "boolean");
 
 // @ts-ignore
 const check_134 = (value) =>
@@ -2340,6 +2341,7 @@ const check_139 = (value) =>
     (typeof value.anchor === "string" && value.anchor === "end")) &&
   (!("dx" in value) || Number.isFinite(value.dx)) &&
   (!("dy" in value) || Number.isFinite(value.dy)) &&
+  (!("checkOverlap" in value) || typeof value.checkOverlap === "boolean") &&
   (!("padding" in value) || (Number.isFinite(value.padding) && value.padding > 0)) &&
   (!("radius" in value) || (Number.isFinite(value.radius) && value.radius >= 0)) &&
   (!("linewidth" in value) || (Number.isFinite(value.linewidth) && value.linewidth >= 0));
