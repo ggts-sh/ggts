@@ -140,7 +140,7 @@ function matchesPanels(
     const candidates = byShared.get(
       JSON.stringify(segmentIndices.map((index) => panel.values[index])),
     );
-    if (candidates?.some((nodes) => hasNetwork(segment, panel.rows, nodes))) return true;
+    if (candidates?.some((nodes) => hasNetwork(segment, panel.rows, nodes)) === true) return true;
   }
   return false;
 }
@@ -153,7 +153,7 @@ function continuousAxis(
   evidence: readonly (FieldEvidenceMap | null)[],
 ): boolean {
   if (isRecord(scale) && scale["type"] !== undefined) {
-    return ["linear", "log", "time", "binned"].includes(String(scale["type"]));
+    return ["linear", "log", "time", "binned"].some((type) => type === scale["type"]);
   }
   for (let index = 0; index < layers.length; index++) {
     const layer = layers[index];
