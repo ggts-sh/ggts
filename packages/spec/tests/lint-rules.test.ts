@@ -665,6 +665,28 @@ describe("node-link-layout", () => {
     }
   });
 
+  it("ignores inherited endpoint mappings on point layers", () => {
+    const spec = hubSpec();
+    const result = validate(
+      {
+        ...spec,
+        aes: { ...spec.aes, xend: { field: "unused" } },
+        layers: [
+          spec.layers[0],
+          {
+            ...spec.layers[1],
+            data: {
+              values: spec.layers[1]!.data.values.map((row) => ({ ...row, unused: "category" })),
+            },
+          },
+        ],
+      },
+      { lint: true },
+    );
+    expect(result.ok).toBe(true);
+    expect(result.advisories?.map((a) => a.code)).toContain("node-link-layout");
+  });
+
   it("keeps signed zero facet identities distinct", () => {
     const spec = hubSpec();
     const layers = spec.layers.map((layer, index) => ({

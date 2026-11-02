@@ -168,6 +168,7 @@ function continuousAxis(
     )
       return false;
     for (const channel of axis === "x" ? (["x", "xend"] as const) : (["y", "yend"] as const)) {
+      if (channel !== axis && !["segment", "curve"].includes(String(layer["geom"]))) continue;
       const value = effectiveChannel(plotAes, aes, channel);
       if (
         value !== undefined &&
