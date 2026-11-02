@@ -348,4 +348,3 @@ function estimateBytes(columns: Record<string, readonly CellValue[]>, rowCount: 
   }
   return Math.round((sampleBytes / sample) * rowCount);
 }
-
