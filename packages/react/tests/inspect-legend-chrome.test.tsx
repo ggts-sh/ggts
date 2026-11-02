@@ -223,12 +223,30 @@ describe("React legend focus chrome", () => {
     expect([...circles].some((mark) => mark.style.opacity === "0.36")).toBe(true);
   });
 
-  it.each(["left", "right"] as const)(
-    "aligns a %s side-titled vertical legend hit target with its row",
-    async (titlePosition) => {
+  const tinyRows = [
+    { x: 1, y: 10, id: "a", group: "i" },
+    { x: 2, y: 20, id: "b", group: "j" },
+  ];
+
+  it.each([
+    ["left", "vertical"],
+    ["right", "vertical"],
+    ["left", "horizontal"],
+    ["right", "horizontal"],
+  ] as const)(
+    "aligns a %s side-titled %s legend hit target with its row",
+    async (titlePosition, direction) => {
+      // Tiny keys and zero gap shrink the right-title content below the 24px
+      // hit-target minimum; left titles keep the default sizing as a control.
+      const tiny = titlePosition === "right";
       const view = render(
         <div style={{ width: 480 }}>
-          <GGPlot data={rows} aes={{ x: "x", y: "y", color: "group" }} width={480} height={320}>
+          <GGPlot
+            data={tiny ? tinyRows : rows}
+            aes={{ x: "x", y: "y", color: "group" }}
+            width={480}
+            height={320}
+          >
             <GeomPoint />
             <GuideLegend
               channel="color"
@@ -236,33 +254,43 @@ describe("React legend focus chrome", () => {
               title="Group"
               titlePosition={titlePosition}
               position="right"
-              direction="vertical"
+              direction={direction}
+              {...(tiny ? { keySize: 4, theme: { labelSize: 8, keyGap: 0 } } : {})}
             />
           </GGPlot>
         </div>,
       );
-      const target = await view.findByRole("button", { name: /A \(.*legend\)/ });
+      const targets = await view.findAllByRole("button", { name: /\(color legend\)$/ });
       const title = view.container.querySelector<SVGTextElement>(".gg-legend-title");
-      const label = view.container.querySelector<SVGTextElement>(".gg-legend-label");
-      const key = view.container.querySelector<SVGElement>(".gg-legend-key");
-      if (title === null || label === null || key === null) {
+      const labels = view.container.querySelectorAll<SVGTextElement>(".gg-legend-label");
+      const keys = view.container.querySelectorAll<SVGElement>(".gg-legend-key, .gg-legend-swatch");
+      if (title === null || labels.length !== targets.length || keys.length !== targets.length) {
         throw new Error("missing legend chrome");
       }
-      const targetRect = target.getBoundingClientRect();
       const titleRect = title.getBoundingClientRect();
-      expectContains(targetRect, label.getBoundingClientRect());
-      expectContains(targetRect, key.getBoundingClientRect());
-      expect(
-        overlaps(targetRect, titleRect),
-        JSON.stringify({ target: targetRect.toJSON(), title: titleRect.toJSON() }),
-      ).toBe(false);
-      if (titlePosition === "left") {
-        expect(targetRect.left).toBeGreaterThanOrEqual(titleRect.right - 1.5);
-      } else {
-        expect(targetRect.right).toBeLessThanOrEqual(titleRect.left + 1.5);
+      targets.forEach((target, index) => {
+        const targetRect = target.getBoundingClientRect();
+        expectContains(targetRect, labels.item(index).getBoundingClientRect());
+        expectContains(targetRect, keys.item(index).getBoundingClientRect());
+        // Keep the 24px minimum hit area without letting it cover the title.
+        expect(targetRect.width).toBeGreaterThanOrEqual(24);
+        expect(
+          overlaps(targetRect, titleRect),
+          JSON.stringify({
+            target: { left: targetRect.left, right: targetRect.right },
+            title: { left: titleRect.left, right: titleRect.right },
+          }),
+        ).toBe(false);
+        if (titlePosition === "left") {
+          expect(targetRect.left).toBeGreaterThanOrEqual(titleRect.right - 1.5);
+        } else {
+          expect(targetRect.right).toBeLessThanOrEqual(titleRect.left + 1.5);
+        }
+      });
+      for (const target of targets) {
+        fireEvent.click(target);
+        expect(target.getAttribute("aria-pressed")).toBe("true");
       }
-      fireEvent.click(target);
-      expect(target.getAttribute("aria-pressed")).toBe("true");
     },
   );
 });

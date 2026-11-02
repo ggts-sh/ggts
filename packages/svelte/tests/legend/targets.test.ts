@@ -229,7 +229,7 @@ describe("LegendTargets", () => {
     const leftEntries: InteractiveLegendEntry[] = [
       {
         legend: leftTitle,
-        entry: leftTitle.entries[0]!,
+        entry: leftTitle.entries[0],
         identity: { scale: "fill", entryIndex: 0 },
       },
     ];
@@ -244,14 +244,14 @@ describe("LegendTargets", () => {
     const left = target.offsetLeft;
     const width = target.offsetWidth;
     // Scene draws the side-title key glyph starting at entry.x + 4.
-    const keyLeft = leftTitle.x + leftTitle.entries[0]!.x + 4;
+    const keyLeft = leftTitle.x + leftTitle.entries[0].x + 4;
     const keyRight = keyLeft + leftTitle.swatchSize;
     // The whole key is hit-testable...
     expect(left).toBeLessThanOrEqual(keyLeft);
     expect(left + width).toBeGreaterThanOrEqual(keyRight);
     // ...while the title column and the shifted title text stay outside.
     expect(left).toBeGreaterThan(leftTitle.x + leftTitle.titleX);
-    expect(left).toBeGreaterThanOrEqual(leftTitle.x + leftTitle.entries[0]!.x);
+    expect(left).toBeGreaterThanOrEqual(leftTitle.x + leftTitle.entries[0].x);
     // Clipping at the key shifts the left edge only: the right edge stays put.
     expect(left + width).toBeCloseTo(leftTitle.x + leftTitle.width);
   });
@@ -281,16 +281,16 @@ describe("LegendTargets", () => {
       ...noopHandlers,
     });
     const targets = container.querySelectorAll<HTMLButtonElement>("[data-gg-legend-target]");
-    const first = targets.item(0)!;
-    const second = targets.item(1)!;
+    const first = targets.item(0);
+    const second = targets.item(1);
     const firstLeft = first.offsetLeft;
     const firstRight = firstLeft + first.offsetWidth;
     const secondLeft = second.offsetLeft;
     // No dead strip between neighbouring keys in a row.
     expect(firstRight).toBeCloseTo(secondLeft);
     // Both keys stay inside their own target.
-    expect(firstLeft).toBeLessThanOrEqual(horizontal.x + horizontal.entries[0]!.x + 4);
-    expect(secondLeft).toBeLessThanOrEqual(horizontal.x + horizontal.entries[1]!.x + 4);
+    expect(firstLeft).toBeLessThanOrEqual(horizontal.x + horizontal.entries[0].x + 4);
+    expect(secondLeft).toBeLessThanOrEqual(horizontal.x + horizontal.entries[1].x + 4);
     expect(secondLeft + second.offsetWidth).toBeCloseTo(horizontal.x + horizontal.width);
   });
 
@@ -305,7 +305,7 @@ describe("LegendTargets", () => {
     const rightEntries: InteractiveLegendEntry[] = [
       {
         legend: rightTitle,
-        entry: rightTitle.entries[0]!,
+        entry: rightTitle.entries[0],
         identity: { scale: "fill", entryIndex: 0 },
       },
     ];

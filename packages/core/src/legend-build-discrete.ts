@@ -10,6 +10,7 @@ import {
   legendTitleHeight,
   PADDING,
   presentedDiscreteLabel,
+  presentedLegendTitle,
   settings,
   type LegendSettings,
   type PresentedDiscreteLabel,
@@ -17,6 +18,7 @@ import {
 import type { DiscreteLegendInput, LegendKeyStyle, LegendOrder } from "./legend-build-types.js";
 import {
   legendTitleSpan,
+  MIN_INTERACTIVE_KEY_LABEL_WIDTH,
   placeLegendTitle,
   type LegendTitleSpan,
   type TitlePosition,
@@ -84,6 +86,7 @@ function contentBox(input: {
   blockWidth: number;
   rowHeight: number;
   cursorY: number;
+  rightMinX: number;
 }): { width: number; contentBottom: number; rightTitleX: number } {
   const {
     vertical,
@@ -95,22 +98,41 @@ function contentBox(input: {
     blockWidth,
     rowHeight,
     cursorY,
+    rightMinX,
   } = input;
   const pad = vertical ? PADDING * 2 : 0;
   const inlinePad = PADDING * 2 - pad;
+  const rightOffset = vertical ? PADDING + keyGap : keyGap - PADDING;
+  // Keep the interactive key/label target clear of a right-hand title.
+  const titleBlock =
+    title.show && title.side && titlePosition === "right"
+      ? Math.max(blockWidth, rightMinX - rightOffset)
+      : blockWidth;
   const sideWidth = empty
     ? title.width + inlinePad
-    : blockWidth + (vertical || titlePosition === "right" ? title.alloc : 0);
+    : titleBlock + (vertical || titlePosition === "right" ? title.alloc : 0);
   const plainWidth = Math.max(blockWidth, title.show ? Math.ceil(title.width) + inlinePad : 0);
   const contentWidth = title.show && title.side ? sideWidth : plainWidth;
   return {
     width: Math.min(maxWidth, pad + contentWidth),
     contentBottom: vertical ? cursorY : cursorY + (empty ? 0 : rowHeight),
-    rightTitleX: blockWidth + (vertical ? PADDING + keyGap : keyGap - PADDING),
+    rightTitleX: titleBlock + rightOffset,
   };
 }
 
-function buildDiscreteLayout(input: {
+/** Left edge a right-hand title must clear so every row-end target stays whole. */
+function rightTitleMinX(entries: SceneLegendEntry[], vertical: boolean): number {
+  let minimum = 0;
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index]!;
+    const next = entries[index + 1];
+    if (!vertical && next !== undefined && next.y === entry.y) continue;
+    minimum = Math.max(minimum, (entry.x ?? 0) + MIN_INTERACTIVE_KEY_LABEL_WIDTH);
+  }
+  return minimum;
+}
+
+interface DiscreteLayoutInput {
   source: DiscreteLegendInput;
   values: unknown[];
   fullLabels: string[];
@@ -121,19 +143,14 @@ function buildDiscreteLayout(input: {
   titlePosition: TitlePosition;
   titleBand: number;
   keySize: number;
-}): {
-  entries: SceneLegendEntry[];
-  width: number;
-  height: number;
-  titleX?: number;
-  titleY?: number;
-  titleLabel?: string;
-} {
+}
+
+/** Size the title before the key loop; a left/right title may claim a label width. */
+function initialTitle(input: DiscreteLayoutInput): LegendTitleSpan {
   const {
     source,
     values,
     fullLabels,
-    keys,
     style,
     measurer,
     maxWidth,
@@ -141,8 +158,16 @@ function buildDiscreteLayout(input: {
     titleBand,
     keySize,
   } = input;
-  const vertical = style.direction === "vertical";
-  const title = legendTitleSpan({
+  const labelRequirement =
+    values.length === 0 ||
+    style.title === "" ||
+    (titlePosition !== "left" && titlePosition !== "right")
+      ? undefined
+      : fullLabels.reduce(
+          (max, label) => Math.max(max, measurer.measureWidth(label, style.labelSize)),
+          0,
+        );
+  return legendTitleSpan({
     title: style.title,
     titleSize: style.titleSize,
     labelSize: style.labelSize,
@@ -152,10 +177,64 @@ function buildDiscreteLayout(input: {
     position: titlePosition,
     band: titleBand,
     hasEntries: values.length > 0,
+    ...(labelRequirement !== undefined && { labelRequirement }),
+    deferTitleError: titlePosition === "right" && values.length > 0,
     measurer,
     appearance: style.appearance,
     scale: source.scale,
   });
+}
+
+/** Refit a right-hand title once row-end targets are known; returns the min clear X. */
+function fitRightTitle(
+  input: DiscreteLayoutInput,
+  entries: SceneLegendEntry[],
+  title: LegendTitleSpan,
+  vertical: boolean,
+  blockWidth: number,
+): { title: LegendTitleSpan; rightMinX: number } {
+  const { source, style, measurer, maxWidth, titlePosition } = input;
+  const rightMinX =
+    title.show && title.side && titlePosition === "right" ? rightTitleMinX(entries, vertical) : 0;
+  if (rightMinX === 0) return { title, rightMinX };
+  const rightOffset = vertical ? PADDING + style.keyGap : style.keyGap - PADDING;
+  const titleBlock = Math.max(blockWidth, rightMinX - rightOffset);
+  const available = Math.max(0, maxWidth - (titleBlock + rightOffset));
+  const display = presentedLegendTitle(
+    style.title,
+    available,
+    measurer,
+    style.titleSize,
+    style.appearance,
+    source.scale,
+  );
+  const width = measurer.measureWidth(display, style.titleSize);
+  return {
+    title: {
+      show: title.show,
+      side: title.side,
+      ...(display !== style.title && { display }),
+      width,
+      alloc: width + style.keyGap,
+      topBand: title.topBand,
+      labelReserve: title.labelReserve,
+    },
+    rightMinX,
+  };
+}
+
+function buildDiscreteLayout(input: DiscreteLayoutInput): {
+  entries: SceneLegendEntry[];
+  width: number;
+  height: number;
+  titleX?: number;
+  titleY?: number;
+  titleLabel?: string;
+} {
+  const { source, values, fullLabels, keys, style, measurer, maxWidth, titlePosition, keySize } =
+    input;
+  const vertical = style.direction === "vertical";
+  let title = initialTitle(input);
   const startX = (vertical ? 0 : PADDING) + (titlePosition === "left" ? title.alloc : 0);
   const rowLimit =
     titlePosition === "right" ? Math.max(startX + 1, maxWidth - title.alloc) : maxWidth;
@@ -220,6 +299,9 @@ function buildDiscreteLayout(input: {
       ? 0
       : keySize + style.keyGap + Math.ceil(labelWidth)
     : rowWidth;
+  const fit = fitRightTitle(input, entries, title, vertical, blockWidth);
+  title = fit.title;
+  const { rightMinX } = fit;
   const box = contentBox({
     vertical,
     empty,
@@ -230,6 +312,7 @@ function buildDiscreteLayout(input: {
     blockWidth,
     rowHeight,
     cursorY,
+    rightMinX,
   });
   return {
     entries,
@@ -239,7 +322,7 @@ function buildDiscreteLayout(input: {
       titleSize: style.titleSize,
       labelSize: style.labelSize,
       position: titlePosition,
-      band: titleBand,
+      band: input.titleBand,
       measurer,
       entries,
       contentBottom: box.contentBottom,

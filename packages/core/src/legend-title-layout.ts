@@ -23,6 +23,9 @@ function bandBaseline(titleBand: number): number {
  */
 const TITLE_ASCENT_SHARE = FONT_METRICS.ascent / (FONT_METRICS.ascent + FONT_METRICS.descent);
 
+/** Smallest interactive key/label block a side title must leave untouched. */
+export const MIN_INTERACTIVE_KEY_LABEL_WIDTH = 24;
+
 /** Widths and reserves a guide title claims before its keys are laid out. */
 export interface LegendTitleSpan {
   show: boolean;
@@ -44,6 +47,10 @@ export function legendTitleSpan(input: {
   position: TitlePosition;
   band: number;
   hasEntries: boolean;
+  /** Widest full label before truncation, when entries exist. */
+  labelRequirement?: number;
+  /** Right titles decide collision errors after their key row is laid out. */
+  deferTitleError?: boolean;
   measurer: TextMeasurer;
   appearance: ResolvedLegendAppearance | undefined;
   scale: string;
@@ -58,6 +65,8 @@ export function legendTitleSpan(input: {
     position,
     band,
     hasEntries,
+    labelRequirement,
+    deferTitleError,
     measurer,
     appearance,
     scale,
@@ -74,10 +83,25 @@ export function legendTitleSpan(input: {
     // A truncated label bottoms out at the ellipsis, so that is the real
     // minimum the key row can occupy.
     const minimumLabelWidth = Math.max(1, measurer.measureWidth(LEGEND_ELLIPSIS, labelSize));
-    const available = hasEntries
-      ? Math.max(0, inner - keySize - keyGap * 2 - minimumLabelWidth)
-      : inner;
-    display = presentedLegendTitle(title, available, measurer, titleSize, appearance, scale);
+    // Reserve what the labels actually need, but never more than a truncatable
+    // ellipsis: shorter labels leave more room for a complete title.
+    const labelWidth =
+      labelRequirement === undefined
+        ? minimumLabelWidth
+        : Math.min(minimumLabelWidth, labelRequirement);
+    const keyLabelWidth =
+      position === "right"
+        ? Math.max(keySize + keyGap + labelWidth, MIN_INTERACTIVE_KEY_LABEL_WIDTH)
+        : keySize + keyGap + labelWidth;
+    const available = hasEntries ? Math.max(0, inner - keyLabelWidth - keyGap) : inner;
+    display = presentedLegendTitle(
+      title,
+      available,
+      measurer,
+      titleSize,
+      deferTitleError === true ? undefined : appearance,
+      scale,
+    );
     width = measurer.measureWidth(display, titleSize);
     labelReserve = minimumLabelWidth;
   } else {

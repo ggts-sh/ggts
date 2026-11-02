@@ -24,6 +24,7 @@ function discrete(
     titleSize?: number;
     labelSize?: number;
     keySize?: number;
+    keyGap?: number;
   } = {},
 ): DiscreteLegendInput {
   const title = overrides.title ?? "Groups";
@@ -48,6 +49,7 @@ function discrete(
       theme: {
         ...(overrides.titleSize !== undefined && { titleSize: overrides.titleSize }),
         ...(overrides.labelSize !== undefined && { labelSize: overrides.labelSize }),
+        ...(overrides.keyGap !== undefined && { keyGap: overrides.keyGap }),
       },
     },
   };
@@ -225,6 +227,69 @@ describe("discrete legend title positions", () => {
     expect(() => build([label], 150, { collision: "error", titlePosition: "left" })).toThrow(
       LegendLayoutError,
     );
+  });
+
+  it("reserves actual narrow labels instead of an ellipsis when sizing a side title", () => {
+    for (const label of ["i", ""]) {
+      for (const direction of ["horizontal", "vertical"] as const) {
+        for (const titlePosition of [undefined, "left", "right"] as const) {
+          for (const collision of ["ellipsis", "wrap", "error"] as const) {
+            const legend = build([label], 73, {
+              collision,
+              direction,
+              ...(titlePosition !== undefined && { titlePosition }),
+            });
+            // A measured zero-width label is known, not unknown: the complete
+            // title still fits and the empty label is preserved.
+            expect(legend.title).toBe("Groups");
+            expect(legend.titleLabel).toBeUndefined();
+            expect(legend.entries[0]!.label).toBe(label);
+            titleBounds(legend);
+          }
+        }
+      }
+    }
+  });
+
+  it("reserves a 24px interactive key block before right titles in both directions", () => {
+    for (const direction of ["horizontal", "vertical"] as const) {
+      for (const keySize of [4, 10]) {
+        for (const labelSize of [8, 11]) {
+          const legend = build(["i"], 240, {
+            titlePosition: "right",
+            direction,
+            keyGap: 0,
+            keySize,
+            labelSize,
+          });
+          expect(legend.titleX!).toBeGreaterThanOrEqual((legend.entries[0]!.x ?? 0) + 24 - 1e-6);
+          titleBounds(legend);
+        }
+      }
+    }
+  });
+
+  it("keeps right titles clear of the row-end target", () => {
+    for (const direction of ["horizontal", "vertical"] as const) {
+      for (const keySize of [4, 10]) {
+        for (const labelSize of [8, 11]) {
+          const legend = build(["i", "j"], 73, {
+            titlePosition: "right",
+            direction,
+            keyGap: 0,
+            keySize,
+            labelSize,
+            collision: "ellipsis",
+          });
+          const rowEnds = new Map<number, number>();
+          for (const entry of legend.entries) rowEnds.set(entry.y, entry.x ?? 0);
+          for (const x of rowEnds.values()) {
+            expect(legend.titleX!).toBeGreaterThanOrEqual(x + 24 - 1e-6);
+          }
+          titleBounds(legend);
+        }
+      }
+    }
   });
 
   it("does not overlap title and entries at tiny widths", () => {
