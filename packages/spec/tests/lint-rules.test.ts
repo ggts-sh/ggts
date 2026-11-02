@@ -607,6 +607,7 @@ describe("node-link-layout", () => {
 
   it("resolves named columns and broadcasts layers missing grid facet fields", () => {
     const spec = {
+      data: { values: [{ region: "a", group: "b" }] },
       datasets: {
         edges: {
           columns: {
@@ -638,6 +639,11 @@ describe("node-link-layout", () => {
     expect(result.ok).toBe(true);
     expect(result.advisories?.map((a) => a.code)).toContain("node-link-layout");
     expect(lintSpec(spec)).toEqual(result.advisories);
+    const absentPanel = { ...spec, data: { values: [{ region: "c", group: "d" }] } };
+    expect(lintSpec(absentPanel).map((a) => a.code)).not.toContain("node-link-layout");
+    expect(
+      validate(absentPanel, { lint: true }).advisories?.map((a) => a.code) ?? [],
+    ).not.toContain("node-link-layout");
   });
 
   it("requires continuous axes across all layers, unless explicitly pinned", () => {
@@ -645,6 +651,11 @@ describe("node-link-layout", () => {
     for (const extra of [
       { geom: "point", data: { values: [{ x: "category", y: 1 }] } },
       { geom: "col", data: { values: [{ x: 1, y: 1 }] } },
+      {
+        geom: "segment",
+        data: { values: [{ x: 1, y: 1, end: "category" }] },
+        aes: { xend: { field: "end" }, yend: { value: 2 } },
+      },
     ]) {
       const mixed = { ...spec, layers: [...spec.layers, extra] };
       expect(lintSpec(mixed).map((a) => a.code)).not.toContain("node-link-layout");

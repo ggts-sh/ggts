@@ -35,7 +35,10 @@ function facetKey(value: unknown): string {
   return Object.is(value, -0) ? "-0" : (JSON.stringify(value) ?? "undefined");
 }
 
-function facetFields(spec: Record<string, unknown>): FacetField[] {
+function facetFields(
+  spec: Record<string, unknown>,
+  sources: readonly (FieldEvidenceMap | null)[],
+): FacetField[] | null {
   const facet = spec["facet"];
   if (!isRecord(facet)) return [];
   const fields: FacetField[] = [];
@@ -49,6 +52,23 @@ function facetFields(spec: Record<string, unknown>): FacetField[] {
       }),
     });
   }
+  if (fields.length === 0) return fields;
+  // Only complete sources discover panels; partial sources broadcast into them.
+  const complete = [...new Set(sources)].filter(
+    (source): source is FieldEvidenceMap =>
+      source !== null && fields.every((field) => source.has(field.field)),
+  );
+  if (complete.length === 0) return null;
+  for (const field of fields) {
+    if (field.levels !== undefined) continue;
+    field.levels = new Set<string>();
+    for (const source of complete) {
+      for (const value of source.get(field.field)!.values ?? []) {
+        field.levels.add(facetKey(value));
+      }
+    }
+  }
+  if (fields.some((field) => field.levels?.size === 0)) return null;
   return fields;
 }
 
@@ -147,8 +167,15 @@ function continuousAxis(
       layer["stat"] !== "bin"
     )
       return false;
-    if ("field" in mapped && evidence[index]?.get(mapped.field)?.type !== "quantitative")
-      return false;
+    for (const channel of axis === "x" ? (["x", "xend"] as const) : (["y", "yend"] as const)) {
+      const value = effectiveChannel(plotAes, aes, channel);
+      if (
+        value !== undefined &&
+        "field" in value &&
+        evidence[index]?.get(value.field)?.type !== "quantitative"
+      )
+        return false;
+    }
   }
   return true;
 }
@@ -199,9 +226,9 @@ function indexNodes(points: Coordinates[]): Map<PanelRows, Set<string>> {
 /** Match raw coordinates only for identity layers on continuous axes. */
 export function collectNodeLinkAdvisories(
   spec: Record<string, unknown>,
-  evidence: readonly (FieldEvidenceMap | null)[] | undefined,
+  evidence: readonly (FieldEvidenceMap | null)[],
+  plotEvidence: FieldEvidenceMap | null,
 ): SpecAdvisory[] {
-  if (evidence === undefined) return [];
   const layers = spec["layers"] as unknown[];
   if (
     !layers.some((layer) => isRecord(layer) && layer["geom"] === "segment") ||
@@ -215,7 +242,8 @@ export function collectNodeLinkAdvisories(
     !continuousAxis("y", scales?.["y"], layers, plotAes, evidence)
   )
     return [];
-  const facets = facetFields(spec);
+  const facets = facetFields(spec, [plotEvidence, ...evidence]);
+  if (facets === null) return [];
   const points: Coordinates[] = [];
   const segments: Coordinates[] = [];
   for (let index = 0; index < layers.length; index++) {

@@ -124,6 +124,8 @@ export function lintSpec(
   return [
     ...collectLayerLintAdvisories({ layers, fieldOf }),
     ...collectScaleLintAdvisories({ layers, scales, fieldOf }),
-    ...collectNodeLinkAdvisories(spec, layerEvidence),
+    ...(layerEvidence === undefined
+      ? []
+      : collectNodeLinkAdvisories(spec, layerEvidence, evidence)),
   ];
 }
