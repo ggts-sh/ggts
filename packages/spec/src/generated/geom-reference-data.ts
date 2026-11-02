@@ -845,7 +845,7 @@ export const GEOM_REFERENCE_DATA = {
     slug: "text",
     component: "GeomText",
     summary:
-      "Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+      "Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
     defaultStat: "identity",
     defaultPosition: "identity",
     allowedStats: ["identity", "unique"],
@@ -884,6 +884,13 @@ export const GEOM_REFERENCE_DATA = {
         typeSummary: "number",
         required: false,
       },
+      {
+        name: "checkOverlap",
+        description:
+          "Drop labels that overlap an earlier retained label in the same layer and panel (greedy, draw order). Default false: labels draw exactly where placed. Overlaps emit a text-label-overlap warning naming the layer index and overlapping mark count.",
+        typeSummary: "boolean",
+        required: false,
+      },
     ],
   },
   label: {
@@ -891,7 +898,7 @@ export const GEOM_REFERENCE_DATA = {
     slug: "label",
     component: "GeomLabel",
     summary:
-      "Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+      "Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
     defaultStat: "identity",
     defaultPosition: "identity",
     allowedStats: ["identity"],
@@ -928,6 +935,13 @@ export const GEOM_REFERENCE_DATA = {
         description:
           "Vertical offset in px applied after positioning (positive = down). Default 0.",
         typeSummary: "number",
+        required: false,
+      },
+      {
+        name: "checkOverlap",
+        description:
+          "Drop labels that overlap an earlier retained label in the same layer and panel (greedy, draw order). Default false: labels draw exactly where placed. Overlaps emit a text-label-overlap warning naming the layer index and overlapping mark count.",
+        typeSummary: "boolean",
         required: false,
       },
       {

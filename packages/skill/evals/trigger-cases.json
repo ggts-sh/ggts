@@ -72,6 +72,12 @@
     "notes": "Network layout is outside ggts grammar; description must not claim graphs in the network sense only."
   },
   {
+    "id": "explicit-ggts-node-link",
+    "should_trigger": true,
+    "prompt": "Use ggts to draw a node-link network chart of 300 nodes and 1000 edges, with hub labels. Write the chart spec.",
+    "notes": "Before writing any spec, state that ggts does not support node-link diagrams or compute graph layouts. Ask the user to pick a graph library, or offer an adjacency matrix (tile, sorted by cluster or degree), a degree distribution (histogram or col), or group-to-group edge counts (tile heatmap). Emit no segment + point spec that imitates a graph."
+  },
+  {
     "id": "negative-css-layout",
     "should_trigger": false,
     "prompt": "Fix the CSS grid layout so the sidebar stops overlapping the main content.",
