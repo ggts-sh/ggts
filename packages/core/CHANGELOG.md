@@ -1,5 +1,39 @@
 # @ggts-sh/core
 
+## 0.45.0
+
+### Minor Changes
+
+- 5d793ac: Legend titles can now sit on any side of a legend, and short or wide plots report panel proportion problems without failing the render.
+
+  Legend guides gain `titlePosition` with `"top" | "bottom" | "left" | "right"`. `left` and `right` put a horizontal legend title on the key row, removing the separate title band; `top` retains the previous arrangement. `ThemeSpec` gains `legendTitlePosition` for the plot-wide default, resolved adaptively per legend when omitted.
+
+  Renders now warn with `panel-aspect-extreme` when a panel exceeds 4:1 or falls under 0.25:1, and with `panel-height-share-low` when the panel receives under half the plot height. The warnings are non-blocking. `ThemeSpec.panelAspect: "free"` silences them for intentional strips. Fixed, sf, and radial coordinates are excluded.
+
+  Bottom-legend spacing is compact on short plots, so the panel keeps more of the available height. The improvement is density-dependent; there is no fixed target share.
+
+  To restore the previous title-above-keys arrangement, set `titlePosition: "top"` on a legend guide or `legendTitlePosition: "top"` on the theme.
+
+  Migration: none — additive options; existing specifications remain valid.
+
+- e5a62ce: Warn when text or label marks overlap within the same layer and panel (#1881).
+
+  `text` and `label` layers now measure rendered text boxes after layout and emit
+  `text-label-overlap` naming the layer and panel indices and the number of
+  unique overlapping marks. `params.checkOverlap` is opt-in (default `false`):
+  set it to `true` to greedily keep labels in draw order and drop later labels
+  that collide with an earlier retained label, which keeps the warning silent.
+  No repulsion or nudging is added, and the SF label variants are unchanged.
+
+  Migration: none — additive
+
+### Patch Changes
+
+- Updated dependencies [ede3ce2]
+- Updated dependencies [5d793ac]
+- Updated dependencies [e5a62ce]
+  - @ggts-sh/spec@0.45.0
+
 ## 0.44.0
 
 ### Minor Changes

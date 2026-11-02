@@ -1,5 +1,16 @@
 # @ggts-sh/react
 
+## 0.45.0
+
+### Patch Changes
+
+- Updated dependencies [ede3ce2]
+- Updated dependencies [5d793ac]
+- Updated dependencies [e5a62ce]
+  - @ggts-sh/spec@0.45.0
+  - @ggts-sh/core@0.45.0
+  - @ggts-sh/compose@0.45.0
+
 ## 0.44.0
 
 ### Minor Changes
