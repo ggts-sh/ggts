@@ -10,7 +10,7 @@ export const LayersTextMapDecls = {
     {
       geom: Type.Literal("text", {
         description:
-          "Text geometry: one label per data row at (x, y). No collision detection — labels draw exactly where placed. Requires x, y, and label channels.",
+          "Text geometry: one label per data row at (x, y). Labels draw exactly where placed unless params.checkOverlap skips colliding ones. Requires x, y, and label channels.",
       }),
       stat: Type.Optional(Type.Ref("IdentityOrUniqueStat")),
       position: Type.Optional(
@@ -46,7 +46,7 @@ export const LayersTextMapDecls = {
     {
       geom: Type.Literal("label", {
         description:
-          "Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. No collision detection.",
+          "Label geometry: text with a rounded rectangular background box. Requires x, y, and label channels. Labels draw exactly where placed unless params.checkOverlap skips colliding ones.",
       }),
       stat: Type.Optional(
         Type.Literal("identity", { description: "Label layers draw the data as-is." }),

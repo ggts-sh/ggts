@@ -15,6 +15,7 @@ import { buildBatch, flipBatchInPlace } from "./geometry.js";
 import type { PanelPlacement } from "./panel-layout.js";
 import type { ResolvedStyleScales } from "./geometry-style.js";
 import type { LayerFrame, PipelineWarning, ResolvedColorScale } from "./types.js";
+import { checkTextLabelOverlap } from "./text-label-overlap.js";
 
 /**
  * Which geoms defer projection so path topology survives to
@@ -144,6 +145,23 @@ function buildPanelGeometryBatches(input: {
       warnings,
       tessellationBudget,
     );
+  }
+  if (frame.binding.layer.geom === "text" || frame.binding.layer.geom === "label") {
+    for (const batch of panelBatches) {
+      if (batch.kind === "glyphs") {
+        checkTextLabelOverlap(
+          batch,
+          {
+            withBox: frame.binding.layer.geom === "label",
+            checkOverlap: frame.binding.layer.params?.checkOverlap === true,
+            width: placement.width,
+            height: placement.height,
+            clip: projector?.clip ?? true,
+          },
+          warnings,
+        );
+      }
+    }
   }
   return panelBatches;
 }

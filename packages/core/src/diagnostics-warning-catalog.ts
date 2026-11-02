@@ -183,6 +183,10 @@ export const PIPELINE_WARNING_CATALOG = {
     summary:
       "A band label exceeds a bounded axis margin — single-line end truncation, forced-wrap height/side overflow, or a rotated label past the bottom/side cap.",
   },
+  "text-label-overlap": {
+    summary:
+      "Text or label marks overlap within the same layer and panel after final projection; the message names the layer and panel indices and the unique overlapping mark count. Set params.checkOverlap: true to drop later collisions instead.",
+  },
   "coord-tessellation-cap": {
     summary:
       "Adaptive coordinate tessellation reached a deterministic depth/vertex cap and retained a bounded approximation.",
