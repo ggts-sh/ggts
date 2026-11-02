@@ -1,6 +1,6 @@
 /**
  * Issue #1881: `checkOverlap` param contract for text/label layers.
- * Only the non-sf geoms opt in; sf variants stay collision-free by schema.
+ * Only text and label opt in; sf variants reject the parameter.
  */
 import { describe, expect, it } from "bun:test";
 
@@ -34,7 +34,9 @@ describe("checkOverlap — rejects", () => {
   it("non-boolean values", () => {
     for (const geom of ["text", "label"]) {
       for (const value of ["true", 1, null, {}]) {
-        expect(paramsOf(geom, { checkOverlap: value }).ok, `${geom} ${String(value)}`).toBe(false);
+        expect(paramsOf(geom, { checkOverlap: value }).ok, `${geom} ${JSON.stringify(value)}`).toBe(
+          false,
+        );
       }
     }
   });
