@@ -208,5 +208,10 @@ function collectDataValidation(
   errors.push(...dataChecks(input, options, limits, layerResolved));
   if (options.lint !== true) return undefined;
   const shared = layerResolved.status === "ok" ? layerResolved.plot : null;
-  return lintSpec(input, options, shared);
+  return lintSpec(
+    input,
+    options,
+    shared,
+    layerResolved.status === "ok" ? layerResolved.layers : null,
+  );
 }

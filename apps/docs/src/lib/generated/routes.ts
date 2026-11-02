@@ -12326,6 +12326,11 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
+        id: "node-link-layout-needs-data",
+        title: "node-link-layout (needs: data)",
+        level: 3,
+      },
+      {
         id: "line-over-nominal-x-needs-data-or-profile",
         title: "line-over-nominal-x (needs: data-or-profile)",
         level: 3,

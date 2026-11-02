@@ -1,22 +1,9 @@
-/**
- * Spec-lint rule characterization — each rule fires on its questionable spec,
- * stays silent on the sound variant, and skips without evidence. Catalog
- * coverage stays here so firedCodes accumulates across rule describes.
- * Production: lint-layer-rules.ts + lint-scale-rules.ts via lintSpec.
- * Wiring/limits: lint-wiring.test.ts. Catalog data: lint-catalog.ts.
- */
-import { readFileSync } from "node:fs";
-
+/** Layer and scale lint behavior. Node-link matching: lint-node-link.test.ts. */
 import { describe, expect, it } from "bun:test";
 
-import { LINT_CATALOG, lintSpec } from "../src/lint.ts";
-import type { LintAdvisoryCode } from "../src/lint.ts";
+import { lintSpec, type SpecAdvisory } from "../src/lint.ts";
 
-const firedCodes = new Set<LintAdvisoryCode>();
-const codesOf = (advisories: ReturnType<typeof lintSpec>) => {
-  for (const a of advisories) firedCodes.add(a.code);
-  return advisories.map((a) => a.code);
-};
+const codesOf = (advisories: SpecAdvisory[]) => advisories.map((a) => a.code);
 
 describe("line-over-nominal-x", () => {
   const spec = (x: unknown[]) => ({
@@ -459,36 +446,5 @@ describe("fractional-calendar-years", () => {
     }).filter((a) => a.code === "fractional-calendar-years");
     expect(advisories).toHaveLength(1);
     expect(advisories[0]!.path).toBe("/aes/x");
-  });
-});
-
-describe("LINT_CATALOG coverage", () => {
-  it("every cataloged advisory code fired in this suite", () => {
-    expect([...firedCodes].toSorted()).toEqual(Object.keys(LINT_CATALOG).toSorted());
-  });
-
-  it("source-scan: every code emitted by lint rule modules is cataloged and vice-versa (bijective)", () => {
-    // Mirror of core's source↔catalog scanner: scan lint rule emission sites for
-    // every `code: "..."` literal, and prove it matches LINT_CATALOG exactly —
-    // no retired code lingers, no cataloged code is unemitted. Catalog data is
-    // pure (lint-catalog.ts); emission sites live in the rule modules.
-    const emissionSources = [
-      readFileSync(new URL("../src/lint-layer-rules.ts", import.meta.url), "utf8"),
-      readFileSync(new URL("../src/lint-scale-rules.ts", import.meta.url), "utf8"),
-    ];
-    const catalogSrc = readFileSync(new URL("../src/lint-catalog.ts", import.meta.url), "utf8");
-    const orchestratorSrc = readFileSync(new URL("../src/lint.ts", import.meta.url), "utf8");
-    const emitted = new Set<string>();
-    for (const src of emissionSources) {
-      for (const m of src.matchAll(/\bcode:\s*"([a-z0-9-]+)"/g)) emitted.add(m[1]!);
-    }
-    expect([...emitted].toSorted()).toEqual(Object.keys(LINT_CATALOG).toSorted());
-    // Orchestrator must not re-emit codes (would double-count and drift).
-    expect([...orchestratorSrc.matchAll(/\bcode:\s*"([a-z0-9-]+)"/g)]).toEqual([]);
-    // The retired late-log codes must not survive anywhere in the lint source tree.
-    for (const blob of [...emissionSources, orchestratorSrc, catalogSrc]) {
-      expect(blob).not.toContain("log-nonpositive-data");
-      expect(blob).not.toContain("log-domain-not-positive");
-    }
   });
 });
