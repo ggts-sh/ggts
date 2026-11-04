@@ -142,7 +142,12 @@ function renderYAxisTick(
 }
 
 /** Facet strip: band + centered label on the authored side of the panel. */
-export function renderStrip(panel: ScenePanel, scene: Scene, panelIndex: number): string {
+export function renderStrip(
+  panel: ScenePanel,
+  scene: Scene,
+  panelIndex: number,
+  scope = "",
+): string {
   if (panel.strip === "" || panel.showStrip === false) return "";
   const band = panel.stripBand ?? STRIP_BAND;
   if (band <= 0) return "";
@@ -191,7 +196,7 @@ export function renderStrip(panel: ScenePanel, scene: Scene, panelIndex: number)
     sideClip = true;
   }
 
-  const clipId = `gg-strip-clip-${panelIndex}`;
+  const clipId = `${scope}gg-strip-clip-${panelIndex}`;
   const clipAttr = sideClip ? ` clip-path="url(#${clipId})"` : "";
   const clipDef = sideClip
     ? `<clipPath id="${clipId}"><rect width="${px(rectW)}" height="${px(rectH)}"/></clipPath>`

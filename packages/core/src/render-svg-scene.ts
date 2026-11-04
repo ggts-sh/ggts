@@ -7,7 +7,7 @@ import { letterboxGutterRects } from "./letterbox-gutters.js";
 import type { Scene } from "./scene.js";
 import { themeVar } from "./theme.js";
 import { paintDefsSvg, type ResolvedGlow, type ResolvedGradientPaint } from "./mark-paint.js";
-import { escapeXML, px } from "./render-svg-format.js";
+import { escapeXML, px, svgIdScope } from "./render-svg-format.js";
 import { renderBatch, type PaintRenderMode } from "./render-svg-marks.js";
 import {
   renderAxisTitles,
@@ -72,6 +72,13 @@ export interface SceneSVGOptions {
    * paint.fallback colors and omits glow (a11y / reduced-effects).
    */
   paintMode?: PaintRenderMode;
+  /**
+   * Namespace every emitted SVG id with this prefix (#1902). Ids and `url(#…)`
+   * references are document-scoped, so give each chart a distinct prefix when
+   * several renders share one HTML document. Omitted, ids stay `gg-*` and the
+   * output is byte-identical across runs.
+   */
+  idPrefix?: string;
 }
 
 function renderScenePanels(
@@ -79,6 +86,7 @@ function renderScenePanels(
   theme: Scene["theme"],
   paintMode: PaintRenderMode,
   mode: NonNullable<SceneSVGOptions["mode"]>,
+  scope: string,
 ): string[] {
   const parts: string[] = [];
   const { byPanel } = groupBatchesByPanel(scene.panels.length, scene.batches, false);
@@ -90,10 +98,10 @@ function renderScenePanels(
         ? ""
         : `<rect class="gg-panel-background" width="${px(p.width)}" height="${px(p.height)}" fill="${themeVar("panel", theme)}"/>`,
       mode === "marks" ? "" : renderGrid(p, theme),
-      `<g class="gg-marks"${p.clip === false ? "" : ` clip-path="url(#gg-clip-${i})"`}>`,
+      `<g class="gg-marks"${p.clip === false ? "" : ` clip-path="url(#${scope}gg-clip-${i})"`}>`,
     );
     if (mode !== "chrome-bottom") {
-      for (const batch of byPanel[i]!) parts.push(renderBatch(batch, theme, paintMode));
+      for (const batch of byPanel[i]!) parts.push(renderBatch(batch, theme, paintMode, scope));
     }
     parts.push("</g>");
     if (mode !== "marks" && theme.showPanelBorder) {
@@ -102,7 +110,7 @@ function renderScenePanels(
       );
     }
     parts.push("</g>");
-    if (mode !== "marks") parts.push(renderStrip(p, scene, i), renderPanelAxes(p, theme));
+    if (mode !== "marks") parts.push(renderStrip(p, scene, i, scope), renderPanelAxes(p, theme));
   }
   return parts;
 }
@@ -147,6 +155,7 @@ function sceneLayoutAttribute(scene: Scene): string {
 /** Serialize a computed Scene to a standalone SVG string. */
 export function sceneToSVGString(scene: Scene, options: SceneSVGOptions = {}): string {
   const paintMode = options.paintMode ?? "full";
+  const scope = svgIdScope(options.idPrefix);
   const mode = options.mode ?? "full";
   const bottom = mode === "full" || mode === "chrome-bottom";
   const top = mode === "full" || mode === "chrome-top";
@@ -175,20 +184,19 @@ export function sceneToSVGString(scene: Scene, options: SceneSVGOptions = {}): s
     .map((p, i) =>
       p.clip === false
         ? ""
-        : `<clipPath id="gg-clip-${i}"><rect width="${px(p.width)}" height="${px(p.height)}"/></clipPath>`,
+        : `<clipPath id="${scope}gg-clip-${i}"><rect width="${px(p.width)}" height="${px(p.height)}"/></clipPath>`,
     )
     .join("");
   const { paints, glows } = collectPaintResources(scene);
-  const paintDefs = paintMode === "full" ? paintDefsSvg(paints, glows) : "";
+  const paintDefs = paintMode === "full" ? paintDefsSvg(paints, glows, scope) : "";
   parts.push(`<defs>${clips}${paintDefs}</defs>`);
   if (bottom) parts.push(...renderLetterboxes(scene, theme));
-  if (mode !== "chrome-top") parts.push(...renderScenePanels(scene, theme, paintMode, mode));
+  if (mode !== "chrome-top") parts.push(...renderScenePanels(scene, theme, paintMode, mode, scope));
   if (bottom) parts.push(renderAxisTitles(scene));
   for (const legend of top ? scene.legends : []) {
-    // Deterministic gradient ids (byte-determinism wins over cross-plot id
-    // uniqueness; documented caveat when inlining several plots in one page —
-    // the Svelte adapter generates its own unique ids).
-    parts.push(renderLegend(legend, theme, `gg-ramp-${legend.scale}`));
+    // Deterministic gradient ids: same spec + same options => same bytes.
+    // Cross-plot uniqueness comes from `idPrefix` (#1902).
+    parts.push(renderLegend(legend, theme, `${scope}gg-ramp-${legend.scale}`));
   }
   if (top && scene.caption !== "") {
     parts.push(

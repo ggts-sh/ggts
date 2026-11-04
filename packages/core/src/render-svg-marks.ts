@@ -37,23 +37,25 @@ export function paintFill(
   solid: string,
   paint: ResolvedGradientPaint | undefined,
   mode: PaintRenderMode,
+  scope = "",
 ): string {
   if (paint === undefined || mode === "fallback") return solid;
-  return `url(#${paint.id})`;
+  return `url(#${scope}${paint.id})`;
 }
 
 export function paintStroke(
   solid: string,
   paint: ResolvedGradientPaint | undefined,
   mode: PaintRenderMode,
+  scope = "",
 ): string {
   if (paint === undefined || mode === "fallback") return solid;
-  return `url(#${paint.id})`;
+  return `url(#${scope}${paint.id})`;
 }
 
-function glowAttr(glow: ResolvedGlow | undefined, mode: PaintRenderMode): string {
+function glowAttr(glow: ResolvedGlow | undefined, mode: PaintRenderMode, scope = ""): string {
   if (glow === undefined || mode === "fallback") return "";
-  return ` filter="url(#${glow.id})"`;
+  return ` filter="url(#${scope}${glow.id})"`;
 }
 
 export function countMarks(scene: Scene): number {
@@ -196,10 +198,11 @@ function renderPaths(
   batch: PathsBatch,
   theme: ThemeTokens,
   mode: PaintRenderMode = "full",
+  scope = "",
 ): string {
   const isArea = batch.fills !== undefined;
   const parts: string[] = [
-    `<g class="gg-batch ${isArea ? "gg-areas" : "gg-paths"}" data-layer="${batch.layerIndex}"${alphaAttr(batch.alpha)}${glowAttr(batch.glow, mode)}>`,
+    `<g class="gg-batch ${isArea ? "gg-areas" : "gg-paths"}" data-layer="${batch.layerIndex}"${alphaAttr(batch.alpha)}${glowAttr(batch.glow, mode, scope)}>`,
   ];
   const themeColors = { ink: themeVar("ink", theme), accent: themeVar("accent", theme) };
   const subpaths = batch.pathOffsets.length - 1;
@@ -226,13 +229,14 @@ function renderPaths(
         style.fill === "none" ? themeColors.accent : style.fill,
         batch.fillPaint,
         mode,
+        scope,
       );
       if (style.stroke === "none") {
         parts.push(
           `<path d="${d}" fill="${fill}" stroke="none"${fillRuleAttr}${alpha === undefined ? "" : alphaAttr(alpha)}/>`,
         );
       } else {
-        const stroke = paintStroke(style.stroke, batch.strokePaint, mode);
+        const stroke = paintStroke(style.stroke, batch.strokePaint, mode, scope);
         parts.push(
           `<path d="${d}" fill="${fill}" stroke="${stroke}" stroke-width="${px(style.width)}"${dashAttrFromDash(style.dash)}${fillRuleAttr}${alpha === undefined ? "" : alphaAttr(alpha)} stroke-linejoin="${style.linejoin}" stroke-linecap="${style.linecap}"/>`,
         );
@@ -242,6 +246,7 @@ function renderPaths(
         style.stroke === "none" ? themeColors.ink : style.stroke,
         batch.strokePaint,
         mode,
+        scope,
       );
       parts.push(
         `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${px(style.width)}"${dashAttrFromDash(style.dash)}${alpha === undefined ? "" : alphaAttr(alpha)} stroke-linejoin="${style.linejoin}" stroke-linecap="${style.linecap}"/>`,
@@ -278,13 +283,14 @@ function renderSegments(
   batch: SegmentsBatch,
   theme: ThemeTokens,
   mode: PaintRenderMode = "full",
+  scope = "",
 ): string {
   const n = batch.segments.length / 4;
   const themeInk = themeVar("ink", theme);
-  let out = `<g class="gg-batch gg-segments" data-layer="${batch.layerIndex}"${alphaAttr(batch.alpha)}${glowAttr(batch.glow, mode)}>`;
+  let out = `<g class="gg-batch gg-segments" data-layer="${batch.layerIndex}"${alphaAttr(batch.alpha)}${glowAttr(batch.glow, mode, scope)}>`;
   for (let j = 0; j < n; j++) {
     const mark = resolveSegmentMark(batch, j, themeInk);
-    const stroke = paintStroke(mark.stroke, batch.strokePaint, mode);
+    const stroke = paintStroke(mark.stroke, batch.strokePaint, mode, scope);
     const linewidth = mark.width;
     const linecap = mark.linecap === undefined ? "" : ` stroke-linecap="${mark.linecap}"`;
     const style = `${dashAttrFromDash(mark.dash)}${batch.alphas === undefined ? "" : alphaAttr(mark.alpha)}${linecap}`;
@@ -381,16 +387,17 @@ export function renderBatch(
   batch: Scene["batches"][number],
   theme: ThemeTokens,
   mode: PaintRenderMode = "full",
+  scope = "",
 ): string {
   switch (batch.kind) {
     case "points":
       return renderPoints(batch, theme);
     case "paths":
-      return renderPaths(batch, theme, mode);
+      return renderPaths(batch, theme, mode, scope);
     case "rects":
       return renderRects(batch, theme);
     case "segments":
-      return renderSegments(batch, theme, mode);
+      return renderSegments(batch, theme, mode, scope);
     case "glyphs":
       return renderGlyphs(batch, theme);
     default: {

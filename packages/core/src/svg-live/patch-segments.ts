@@ -20,7 +20,7 @@ function segmentAttrs(
   ctx: BatchPatchContext,
 ): AttrMap {
   const mark = resolveSegmentMark(batch, j, themeInk);
-  const stroke = paintStroke(mark.stroke, batch.strokePaint, ctx.paintMode);
+  const stroke = paintStroke(mark.stroke, batch.strokePaint, ctx.paintMode, ctx.idScope);
   const attrs: AttrMap = {};
   if (batch.renderPositions !== undefined && batch.renderPathOffsets !== undefined) {
     attrs["d"] = pathData(

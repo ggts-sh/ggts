@@ -44,16 +44,10 @@ export const DOCS_STATIC_PLOT_WIDTH_PX = 832;
 const cache = new Map<string, string>();
 
 /**
- * Headless SVG uses fixed ids (`gg-clip-0`, `gg-ramp-fill`). Multiple shells on
- * one page collide (url(#id) is document-scoped). Namespace each shell so
- * clip/ramp references stay local to that SVG.
+ * One specimen page inlines many headless shells. SVG ids are document-scoped,
+ * so every shell namespaces its clip/ramp ids with `idPrefix` (#1902).
  */
-function namespaceSvgIds(svg: string, key: string): string {
-  const prefix = `s${key.replaceAll(/[^a-zA-Z0-9_-]/g, "_")}`;
-  return svg
-    .replaceAll(/id="(gg-[^"]+)"/g, `id="${prefix}-$1"`)
-    .replaceAll(/url\(#(gg-[^)]+)\)/g, `url(#${prefix}-$1)`);
-}
+const shellIdPrefix = (key: string): string => `s${key}`;
 
 export type ThemeStaticSvgInput = {
   readonly name: ThemeName;
@@ -230,7 +224,11 @@ export function themeSpecimenStaticSvg(input: ThemeStaticSvgInput): string {
   const key = `${input.name}:${input.kind}:${input.scheme}:${String(width)}x${String(height)}${rolesKey}`;
   const hit = cache.get(key);
   if (hit !== undefined) return hit;
-  const svg = namespaceSvgIds(renderToSVGString(buildThemeSpec(input), { width, height }), key);
+  const svg = renderToSVGString(buildThemeSpec(input), {
+    width,
+    height,
+    idPrefix: shellIdPrefix(key),
+  });
   cache.set(key, svg);
   return svg;
 }
@@ -280,7 +278,7 @@ export function paletteSpecimenStaticSvg(input: {
     builder = builder.coord("flip");
   }
   const spec = builder.spec();
-  const svg = namespaceSvgIds(renderToSVGString(spec, { width, height }), key);
+  const svg = renderToSVGString(spec, { width, height, idPrefix: shellIdPrefix(key) });
   cache.set(key, svg);
   return svg;
 }
@@ -311,7 +309,7 @@ export function sequentialRasterStaticSvg(input: {
       fill: "Men",
     })
     .spec();
-  const svg = namespaceSvgIds(renderToSVGString(spec, { width, height }), key);
+  const svg = renderToSVGString(spec, { width, height, idPrefix: shellIdPrefix(key) });
   cache.set(key, svg);
   return svg;
 }
@@ -348,7 +346,7 @@ export function homeGrammarStaticSvgFromData(
       color: "species",
     })
     .spec();
-  const svg = namespaceSvgIds(renderToSVGString(spec, { width, height }), key);
+  const svg = renderToSVGString(spec, { width, height, idPrefix: shellIdPrefix(key) });
   cache.set(key, svg);
   return svg;
 }

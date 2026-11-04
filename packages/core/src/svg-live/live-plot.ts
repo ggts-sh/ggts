@@ -15,16 +15,15 @@
  *
  * Theme roles keep the string renderer's `var(--gg-*, fallback)` values, so
  * CSS custom-property overrides behave exactly as with the static render.
- * Deterministic defs/legend ids are shared with the string renderer: two live
- * plots inlined in one document carry the same documented id-collision caveat
- * as two renderToSVGString outputs.
+ * Defs/legend ids are shared with the string renderer; `idPrefix` namespaces
+ * them per plot so two live plots can share one document (#1902).
  */
 import type { GeometryBatch, Scene, SceneLegend, ScenePanel } from "../scene.js";
 import { groupBatchesByPanel } from "../group-batches-by-panel.js";
 import { themeVar } from "../theme.js";
 import { paintDefsSvg } from "../mark-paint.js";
 import { countMarks, renderBatch, type PaintRenderMode } from "../render-svg-marks.js";
-import { px } from "../render-svg-format.js";
+import { px, svgIdScope } from "../render-svg-format.js";
 import { PipelineError } from "../pipeline/public-api.js";
 import {
   renderAxisTitles,
@@ -46,6 +45,8 @@ export interface LiveSvgOptions {
   maxMarks?: number;
   /** Within-mark paint mode, same contract as renderToSVGString. */
   paintMode?: PaintRenderMode;
+  /** Document id scope, same contract as renderToSVGString (#1902). */
+  idPrefix?: string;
 }
 
 export interface LiveSvgHandle {
@@ -90,6 +91,8 @@ export function mountSceneSvg(
 ): LiveSvgHandle {
   const maxMarks = options.maxMarks ?? DEFAULT_MAX_MARKS;
   const paintMode = options.paintMode ?? "full";
+  const idPrefix = options.idPrefix;
+  const idScope = svgIdScope(idPrefix);
   const checkMarks = (s: Scene): void => {
     const marks = countMarks(s);
     if (marks > maxMarks) {
@@ -116,7 +119,10 @@ export function mountSceneSvg(
   };
 
   const renderToNode = (s: Scene): SVGSVGElement => {
-    mountHost.innerHTML = sceneToSVGString(s, { paintMode });
+    mountHost.innerHTML = sceneToSVGString(s, {
+      paintMode,
+      ...(idPrefix === undefined ? {} : { idPrefix }),
+    });
     const fresh = mountHost.firstElementChild;
     mountHost.innerHTML = "";
     if (fresh === null) {
@@ -210,9 +216,9 @@ export function mountSceneSvg(
     }
     // Paint defs: rebuild only when the serialized paint set actually moved.
     const { paints, glows } = collectPaintResources(next);
-    const paintMarkup = paintMode === "full" ? paintDefsSvg(paints, glows) : "";
+    const paintMarkup = paintMode === "full" ? paintDefsSvg(paints, glows, idScope) : "";
     const prev = collectPaintResources(current);
-    const prevMarkup = paintMode === "full" ? paintDefsSvg(prev.paints, prev.glows) : "";
+    const prevMarkup = paintMode === "full" ? paintDefsSvg(prev.paints, prev.glows, idScope) : "";
     if (paintMarkup === prevMarkup) return;
     for (const c of Array.from(defs.children)) {
       if (c.tagName !== "clipPath") c.remove();
@@ -294,11 +300,11 @@ export function mountSceneSvg(
     }
     // Marks: positional batch patching with per-batch rebuild fallback.
     if (panel.clip === false) marks.removeAttribute("clip-path");
-    else writeIfChanged(marks, "clip-path", `url(#gg-clip-${index})`);
+    else writeIfChanged(marks, "clip-path", `url(#${idScope}gg-clip-${index})`);
     if (prevBatches === undefined) return false;
     const batchGroups = marks.querySelectorAll(":scope > g.gg-batch");
     if (batchGroups.length !== nextBatches.length) return false;
-    const ctx = { theme, paintMode };
+    const ctx = { theme, paintMode, idScope };
     for (let b = 0; b < nextBatches.length; b++) {
       const g = batchGroups[b] as SVGGElement;
       const ok = patchBatchGroup(g, prevBatches[b]!, nextBatches[b]!, ctx);
@@ -327,7 +333,7 @@ export function mountSceneSvg(
       const el = strips[k];
       k++;
       if (el === undefined) return;
-      const fresh = parseFragment(renderStrip(panel, next, i));
+      const fresh = parseFragment(renderStrip(panel, next, i, idScope));
       if (fresh[0] !== undefined) el.replaceWith(fresh[0]);
     }
   };
@@ -368,7 +374,9 @@ export function mountSceneSvg(
     for (let i = 0; i < existing.length; i++) {
       const legend: SceneLegend | undefined = next.legends[i];
       if (legend === undefined) return;
-      const fresh = parseFragment(renderLegend(legend, next.theme, `gg-ramp-${legend.scale}`));
+      const fresh = parseFragment(
+        renderLegend(legend, next.theme, `${idScope}gg-ramp-${legend.scale}`),
+      );
       if (fresh[0] !== undefined) existing[i]!.replaceWith(fresh[0]);
     }
   };

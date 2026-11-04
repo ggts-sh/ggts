@@ -12,6 +12,8 @@ import { px } from "../render-svg-format.js";
 export interface BatchPatchContext {
   theme: ThemeTokens;
   paintMode: "full" | "fallback";
+  /** Document id scope of the mounted svg ({@link svgIdScope}, #1902). */
+  idScope: string;
 }
 
 /** Attribute value map: name → serialized value; ABSENT value is "". */
