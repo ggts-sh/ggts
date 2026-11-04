@@ -48,7 +48,9 @@ function patchGroupAttrs(
   const glowOf = (b: GeometryBatch): string => {
     if (b.kind !== "paths" && b.kind !== "segments") return "";
     const glow = b.glow;
-    return glow === undefined || ctx.paintMode === "fallback" ? "" : `url(#${glow.id})`;
+    return glow === undefined || ctx.paintMode === "fallback"
+      ? ""
+      : `url(#${ctx.idScope}${glow.id})`;
   };
   writeAttrs(group, { filter: glowOf(next) }, { filter: glowOf(prev) });
 }

@@ -48,6 +48,13 @@ export interface RenderSVGOptions extends Omit<RunOptions, "height"> {
    * uses solid paint.fallback colors and omits glow (a11y / reduced-effects).
    */
   paintMode?: "full" | "fallback";
+  /**
+   * Namespace every emitted SVG id with this prefix (#1902). Ids and `url(#…)`
+   * references resolve document-wide, so two charts inlined in one HTML page
+   * collide unless each render gets its own prefix. Omitted, ids stay `gg-*`
+   * and output stays byte-identical across runs.
+   */
+  idPrefix?: string;
 }
 
 const DEFAULT_HEIGHT = 400;
@@ -63,7 +70,7 @@ function isBuilder(spec: SpecInput | GGBuilder): spec is GGBuilder {
  */
 export function renderToSVGString(spec: SpecInput | GGBuilder, options: RenderSVGOptions): string {
   const resolved: SpecInput = isBuilder(spec) ? spec.spec() : spec;
-  const { maxMarks, height, paintMode, ...run } = options;
+  const { maxMarks, height, paintMode, idPrefix, ...run } = options;
   const scene = runScene(resolved, {
     ...run,
     height: height ?? resolved.height ?? DEFAULT_HEIGHT,
@@ -79,7 +86,10 @@ export function renderToSVGString(spec: SpecInput | GGBuilder, options: RenderSV
     );
   }
   try {
-    return sceneToSVGString(scene, { paintMode: paintMode ?? "full" });
+    return sceneToSVGString(scene, {
+      paintMode: paintMode ?? "full",
+      ...(idPrefix === undefined ? {} : { idPrefix }),
+    });
   } catch (error) {
     // Failure policy: renderer errors are structured, never blank output.
     throw new PipelineError(

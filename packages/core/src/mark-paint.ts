@@ -133,10 +133,14 @@ export function resolveGlow(glow: GlowSpec, layerIndex: number, panelIndex = 0):
   };
 }
 
-/** Emit SVG gradient + glow filter defs for a paint set (deterministic order). */
+/**
+ * Emit SVG gradient + glow filter defs for a paint set (deterministic order).
+ * `scope` namespaces every id for a shared document ({@link svgIdScope}).
+ */
 export function paintDefsSvg(
   paints: readonly ResolvedGradientPaint[],
   glows: readonly ResolvedGlow[],
+  scope = "",
 ): string {
   const parts: string[] = [];
   for (const paint of paints) {
@@ -149,11 +153,11 @@ export function paintDefsSvg(
     const units = paint.space === "mark" ? "objectBoundingBox" : "userSpaceOnUse";
     if (paint.kind === "linear") {
       parts.push(
-        `<linearGradient id="${paint.id}" gradientUnits="${units}" x1="${String(paint.x1)}" y1="${String(paint.y1)}" x2="${String(paint.x2)}" y2="${String(paint.y2)}">${stops}</linearGradient>`,
+        `<linearGradient id="${scope}${paint.id}" gradientUnits="${units}" x1="${String(paint.x1)}" y1="${String(paint.y1)}" x2="${String(paint.x2)}" y2="${String(paint.y2)}">${stops}</linearGradient>`,
       );
     } else {
       parts.push(
-        `<radialGradient id="${paint.id}" gradientUnits="${units}" cx="${String(paint.cx)}" cy="${String(paint.cy)}" r="${String(paint.r)}">${stops}</radialGradient>`,
+        `<radialGradient id="${scope}${paint.id}" gradientUnits="${units}" cx="${String(paint.cx)}" cy="${String(paint.cy)}" r="${String(paint.r)}">${stops}</radialGradient>`,
       );
     }
   }
@@ -162,7 +166,7 @@ export function paintDefsSvg(
     // is already schema-capped at MAX_GLOW_RADIUS (32).
     const pad = glow.radius * 3;
     parts.push(
-      `<filter id="${glow.id}" x="-${String(pad)}" y="-${String(pad)}" width="${String(1 + pad * 2)}" height="${String(1 + pad * 2)}" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB">` +
+      `<filter id="${scope}${glow.id}" x="-${String(pad)}" y="-${String(pad)}" width="${String(1 + pad * 2)}" height="${String(1 + pad * 2)}" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB">` +
         `<feGaussianBlur in="SourceAlpha" stdDeviation="${String(glow.radius / 2)}" result="blur"/>` +
         `<feFlood flood-color="${glow.color}" flood-opacity="${String(glow.opacity)}" result="color"/>` +
         `<feComposite in="color" in2="blur" operator="in" result="glow"/>` +

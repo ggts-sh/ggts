@@ -40,6 +40,8 @@ function pathAttrs(
       style.stroke === "none" ? themeColors.ink : style.stroke,
       batch.strokePaint,
       ctx.paintMode,
+
+      ctx.idScope,
     );
     attrs["stroke-width"] = px(style.width);
     if (style.dash.length > 0) attrs["stroke-dasharray"] = dashStr(style.dash);
@@ -50,11 +52,13 @@ function pathAttrs(
       style.fill === "none" ? themeColors.accent : style.fill,
       batch.fillPaint,
       ctx.paintMode,
+
+      ctx.idScope,
     );
     if (style.stroke === "none") {
       attrs["stroke"] = "none";
     } else {
-      attrs["stroke"] = paintStroke(style.stroke, batch.strokePaint, ctx.paintMode);
+      attrs["stroke"] = paintStroke(style.stroke, batch.strokePaint, ctx.paintMode, ctx.idScope);
       attrs["stroke-width"] = px(style.width);
       if (style.dash.length > 0) attrs["stroke-dasharray"] = dashStr(style.dash);
       attrs["stroke-linejoin"] = style.linejoin;
@@ -123,11 +127,15 @@ function writePathStyle(
         styleN.fill === "none" ? themeColors.accent : styleN.fill,
         next.fillPaint,
         ctx.paintMode,
+
+        ctx.idScope,
       ),
       paintFill(
         styleP.fill === "none" ? themeColors.accent : styleP.fill,
         prev.fillPaint,
         ctx.paintMode,
+
+        ctx.idScope,
       ),
     );
     return;
@@ -139,11 +147,15 @@ function writePathStyle(
       branch === 2 && styleN.stroke === "none" ? themeColors.ink : styleN.stroke,
       next.strokePaint,
       ctx.paintMode,
+
+      ctx.idScope,
     ),
     paintStroke(
       branch === 2 && styleP.stroke === "none" ? themeColors.ink : styleP.stroke,
       prev.strokePaint,
       ctx.paintMode,
+
+      ctx.idScope,
     ),
   );
   if (styleN.width !== styleP.width) el.setAttribute("stroke-width", px(styleN.width));
@@ -158,11 +170,15 @@ function writePathStyle(
         styleN.fill === "none" ? themeColors.accent : styleN.fill,
         next.fillPaint,
         ctx.paintMode,
+
+        ctx.idScope,
       ),
       paintFill(
         styleP.fill === "none" ? themeColors.accent : styleP.fill,
         prev.fillPaint,
         ctx.paintMode,
+
+        ctx.idScope,
       ),
     );
   }
