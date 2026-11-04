@@ -286,6 +286,46 @@ function allInvalidSemantic(length: number): { semantic: Float64Array; valid: Ui
 }
 
 /**
+ * Nominal `auto` semantics for a column the full temporal runtime already ruled
+ * out as temporal. Same shape split as {@link parseLiteColumn} — pure numbers,
+ * pure non-ISO label strings, or full coercion — but in one pass, so the full
+ * build never re-coerces every label cell through `cellsToNumeric` (#1863).
+ * Also reports the field type it proved, so `fieldType` needs no second walk.
+ */
+function nominalColumnSemantic(raw: readonly CellValue[]): {
+  semantic: Float64Array;
+  valid: Uint8Array;
+  fieldType: FieldType | null;
+} {
+  const semantic = new Float64Array(raw.length);
+  const valid = new Uint8Array(raw.length);
+  let allNumbers = true;
+  let allLabelStrings = true;
+  for (let index = 0; index < raw.length; index++) {
+    const value = raw[index]!;
+    if (value === null) {
+      semantic[index] = Number.NaN;
+      continue;
+    }
+    if (typeof value === "number") {
+      semantic[index] = value;
+      if (Number.isFinite(value)) valid[index] = 1;
+      allLabelStrings = false;
+      continue;
+    }
+    allNumbers = false;
+    if (typeof value !== "string" || isIsoLikeString(value) || stringLooksNumeric(value)) {
+      allLabelStrings = false;
+    }
+  }
+  // Pure number columns: arrays already match cellsToNumeric. Pure label
+  // strings: semantic is all-NaN, same as the lean path.
+  if (allNumbers) return { semantic, valid, fieldType: "quantitative" };
+  if (allLabelStrings) return { ...allInvalidSemantic(raw.length), fieldType: "nominal" };
+  return { ...fallbackNumericColumn(raw, true), fieldType: null };
+}
+
+/**
  * True when a non-ISO string might still coerce via Number() (CSV-ish numeric
  * text). Labels like "s0" / "series-1" are false (letter first after trim).
  */
@@ -343,4 +383,5 @@ export {
   parseLiteColumn,
   fallbackNumericColumn,
   fieldTypeFromLiteDecision,
+  nominalColumnSemantic,
 };
