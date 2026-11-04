@@ -96,11 +96,27 @@ function resolveContinuousRectSlot(
   return { center: (tx0 + tx1) / 2, w: Math.abs(tx1 - tx0), t0, t1 };
 }
 
+/**
+ * Clamp a projected bound to the panel's unit span. Rects are axis-aligned, so
+ * clamping IS panel clipping — no shape change, just the visible extent.
+ * Bar/col edges are synthesized at a zero baseline, which an author-pinned
+ * domain may exclude; unclamped, that baseline projects far outside the panel
+ * and the rect overflows it (#1897). NaN passes through untouched so callers
+ * keep their drop-the-row behavior.
+ */
+function clampUnit(value: number): number {
+  if (value < 0) return 0;
+  if (value > 1) return 1;
+  return value;
+}
+
 export function resolveRectSlot(input: RectSlotInput): RectSlot | null {
   const { frame, fx, row } = input;
   // Frame bounds are already transformed; do not apply the forward transform twice.
-  const t0 = fx.yScale.type === "band" ? NaN : fx.yScale.normalizeTransformed(frame.ymin![row]!);
-  const t1 = fx.yScale.type === "band" ? NaN : fx.yScale.normalizeTransformed(frame.ymax![row]!);
+  const t0 =
+    fx.yScale.type === "band" ? NaN : clampUnit(fx.yScale.normalizeTransformed(frame.ymin![row]!));
+  const t1 =
+    fx.yScale.type === "band" ? NaN : clampUnit(fx.yScale.normalizeTransformed(frame.ymax![row]!));
   return fx.xScale.type === "band"
     ? resolveBandRectSlot(input, fx.xScale, t0, t1)
     : resolveContinuousRectSlot(input, fx.xScale, t0, t1);

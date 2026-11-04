@@ -163,4 +163,33 @@ describe("applyPosition via runPipeline (regression)", () => {
     expect(model.scene.batches.some((b) => b.kind === "rects")).toBe(true);
     expect(model.advisories.some((a) => a.code === "zero-forced")).toBe(true);
   });
+
+  it("clips stacked rects to the panel when a pinned domain excludes zero (#1897)", () => {
+    const model = runPipeline(
+      gg(
+        [
+          { x: "one", g: "A", n: 100 },
+          { x: "one", g: "B", n: 1 },
+        ],
+        aes({ x: "x", y: "n", fill: "g" }),
+      )
+        .geomCol({ position: "stack" })
+        .scales({ y: { domain: [50, 150] } })
+        .spec(),
+      size,
+    );
+    const panel = model.scene.panels[0]!;
+    const batch = model.scene.batches.find((b) => b.kind === "rects");
+    if (batch?.kind !== "rects") throw new Error("expected rects");
+    // Both segments survive: the in-domain run clipped at the panel edge, the
+    // censored one collapsed to zero height — neither overflows the panel.
+    expect(batch.rects.length).toBe(8);
+    for (let i = 0; i < batch.rects.length; i += 4) {
+      expect(batch.rects[i + 1]!).toBeGreaterThanOrEqual(0);
+      expect(batch.rects[i + 1]! + batch.rects[i + 3]!).toBeLessThanOrEqual(panel.height);
+    }
+    // The 0 stack baseline projects below the panel; the rect bottoms clamp to it.
+    expect(batch.rects[1]! + batch.rects[3]!).toBeCloseTo(panel.height, 5);
+    expect(batch.rects[5]! + batch.rects[7]!).toBeCloseTo(panel.height, 5);
+  });
 });
