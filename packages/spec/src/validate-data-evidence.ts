@@ -48,7 +48,14 @@ export type ResolveLayerFieldEvidenceResult =
 // Channel helper (shared by structure checks, data checks, and lint)
 // ---------------------------------------------------------------------------
 
-/** The channel a layer effectively sees (layer wins; null unsets). */
+/**
+ * The channel a layer effectively sees (layer wins; null unsets).
+ *
+ * Canonicalizes authoring sugar: a bare string ("col" as in `aes({ x: "col" })`)
+ * becomes `{ field: "col" }`. Callers (structure checks, data checks, lint) run
+ * `"field" in mapped` on the result, and lintSpec() receives builder output
+ * before normalize(), so returning the primitive would throw a TypeError.
+ */
 export function effectiveChannel(
   plotAes: Aes | undefined,
   layerAes: Aes | undefined,
@@ -57,7 +64,9 @@ export function effectiveChannel(
   const own = layerAes?.[channel];
   if (own === null) return undefined;
   const chosen = own ?? plotAes?.[channel];
-  return chosen ?? undefined;
+  if (chosen === undefined || chosen === null) return undefined;
+  if (typeof chosen === "string") return { field: chosen };
+  return chosen;
 }
 
 // ---------------------------------------------------------------------------
