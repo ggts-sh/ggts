@@ -1,5 +1,11 @@
 # @ggts-sh/spec
 
+## 0.48.0
+
+### Patch Changes
+
+- 4da628c: `lintSpec()` no longer throws on authoring-sugar string aes (`aes({ x: "col" })`). `effectiveChannel()` canonicalizes a bare string to `{ field }` before structure, data, and lint checks read it, so `lintSpec()` and `validate(spec, { lint: true })` return advisories on builder output instead of a `TypeError` (#1896).
+
 ## 0.47.0
 
 ### Minor Changes
