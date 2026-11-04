@@ -1,5 +1,17 @@
 # @ggts-sh/svelte
 
+## 0.48.0
+
+### Patch Changes
+
+- Updated dependencies [0747ef9]
+- Updated dependencies [3a31b29]
+- Updated dependencies [4da628c]
+- Updated dependencies [c271088]
+  - @ggts-sh/core@0.48.0
+  - @ggts-sh/spec@0.48.0
+  - @ggts-sh/compose@0.48.0
+
 ## 0.47.0
 
 ### Patch Changes

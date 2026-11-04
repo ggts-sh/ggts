@@ -1,5 +1,48 @@
 # @ggts-sh/core
 
+## 0.48.0
+
+### Minor Changes
+
+- c271088: `renderToSVGString` and `mountSceneSvg` accept `idPrefix`, so several charts can share one HTML document without stealing each other's clip paths.
+
+  SVG ids are document-scoped. Every render emitted `gg-clip-<panel>`, `gg-strip-clip-<panel>`, `gg-paint-*` and `gg-ramp-*`, so inlining two charts in one page made the second chart's `url(#gg-clip-0)` resolve to the first chart's panel rect: marks below that height vanished with no error or warning (a report, a slide deck, a print-to-PDF page).
+
+  `idPrefix` namespaces every id and every `url(#…)` reference a render emits. Use a distinct value per chart:
+
+  ```ts
+  const a = renderToSVGString(spec, {
+    width: 400,
+    height: 150,
+    idPrefix: "chart-a",
+  });
+  const b = renderToSVGString(spec, {
+    width: 400,
+    height: 400,
+    idPrefix: "chart-b",
+  });
+  document.body.innerHTML = a + b;
+  ```
+
+  `mountSceneSvg` takes the same option and keeps patched references in sync. Omitted, ids stay `gg-*` and output stays byte-identical, so existing goldens and single-chart pages are unchanged.
+
+  Migration: none — additive
+
+### Patch Changes
+
+- 0747ef9: Clip `col`/`bar` rect geometry to the panel. Bar edges are synthesized from a zero baseline, so an author-pinned y domain that excludes 0 projected that baseline far outside the panel: one stacked segment drew taller than the panel and the rest collapsed to 0 px (#1897). Rect bounds now clamp to the panel's data rect, which is exact for axis-aligned rects and matches panel clipping.
+
+  Migration: none — internal.
+
+- 3a31b29: The full build no longer converts a non-temporal column twice. `ColumnTable.parsed()` re-ran `cellsToNumeric` on nominal columns after date inference (an ISO probe and `Number()` on every cell), and `fieldType()` then rescanned the raw column, so groups of label strings cost about twice what the lean build pays. Nominal `auto` columns now take the lean shape split in a single pass: pure number columns copy values, pure non-ISO label columns get an all-invalid semantic view, and mixed or numeric-text columns keep the full coercion.
+
+  The temporal decision (parser key, evidence, non-null count, status) is unchanged. The parsed view and the field type now match the lean build exactly, which also settles the `Infinity`-shaped label cells the full build used to coerce.
+
+  `ColumnTable.parsed()` plus `fieldType()` on 10k label strings: about 115 us to 50 us. On 10k numbers: about 40 us to 23 us.
+
+- Updated dependencies [4da628c]
+  - @ggts-sh/spec@0.48.0
+
 ## 0.47.0
 
 ### Minor Changes
