@@ -52,7 +52,7 @@ function refsIn(root: Element): string[] {
   const refs: string[] = [];
   for (const el of root.querySelectorAll("*")) {
     for (const attr of Array.from(el.attributes)) {
-      for (const match of attr.value.matchAll(/url\(#([^)]+)\)/g)) refs.push(match[1]!);
+      for (const match of attr.value.matchAll(/url\(#([^)]+)\)/g)) refs.push(match[1]);
     }
   }
   return refs;
@@ -83,8 +83,8 @@ describe("live svg idPrefix (#1902)", () => {
 
     expect(a.svg.querySelector(".gg-marks")!.getAttribute("clip-path")).toBe("url(#a-gg-clip-0)");
     expect(b.svg.querySelector(".gg-marks")!.getAttribute("clip-path")).toBe("url(#b-gg-clip-0)");
-    expect(Array.from(a.svg.querySelectorAll("clipPath"))[0]!.id).toBe("a-gg-clip-0");
-    expect(Array.from(b.svg.querySelectorAll("clipPath"))[0]!.id).toBe("b-gg-clip-0");
+    expect(Array.from(a.svg.querySelectorAll("clipPath"))[0].id).toBe("a-gg-clip-0");
+    expect(Array.from(b.svg.querySelectorAll("clipPath"))[0].id).toBe("b-gg-clip-0");
     expect(a.svg.querySelector("linearGradient")!.id).toBe("a-gg-paint-l0-p0-fill");
     expect(b.svg.querySelector("filter")!.id).toBe("b-gg-paint-l0-p0-glow");
 

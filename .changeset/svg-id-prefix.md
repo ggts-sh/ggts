@@ -23,3 +23,5 @@ document.body.innerHTML = a + b;
 ```
 
 `mountSceneSvg` takes the same option and keeps patched references in sync. Omitted, ids stay `gg-*` and output stays byte-identical, so existing goldens and single-chart pages are unchanged.
+
+Migration: none — additive
