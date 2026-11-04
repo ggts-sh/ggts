@@ -36,6 +36,37 @@ describe("lintSpec never throws on schema-invalid scale entries", () => {
   });
 });
 
+describe("lintSpec accepts authoring-sugar string aes (issue #1896)", () => {
+  const data = {
+    values: [
+      { x: "a", y: 1 },
+      { x: "b", y: 2 },
+    ],
+  };
+
+  it("resolves a bare-string plot aes instead of throwing", () => {
+    const advisories = lintSpec({ data, aes: { x: "x", y: "y" }, layers: [{ geom: "line" }] });
+    expect(codesOf(advisories)).toEqual(["line-over-nominal-x"]);
+    expect(advisories[0]!.path).toBe("/layers/0/aes/x");
+  });
+
+  it("resolves a bare-string layer aes instead of throwing", () => {
+    const advisories = lintSpec({ data, layers: [{ geom: "line", aes: { x: "x", y: "y" } }] });
+    expect(codesOf(advisories)).toEqual(["line-over-nominal-x"]);
+  });
+
+  it("keeps the validate() schema error while still emitting lint advisories", () => {
+    const result = validate(
+      { data, aes: { x: "x", y: "y" }, layers: [{ geom: "line" }] },
+      { lint: true },
+    );
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("expected validation failure");
+    expect(result.errors.map((e) => e.code)).toContain("invalid-channel-value");
+    expect(codesOf(result.advisories ?? [])).toEqual(["line-over-nominal-x"]);
+  });
+});
+
 describe("lintSpec advisory ordering across rule modules", () => {
   it("emits layer advisories before scale advisories for the same spec", () => {
     const advisories = lintSpec({
