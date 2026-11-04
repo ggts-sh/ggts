@@ -17,6 +17,7 @@ import { getTemporalRuntime } from "./temporal-runtime.js";
 import {
   fallbackNumericColumn,
   fieldTypeFromLiteDecision,
+  nominalColumnSemantic,
   parseLiteColumn,
   parsedOptionsKey,
   parsedRequestKey,
@@ -37,6 +38,34 @@ function transformConfigKey(config: ColumnTransformConfig): string {
     config.sourceLimits === null ? "none" : `${config.sourceLimits[0]},${config.sourceLimits[1]}`;
   const na = config.naValue === null ? "null" : String(config.naValue);
   return `${config.transform.key}|${limits}|${config.oob}|${na}`;
+}
+
+/**
+ * semantic/valid for a column that is not temporal, plus the field type the
+ * classification proved (only the full runtime's nominal path can prove one).
+ *
+ * The lean parser materializes both arrays for every decision. The full
+ * temporal runtime fills them only for temporal columns, so a non-temporal
+ * column there used to re-coerce every cell through cellsToNumeric (ISO probe
+ * + Number() per label). Nominal `auto` columns now take the lean shape split
+ * instead: same arrays as the lean build, one typeof pass, no per-cell
+ * coercion (#1863).
+ */
+function nonTemporalValues(
+  raw: readonly CellValue[],
+  parsed: { semantic: Float64Array; valid: Uint8Array; decision: ParsedColumnView["decision"] },
+  parser: TemporalParserSpec | "auto",
+  inferTemporal: boolean,
+  temporal: boolean,
+  hasRuntime: boolean,
+): { semantic: Float64Array; valid: Uint8Array; fieldType: FieldType | null } {
+  if (temporal || !hasRuntime) {
+    return { semantic: parsed.semantic, valid: parsed.valid, fieldType: null };
+  }
+  if (parser === "auto" && inferTemporal && parsed.decision.status === "nominal") {
+    return nominalColumnSemantic(raw);
+  }
+  return { ...fallbackNumericColumn(raw, inferTemporal), fieldType: null };
 }
 
 export class ColumnTable {
@@ -158,15 +187,17 @@ export class ColumnTable {
         : runtime.parseColumn(raw, parser, options);
     const inferTemporal = options.inferTemporal !== false;
     const temporal = parser !== "auto" || (inferTemporal && parsed.decision.status === "temporal");
-    // Lean parseLiteColumn already materializes semantic/valid for every
-    // decision (including nominal). Re-running fallbackNumericColumn doubled
-    // the per-cell coerce cost on every non-temporal column (line-3×10k bind
-    // was ~half of runPipeline). Full temporal runtime still falls back for
-    // nominal auto columns so mixed/non-ISO cells get cellsToNumeric.
-    const values =
-      temporal || runtime === null
-        ? { semantic: parsed.semantic, valid: parsed.valid }
-        : fallbackNumericColumn(raw, inferTemporal);
+    const values = nonTemporalValues(
+      raw,
+      parsed,
+      parser,
+      inferTemporal,
+      temporal,
+      runtime !== null,
+    );
+    // Monomorphic nominal shapes (numbers / labels) also settle fieldType, so it
+    // can skip its own typeof walk over the column.
+    if (values.fieldType !== null) this.#typeCache.set(cacheKey, values.fieldType);
     const view: ParsedColumnView = {
       raw,
       semantic: values.semantic,
@@ -318,8 +349,12 @@ export class ColumnTable {
       return inherited;
     }
     const view = this.parsed(name, parser, options);
+    // parsed() settles monomorphic nominal shapes (numbers / labels) it already
+    // had to classify, so the full build skips a second typeof walk here (#1863).
+    const shaped = this.#typeCache.get(cacheKey);
     const type =
-      options.inferTemporal === false
+      shaped ??
+      (options.inferTemporal === false
         ? this.column(name).every(
             (value, index) => value === null || Number.isFinite(view.semantic[index]!),
           )
@@ -330,7 +365,7 @@ export class ColumnTable {
           : // Monomorphic lean keys (lite:numbers / lite:labels) skip the
             // second O(n) typeof walk; mixed/Date fall through to
             // nonTemporalFieldType so lean and full agree (#1477 review).
-            (fieldTypeFromLiteDecision(view.decision) ?? nonTemporalFieldType(this.column(name)));
+            (fieldTypeFromLiteDecision(view.decision) ?? nonTemporalFieldType(this.column(name))));
     this.#typeCache.set(cacheKey, type);
     return type;
   }
