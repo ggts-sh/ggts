@@ -44,12 +44,57 @@ export interface StatQuantileResult {
 }
 
 /** Pinball / check loss ρ_τ. */
-export function pinballLoss(residuals: readonly number[], tau: number): number {
+export function pinballLoss(residuals: ArrayLike<number>, tau: number): number {
   let sum = 0;
-  for (const u of residuals) {
+  for (let i = 0; i < residuals.length; i++) {
+    const u = residuals[i]!;
     sum += u >= 0 ? tau * u : (tau - 1) * u;
   }
   return sum;
+}
+
+/**
+ * The k-th smallest of `values` (0-based). Reorders `values`. Quickselect with
+ * a median-of-three pivot: O(n) expected. An input built against the pivot rule
+ * would make it O(n²), so after 2·log2(n) rounds a native sort finishes the
+ * range, and the worst case stays O(n log n).
+ */
+function selectKth(values: Float64Array, k: number): number {
+  let lo = 0;
+  let hi = values.length - 1;
+  let rounds = 2 * (32 - Math.clz32(values.length));
+  while (lo < hi) {
+    if (rounds-- === 0) {
+      values.subarray(lo, hi + 1).sort();
+      break;
+    }
+    const a = values[lo]!;
+    const b = values[(lo + hi) >>> 1]!;
+    const c = values[hi]!;
+    const pivot = a < b ? (b < c ? b : a < c ? c : a) : a < c ? a : b < c ? c : b;
+    let i = lo;
+    let j = hi;
+    while (i <= j) {
+      while (values[i]! < pivot) i++;
+      while (values[j]! > pivot) j--;
+      if (i <= j) {
+        const swapped = values[i]!;
+        values[i] = values[j]!;
+        values[j] = swapped;
+        i++;
+        j--;
+      }
+    }
+    // [lo, j] <= pivot <= [i, hi], and anything between equals the pivot.
+    if (k <= j) hi = j;
+    else if (k >= i) lo = i;
+    else break;
+  }
+  return values[k]!;
+}
+
+function orderStatRank(n: number, tau: number): number {
+  return Math.min(n - 1, Math.max(0, Math.ceil(tau * n) - 1));
 }
 
 /**
@@ -60,9 +105,20 @@ export function pinballLoss(residuals: readonly number[], tau: number): number {
 export function empiricalQuantileOrderStat(values: readonly number[], tau: number): number {
   const n = values.length;
   if (n === 0) return Number.NaN;
-  const sorted = values.toSorted((a, b) => a - b);
-  const k = Math.min(n - 1, Math.max(0, Math.ceil(tau * n) - 1));
-  return sorted[k]!;
+  return selectKth(Float64Array.from(values), orderStatRank(n, tau));
+}
+
+/** Optimal intercept for a fixed slope. `scratch` holds one value per row, and a fit reuses it. */
+function profiledIntercept(
+  x: Float64Array,
+  y: Float64Array,
+  rows: readonly number[],
+  slope: number,
+  tau: number,
+  scratch: Float64Array,
+): number {
+  for (let i = 0; i < rows.length; i++) scratch[i] = y[rows[i]!]! - slope * x[rows[i]!]!;
+  return selectKth(scratch, orderStatRank(rows.length, tau));
 }
 
 function residualPinball(
@@ -71,14 +127,15 @@ function residualPinball(
   rows: readonly number[],
   slope: number,
   tau: number,
+  scratch: Float64Array,
 ): { intercept: number; loss: number } {
-  const residuals: number[] = [];
-  for (const row of rows) {
-    residuals.push(y[row]! - slope * x[row]!);
+  const intercept = profiledIntercept(x, y, rows, slope, tau, scratch);
+  // Selection reordered `scratch`. Refill it in row order: rounding in this sum
+  // can decide a tie between slopes.
+  for (let i = 0; i < rows.length; i++) {
+    scratch[i] = y[rows[i]!]! - slope * x[rows[i]!]! - intercept;
   }
-  const intercept = empiricalQuantileOrderStat(residuals, tau);
-  const centered = residuals.map((r) => r - intercept);
-  return { intercept, loss: pinballLoss(centered, tau) };
+  return { intercept, loss: pinballLoss(scratch, tau) };
 }
 
 function pairwiseSlopes(x: Float64Array, y: Float64Array, rows: readonly number[]): number[] {
@@ -100,8 +157,9 @@ function slopeSubgradientSign(
   rows: readonly number[],
   slope: number,
   tau: number,
+  scratch: Float64Array,
 ): number {
-  const { intercept } = residualPinball(x, y, rows, slope, tau);
+  const intercept = profiledIntercept(x, y, rows, slope, tau, scratch);
   // d/db ρ_τ(y − a − b x) = −x · (τ − 1{r < 0}) with care at zero residuals.
   let g = 0;
   for (const row of rows) {
@@ -121,10 +179,11 @@ function fitByPairwise(
   rows: readonly number[],
   tau: number,
 ): QuantileFit {
+  const scratch = new Float64Array(rows.length);
   let bestSlope = 0;
-  let best = residualPinball(x, y, rows, 0, tau);
+  let best = residualPinball(x, y, rows, 0, tau, scratch);
   for (const slope of pairwiseSlopes(x, y, rows)) {
-    const cand = residualPinball(x, y, rows, slope, tau);
+    const cand = residualPinball(x, y, rows, slope, tau, scratch);
     if (cand.loss < best.loss - 1e-15) {
       best = cand;
       bestSlope = slope;
@@ -139,28 +198,32 @@ function fitByBisection(
   rows: readonly number[],
   tau: number,
 ): QuantileFit {
+  const scratch = new Float64Array(rows.length);
   let lo = -1;
   let hi = 1;
   for (let expand = 0; expand < 20; expand++) {
-    const sLo = slopeSubgradientSign(x, y, rows, lo, tau);
-    const sHi = slopeSubgradientSign(x, y, rows, hi, tau);
-    if (sLo === 0) return residualToFit(x, y, rows, lo, tau);
-    if (sHi === 0) return residualToFit(x, y, rows, hi, tau);
+    const sLo = slopeSubgradientSign(x, y, rows, lo, tau, scratch);
+    const sHi = slopeSubgradientSign(x, y, rows, hi, tau, scratch);
+    if (sLo === 0) return residualToFit(x, y, rows, lo, tau, scratch);
+    if (sHi === 0) return residualToFit(x, y, rows, hi, tau, scratch);
     if (sLo !== sHi) break;
     const width = hi - lo;
     lo -= width;
     hi += width;
   }
+  // lo moves only to a slope with this same sign, so one evaluation holds for the whole loop.
+  const sLo = slopeSubgradientSign(x, y, rows, lo, tau, scratch);
   for (let iter = 0; iter < 80; iter++) {
     const mid = 0.5 * (lo + hi);
-    const s = slopeSubgradientSign(x, y, rows, mid, tau);
-    if (s === 0) return residualToFit(x, y, rows, mid, tau);
-    const sLo = slopeSubgradientSign(x, y, rows, lo, tau);
+    // No double lies between lo and hi. The slope below is already mid.
+    if (mid === lo || mid === hi) break;
+    const s = slopeSubgradientSign(x, y, rows, mid, tau, scratch);
+    if (s === 0) return residualToFit(x, y, rows, mid, tau, scratch);
     if (sLo === s) lo = mid;
     else hi = mid;
   }
   const slope = 0.5 * (lo + hi);
-  return residualToFit(x, y, rows, slope, tau);
+  return residualToFit(x, y, rows, slope, tau, scratch);
 }
 
 function residualToFit(
@@ -169,9 +232,9 @@ function residualToFit(
   rows: readonly number[],
   slope: number,
   tau: number,
+  scratch: Float64Array,
 ): QuantileFit {
-  const { intercept } = residualPinball(x, y, rows, slope, tau);
-  return { intercept, slope };
+  return { intercept: profiledIntercept(x, y, rows, slope, tau, scratch), slope };
 }
 
 /**
