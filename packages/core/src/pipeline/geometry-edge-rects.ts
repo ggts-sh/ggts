@@ -21,7 +21,7 @@ import {
   numericStyleVector,
   type ResolvedStyleScales,
 } from "./geometry-style.js";
-import { DEFAULT_RULE_LINEWIDTH, removedWarning } from "./geometry-shared.js";
+import { DEFAULT_RULE_LINEWIDTH, droppedFrameRows, removedWarning } from "./geometry-shared.js";
 
 function sizeAt(
   frame: LayerFrame,
@@ -274,6 +274,7 @@ function styleEdgeBatch(
     panelIndex: 0,
     rects: emitted.rects,
     rowIndex: emitted.rowIndex,
+    ...droppedFrameRows(emitted.keptRows, frame.n),
     fill: binding.fill.constant,
     alpha: constantStyle(binding, params, "alpha", 1),
     anchor: "center",

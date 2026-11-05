@@ -217,7 +217,6 @@ export function createRawCandidateDatumColumnsResolver(input: {
             layerIndex: facts.layerIndex,
             batchIndex: facts.batchIndex,
             primitiveIndex: facts.semanticIds[i]!,
-            sourceRow: facts.rowIds[i] === NO_ROW ? null : facts.rowIds[i]!,
           },
           sourceY[i] ?? null,
         );
@@ -292,7 +291,6 @@ export function createRawCandidateDatumColumnsResolver(input: {
           layerIndex: facts.layerIndex,
           batchIndex: facts.batchIndex,
           primitiveIndex: facts.semanticIds[i]!,
-          sourceRow: rowId === NO_ROW ? null : rowId,
         },
         read(state.y),
       );

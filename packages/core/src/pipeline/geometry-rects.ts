@@ -12,7 +12,7 @@ import {
   numericStyleVector,
   type ResolvedStyleScales,
 } from "./geometry-style.js";
-import { DEFAULT_BAR_WIDTH, removedWarning } from "./geometry-shared.js";
+import { DEFAULT_BAR_WIDTH, droppedFrameRows, removedWarning } from "./geometry-shared.js";
 import { emitRectRows } from "./geometry-rects-emit.js";
 
 export function rectsBatch(
@@ -58,6 +58,7 @@ export function rectsBatch(
     panelIndex: 0,
     rects,
     rowIndex,
+    ...droppedFrameRows(keptRows, frame.n),
     fill: binding.fill.constant,
     alpha: constantStyle(binding, params, "alpha", 1),
   };
