@@ -1,5 +1,24 @@
 # @ggts-sh/react
 
+## 0.48.1
+
+### Patch Changes
+
+- ce6e8d4: Stop walking every source row on each hover of a stat mark. Smooth and density lines have many vertices that share one list of source rows, and each pointer move walked that list again. At 100k rows, a hover along a smooth line now takes under 1 ms, from about 58 ms in React and 24 ms in Svelte. In React, a selection change on such a line takes about 4 ms, from about 1.5 s, because the hook no longer walks the rows once per vertex. Inspection results do not change. Snapshots of the same line now share one frozen `sourceKeys` array, so compare its contents and not its identity. `@ggts-sh/core/interaction` adds the experimental `createSourceKeysCache`, and `materializeInspection` takes an optional cache as a last argument.
+- 90da79a: Stop rebuilding the interaction overlay and the pressed legend state on each pointer move. Each move copied every candidate, looked up the selected and emphasized anchors again, and built new key sets for each legend entry. On a 100k-point chart, a hover move goes from 16 ms to 1 ms, from about 240 ms to about 2 ms with 30k points selected, and from about 76 ms to about 2 ms with a legend entry pressed. Rendered output does not change.
+- 9277260: Stop rebuilding SVG markup when only the interaction masks change on a canvas chart. Each paint for a selection, an emphasis, a legend press, or a `muteSiblings` hover rebuilt the SVG of the axes and labels and compared it with the DOM. On 7 years of daily bars, a `muteSiblings` hover move goes from 19 ms to 2 ms. Charts with few SVG nodes do not change. Rendered output does not change. An outside edit to that SVG, such as one from a browser extension, now stays until the scene changes, where each paint used to undo it.
+- Updated dependencies [ce6e8d4]
+- Updated dependencies [1895671]
+- Updated dependencies [1789dd4]
+- Updated dependencies [d4d2d3e]
+- Updated dependencies [2c682e8]
+- Updated dependencies [fd27a43]
+- Updated dependencies [e217bb4]
+- Updated dependencies [0723e4a]
+  - @ggts-sh/core@0.48.1
+  - @ggts-sh/compose@0.48.1
+  - @ggts-sh/spec@0.48.1
+
 ## 0.48.0
 
 ### Patch Changes
