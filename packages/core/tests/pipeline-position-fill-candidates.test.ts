@@ -9,6 +9,9 @@ import { aes, gg } from "@ggts-sh/spec";
 
 import { registerAll } from "../src/index.ts";
 import { runPipeline } from "../src/pipeline.ts";
+import { sourceBackedInspectY } from "../src/pipeline/candidate-source-values.ts";
+import type { FinalizedLayerFrame } from "../src/pipeline/types.ts";
+import type { Scene } from "../src/scene.ts";
 
 registerAll();
 
@@ -229,5 +232,129 @@ describe("percent labels out-of-range advisory", () => {
       size,
     );
     expect(model.advisories.some((a) => a.code === "percent-labels-out-of-range")).toBe(false);
+  });
+});
+
+describe("stacked rect candidates after a scale domain drops rows", () => {
+  const rows = (categories: number) =>
+    Array.from({ length: categories * 3 }, (_, i) => ({
+      x: `c${Math.floor(i / 3)}`,
+      fill: `f${i % 3}`,
+      y: 1 + (i % 7),
+    }));
+  const inDomain = (categories: number, keep: (index: number) => boolean) =>
+    Array.from({ length: categories }, (_, i) => `c${i}`).filter((_, i) => keep(i));
+  const readCandidates = (model: ReturnType<typeof runPipeline>) =>
+    Array.from({ length: model.candidates.size }, (_, id) => model.candidates.candidate(id)).filter(
+      (candidate) => candidate !== null,
+    );
+
+  for (const [label, keep] of [
+    ["the first categories", (i: number) => i >= 2],
+    ["a middle category", (i: number) => i !== 3],
+    ["every second category", (i: number) => i % 2 === 1],
+  ] as const) {
+    it(`keeps each stack segment height when the domain leaves out ${label}`, () => {
+      const data = rows(8);
+      const domain = inDomain(8, keep);
+      const model = runPipeline(
+        gg(data, aes({ x: "x", y: "y", fill: "fill" }))
+          .geomCol()
+          .scaleXDiscrete({ domain })
+          .spec(),
+        size,
+      );
+      const candidates = readCandidates(model);
+      const kept = data.flatMap((row, index) => (domain.includes(row.x) ? [index] : []));
+      expect(candidates.map((candidate) => candidate.rowIndex!).toSorted((p, q) => p - q)).toEqual(
+        kept,
+      );
+      for (const candidate of candidates) {
+        expect(candidate.yValue).toBe(data[candidate.rowIndex!]!.y);
+      }
+    });
+
+    it(`keeps each fill share when the domain leaves out ${label}`, () => {
+      const data = rows(8);
+      const domain = inDomain(8, keep);
+      const model = runPipeline(
+        gg(data, aes({ x: "x", y: "y", fill: "fill" }))
+          .geomCol({ position: "fill" })
+          .scaleXDiscrete({ domain })
+          .spec(),
+        size,
+      );
+      const totals = new Map<string, number>();
+      for (const row of data) totals.set(row.x, (totals.get(row.x) ?? 0) + row.y);
+      const candidates = readCandidates(model);
+      expect(candidates.length).toBe(data.filter((row) => domain.includes(row.x)).length);
+      for (const candidate of candidates) {
+        const row = data[candidate.rowIndex!]!;
+        expect(candidate.yValue).toBeCloseTo(row.y / totals.get(row.x)!, 12);
+      }
+    });
+  }
+});
+
+describe("frame row lookup for a source row", () => {
+  const stackedFrame = (rowIndex: readonly number[]) =>
+    ({
+      n: rowIndex.length,
+      rowIndex,
+      ymin: Float64Array.from(rowIndex, () => 0),
+      ymax: Float64Array.from(rowIndex, (_, i) => 10 + i),
+      binding: { layer: { geom: "col", position: "stack" }, yTransform: undefined },
+      y: null,
+    }) as unknown as FinalizedLayerFrame;
+  const scene = { batches: [{ kind: "rects" }] } as unknown as Scene;
+  const inspectY = (frame: FinalizedLayerFrame, primitiveIndex: number, sourceRow: number | null) =>
+    sourceBackedInspectY(
+      [[frame]],
+      scene,
+      { panelIndex: 0, layerIndex: 0, batchIndex: 0, primitiveIndex, sourceRow },
+      -1,
+    );
+
+  it("takes the first frame row when a source row repeats", () => {
+    const frame = stackedFrame([5, 7, 7, 9]);
+    expect(inspectY(frame, 0, 7)).toBe(11);
+  });
+
+  it("falls back to the primitive index when the source row is not in the frame", () => {
+    const frame = stackedFrame([5, 7, 9]);
+    expect(inspectY(frame, 1, 123)).toBe(11);
+    expect(inspectY(frame, 8, 123)).toBe(12);
+    expect(inspectY(frame, 2, null)).toBe(12);
+  });
+
+  it("does not share a lookup between frames of the same length", () => {
+    const first = stackedFrame([5, 7, 9]);
+    const second = stackedFrame([9, 5, 7]);
+    expect(inspectY(first, 0, 9)).toBe(12);
+    expect(inspectY(second, 1, 9)).toBe(10);
+    expect(inspectY(first, 0, 7)).toBe(11);
+    expect(inspectY(second, 0, 7)).toBe(12);
+  });
+
+  it("reads the frame rows about once per candidate after a drop, not once per pair", () => {
+    // Counts reads through a Proxy, so any scan fails this: indexOf, findIndex, or a loop.
+    const n = 2_000;
+    let reads = 0;
+    const counted = new Proxy(
+      Array.from({ length: n }, (_, i) => i + 5),
+      {
+        get(target, key, receiver) {
+          if (typeof key === "string" && /^\d+$/.test(key)) reads++;
+          return Reflect.get(target, key, receiver) as unknown;
+        },
+      },
+    );
+    const frame = stackedFrame(counted);
+    reads = 0;
+    // Every primitive sits 5 rows before its frame row, as after a dropped first category.
+    for (let primitive = 0; primitive < n; primitive++) {
+      expect(inspectY(frame, primitive, Math.min(primitive + 10, n + 4))).toBeGreaterThan(0);
+    }
+    expect(reads).toBeLessThan(3 * n);
   });
 });
