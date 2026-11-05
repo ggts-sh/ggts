@@ -1,5 +1,5 @@
 {
-  "$comment": "PROVISIONAL budgets (plan M3): measured on an Apple M1 Pro dev machine (darwin arm64, bun 1.3.6) on 2026-07-11 via `bun run bench:json`; budget = median * 1.5 headroom, rounded up to ~2 significant figures. Re-baseline on the CI runner when a remote exists (plan M3->M4). Canvas workloads measure JS command-generation cost against a stub 2d context (bun has no raster) \u2014 see workloads/. Keys must exactly match the workload ids emitted by bench-json.ts; check-budgets.ts asserts coverage in both directions. 2026-08-02: candidate workloads re-baselined on linux-x64 bun 1.3.14 after the columnar-datum + lazy-axis-groups rework (canvas cold 1161\u2192263ms measured; the pre-existing 130/31ms M1 budgets predate the 2026-07-24 candidate-store rework and no longer reflected this workload's shape). 2026-08-02 (#1423): color-log10 / color-binned / color-manual / mapped-style 100k tightened after sequential ramp LUT + unique-value style fan-out (local medians ~38/34/42/66 ms; budgets median*~1.5 with CI headroom).",
+  "$comment": "PROVISIONAL budgets (plan M3): measured on an Apple M1 Pro dev machine (darwin arm64, bun 1.3.6) on 2026-07-11 via `bun run bench:json`; budget = median * 1.5 headroom, rounded up to ~2 significant figures. Re-baseline on the CI runner when a remote exists (plan M3->M4). Canvas workloads measure JS command-generation cost against a stub 2d context (bun has no raster) \u2014 see workloads/. Keys must exactly match the workload ids emitted by bench-json.ts; check-budgets.ts asserts coverage in both directions. 2026-08-02: candidate workloads re-baselined on linux-x64 bun 1.3.14 after the columnar-datum + lazy-axis-groups rework (canvas cold 1161\u2192263ms measured; the pre-existing 130/31ms M1 budgets predate the 2026-07-24 candidate-store rework and no longer reflected this workload's shape). 2026-08-02 (#1423): color-log10 / color-binned / color-manual / mapped-style 100k tightened after sequential ramp LUT + unique-value style fan-out (local medians ~38/34/42/66 ms; budgets median*~1.5 with CI headroom). 2026-11-05 (#1947): four entries re-baselined on the CI runner (ubuntu-latest, ci-runner container, bun 1.4.4): pipeline stacked-bars 50x4 1.1\u21921.9, svg render stacked-bars 50x4 1.3\u21922, canvas redraw scatter 100k 0.87\u21921.6, candidate lookup 100k 8\u219215 ms. Each is the median of four CI runs (runs 42079903396, 42082676457, 42084477785, 42085380779) times 1.5, rounded up to ~2 significant figures. The other entries are unchanged.",
   "budgets": {
     "pipeline scatter 1k": {
       "budgetMs": 2.9
@@ -35,10 +35,10 @@
       "budgetMs": 35
     },
     "pipeline stacked-bars 50x4": {
-      "budgetMs": 2.4
+      "budgetMs": 1.9
     },
     "svg render stacked-bars 50x4": {
-      "budgetMs": 2.1
+      "budgetMs": 2
     },
     "pipeline line-series 10x10k": {
       "budgetMs": 87
@@ -56,13 +56,13 @@
       "budgetMs": 400
     },
     "canvas redraw scatter 100k": {
-      "budgetMs": 2
+      "budgetMs": 1.6
     },
     "hit-index build 100k": {
       "budgetMs": 210
     },
     "candidate lookup 100k": {
-      "budgetMs": 19
+      "budgetMs": 15
     },
     "pipeline transform-identity 100k": {
       "budgetMs": 20
