@@ -274,6 +274,118 @@ describe("fitLinearQuantileRegression", () => {
   });
 });
 
+describe("fitLinearQuantileRegression on the pairwise path", () => {
+  /** Every pairwise slope in pair order, with the rule the fit must keep. */
+  function scanEveryPair(x: Float64Array, y: Float64Array, tau: number) {
+    const evaluate = (slope: number) => {
+      const intercept = empiricalQuantileOrderStat(
+        Array.from(x, (xv, i) => y[i]! - slope * xv),
+        tau,
+      );
+      const residuals = Array.from(x, (xv, i) => y[i]! - slope * xv - intercept);
+      return { intercept, loss: pinballLoss(residuals, tau) };
+    };
+    let best = evaluate(0);
+    let bestSlope = 0;
+    for (let i = 0; i < x.length; i++) {
+      for (let j = i + 1; j < x.length; j++) {
+        const dx = x[j]! - x[i]!;
+        if (dx === 0) continue;
+        const slope = (y[j]! - y[i]!) / dx;
+        const cand = evaluate(slope);
+        if (cand.loss < best.loss - 1e-15) {
+          best = cand;
+          bestSlope = slope;
+        }
+      }
+    }
+    return { intercept: best.intercept, slope: bestSlope };
+  }
+
+  const random = (seed: number) => {
+    let state = seed;
+    return () => (state = (Math.imul(state, 1664525) + 1013904223) >>> 0) / 2 ** 32;
+  };
+  const shapes: Record<string, (next: () => number) => readonly [number, number]> = {
+    noise: (next) => {
+      const xv = next() * 100;
+      return [xv, xv * 0.5 + (next() - 0.5) * 30];
+    },
+    "integer grid with exact ties": (next) => [Math.floor(next() * 6), Math.floor(next() * 6)],
+    "two x values": (next) => [Math.floor(next() * 2), Math.floor(next() * 9)],
+    "x in a tiny span near 1": (next) => [1 + next() * 1e-15, next()],
+    "x far from zero": (next) => [1e15 + Math.floor(next() * 1000), next()],
+    "constant y": (next) => [next() * 10, 3],
+    "on one line": (next) => {
+      const xv = Math.floor(next() * 50);
+      return [xv, 1 + 2 * xv];
+    },
+    "steep trend": (next) => {
+      const xv = next();
+      return [xv, 1e9 * xv + 1e-3 * next()];
+    },
+    "values near the double limit": (next) => [next() * 1e300, next() * 1e300],
+  };
+
+  for (const [name, row] of Object.entries(shapes)) {
+    it(`keeps the slope of a scan of every pair: ${name}`, () => {
+      for (const [n, seeds] of [
+        [8, 150],
+        [9, 20],
+        [24, 60],
+        [60, 4],
+      ] as const) {
+        for (const tau of [0.1, 0.25, 0.5, 0.9]) {
+          for (let seed = 1; seed <= seeds; seed++) {
+            const next = random(seed * n);
+            const rows = Array.from({ length: n }, () => row(next));
+            const x = Float64Array.from(rows, (r) => r[0]);
+            const y = Float64Array.from(rows, (r) => r[1]);
+            const fit = fitLinearQuantileRegression(x, y, tau);
+            if (fit === null) continue;
+            expect(fit).toEqual(scanEveryPair(x, y, tau));
+          }
+        }
+      }
+    });
+  }
+
+  it("keeps the slope of a scan of every pair at the row limit, with x in a tiny span", () => {
+    const next = random(11);
+    const rows = Array.from({ length: 150 }, () => shapes["x in a tiny span near 1"]!(next));
+    const x = Float64Array.from(rows, (r) => r[0]);
+    const y = Float64Array.from(rows, (r) => r[1]);
+    for (const tau of [0.25, 0.9]) {
+      expect(fitLinearQuantileRegression(x, y, tau)).toEqual(scanEveryPair(x, y, tau));
+    }
+  });
+
+  it("does not evaluate every pairwise slope", () => {
+    const n = 150;
+    const readsOfX = (shape: string) => {
+      const next = random(3);
+      const rows = Array.from({ length: n }, () => shapes[shape]!(next));
+      let reads = 0;
+      const x = new Proxy(
+        Float64Array.from(rows, (r) => r[0]),
+        {
+          get(target, key) {
+            reads++;
+            return Reflect.get(target, key) as unknown;
+          },
+        },
+      );
+      const y = Float64Array.from(rows, (r) => r[1]);
+      expect(fitLinearQuantileRegression(x, y, 0.5)).not.toBeNull();
+      return reads;
+    };
+    // Evaluating all 11,175 slopes reads x about 3,350,000 times.
+    for (const shape of ["noise", "constant y", "on one line"]) {
+      expect(readsOfX(shape)).toBeLessThan(n * n * 4);
+    }
+  });
+});
+
 describe("statQuantile", () => {
   it("emits one series per quantile with n grid points", () => {
     const result = statQuantile({

@@ -14,6 +14,8 @@
 import type { CellValue } from "../table.js";
 
 const PAIRWISE_CAP = 150;
+/** Below this many rows, the range search costs more than it saves. */
+const PAIRWISE_SCAN_ALL = 8;
 const DEFAULT_QUANTILES = [0.25, 0.5, 0.75] as const;
 const DEFAULT_N = 80;
 
@@ -173,6 +175,60 @@ function slopeSubgradientSign(
   return g > 0 ? 1 : -1;
 }
 
+/**
+ * The range of slopes that can win `fitByPairwise`. A winner's loss is within
+ * rounding of the minimum, and the profiled loss is convex in the slope, so a
+ * slope past one whose loss clears the minimum by more than that rounding cannot
+ * win. The margin holds for every slope, so `x` packed into a tiny span far from
+ * zero makes it exceed the starting loss, and then no slope is worth skipping.
+ * Input too large to bound the rounding also gets all slopes.
+ */
+function possibleSlopeRange(
+  x: Float64Array,
+  y: Float64Array,
+  rows: readonly number[],
+  slopes: readonly number[],
+  startLoss: number,
+  tau: number,
+  scratch: Float64Array,
+): readonly [number, number] {
+  let maxX = 0;
+  let maxY = 0;
+  for (const row of rows) {
+    maxX = Math.max(maxX, Math.abs(x[row]!));
+    maxY = Math.max(maxY, Math.abs(y[row]!));
+  }
+  let steepest = 0;
+  for (const slope of slopes) steepest = Math.max(steepest, Math.abs(slope));
+  const margin = 1e-11 * (100 + rows.length * (maxY + steepest * maxX));
+  if (!(margin < 1e100) || margin >= startLoss) return [-Infinity, Infinity];
+
+  const sorted = Float64Array.from(slopes);
+  sorted.sort();
+  let count = 0;
+  for (const slope of sorted) {
+    if (count === 0 || slope !== sorted[count - 1]) sorted[count++] = slope;
+  }
+  const loss = (index: number) => residualPinball(x, y, rows, sorted[index]!, tau, scratch).loss;
+  let lowest = 0;
+  let hi = count - 1;
+  while (lowest < hi) {
+    const mid = (lowest + hi) >>> 1;
+    if (loss(mid) <= loss(mid + 1)) hi = mid;
+    else lowest = mid + 1;
+  }
+  const limit = loss(lowest) + margin;
+  const edge = (inside: number, outside: number) => {
+    while (Math.abs(outside - inside) > 1) {
+      const mid = (inside + outside) >> 1;
+      if (loss(mid) < limit) inside = mid;
+      else outside = mid;
+    }
+    return sorted[inside]!;
+  };
+  return [edge(lowest, -1), edge(lowest, count)];
+}
+
 function fitByPairwise(
   x: Float64Array,
   y: Float64Array,
@@ -180,9 +236,18 @@ function fitByPairwise(
   tau: number,
 ): QuantileFit {
   const scratch = new Float64Array(rows.length);
+  const slopes = pairwiseSlopes(x, y, rows);
   let bestSlope = 0;
   let best = residualPinball(x, y, rows, 0, tau, scratch);
-  for (const slope of pairwiseSlopes(x, y, rows)) {
+  const [low, high] =
+    rows.length < PAIRWISE_SCAN_ALL
+      ? [-Infinity, Infinity]
+      : possibleSlopeRange(x, y, rows, slopes, best.loss, tau, scratch);
+  const seen = new Set<number>();
+  for (const slope of slopes) {
+    // A repeated slope has the same loss, so it cannot beat the best a second time.
+    if (slope < low || slope > high || seen.has(slope)) continue;
+    seen.add(slope);
     const cand = residualPinball(x, y, rows, slope, tau, scratch);
     if (cand.loss < best.loss - 1e-15) {
       best = cand;
