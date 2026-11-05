@@ -214,10 +214,7 @@ function formatGroups(labels: readonly string[]): string {
 
 /** Build the single aggregated warning for the hidden bands. */
 function hiddenBandWarning(hidden: readonly MeasuredBand[]): PipelineWarning {
-  const groupNames: string[] = [];
-  for (const band of hidden) {
-    if (!groupNames.includes(band.label)) groupNames.push(band.label);
-  }
+  const groupNames = [...new Set(hidden.map((band) => band.label))];
   const layers = [...new Set(hidden.map((band) => band.layer))].toSorted((a, b) => a - b);
 
   return {
