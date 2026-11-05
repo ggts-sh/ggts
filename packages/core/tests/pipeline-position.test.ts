@@ -192,4 +192,117 @@ describe("applyPosition via runPipeline (regression)", () => {
     expect(batch.rects[1]! + batch.rects[3]!).toBeCloseTo(panel.height, 5);
     expect(batch.rects[5]! + batch.rects[7]!).toBeCloseTo(panel.height, 5);
   });
+
+  describe("stacked area under a pinned domain that excludes zero (#1905)", () => {
+    const stackedArea = (rows: { x: number; g: string; n: number }[]) =>
+      runPipeline(
+        gg(rows, aes({ x: "x", y: "n", fill: "g" }))
+          .geomArea({ position: "stack" })
+          .scales({ y: { domain: [50, 150] } })
+          .spec(),
+        { width: 400, height: 400 },
+      );
+    const pathVertices = (model: ReturnType<typeof stackedArea>) => {
+      const batch = model.scene.batches.find((b) => b.kind === "paths");
+      if (batch?.kind !== "paths") throw new Error("expected paths");
+      const out: [number, number][] = [];
+      for (let i = 0; i < batch.positions.length; i += 2) {
+        out.push([batch.positions[i]!, batch.positions[i + 1]!]);
+      }
+      return { batch, vertices: out };
+    };
+
+    it("keeps every path vertex inside the panel", () => {
+      const model = stackedArea([
+        { x: 1, g: "A", n: 60 },
+        { x: 1, g: "B", n: 10 },
+        { x: 2, g: "A", n: 70 },
+        { x: 2, g: "B", n: 20 },
+      ]);
+      const panel = model.scene.panels[0]!;
+      const { vertices } = pathVertices(model);
+      expect(vertices.length).toBeGreaterThan(0);
+      for (const [x, y] of vertices) {
+        expect(x).toBeGreaterThanOrEqual(0);
+        expect(x).toBeLessThanOrEqual(panel.width);
+        expect(y).toBeGreaterThanOrEqual(0);
+        expect(y).toBeLessThanOrEqual(panel.height);
+      }
+    });
+
+    it("clips an edge that leaves the panel at the crossing, not at the vertex", () => {
+      // The upper edge of B stacks to 160 then 140. The default 5% expansion
+      // puts the top of the panel at 155, so the edge crosses it a quarter of
+      // the way between the two columns. Clamping the vertices alone would
+      // bend that edge; the clipped edge must stay on the original line.
+      const model = stackedArea([
+        { x: 0, g: "A", n: 60 },
+        { x: 0, g: "B", n: 100 },
+        { x: 2, g: "A", n: 60 },
+        { x: 2, g: "B", n: 80 },
+      ]);
+      const panel = model.scene.panels[0]!;
+      const { vertices } = pathVertices(model);
+      for (const [, y] of vertices) {
+        expect(y).toBeGreaterThanOrEqual(0);
+        expect(y).toBeLessThanOrEqual(panel.height);
+      }
+      const onTop = vertices.filter(([, y]) => y === 0);
+      const columns = vertices.map(([x]) => x);
+      const left = Math.min(...columns);
+      const crossing = left + 0.25 * (Math.max(...columns) - left);
+      expect(onTop.some(([x]) => Math.abs(x - crossing) < 1e-3)).toBe(true);
+    });
+
+    it("keeps the vertex, row, and frame-row arrays the same length", () => {
+      const { batch } = pathVertices(
+        stackedArea([
+          { x: 0, g: "A", n: 60 },
+          { x: 0, g: "B", n: 100 },
+          { x: 2, g: "A", n: 60 },
+          { x: 2, g: "B", n: 80 },
+        ]),
+      );
+      const count = batch.positions.length / 2;
+      expect(batch.rowIndex.length).toBe(count);
+      expect(batch.closedFrameRows?.length).toBe(count);
+      expect(batch.pathOffsets.at(-1)).toBe(count);
+    });
+
+    it("cuts a smooth confidence band at the panel too", () => {
+      const rows = Array.from({ length: 12 }, (_, i) => ({ x: i, n: 60 + (i % 5) * 20 }));
+      const model = runPipeline(
+        gg(rows, aes({ x: "x", y: "n" }))
+          .geomSmooth({ method: "lm", se: true })
+          .scales({ y: { domain: [75, 110] } })
+          .spec(),
+        { width: 400, height: 400 },
+      );
+      const { batch, vertices } = pathVertices(model);
+      expect(batch.closed).toBe(true);
+      for (const [, y] of vertices) {
+        expect(y).toBeGreaterThanOrEqual(0);
+        expect(y).toBeLessThanOrEqual(model.scene.panels[0]!.height);
+      }
+    });
+
+    it("leaves the path alone when the panel does not clip", () => {
+      const spec = gg(
+        [
+          { x: 1, g: "A", n: 60 },
+          { x: 2, g: "A", n: 70 },
+        ],
+        aes({ x: "x", y: "n", fill: "g" }),
+      )
+        .geomArea({ position: "stack" })
+        .scales({ y: { domain: [50, 150] } })
+        .spec();
+      const model = runPipeline(
+        { ...spec, coord: { type: "transform", clip: false } },
+        { width: 400, height: 400 },
+      );
+      const { vertices } = pathVertices(model);
+      expect(vertices.some(([, y]) => y > model.scene.panels[0]!.height)).toBe(true);
+    });
+  });
 });

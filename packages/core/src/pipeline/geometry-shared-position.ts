@@ -26,6 +26,8 @@ export interface Frame {
   innerHeight: number;
   xScale: PositionScale;
   yScale: PositionScale;
+  /** True when the renderer clips marks to the panel; closed bands then cut at its edges (#1905). */
+  clip?: boolean;
 }
 
 export function positionOf(
