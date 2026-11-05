@@ -1,5 +1,11 @@
 # @ggts-sh/cli
 
+## 0.48.3
+
+### Patch Changes
+
+- @ggts-sh/core@0.48.3
+
 ## 0.48.2
 
 ### Patch Changes
