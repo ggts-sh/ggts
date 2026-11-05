@@ -13,6 +13,7 @@ import type {
   ResolvedInspectMode,
 } from "../interaction/interaction.js";
 import {
+  createSourceKeysCache,
   materializeInspection,
   resolvedTarget,
   selectTransientMembers,
@@ -64,6 +65,29 @@ function cellToken(value: CellValue): string {
   if (value instanceof Date) return `date:${value.getTime()}`;
   if (typeof value === "number") return `number:${Object.is(value, -0) ? 0 : value}`;
   return `${typeof value}:${String(value)}`;
+}
+
+const lineageTokens = new WeakMap<readonly number[], string>();
+
+/**
+ * Short identity of a row list, equal across models. A fingerprint stays small: the rows
+ * of one smooth line would add about 600 KB at 100k rows. ponytail: two 32-bit hashes, so a
+ * collision costs one missed change event. Compare the rows if that ever shows.
+ */
+function lineageToken(model: RenderModel, lineage: number): string {
+  const rows = model.lineage.keys(lineage);
+  let token = lineageTokens.get(rows);
+  if (token === undefined) {
+    let first = 0x811c9dc5;
+    let second = 17;
+    for (const row of rows) {
+      first = Math.imul(first ^ row, 0x01000193);
+      second = (Math.imul(second, 31) + row) | 0;
+    }
+    token = `lineage:${rows.length}:${first >>> 0}:${second >>> 0}`;
+    if (rows.length > 1) lineageTokens.set(rows, token); // A scatter has one list per point.
+  }
+  return token;
 }
 
 /**
@@ -132,7 +156,11 @@ function exactGroupTotalToken(
 export function createInspectionCoordinator<
   Row extends Record<string, CellValue>,
   Key extends PropertyKey,
->(keyAt: (index: number) => Key | null) {
+>(
+  keyAt: (index: number) => Key | null,
+  /** Changes when `keyAt` starts to return different keys for the same model. */
+  keysEpoch: () => unknown = () => keyAt,
+) {
   type Slot = Readonly<{
     key: string;
     value: CoordinatedInspection<Row, Key>;
@@ -161,6 +189,15 @@ export function createInspectionCoordinator<
     batchRoles = buildBatchRoles(model);
     batchRoleModel = model;
     return batchRoles;
+  };
+  let sourceKeysOf = createSourceKeysCache<Key>(keyAt);
+  let sourceKeysEpoch: unknown = null;
+  const currentSourceKeysOf = () => {
+    if (sourceKeysEpoch !== keysEpoch()) {
+      sourceKeysEpoch = keysEpoch();
+      sourceKeysOf = createSourceKeysCache(keyAt);
+    }
+    return sourceKeysOf;
   };
   const symbolIds = new Map<symbol, number>();
   const epochIds = new Map<symbol, number>();
@@ -204,7 +241,7 @@ export function createInspectionCoordinator<
     const semanticMembers = fingerprintMembers.map((candidate) => {
       const row = candidate.rowIndex === null ? null : input.model.row(candidate.rowIndex);
       const key = row === null || candidate.rowIndex === null ? null : keyAt(candidate.rowIndex);
-      const fallback = `lineage:${input.model.lineage.keys(candidate.lineage).join(",")}`;
+      const fallback = lineageToken(input.model, candidate.lineage);
       const payload =
         row === null
           ? `${axisToken(candidate.xToken)},${axisToken(candidate.yToken)}`
@@ -214,10 +251,7 @@ export function createInspectionCoordinator<
     const focusRow = input.seed.rowIndex === null ? null : input.model.row(input.seed.rowIndex);
     const focusKey =
       focusRow === null || input.seed.rowIndex === null ? null : keyAt(input.seed.rowIndex);
-    const focusIdentity = semanticKeyToken(
-      focusKey,
-      `lineage:${input.model.lineage.keys(input.seed.lineage).join(",")}`,
-    );
+    const focusIdentity = semanticKeyToken(focusKey, lineageToken(input.model, input.seed.lineage));
     const logicalToken =
       input.mode === "x"
         ? axisToken(input.seed.xToken)
@@ -251,7 +285,13 @@ export function createInspectionCoordinator<
     const cacheKey = `${epochToken(input.layoutEpoch)}|${presentationIdentity}|${semanticFingerprint}|${completeness}|${input.source}`;
     const current = input.state === "pinned" ? pinned : transient;
     if (current?.key === cacheKey) return current.value;
-    const snapshot = materializeInspection<Row, Key>(input, target, completeness, keyAt);
+    const snapshot = materializeInspection<Row, Key>(
+      input,
+      target,
+      completeness,
+      keyAt,
+      currentSourceKeysOf(),
+    );
     const value = Object.freeze({
       seed: input.seed,
       snapshot,
@@ -269,7 +309,7 @@ export function createInspectionCoordinator<
       seedKind: input.seed.kind,
       seedBatchRole: candidateBatchRole(input.model, input.seed, rolesFor(input.model)),
       seedPrimitiveIndex: input.seed.primitiveIndex,
-      seedLogicalIdentity: `${axisToken(input.seed.xToken)}|${axisToken(input.seed.yToken)}|${input.model.lineage.keys(input.seed.lineage).join(",")}`,
+      seedLogicalIdentity: `${axisToken(input.seed.xToken)}|${axisToken(input.seed.yToken)}|${lineageToken(input.model, input.seed.lineage)}`,
       layerIndex: input.seed.layerIndex,
       identityEpoch: input.identityEpoch,
       mode: input.mode,
@@ -294,7 +334,7 @@ export function createInspectionCoordinator<
     if (candidate.kind !== prior.seedKind) return false;
     if (candidate.primitiveIndex !== prior.seedPrimitiveIndex) return false;
     if (candidateBatchRole(model, candidate, roles) !== prior.seedBatchRole) return false;
-    const logicalIdentity = `${axisToken(candidate.xToken)}|${axisToken(candidate.yToken)}|${model.lineage.keys(candidate.lineage).join(",")}`;
+    const logicalIdentity = `${axisToken(candidate.xToken)}|${axisToken(candidate.yToken)}|${lineageToken(model, candidate.lineage)}`;
     return logicalIdentity === prior.seedLogicalIdentity;
   };
 
@@ -449,6 +489,7 @@ export function createInspectionCoordinator<
       lastSlot = null;
       batchRoleModel = null;
       batchRoles = [];
+      sourceKeysEpoch = null;
       symbolIds.clear();
       epochIds.clear();
     },

@@ -57,6 +57,7 @@ export type InteractionContext = {
   readonly ontoolchange: () => ((tool: InteractionTool) => void) | undefined;
   /** Durable row identity service (semantic keys). */
   readonly keyAt: (index: number) => PropertyKey | null;
+  readonly keysEpoch: () => object;
   readonly semanticKey: (
     row: Record<string, CellValue> | null,
     index: number | null,

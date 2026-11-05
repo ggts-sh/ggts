@@ -11,6 +11,8 @@ import type { CandidateFacts } from "@ggts-sh/core";
 import type { InteractionContext } from "../../src/lib/interaction/interaction-context.svelte.js";
 import type { PlotInteractionScope } from "../../src/lib/interaction/interaction.js";
 
+const EMPTY_KEYS = {};
+
 const defaultTestScope: PlotInteractionScope = {
   keys: "plot",
   x: "x",
@@ -57,6 +59,7 @@ export function testInteractionContext(
     onzoom: noHandler,
     ontoolchange: noHandler,
     keyAt: () => null,
+    keysEpoch: () => EMPTY_KEYS,
     semanticKey: () => null,
     candidateSemanticKeys: identityCandidateKeys,
     ...overrides,

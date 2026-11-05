@@ -51,7 +51,9 @@ export type {
   PlotInteractionZoomOptions,
 } from "./interaction-controller.js";
 
+export type { SourceKeysOf } from "./inspection-resolver.js";
 export {
+  createSourceKeysCache,
   resolveInspection,
   materializeInspection,
   resolvedTarget,

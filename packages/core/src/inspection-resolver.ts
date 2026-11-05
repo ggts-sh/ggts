@@ -141,23 +141,43 @@ export function resolvedTarget(
   return { seed, members: members.length === 0 ? [seed] : members, group };
 }
 
+/** Frozen source keys of one lineage's rows, for one key mapping. */
+export type SourceKeysOf<Key extends PropertyKey> = (rows: readonly number[]) => ReadonlyArray<Key>;
+
+/**
+ * Smooth and density marks share one lineage of every source row, so a pointer
+ * move along the line must not walk those rows again. Make a new cache when the
+ * key mapping changes. An entry lives as long as the model that holds its rows.
+ */
+export function createSourceKeysCache<Key extends PropertyKey>(
+  keyAt: (index: number) => Key | null,
+): SourceKeysOf<Key> {
+  const cache = new WeakMap<readonly number[], ReadonlyArray<Key>>();
+  return (rows) => {
+    let keys = cache.get(rows);
+    if (keys === undefined) {
+      // Set-based first-seen dedup (O(R)) — same pattern as selection helpers.
+      // Array#includes here was O(R²) for large aggregate/stat lineages (#200).
+      // Resolving by index keeps this O(R) lookups rather than O(R) row copies:
+      // model.row rebuilds an object per call, and the key never needed it.
+      keys = Object.freeze(uniqueKeysFromRowIndexes(rows, keyAt)) as ReadonlyArray<Key>;
+      // A scatter has one single-row list per point, and nothing walks one twice.
+      if (rows.length > 1) cache.set(rows, keys);
+    }
+    return keys;
+  };
+}
+
 function datum<Row extends Record<string, CellValue>, Key extends PropertyKey>(
   model: RenderModel,
   candidate: CandidateFacts,
   keyAt: (index: number) => Key | null,
+  sourceKeysOf: SourceKeysOf<Key>,
 ): PlotDatum<Row, Key> {
   const row = candidate.rowIndex === null ? null : (model.row(candidate.rowIndex) as Row | null);
   // The row gate stays: a member whose row does not resolve has no key, even
   // when the resolver would hand one back for that index.
   const key = row === null || candidate.rowIndex === null ? null : keyAt(candidate.rowIndex);
-  // Set-based first-seen dedup (O(R)) — same pattern as selection helpers.
-  // Array#includes here was O(R²) for large aggregate/stat lineages (#200).
-  // Resolving by index keeps this O(R) lookups rather than O(R) row copies:
-  // model.row rebuilds an object per call, and the key never needed it.
-  const sourceKeys = uniqueKeysFromRowIndexes(
-    model.lineage.keys(candidate.lineage),
-    keyAt,
-  ) as Key[];
   // CandidateFacts only bag position + size channels. Discrete series
   // aesthetics (fill/color) and weight live on source rows; for stat
   // aggregates those rows are reachable via lineage only (#1526).
@@ -264,7 +284,7 @@ function datum<Row extends Record<string, CellValue>, Key extends PropertyKey>(
   return Object.freeze({
     key,
     row,
-    sourceKeys: Object.freeze(sourceKeys),
+    sourceKeys: sourceKeysOf(model.lineage.keys(candidate.lineage)),
     lineageCount: model.lineage.count(candidate.lineage),
     layerIndex: candidate.layerIndex,
     panelId: candidate.panelId,
@@ -309,7 +329,7 @@ export function resolveInspection<Row extends Record<string, CellValue>, Key ext
   if (target === null) {
     // resolvedTarget only returns null for axis modes when the group bucket
     // is missing; exact/xy always yield a single-member target.
-    const single = datum<Row, Key>(model, seed, keyAt);
+    const single = datum<Row, Key>(model, seed, keyAt, createSourceKeysCache(keyAt));
     if (mode === "exact" || mode === "xy") {
       return Object.freeze({
         type: "inspect",
@@ -359,9 +379,11 @@ export function materializeInspection<
   /** Source-row key by index. The coordinated path passes its own index-keyed
    * bag; resolveInspection passes an adapter over its row-shaped keyOf. */
   keyAt: (index: number) => Key | null,
+  /** A cache built for this same `keyAt`. Keep it between calls to reuse keys across pointer moves. */
+  sourceKeysOf: SourceKeysOf<Key> = createSourceKeysCache(keyAt),
 ): PlotInspectionChange<Row, Key> {
   const { model, seed, mode, state, source } = input;
-  const single = datum<Row, Key>(model, seed, keyAt);
+  const single = datum<Row, Key>(model, seed, keyAt, sourceKeysOf);
   if (mode === "exact" || mode === "xy") {
     return Object.freeze({
       type: "inspect",
@@ -386,12 +408,19 @@ export function materializeInspection<
           limit: TRANSIENT_MEMBER_LIMIT,
         })
       : completeCandidates;
-  const members = memberCandidates.map((candidate) => datum<Row, Key>(model, candidate, keyAt));
+  const members = memberCandidates.map((candidate) =>
+    datum<Row, Key>(model, candidate, keyAt, sourceKeysOf),
+  );
   const focusIndex = memberCandidates.findIndex((candidate) => candidate.id === group.focusId);
   const focus =
     focusIndex >= 0
       ? members[focusIndex]!
-      : datum<Row, Key>(model, model.candidates.candidate(group.focusId) ?? seed, keyAt);
+      : datum<Row, Key>(
+          model,
+          model.candidates.candidate(group.focusId) ?? seed,
+          keyAt,
+          sourceKeysOf,
+        );
   const nonempty = (members.length === 0 ? [focus] : members) as [
     PlotDatum<Row, Key>,
     ...PlotDatum<Row, Key>[],

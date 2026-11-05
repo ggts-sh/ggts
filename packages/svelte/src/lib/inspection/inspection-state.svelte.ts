@@ -178,9 +178,9 @@ export function createInspectionState(
   // Single owner for the presentation-focus shape (#1080); survives pin toggle.
   const presentationFocus = $derived(presentationFocusFromInspection(inspection, inspectionSeed));
 
-  // Coordinator closes over keyAt — handler-only invocation (deferred).
   const inspectionCoordinator = createInspectionCoordinator<Record<string, CellValue>, PropertyKey>(
     (index) => context.keyAt(index),
+    () => context.keysEpoch(),
   );
 
   function resolveInspection(

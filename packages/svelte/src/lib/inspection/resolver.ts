@@ -6,6 +6,7 @@ export {
   selectTransientMembers,
   resolvedTarget,
   resolveInspection,
+  createSourceKeysCache,
   materializeInspection,
 } from "@ggts-sh/core/interaction";
 export { clearInspectionFingerprint } from "./coordinator.js";

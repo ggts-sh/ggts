@@ -12,7 +12,6 @@ import {
   buildPointSelectionEvent,
   consumeIntervalKeys,
   intervalQuerySceneFromModel,
-  iterateCandidates,
   materializeInspection,
   nextLocalIntervalRecords,
   nextPointSelectionKeys,
@@ -28,6 +27,7 @@ import type {
   PlotInteractionInterval,
   PlotInteractionScope,
   ReadonlyIntervalDomains,
+  SourceKeysOf,
   ZoomDomains,
 } from "@ggts-sh/core/interaction";
 import type { GGPlotProps } from "./plot-props.js";
@@ -44,10 +44,12 @@ export function usePlotInteractions(input: {
   scope: PlotInteractionScope;
   capture: RefObject<HTMLDivElement | null>;
   keyForRow: (index: number) => PropertyKey | null;
+  sourceKeysOf: SourceKeysOf<PropertyKey>;
+  candidates: readonly (CandidateFacts & { keys: readonly PropertyKey[] })[];
   zoom: ZoomDomains | null;
   onZoom: (domains: ZoomDomains | null, source: InteractionSource) => void;
 }) {
-  const { model, config, props, scope, capture, keyForRow } = input;
+  const { model, config, props, scope, capture, keyForRow, sourceKeysOf, candidates } = input;
   const [chosenTool, setChosenTool] = useState<InteractionTool>(config.initialTool);
   const activeTool =
     props.tool !== undefined && config.availableTools.includes(props.tool)
@@ -72,16 +74,6 @@ export function usePlotInteractions(input: {
   const restoringFocus = useRef(false);
   const selected = props.interaction?.selected(scope) ?? localSelection;
   const intervals = props.interaction?.intervals(scope) ?? localIntervals;
-  const candidates = useMemo(
-    () =>
-      model === null || (intervals.length === 0 && selected.length === 0)
-        ? []
-        : [...iterateCandidates(model.candidates)].map((candidate) => ({
-            ...candidate,
-            keys: uniqueKeysFromRowIndexes(model.lineage.keys(candidate.lineage), keyForRow),
-          })),
-    [model, keyForRow, intervals, selected],
-  );
   const intervalKeys = useMemo(
     () =>
       model === null
@@ -124,6 +116,7 @@ export function usePlotInteractions(input: {
       target,
       pinned ? "complete" : "transient",
       keyForRow,
+      sourceKeysOf,
     );
     publishInspection(next, source);
   };
@@ -439,10 +432,8 @@ export function usePlotInteractions(input: {
       return;
     }
     const key = current.focus.key ?? current.focus.sourceKeys[0];
-    const candidate = [...iterateCandidates(model.candidates)].find(
-      (item) =>
-        item.layerIndex === current.focus.layerIndex &&
-        uniqueKeysFromRowIndexes(model.lineage.keys(item.lineage), keyForRow).includes(key!),
+    const candidate = candidates.find(
+      (item) => item.layerIndex === current.focus.layerIndex && item.keys.includes(key!),
     );
     if (candidate === undefined) closeInspection("programmatic");
     else inspectCandidate(candidate, "programmatic", true);
