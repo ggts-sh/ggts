@@ -101,6 +101,9 @@ jobs:
         working-directory: packages/svelte
         env:
           SHARD: ${{ matrix.shard }}/3
+          # Issue #1924: log the browser events around a lost connection.
+          GGTS_BROWSER_DIAGNOSTICS: "1"
+          DEBUG: vitest:browser:api
         run: |
           set -euo pipefail
           shard_args=(

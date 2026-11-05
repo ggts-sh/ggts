@@ -6,6 +6,7 @@ import { coverageBase } from "./vitest.coverage.js";
 import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vitest/config";
 
+import { diagnosticPlaywright } from "./tests/helpers/browser-diagnostics.js";
 import { ggplotSsrEndpoint } from "./tests/helpers/ggplot-ssr-endpoint.js";
 
 export default defineConfig({
@@ -52,7 +53,9 @@ export default defineConfig({
     },
     browser: {
       enabled: true,
-      provider: playwright(),
+      // GGTS_BROWSER_DIAGNOSTICS=1 adds [browser-diag] log lines for issue #1924.
+      provider:
+        process.env.GGTS_BROWSER_DIAGNOSTICS === "1" ? diagnosticPlaywright() : playwright(),
       headless: true,
       screenshotFailures: true,
       screenshotDirectory: "test-results/screenshots",
