@@ -35,7 +35,7 @@ function putCrossings(
  * between two curves, cut to a strip, is the band between the two clamped
  * curves, so clamping is exact if every segment that crosses a limit gets a
  * vertex at the crossing. Clamping the vertices alone would bend those
- * segments (#1905). A crossing vertex takes the row of the segment's start.
+ * segments (#1905). A crossing vertex takes the row of the segment's end.
  * NaN compares false, so it passes through and the row drops as before.
  */
 function appendEdge(
@@ -57,20 +57,17 @@ function appendEdge(
     if (closedFrameRows !== undefined) closedFrameRows[cursor] = row;
     cursor++;
   };
-  let prevX = NaN;
-  let prevY = NaN;
-  let prevRow = -1;
+  let prevX = 0;
+  let prevY = 0;
   for (let k = 0; k < rows.length; k++) {
     const row = rows[reverse ? rows.length - 1 - k : k]!;
     const tx = positionOf(fx.xScale, frame.xNumeric, frame.xValues, row);
     let ty = fx.yScale.type === "band" ? NaN : fx.yScale.normalizeTransformed(y[row]!);
     if (clip) {
-      if (k > 0) putCrossings(prevX, prevY, tx, ty, prevRow, put);
+      if (k > 0) putCrossings(prevX, prevY, tx, ty, row, put);
       prevX = tx;
       prevY = ty;
-      prevRow = row;
-      if (ty < 0) ty = 0;
-      else if (ty > 1) ty = 1;
+      ty = Math.min(Math.max(ty, 0), 1);
     }
     put(tx, ty, row);
   }
