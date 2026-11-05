@@ -28,7 +28,7 @@ import {
   resolveSemanticKeysForPlot,
   sanitizePartialZoomDomains,
   themeTokensToCssVars,
-  uniqueKeysFromRowIndexes,
+  createSourceKeysCache,
 } from "@ggts-sh/core/interaction";
 import type { BatchInteractionMask, RenderModel } from "@ggts-sh/core";
 import type {
@@ -130,6 +130,18 @@ function usePlotSurface(props: SurfaceProps) {
     props.onzoom?.(event);
     props.oninteraction?.(event);
   };
+  const sourceKeysOf = useMemo(() => createSourceKeysCache(keyForRow), [keyForRow]);
+  const semanticCandidates = useMemo(() => {
+    if (
+      model === null ||
+      (!config.interactive && !hasLegendIntent && props.interaction === undefined)
+    )
+      return [];
+    return [...iterateCandidates(model.candidates)].map((candidate) => ({
+      ...candidate,
+      keys: sourceKeysOf(model.lineage.keys(candidate.lineage)),
+    }));
+  }, [model, sourceKeysOf, config.interactive, hasLegendIntent, props.interaction]);
   const interactions = usePlotInteractions({
     flipped: assembled?.coord?.type === "flip",
     model,
@@ -138,6 +150,8 @@ function usePlotSurface(props: SurfaceProps) {
     scope,
     capture,
     keyForRow,
+    sourceKeysOf,
+    candidates: semanticCandidates,
     zoom,
     onZoom,
   });
@@ -151,22 +165,6 @@ function usePlotSurface(props: SurfaceProps) {
     filters,
     setFilters,
   });
-  const semanticCandidates = useMemo(() => {
-    if (
-      model === null ||
-      (!config.interactive && !hasLegendIntent && props.interaction === undefined)
-    )
-      return [];
-    const lineageKeys = new Map<number, PropertyKey[]>();
-    return [...iterateCandidates(model.candidates)].map((candidate) => {
-      let keys = lineageKeys.get(candidate.lineage);
-      if (keys === undefined) {
-        keys = uniqueKeysFromRowIndexes(model.lineage.keys(candidate.lineage), keyForRow);
-        lineageKeys.set(candidate.lineage, keys);
-      }
-      return { ...candidate, keys };
-    });
-  }, [model, keyForRow, config.interactive, hasLegendIntent, props.interaction]);
   const focusKeys = [
     ...legends.emphasis,
     ...interactions.selected,

@@ -20732,14 +20732,14 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["@ggts-sh/core (./interaction)"],
   },
   {
-    id: "heading:guide-lifecycle:experimental-227",
+    id: "heading:guide-lifecycle:experimental-229",
     kind: "heading",
-    title: "experimental (227)",
+    title: "experimental (229)",
     summary:
-      "experimental (227) in Lifecycle & editions. API stability tags per export, and the defaults-edition mechanism.",
-    href: "/guide/lifecycle#experimental-227",
+      "experimental (229) in Lifecycle & editions. API stability tags per export, and the defaults-edition mechanism.",
+    href: "/guide/lifecycle#experimental-229",
     keywords: ["Lifecycle & editions", "Reference"],
-    exact: ["experimental (227)"],
+    exact: ["experimental (229)"],
   },
   {
     id: "heading:guide-lifecycle:ggts-sh-core-data",
@@ -36409,6 +36409,15 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["ShowToolRailInput"],
   },
   {
+    id: "api:ggts-sh-core-interaction:SourceKeysOf",
+    kind: "api",
+    title: "SourceKeysOf",
+    summary: "@ggts-sh/core ./interaction · type · experimental.",
+    href: "/guide/lifecycle#ggts-sh-core-interaction",
+    keywords: ["@ggts-sh/core", "./interaction", "type", "experimental"],
+    exact: ["SourceKeysOf"],
+  },
+  {
     id: "api:ggts-sh-core-interaction:TRANSIENT_MEMBER_LIMIT",
     kind: "api",
     title: "TRANSIENT_MEMBER_LIMIT",
@@ -36740,6 +36749,15 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/lifecycle#ggts-sh-core-interaction",
     keywords: ["@ggts-sh/core", "./interaction", "value", "experimental"],
     exact: ["createPlotInteraction"],
+  },
+  {
+    id: "api:ggts-sh-core-interaction:createSourceKeysCache",
+    kind: "api",
+    title: "createSourceKeysCache",
+    summary: "@ggts-sh/core ./interaction · value · experimental.",
+    href: "/guide/lifecycle#ggts-sh-core-interaction",
+    keywords: ["@ggts-sh/core", "./interaction", "value", "experimental"],
+    exact: ["createSourceKeysCache"],
   },
   {
     id: "api:ggts-sh-core-interaction:crosshairGapForBox",

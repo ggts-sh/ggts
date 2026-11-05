@@ -35,6 +35,8 @@ export type SemanticKeyService = {
   candidateSemanticKeys(candidate: CandidateFacts): PropertyKey[];
   /** Direct map lookup (inspection coordinator / mask paths). */
   keyAt(index: number): PropertyKey | null;
+  /** A new object each time `keyAt` starts to return different keys. */
+  keysEpoch(): object;
 };
 
 /**
@@ -113,6 +115,9 @@ export function createSemanticKeyService(deps: SemanticKeyServiceDeps): Semantic
     candidateSemanticKeys,
     keyAt(index: number): PropertyKey | null {
       return semanticKeys.keys.get(index) ?? null;
+    },
+    keysEpoch(): object {
+      return semanticKeys.keys;
     },
   };
 }

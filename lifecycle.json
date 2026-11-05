@@ -5937,6 +5937,10 @@
           "kind": "type",
           "lifecycle": "experimental"
         },
+        "SourceKeysOf": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
         "TRANSIENT_MEMBER_LIMIT": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -6082,6 +6086,10 @@
           "lifecycle": "experimental"
         },
         "createPlotInteraction": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "createSourceKeysCache": {
           "kind": "value",
           "lifecycle": "experimental"
         },

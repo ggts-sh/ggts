@@ -215,6 +215,7 @@ export function createPlotEngine(host: PlotEngineHost): PlotEngine {
     onzoom: () => host.props.onzoom,
     ontoolchange: () => host.props.ontoolchange,
     keyAt: (index) => semanticKeys.keyAt(index),
+    keysEpoch: () => semanticKeys.keysEpoch(),
     semanticKey: (row, index) => semanticKeys.semanticKey(row, index),
     candidateSemanticKeys: (candidate) => semanticKeys.candidateSemanticKeys(candidate),
   });
