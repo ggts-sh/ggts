@@ -115,7 +115,8 @@ function buildPanelGeometryBatches(input: {
     frame,
     {
       ...geometryPanelFrame(placement, panelScalesForGeom, flip, pathLike ? undefined : projector),
-      clip: projector?.clip ?? true,
+      // Joint (polar) panels project afterwards; their unit span is not the clip rect.
+      clip: projector === undefined ? true : !projector.joint && projector.clip,
     },
     color,
     fill,

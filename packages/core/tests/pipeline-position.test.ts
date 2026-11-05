@@ -269,6 +269,23 @@ describe("applyPosition via runPipeline (regression)", () => {
       expect(batch.pathOffsets.at(-1)).toBe(count);
     });
 
+    it("cuts a smooth confidence band at the panel too", () => {
+      const rows = Array.from({ length: 12 }, (_, i) => ({ x: i, n: 60 + (i % 5) * 20 }));
+      const model = runPipeline(
+        gg(rows, aes({ x: "x", y: "n" }))
+          .geomSmooth({ method: "lm", se: true })
+          .scales({ y: { domain: [75, 110] } })
+          .spec(),
+        { width: 400, height: 400 },
+      );
+      const { batch, vertices } = pathVertices(model);
+      expect(batch.closed).toBe(true);
+      for (const [, y] of vertices) {
+        expect(y).toBeGreaterThanOrEqual(0);
+        expect(y).toBeLessThanOrEqual(model.scene.panels[0]!.height);
+      }
+    });
+
     it("leaves the path alone when the panel does not clip", () => {
       const spec = gg(
         [

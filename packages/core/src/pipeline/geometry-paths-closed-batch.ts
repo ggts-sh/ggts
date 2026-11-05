@@ -5,6 +5,20 @@ import type { LayerFrame } from "./types.js";
 import type { Frame } from "./geometry-shared.js";
 import { appendClosedBandEdges } from "./geometry-paths-closed.js";
 
+function leavesPanel(
+  fx: Frame,
+  groupRows: readonly (readonly number[])[],
+  ...edges: Float64Array[]
+): boolean {
+  const scale = fx.yScale;
+  if (scale.type === "band") return false;
+  const out = (y: number) => {
+    const t = scale.normalizeTransformed(y);
+    return t < 0 || t > 1;
+  };
+  return groupRows.some((rows) => rows.some((row) => edges.some((edge) => out(edge[row]!))));
+}
+
 export function writeClosedPathGroups(input: {
   frame: LayerFrame;
   fx: Frame;
@@ -20,7 +34,12 @@ export function writeClosedPathGroups(input: {
   fills: (string | null)[];
   strokes: (string | null)[];
 } {
-  const { frame, fx, groupRows, yTop, yBottom, fillOf } = input;
+  const { frame, groupRows, yTop, yBottom, fillOf } = input;
+  // Cut only when a vertex leaves the panel; other bands keep exact-size buffers.
+  const fx =
+    input.fx.clip === true && leavesPanel(input.fx, groupRows, yTop, yBottom)
+      ? input.fx
+      : { ...input.fx, clip: false };
   // A clipped edge gains up to two crossing vertices per segment, so a group
   // needs at most 6n - 4 slots. Trim the buffers once the cursor is known.
   const perRow = fx.clip === true ? 6 : 2;
@@ -51,12 +70,11 @@ export function writeClosedPathGroups(input: {
     strokes.push(null);
   }
   pathOffsets[groupRows.length] = cursor;
-  if (cursor === total)
-    return { positions, rowIndex, closedFrameRows, pathOffsets, fills, strokes };
+  // The clipped worst case over-allocates; trim to the vertices written.
   return {
-    positions: positions.slice(0, cursor * 2),
-    rowIndex: rowIndex.slice(0, cursor),
-    closedFrameRows: closedFrameRows.slice(0, cursor),
+    positions: positions.subarray(0, cursor * 2),
+    rowIndex: rowIndex.subarray(0, cursor),
+    closedFrameRows: closedFrameRows.subarray(0, cursor),
     pathOffsets,
     fills,
     strokes,
