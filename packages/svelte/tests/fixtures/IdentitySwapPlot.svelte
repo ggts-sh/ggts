@@ -10,8 +10,11 @@
     route,
     onrender,
     oninspect,
-  }: { route: Route; onrender: (model: unknown) => void; oninspect: (event: unknown) => void } =
-    $props();
+  }: {
+    route: Route;
+    onrender: (model: unknown) => void;
+    oninspect: (event: unknown) => void;
+  } = $props();
   const data = Array.from({ length: 50 }, (_, index) => ({
     id: `r${index}`,
     name: `n${index}`,
@@ -22,7 +25,8 @@
   let identity = $state("id");
 </script>
 
-<button type="button" data-swap onclick={() => (identity = "name")}>Swap</button>
+<button type="button" data-swap onclick={() => (identity = "name")}>Swap</button
+>
 {#if route === "key"}
   <GGPlot
     {data}
