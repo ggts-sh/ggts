@@ -126,6 +126,8 @@ the committed snapshot. `measure:browser:100k-peers` remains a separate report.
 13. **uPlot scatter** sorts x ascending before paint (uPlot requires monotonic `data[0]`); that sort is inside the timed path for this adapter.
 14. **Every timed update proves it changed visible output and reached fresh-final parity.** Update variants include an index-dependent wave because an affine-only transform disappears when a chart retrains a linear scale. SVG output is compared after canonicalizing generated ids/references; canvas output uses exact pixel-buffer hashes.
 
+15. **Canvas `line-3x10k` totals include a join style that LayerCake canvas does not draw.** ggts strokes lines with round joins, the ggplot2 `geom_path` default. The LayerCake canvas fixture sets no join, so it draws the canvas default, miter. Round joins cost raster time after the synchronous phase. Total mount medians from 8 alternating-order rounds on a shared machine ([#1468](https://github.com/ggts-sh/ggts/issues/1468)): round 33.9 ms, bevel 23.8 ms, miter 25.8 ms, LayerCake canvas 28.4 ms. Each cheaper join changed at least 0.4% of the canvas pixels by 64 or more per channel. Round stays the default, and this gap is an accepted trade-off. Use the sync median to compare grammar cost on this cell.
+
 ## Scenario catalog
 
 See `scenarios.ts` (`CASES`, `LIBS`). Stable case ids (e.g. `line-3x55k`, `scatter-color-10k`) are the keys in results JSON.
