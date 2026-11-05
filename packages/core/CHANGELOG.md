@@ -1,5 +1,35 @@
 # @ggts-sh/core
 
+## 0.48.1
+
+### Patch Changes
+
+- ce6e8d4: Stop walking every source row on each hover of a stat mark. Smooth and density lines have many vertices that share one list of source rows, and each pointer move walked that list again. At 100k rows, a hover along a smooth line now takes under 1 ms, from about 58 ms in React and 24 ms in Svelte. In React, a selection change on such a line takes about 4 ms, from about 1.5 s, because the hook no longer walks the rows once per vertex. Inspection results do not change. Snapshots of the same line now share one frozen `sourceKeys` array, so compare its contents and not its identity. `@ggts-sh/core/interaction` adds the experimental `createSourceKeysCache`, and `materializeInspection` takes an optional cache as a last argument.
+- 1895671: Search fewer candidates in `nearest` on each pointer move. Auto mode, the default for hover, no longer scans candidates that cannot match along an axis, and a search tries a narrow radius before the full radius. A 128,000-point scatter goes from about 5 ms to about 0.02 ms per move, a 4,000-point scatter from about 0.1 ms to about 0.003 ms, and a 128,000-point line from about 5 ms to about 0.3 ms. Results for a finite pointer position do not change, including ties. Filled areas take the same time as before. If the narrow search settles nothing, the full search runs as well, so a chart with many candidates in one column can take up to twice as long on some moves. Charts that mix points with lines or segments build their hover index up to about 17% slower, and keep about 5 to 8 MB more at 128,000 candidates.
+- 1789dd4: Quantile fits no longer evaluate every pairwise slope at up to 150 rows per group. Because the loss is convex in the slope, the fit now skips slopes that cannot win. A chart with 20 groups of 150 rows now runs the pipeline in about 54 ms, not 695 ms, and 50 groups take about 132 ms, not 1.8 s.
+
+  Fitted lines do not change, including which line wins when the best fit is not unique. Data where no slope can be skipped, such as `x` packed into a tiny span far from zero, takes up to about 6% longer.
+
+- d4d2d3e: Fit `stat: "quantile"` without sorting the residuals for every candidate slope. Each
+  slope now uses a selection in one reused buffer, and the slope search skips repeated
+  work. Three quantiles over 150 rows go from about 400 ms to about 30 ms, and over
+  20,000 rows from about 2 s to about 40 ms. The fitted lines do not change, apart
+  from the sign of a zero intercept.
+- 2c682e8: Compute `stat: "summary_rolling"` with a sliding window instead of sorting every
+  window. `mean`, `sum`, `min` and `max` now take O(n) after the group sort, and
+  `median` moves rows in one sorted array. A 100k-row line with a 1440-row window
+  goes from about 10 s to tens of milliseconds. Output rows and order do not change.
+  Values do not change, with three exceptions: floating-point rounding in `mean` and
+  `sum`, overflow in `mean` and `sum` for values near the limit of a double, and the
+  sign of a zero median when a window mixes 0 and -0.
+- fd27a43: The stacked band warning no longer scans its group names once per hidden band. A stack with one fill level per row and 8,000 levels now runs the pipeline in about 12 ms, not 52 ms, and 64,000 levels take about 120 ms, not 2.5 s. A stack with up to 1,000 fill levels shows no visible change. The warning text does not change.
+- e217bb4: Stacked and filled `geomCol` layers no longer run a linear search per candidate when a scale `domain` drops some of their rects. The search made the candidate store build in O(rects × rows). It now builds one lookup per layer, only for a layer with a drop. That lookup costs about 25 bytes per row while the layer's frame is alive.
+
+  Candidate values do not change. Up to about 4,000 rows the time does not change. Under node, the first read of all candidates goes from 43 ms to 16 ms at 16,000 rows, from 492 ms to 85 ms at 64,000 rows, and from 1.8 s to 195 ms at 128,000 rows, when the domain leaves out the first category.
+
+- 0723e4a: Check text and label overlap against kept labels in bands instead of comparing every pair. The check runs on each `geomText` and `geomLabel` batch, so large label layers paid for it even when the only result was a warning. In a scatter of labels inside the panel, 8,000 labels go from about 140 ms to about 2 ms, and 32,000 labels from about 2.3 s to about 8 ms. With clipping off, labels spread far outside the panel can still crowd one band, for example one long row with far outliers. Those layouts still cost about as much as comparing every pair, and the worst one found runs about 2.4 times slower (8,000 labels: 80 ms against 33 ms). The warning count and the labels that `checkOverlap` removes do not change.
+- @ggts-sh/spec@0.48.1
+
 ## 0.48.0
 
 ### Minor Changes
