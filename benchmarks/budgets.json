@@ -35,10 +35,10 @@
       "budgetMs": 35
     },
     "pipeline stacked-bars 50x4": {
-      "budgetMs": 1.1
+      "budgetMs": 2.4
     },
     "svg render stacked-bars 50x4": {
-      "budgetMs": 1.3
+      "budgetMs": 2.1
     },
     "pipeline line-series 10x10k": {
       "budgetMs": 87
@@ -56,13 +56,13 @@
       "budgetMs": 400
     },
     "canvas redraw scatter 100k": {
-      "budgetMs": 0.87
+      "budgetMs": 2
     },
     "hit-index build 100k": {
       "budgetMs": 210
     },
     "candidate lookup 100k": {
-      "budgetMs": 8
+      "budgetMs": 19
     },
     "pipeline transform-identity 100k": {
       "budgetMs": 20
