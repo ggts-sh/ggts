@@ -22,15 +22,12 @@ import { createScopedStore } from "../interaction/scoped-store.svelte.js";
 import { legendFocusAnnouncement } from "../assembly/labels.js";
 import {
   buildInteractiveLegendEntries,
+  findLegendPressedIdentity,
   moveLegendRovingIndex,
   samePropertyKeySet,
 } from "./focus.js";
 import type { InteractiveLegendEntry, LegendEntryAction, LegendEntryIdentity } from "./focus.js";
-import {
-  findLegendPressedIdentity,
-  resolveLegendEmphasisKeys,
-  resolveLegendPreviewKeysDecision,
-} from "./focus-emphasis.js";
+import { resolveLegendEmphasisKeys, resolveLegendPreviewKeysDecision } from "./focus-emphasis.js";
 import {
   installLegendFocusReconcileEffects,
   type LegendFocusCommittedState,

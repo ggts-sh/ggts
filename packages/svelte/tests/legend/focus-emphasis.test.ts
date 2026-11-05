@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  findLegendPressedIdentity,
   reconcileLegendPreview,
   resolveLegendEmphasisKeys,
   resolveLegendPreviewKeysDecision,
 } from "../../src/lib/legend/focus-emphasis.js";
 import {
   buildInteractiveLegendEntries,
+  findLegendPressedIdentity,
   legendIdentityKey,
   type InteractiveLegendEntry,
 } from "../../src/lib/legend/focus.js";

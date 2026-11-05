@@ -89,6 +89,60 @@ export function keysForLegendEntry(
   return index.get(legendIdentityKey(identity)) ?? [];
 }
 
+export type FindLegendPressedIdentityInput = {
+  readonly keys: readonly PropertyKey[];
+  readonly entries: readonly InteractiveLegendEntry[];
+  readonly keyIndex: ReadonlyMap<string, readonly PropertyKey[]>;
+  readonly committed: {
+    readonly identity: LegendEntryIdentity;
+    readonly keys: readonly PropertyKey[];
+  } | null;
+};
+
+/**
+ * Whether a first-seen-unique key array matches a Set's membership.
+ * Used by pressed-identity resolution so entry compares stay O(K) without
+ * allocating a Set per legend entry. Entry-key index values and committed
+ * keys are frozen unique arrays from `buildLegendEntryKeyIndex`.
+ */
+function uniqueKeysMatchSet(
+  keys: readonly PropertyKey[],
+  keySet: ReadonlySet<PropertyKey>,
+): boolean {
+  if (keys.length !== keySet.size) return false;
+  for (const key of keys) if (!keySet.has(key)) return false;
+  return true;
+}
+
+/**
+ * Resolve which legend entry should appear pressed.
+ * Committed identity wins when its key set still matches (even if multiple
+ * entries share the same keys). Otherwise require exactly one matching entry.
+ *
+ * Complexity: O(K + E) — one Set for the emphasis keys, then per-entry size
+ * short-circuit + membership (no Set rebuild per entry). Multi-match returns
+ * null as soon as a second hit is found. Empty keys, or empty entries with no
+ * committed identity, return before allocating the Set.
+ */
+export function findLegendPressedIdentity(
+  input: FindLegendPressedIdentityInput,
+): LegendEntryIdentity | null {
+  if (input.keys.length === 0) return null;
+  // Ramp-only / no discrete legends and no commit: nothing to match (issue #209).
+  if (input.entries.length === 0 && input.committed === null) return null;
+  const inputSet = new Set(input.keys);
+  if (input.committed !== null && uniqueKeysMatchSet(input.committed.keys, inputSet))
+    return input.committed.identity;
+  let match: LegendEntryIdentity | null = null;
+  for (const entry of input.entries) {
+    const entryKeys = keysForLegendEntry(input.keyIndex, entry.identity);
+    if (!uniqueKeysMatchSet(entryKeys, inputSet)) continue;
+    if (match !== null) return null;
+    match = entry.identity;
+  }
+  return match;
+}
+
 /**
  * Clamp a roving tabindex index into [0, count).
  * Empty lists return 0 so hosts can store a stable default.

@@ -9,6 +9,7 @@ export {
   samePropertyKeySet,
   legendInteractionSource,
   keysForLegendEntry,
+  findLegendPressedIdentity,
   clampLegendRovingIndex,
   moveLegendRovingIndex,
 } from "@ggts-sh/core/interaction";
