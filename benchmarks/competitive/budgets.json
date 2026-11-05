@@ -2,14 +2,6 @@
   "$comment": "Provisional browser budgets. Core SVG/canvas limits retain their prior baselines; React and Svelte host limits use the clean production measurement at b68b75c315850794b2fa2c7e57f9ff41c5dd3629 on 2026-09-08, with 3x headroom rounded upward to two significant figures. All own cells have absolute mount/update limits. Framework-host peer losses remain visible without relative superiority gates; existing core relative gates and issue-tracked gaps remain. Budget keys and measured own cells must cover the same set.",
   "knownGaps": [
     {
-      "ggsvelte": "ggsvelte-canvas",
-      "peer": "layercake-canvas",
-      "caseId": "line-3x10k",
-      "kind": "mount",
-      "issue": "https://github.com/ggts-sh/ggts/issues/1468",
-      "note": "~55–58ms vs ~44–49ms after one-pass line geometry + ordinal color skip + solid stroke hot path + named-data void adapter (#1468). Relative thr often ~peer+5–7ms still short; self-destructs when the gap closes."
-    },
-    {
       "ggsvelte": "ggsvelte-svg",
       "peer": "layercake",
       "caseId": "line-3x1k",
