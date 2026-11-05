@@ -53,7 +53,11 @@ jobs:
       - name: competitive browser bench (Playwright chromium, writes benchmarks/competitive/results/browser.json)
         # HOME=/root so Playwright finds the chromium baked into the ci-runner
         # image (same convention as ci-interaction-perf); no install step needed.
-        run: bun run bench:competitive:browser
+        # The results record the commit, and git refuses a checkout that the
+        # container user does not own.
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          bun run bench:competitive:browser
         env:
           HOME: /root
       - name: enforce competitive browser budgets + Svelte-peer gate (benchmarks/competitive/budgets.json)
