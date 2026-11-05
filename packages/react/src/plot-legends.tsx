@@ -3,6 +3,7 @@ import { encodeKey } from "@ggts-sh/core";
 import {
   buildInteractiveLegendEntries,
   buildLegendEntryKeyIndexForPlot,
+  findLegendPressedIdentity,
   isLegendValueVisible,
   legendIdentityKey,
   nextLegendFilterValues,
@@ -91,16 +92,23 @@ export function usePlotLegends(input: {
     ? (previewKeys ?? controllerKeys ?? localKeys)
     : (controllerKeys ?? []);
   const pressedKeys = controllerKeys ?? localKeys;
-  const pressedKeySet = useMemo(() => new Set(pressedKeys), [pressedKeys]);
-  // Index values are unique, so equal size and full membership mean equal sets.
-  const isPressed = (entry: InteractiveLegendEntry) => {
-    const keys = index.get(legendIdentityKey(entry.identity)) ?? [];
-    return (
-      pressedKeySet.size > 0 &&
-      keys.length === pressedKeySet.size &&
-      keys.every((key) => pressedKeySet.has(key))
-    );
-  };
+  // The shared rule picks the entry: the committed one wins when its keys still match.
+  // Memoized so a pointer move does not rebuild the key set.
+  const pressedIdentity = useMemo(() => {
+    const entry = committed === null ? undefined : allEntries.find((e) => same(committed, e));
+    return findLegendPressedIdentity({
+      keys: pressedKeys,
+      entries: allEntries,
+      keyIndex: index,
+      committed:
+        committed === null || entry === undefined
+          ? null
+          : { identity: entry.identity, keys: committed.keys },
+    });
+  }, [pressedKeys, allEntries, index, committed]);
+  const isPressed = (entry: InteractiveLegendEntry) =>
+    pressedIdentity !== null &&
+    legendIdentityKey(entry.identity) === legendIdentityKey(pressedIdentity);
   const emit = (event: LegendFocusEvent) => {
     props.onlegendfocus?.(event);
     props.oninteraction?.(event);
@@ -219,7 +227,6 @@ export function usePlotLegends(input: {
     props.oninteraction?.(event);
   }, [capability.filter, props.legendFilter, filters]);
   const previewIdentity = entries.find((entry) => same(preview, entry))?.identity ?? null;
-  const pressedIdentity = entries.find((entry) => isPressed(entry))?.identity ?? null;
   const filterEntries = entries.filter(
     (entry) => capability.filter.has(entry.legend.scale) || Boolean(props.legendFilter),
   );

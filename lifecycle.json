@@ -5601,6 +5601,10 @@
           "kind": "type",
           "lifecycle": "experimental"
         },
+        "FindLegendPressedIdentityInput": {
+          "kind": "type",
+          "lifecycle": "experimental"
+        },
         "FormatTooltipCellOptions": {
           "kind": "type",
           "lifecycle": "experimental"
@@ -6118,6 +6122,10 @@
           "lifecycle": "experimental"
         },
         "filterZoomDomainsByMode": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "findLegendPressedIdentity": {
           "kind": "value",
           "lifecycle": "experimental"
         },
