@@ -468,7 +468,7 @@ export const GALLERY_PREVIEWS = [
     id: "ribbon/paint",
     filename: "ribbon-paint-light.png",
     path: "/previews/ribbon-paint-light.png",
-    sha256: "378b672c4ca7d92496db8919c1ca5c934b5b0099fe81d2bbce94d5e6292257a8",
+    sha256: "0e101b057c468438308dd907c1addec8603bdb589d19579d28839c6d74da4a57",
   },
   {
     id: "rug/ticks",

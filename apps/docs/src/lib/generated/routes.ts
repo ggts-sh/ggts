@@ -10412,6 +10412,11 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
+        id: "labels-and-captions",
+        title: "Labels and captions",
+        level: 2,
+      },
+      {
         id: "bring-the-chart-into-an-application",
         title: "Bring the chart into an application",
         level: 2,

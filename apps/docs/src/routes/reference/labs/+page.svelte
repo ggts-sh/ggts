@@ -32,7 +32,7 @@
   const mergeExample = `<GGPlot data={rows} aes={{ x: "quarter", y: "sales", color: "region" }}>
   <GeomCol />
   <Labs title="Sales" x="Quarter" />
-  <Labs color="Region" caption="Internal" />
+  <Labs color="Region" caption="Source: internal ledger" />
   <!-- keyed merge: color joins; a second title would win and warn -->
 </GGPlot>`;
 </script>
@@ -44,6 +44,11 @@
     (axes and legends). <code>&lt;Labs&gt;</code> is a declaration-only child of
     <code>&lt;GGPlot&gt;</code> — it emits no markup and registers a live
     <code>labs</code> layer. Without a plot ancestor it is inert.
+  </p>
+  <p>
+    A caption is for a source credit or required legal note. Omit it unless
+    attribution or a required disclaimer is needed; never use it for commentary,
+    chart narration, or caveats.
   </p>
 
   <h2 id="props">Props</h2>
@@ -63,7 +68,10 @@
     </div>
     <div>
       <dt id="prop-caption"><code>caption</code></dt>
-      <dd>Small caption under the plot.</dd>
+      <dd>
+        Source credit or required legal note. Omit unless attribution or a
+        required disclaimer is needed.
+      </dd>
     </div>
     <div>
       <dt id="prop-x"><code>x</code></dt>

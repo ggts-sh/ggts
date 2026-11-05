@@ -363,7 +363,12 @@ export const GuidesThemeDecls = {
     {
       title: Type.Optional(Type.String({ description: "Plot title." })),
       subtitle: Type.Optional(Type.String({ description: "Plot subtitle, under the title." })),
-      caption: Type.Optional(Type.String({ description: "Small caption under the plot." })),
+      caption: Type.Optional(
+        Type.String({
+          description:
+            "Source credit or required legal note. Omit unless attribution or a required disclaimer is needed; never use it for commentary or chart narration.",
+        }),
+      ),
       x: Type.Optional(
         Type.String({
           description:

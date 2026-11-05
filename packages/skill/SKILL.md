@@ -90,6 +90,11 @@ is wrong and must never appear in issues, docs, or comments.
 
 - **data**: `{"values": [rows]}`, `{"columns": {name: [...]}}`, or
   `{"name": "dataset"}` (resolved from `spec.datasets` or runtime data).
+- **labs**: title, subtitle, caption, and per-aesthetic axis/legend titles.
+  A title states the chart's message. A subtitle carries measure, scope,
+  period, or units. Use a caption only for a source credit or required legal
+  note; omit it otherwise. Never use a caption for commentary, chart
+  narration, caveats, or notes from the build process.
 - **mark `layers[]`** draw in order — later marks on top (z-order).
 - Geom defaults: bar → count+stack, histogram → bin+stack, col/area →
   identity+stack, boxplot → boxplot+dodge, violin → ydensity+dodge,

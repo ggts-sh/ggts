@@ -16753,6 +16753,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["Repair, then inspect"],
   },
   {
+    id: "heading:guide-agents:labels-and-captions",
+    kind: "heading",
+    title: "Labels and captions",
+    summary:
+      "Labels and captions in Agent sandboxes. Install the skill and CLI, check chart specs, and render SVG in a sandbox.",
+    href: "/guide/agents#labels-and-captions",
+    keywords: ["Agent sandboxes", "Start"],
+    exact: ["Labels and captions"],
+  },
+  {
     id: "heading:guide-agents:bring-the-chart-into-an-application",
     kind: "heading",
     title: "Bring the chart into an application",

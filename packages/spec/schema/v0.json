@@ -9283,7 +9283,7 @@
         },
         "caption": {
           "type": "string",
-          "description": "Small caption under the plot."
+          "description": "Source credit or required legal note. Omit unless attribution or a required disclaimer is needed; never use it for commentary or chart narration."
         },
         "x": {
           "type": "string",

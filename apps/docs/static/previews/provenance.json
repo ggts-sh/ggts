@@ -383,8 +383,8 @@
     },
     "ribbon/paint": {
       "filename": "ribbon-paint-light.png",
-      "sourceSha256": "9b1408039b4e4fb93c50db00867696cb6eb4e918fc46eea322e5695a530c1280",
-      "pngSha256": "378b672c4ca7d92496db8919c1ca5c934b5b0099fe81d2bbce94d5e6292257a8"
+      "sourceSha256": "94ff2dfe812da73824c686f242e25063b50809cb385f96411ba88052ecdc1506",
+      "pngSha256": "0e101b057c468438308dd907c1addec8603bdb589d19579d28839c6d74da4a57"
     },
     "rug/ticks": {
       "filename": "rug-ticks-light.png",

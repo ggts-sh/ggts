@@ -185,10 +185,12 @@ channel). `<GuideLegend channel="color" position="bottom"/>` assembles
   spec type is re-exported from `@ggts-sh/svelte` as `LabsSpec`.
   Give each text field one role: title carries the chart's message or subject;
   optional subtitle carries measure, scope, period, or units; caption carries
-  only a unique source or caveat. Keep adjacent disclosures, axis titles,
-  subtitle content, and hedging prose out of the caption. Default tooltips and
-  humanized axis/legend titles also read from `labs`, so concise field labels
-  improve both chart chrome and tooltip content.
+  only a source credit or required legal note. Omit the caption unless
+  attribution or a required disclaimer is needed. Keep adjacent disclosures,
+  axis titles, subtitle content, and hedging prose out of the caption; never
+  use it for commentary, chart narration, or notes from the build process.
+  Default tooltips and humanized axis/legend titles also read from `labs`, so
+  concise field labels improve both chart chrome and tooltip content.
 
 ```svelte fragment
 <GGPlot

@@ -61,6 +61,12 @@ Apply a relevant \`fix.example\` at its path and check again. Read warnings
 about data, scales, and chart quality against the user's intent. Then open
 the SVG and inspect labels, axes, marks, and the story the chart tells.
 
+## Labels and captions
+
+A title states the chart's message. Use a caption only for a source credit or
+required legal note; omit it otherwise. Do not use a caption for commentary,
+chart narration, caveats, or notes from the build process.
+
 The [error catalog](/guide/errors), [advisories](/guide/advisories), and
 [CLI reference](/reference/cli) explain the machine-readable feedback.
 The schema is at [/schema/v0.json](/schema/v0.json); the documentation index
