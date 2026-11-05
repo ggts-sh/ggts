@@ -290,10 +290,17 @@ describe("filled-area hit shortlist (#1342)", () => {
     expect(hits.has(3)).toBe(false); // bottom tip (50,80)
   });
 
-  it("hitTest and nearest(auto) stay sub-millisecond on a dense stacked area", () => {
-    // Structural scale: 8 × 2000 closed-band verts = 32k candidates.
-    // Pre-fix cost was multi-ms per probe; after fix it must stay under 1ms mean.
+  it("hitTest and nearest(auto) read batches per subpath, not per vertex, on a dense stacked area", () => {
+    // 8 × 2000 closed-band verts = 32k candidates. A scan of every vertex
+    // reads a batch once per vertex (batchAt in candidate-hit-geometry). Counting reads does not depend on CI speed.
     const plot = stackedAreaScene(8, 2000);
+    let batchIndexReads = 0;
+    plot.batches = new Proxy(plot.batches, {
+      get(target, property, receiver): unknown {
+        if (typeof property === "string" && /^\d+$/.test(property)) batchIndexReads++;
+        return Reflect.get(target, property, receiver) as unknown;
+      },
+    });
     const store = areaStore(plot);
     expect(store.size).toBe(32_000);
     const probes: [number, number][] = [];
@@ -303,16 +310,19 @@ describe("filled-area hit shortlist (#1342)", () => {
       store.hitTest(x, y);
       store.nearest(x, y, { mode: "auto", maxDistance: 24 });
     }
-    const t0 = performance.now();
+    batchIndexReads = 0;
     for (const [x, y] of probes) store.hitTest(x, y);
-    const hitMs = (performance.now() - t0) / probes.length;
-    const t1 = performance.now();
+    const hitReads = batchIndexReads;
+    batchIndexReads = 0;
     for (const [x, y] of probes) store.nearest(x, y, { mode: "auto", maxDistance: 24 });
-    const nearestMs = (performance.now() - t1) / probes.length;
-    // Generous vs pre-fix multi-ms cost; structural shortlist size is the
-    // primary gate. Keep a soft wall-clock bound for local regressions.
-    expect(hitMs).toBeLessThan(2);
-    expect(nearestMs).toBeLessThan(2);
+    const nearestReads = batchIndexReads;
+    // The shortlist holds at most one entry per subpath (8), so reads stay
+    // far below the 32k vertices that one probe would read in a full scan.
+    // Reads must be counted at all, or the bounds below pass without a check.
+    expect(hitReads).toBeGreaterThan(0);
+    expect(nearestReads).toBeGreaterThan(0);
+    expect(hitReads / probes.length).toBeLessThan(200);
+    expect(nearestReads / probes.length).toBeLessThan(200);
   });
 
   it("nearest prefers the higher id on an exact (distance, orth) tie inside a filled span", () => {
