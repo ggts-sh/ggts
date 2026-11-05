@@ -14,6 +14,9 @@ export function sourceBackedRewritesInspectY(
   return (position === "stack" || position === "fill") && frame.binding.yTransform === undefined;
 }
 
+/** Source row to frame row. Only a compacted batch builds one, on its first miss. */
+const frameRowLookups = new WeakMap<Uint32Array, Map<number, number>>();
+
 function frameRowForSourceRow(
   frame: FinalizedLayerFrame,
   sourceRow: number | null,
@@ -24,8 +27,15 @@ function frameRowForSourceRow(
   // Dense path: primitive still indexes the same frame row.
   if (frame.rowIndex[fallback] === sourceRow) return fallback;
   // Compacted rects (dropped earlier slots): recover the original frame row.
-  const idx = frame.rowIndex.indexOf(sourceRow);
-  return idx >= 0 ? idx : fallback;
+  const { rowIndex } = frame;
+  let lookup = frameRowLookups.get(rowIndex);
+  if (lookup === undefined) {
+    lookup = new Map();
+    // Backward, so a repeated source row keeps its first frame row.
+    for (let row = rowIndex.length - 1; row >= 0; row--) lookup.set(rowIndex[row]!, row);
+    frameRowLookups.set(rowIndex, lookup);
+  }
+  return lookup.get(sourceRow) ?? fallback;
 }
 
 export function sourceBackedInspectY(
