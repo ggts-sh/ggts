@@ -1,6 +1,6 @@
 {
   "name": "@ggts-sh/react",
-  "version": "0.48.2",
+  "version": "0.48.3",
   "description": "ggts React DOM adapter: ggplot2-named components over the framework-agnostic core pipeline.",
   "keywords": [
     "charts",
@@ -53,9 +53,9 @@
     "test:ssr": "vitest run --config vitest.ssr.config.ts"
   },
   "dependencies": {
-    "@ggts-sh/compose": "^0.48.2",
-    "@ggts-sh/core": "^0.48.2",
-    "@ggts-sh/spec": "^0.48.2"
+    "@ggts-sh/compose": "^0.48.3",
+    "@ggts-sh/core": "^0.48.3",
+    "@ggts-sh/spec": "^0.48.3"
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.0",
