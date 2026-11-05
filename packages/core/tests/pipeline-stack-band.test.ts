@@ -5,7 +5,7 @@
  * 2 px at 1600×300 while the legend keeps their keys; each test asserts the
  * returned warnings, or their absence, without importing the collector.
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { aes, gg, guideLegend, guideNone, scaleFillContinuous } from "@ggts-sh/spec";
 
@@ -354,6 +354,62 @@ describe("stack band visibility (#1883)", () => {
     expect(warnings[0]!.message).toContain(
       "groups t1, t2, t3, t4, t5, t6, t7, t8, +1 more in layer 0",
     );
+  });
+
+  it("names a group once, in first-seen order, when two layers share its label", () => {
+    const rows = [
+      { x: "one", g: "big", n: 1000 },
+      { x: "one", g: "tz", n: 0.1 },
+      { x: "one", g: "ta", n: 0.1 },
+      { x: "one", g: "tm", n: 0.1 },
+    ];
+    const model = runPipeline(
+      gg(rows, aes({ x: "x", y: "n", fill: "g", group: "g" }))
+        .geomCol({ position: "stack" })
+        .geomCol({ position: "stack" })
+        .guides({ fill: guideLegend({ position: "bottom", direction: "horizontal" }) })
+        .spec(),
+      { width: 400, height: 200 },
+    );
+    const warnings = stackWarnings(model);
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]!.message).toContain("groups tz, ta, tm in layers 0 and 1");
+  });
+
+  it("dedupes hidden group names without scanning the names per band", () => {
+    const levels = 2000;
+    const rows = Array.from({ length: levels }, (_, index) => ({
+      x: `x${index % 5}`,
+      g: `g${index}`,
+      n: 1,
+    }));
+    const spec = gg(rows, aes({ x: "x", y: "n", fill: "g", group: "g" }))
+      .geomCol({ position: "stack" })
+      .spec();
+
+    // oxlint-disable-next-line typescript/unbound-method -- re-invoked with .apply below
+    const originalIncludes = Array.prototype.includes;
+    let walked = 0;
+    const includes = spyOn(Array.prototype, "includes").mockImplementation(function counting(
+      this: unknown[],
+      ...args: [unknown, number?]
+    ): boolean {
+      walked += this.length;
+      return originalIncludes.apply(this, args);
+    });
+    let model: RenderModel;
+    try {
+      model = runPipeline(spec, { width: 800, height: 500 });
+    } finally {
+      includes.mockRestore();
+    }
+
+    const warnings = stackWarnings(model);
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]!.message).toContain(`+${levels - 8} more in layer 0`);
+    // A scan per band walks about levels² / 2 = 2,000,000 elements. This count
+    // sees only `includes`, so a scan with another method would still pass.
+    expect(walked).toBeLessThan(levels * 50);
   });
 
   it("takes the max across free_y facet panels and warns only when thin in every panel", () => {
