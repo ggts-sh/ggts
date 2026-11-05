@@ -48,7 +48,7 @@ GRAMMAR CHEAT-SHEET
 - Coord: {"type": "flip"} makes horizontal charts (still map x=category, y=value). A post-stat coordinate transform is {"type":"transform","x"?: {"transform":"identity"|"log10"|"sqrt","limits"?: [min,max],"reverse"?: bool,"expand"?: bool},"y"?: same,"clip"?: bool}. Fixed physical data-unit lengths use {"type":"fixed","ratio"?: positiveNumber}; omit ratio for equal x/y units and never combine fixed coordinates with free facet scales. Coordinate transforms preserve stat inputs; scale transforms do not.
 - Position scales: {"x"|"y": {"type": "linear"|"log"|"time"|"band", "parse"?, "temporalKind"?: "date"|"datetime", "timezone"?, "dateBreaks"?, "dateMinorBreaks"?, "dateLabels"?, "locale"?, "weekStart"?, "domain"?, "nice"?, "zero"?}}. Ordinary ISO dates, four-digit year strings, year-months, and year-quarters infer time without an explicit scale. Calendar intervals are strings such as "2 weeks" or "10 years". Ambiguous ordered dates require a closed parse name such as "dmy" or "mdy". Use "band" when year-like strings are identifiers. Never preprocess dates into indexes.
 - Color/fill scales: {"color"|"fill": {"type": "ordinal"|"sequential", "range"?}}. Use "log" only for positive quantitative fields and "sequential" only for quantitative color/fill.
-- Labs: {"title", "subtitle", "caption", "x", "y", "color", "fill"} — plain strings.
+- Labs: {"title", "subtitle", "caption", "x", "y", "color", "fill"} — plain strings. A caption is only for a source credit or required legal note; omit it otherwise. Never use it for commentary or chart narration.
 - Only map fields that exist in the DataProfile, with their exact names.
 
 REFUSAL CONTRACT
