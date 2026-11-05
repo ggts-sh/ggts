@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import type { CandidateFacts, CellValue, PlotRect, RenderModel } from "@ggts-sh/core";
 import {
   anchorsFromCandidateKeys,
@@ -87,6 +88,15 @@ function hoverGuides(
   return { hover, lines, vertical, horizontal, panel };
 }
 
+/** Call inside `useMemo`: React does not render a mark again when its element is unchanged. */
+function anchorMarks(anchors: readonly PresentationAnchor[], className: string, radius: number) {
+  return anchors
+    .filter((anchor) => anchor.chrome !== "none")
+    .map((anchor, index) => (
+      <Anchor key={index} anchor={anchor} className={className} radius={radius} />
+    ));
+}
+
 export function PlotOverlay({
   model,
   inspection,
@@ -106,12 +116,27 @@ export function PlotOverlay({
   rectangles: readonly PlotRect[];
   flipped: boolean;
 }) {
-  const presented = candidates.map((candidate) => ({
-    ...candidate,
-    ...candidateExtent(model, candidate),
-  }));
-  const anchors = anchorsFromCandidateKeys(presented, selected);
-  const emphasis = applyEmphasisRingDensityGate(anchorsFromCandidateKeys(presented, emphasized));
+  const hasKeys = selected.length > 0 || emphasized.length > 0;
+  const presented = useMemo(
+    () =>
+      hasKeys
+        ? candidates.map((candidate) => {
+            const extent = candidateExtent(model, candidate);
+            return extent === null ? candidate : { ...candidate, ...extent };
+          })
+        : [],
+    [model, candidates, hasKeys],
+  );
+  const anchors = useMemo(
+    () => anchorsFromCandidateKeys(presented, selected),
+    [presented, selected],
+  );
+  const emphasis = useMemo(
+    () => applyEmphasisRingDensityGate(anchorsFromCandidateKeys(presented, emphasized)),
+    [presented, emphasized],
+  );
+  const selectedMarks = useMemo(() => anchorMarks(anchors, "gg-selected-ring", 8), [anchors]);
+  const emphasisMarks = useMemo(() => anchorMarks(emphasis, "gg-emphasis-ring", 7), [emphasis]);
   const { hover, lines, vertical, horizontal, panel } = hoverGuides(
     model,
     inspection,
@@ -179,12 +204,8 @@ export function PlotOverlay({
         </text>
       )}
       {hover !== null && <Anchor anchor={hover} className="gg-hover-ring" radius={6} />}
-      {anchors.map((anchor, index) => (
-        <Anchor key={index} anchor={anchor} className="gg-selected-ring" radius={8} />
-      ))}
-      {emphasis.map((anchor, index) => (
-        <Anchor key={index} anchor={anchor} className="gg-emphasis-ring" radius={7} />
-      ))}
+      {selectedMarks}
+      {emphasisMarks}
       {rectangles.map((rect, index) => (
         <rect
           key={index}
