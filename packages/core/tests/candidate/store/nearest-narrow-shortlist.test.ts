@@ -235,6 +235,10 @@ function scanEveryCandidate(plotScene: Scene, storeOptions: CandidateStoreOption
 const summary = (match: { id: number; distance: number; mode: string } | null) =>
   match === null ? "none" : `${match.id} ${match.mode} ${match.distance}`;
 
+// Math.hypot can differ in its last digit between machines.
+const pinned = (match: { id: number; distance: number; mode: string } | null) =>
+  match === null ? "none" : `${match.id} ${match.mode} ${match.distance.toPrecision(10)}`;
+
 describe("nearest shortlist", () => {
   for (const name of Object.keys(SCENES)) {
     it(`equals a scan of every candidate: ${name}`, () => {
@@ -262,7 +266,7 @@ describe("nearest shortlist", () => {
       const results: Record<string, string[]> = {};
       for (const mode of MODES) {
         results[mode] = probes(store).map(([px, py]) =>
-          summary(store.nearest(px, py, { mode, maxDistance: 24 })),
+          pinned(store.nearest(px, py, { mode, maxDistance: 24 })),
         );
       }
       expect(results).toMatchSnapshot();
@@ -283,7 +287,7 @@ describe("nearest shortlist", () => {
         Number.MAX_VALUE,
         Number.MIN_VALUE,
       ]) {
-        results[`${mode} ${maxDistance}`] = summary(store.nearest(px, py, { mode, maxDistance }));
+        results[`${mode} ${maxDistance}`] = pinned(store.nearest(px, py, { mode, maxDistance }));
       }
     }
     expect(results).toMatchSnapshot();
