@@ -19,44 +19,118 @@ export function checkTextLabelOverlap(
   const n = batch.texts.length;
   if (n < 2) return;
   const boxes = glyphBounds(batch, options);
+  const bands = createLabelBands(boxes, n);
   const overlapping = new Uint8Array(n);
+  const dropped: number[] = [];
   let count = 0;
-  // ponytail: pairwise checks are quadratic; use a spatial index if dense label layers become a bottleneck.
+  // Keep each label that overlaps no label kept before it.
   for (let i = 0; i < n; i++) {
-    const a = i * 4;
-    if (!(boxes[a]! < boxes[a + 2]! && boxes[a + 1]! < boxes[a + 3]!)) continue;
-    for (let j = 0; j < i; j++) {
-      const b = j * 4;
-      if (checkOverlap && overlapping[j] === 1) continue;
-      if (
-        boxes[b]! < boxes[b + 2]! &&
-        boxes[b + 1]! < boxes[b + 3]! &&
-        boxes[a]! < boxes[b + 2]! &&
-        boxes[b]! < boxes[a + 2]! &&
-        boxes[a + 1]! < boxes[b + 3]! &&
-        boxes[b + 1]! < boxes[a + 3]!
-      ) {
-        if (overlapping[i] === 0) {
-          overlapping[i] = 1;
-          count++;
-        }
-        if (checkOverlap) break;
-        if (overlapping[j] === 0) {
-          overlapping[j] = 1;
-          count++;
-        }
-      }
+    if (!hasArea(boxes, i)) continue;
+    if (bands.overlaps(i) > 0) {
+      overlapping[i] = 1;
+      count++;
+      dropped.push(i);
+    } else {
+      bands.add(i);
     }
   }
   if (checkOverlap) {
     if (count > 0) compactGlyphs(batch, overlapping);
     return;
   }
+  // Kept labels do not overlap each other, so a kept label overlaps another
+  // label only when a dropped label touches it.
+  for (const i of dropped) count += bands.overlaps(i, overlapping);
   if (count > 0)
     warnings.push({
       code: "text-label-overlap",
       message: `${count} labels overlap another label in layer ${batch.layerIndex}, panel ${batch.panelIndex}. Set params.checkOverlap to true to omit later overlapping labels.`,
     });
+}
+
+function hasArea(boxes: Float64Array, i: number): boolean {
+  const a = i * 4;
+  return boxes[a]! < boxes[a + 2]! && boxes[a + 1]! < boxes[a + 3]!;
+}
+
+function boxesOverlap(boxes: Float64Array, i: number, j: number): boolean {
+  const a = i * 4;
+  const b = j * 4;
+  return (
+    boxes[a]! < boxes[b + 2]! &&
+    boxes[b]! < boxes[a + 2]! &&
+    boxes[a + 1]! < boxes[b + 3]! &&
+    boxes[b + 1]! < boxes[a + 3]!
+  );
+}
+
+/**
+ * Kept label boxes in bands about one mean label long, cut along the axis that
+ * gives more bands. A box is listed in each band it touches. Kept boxes do not
+ * overlap, so labels inside the panel leave few in each band, and a lookup does
+ * not grow with the label count.
+ *
+ * ponytail: with clip off, labels far outside the panel can crowd one band, such
+ * as one long row and one long column, or one long row with far outliers. Cost
+ * then grows with n squared, and warn mode can run 2.4x slower than a pairwise
+ * loop. A 2D grid removes that limit for about 400 more bundle bytes.
+ */
+function createLabelBands(boxes: Float64Array, n: number) {
+  const measure = (axis: 0 | 1) => {
+    let start = Infinity;
+    let end = -Infinity;
+    let totalLength = 0;
+    let measured = 0;
+    for (let i = 0; i < n; i++) {
+      if (!hasArea(boxes, i)) continue;
+      start = Math.min(start, boxes[i * 4 + axis]!);
+      end = Math.max(end, boxes[i * 4 + 2 + axis]!);
+      totalLength += boxes[i * 4 + 2 + axis]! - boxes[i * 4 + axis]!;
+      measured++;
+    }
+    // A non-finite box gives one band. A far outlier gives coarse bands, which
+    // costs time and never changes the result.
+    const wanted = Math.ceil(((end - start) * measured) / totalLength);
+    return { axis, start, end, count: wanted >= 1 ? Math.min(wanted, n) : 1 };
+  };
+  const x = measure(0);
+  const y = measure(1);
+  const { axis, start, end, count } = x.count > y.count ? x : y;
+  const bandLength = (end - start) / count;
+  // Monotonic, so two overlapping boxes always share a band.
+  const bandOf = (position: number): number => {
+    const band = Math.floor((position - start) / bandLength);
+    return band >= 0 ? Math.min(band, count - 1) : 0;
+  };
+  const bands: number[][] = [];
+
+  return {
+    add(i: number): void {
+      const last = bandOf(boxes[i * 4 + 2 + axis]!);
+      for (let band = bandOf(boxes[i * 4 + axis]!); band <= last; band++) {
+        (bands[band] ??= []).push(i);
+      }
+    },
+    /**
+     * With no `marks`, returns 1 at the first kept label that overlaps label i, else 0.
+     * With `marks`, marks each unmarked kept label that overlaps label i, and returns how many.
+     */
+    overlaps(i: number, marks?: Uint8Array): number {
+      let marked = 0;
+      const last = bandOf(boxes[i * 4 + 2 + axis]!);
+      for (let band = bandOf(boxes[i * 4 + axis]!); band <= last; band++) {
+        for (const j of bands[band] ?? []) {
+          if (!boxesOverlap(boxes, i, j)) continue;
+          if (marks === undefined) return 1;
+          if (marks[j] === 0) {
+            marks[j] = 1;
+            marked++;
+          }
+        }
+      }
+      return marked;
+    },
+  };
 }
 
 function glyphBounds(batch: GlyphsBatch, options: OverlapOptions): Float64Array {
