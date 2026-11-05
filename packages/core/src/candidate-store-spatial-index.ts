@@ -11,7 +11,7 @@ import { pathRange } from "./candidate-geometry.js";
 import { StaticQuadtree } from "./dom/quadtree.js";
 import type { HitGeometry } from "./candidate-hit-geometry.js";
 import type { CandidateInspectMode } from "./candidate-store-types.js";
-import type { CandidateStoreIndexes } from "./candidate-store-indexes.js";
+import { AUTO_MODE_CODE, type CandidateStoreIndexes } from "./candidate-store-indexes.js";
 
 type PointBatchIndex = {
   readonly batchIndex: number;
@@ -47,6 +47,7 @@ export type SpatialIndex = {
     mode: CandidateInspectMode,
     maxDistance: number,
   ): number[];
+  firstNearestRadius(mode: CandidateInspectMode, maxDistance: number): number;
 };
 
 type ExtendedBuild = {
@@ -159,7 +160,7 @@ function collectExtendedBuild(
 
 /** Build shortlist indexes and shortlist helpers for an eager store. */
 export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeometry): SpatialIndex {
-  const { scene, n, hitTolerance, flip, batchIds, primitiveIds, xs, ys } = indexes;
+  const { scene, n, hitTolerance, flip, batchIds, primitiveIds, xs, ys, autoModes } = indexes;
 
   // Spatial index over plot-px anchors (reuse StaticQuadtree). Point-like
   // candidates shortlist via the tree; rects/segments/paths/glyphs use
@@ -352,6 +353,46 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
   // Far-plane strip bounds: StaticQuadtree prunes on the finite axis only.
   const STRIP = 1e30;
 
+  // In auto mode a candidate matches away from the pointer only along its own
+  // axis, so each strip searches only the anchors that can match on that axis.
+  // A chart whose anchors all match, such as a line chart on x, reuses `spatial`.
+  const autoStripTree = (matches: (autoMode: number) => boolean): StaticQuadtree | null => {
+    let matched = false;
+    let masked = false;
+    const snapXs = spatialXs.map((x, id) => {
+      if (Number.isNaN(x)) return x;
+      if (matches(autoModes[id]!)) {
+        matched = true;
+        return x;
+      }
+      masked = true;
+      return Number.NaN;
+    });
+    if (!matched) return null;
+    return masked ? new StaticQuadtree(snapXs, spatialYs) : spatial;
+  };
+  const { x: autoX, y: autoY, xy: autoXY } = AUTO_MODE_CODE;
+  const autoXStrip = autoStripTree((mode) => mode === autoXY || mode === (flip ? autoY : autoX));
+  const autoYStrip = autoStripTree((mode) => mode === autoXY || mode === (flip ? autoX : autoY));
+
+  /**
+   * Radius of the first nearest pass, which holds about the same number of
+   * candidates at any chart size. `maxDistance` means one full pass, for searches
+   * where a narrow pass cannot help: exact-only anchors match at any radius, and
+   * each pass scans every vertex of each filled span that crosses a strip.
+   */
+  const firstNearestRadius = (mode: CandidateInspectMode, maxDistance: number): number => {
+    if (
+      mode === "exact" ||
+      filledExtendedClasses.length > 0 ||
+      (mode === "auto" && autoXStrip === null && autoYStrip === null)
+    )
+      return maxDistance;
+    let radius = maxDistance;
+    for (let count = n; count > 4096; count /= 4) radius /= 4;
+    return radius;
+  };
+
   /** Shortlist candidate ids for a nearest query (reverse-id order for topmost ties). */
   const shortlistNearest = (
     px: number,
@@ -361,12 +402,29 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
   ): number[] => {
     if (n === 0) return [];
     const consider = new Set<number>();
-    const addRect = (x0: number, y0: number, x1: number, y1: number) => {
-      if (spatial === null) return;
-      for (const id of spatial.queryRect(x0, y0, x1, y1)) consider.add(id);
+    const addRect = (
+      tree: StaticQuadtree | null,
+      x0: number,
+      y0: number,
+      x1: number,
+      y1: number,
+    ) => {
+      if (tree === null) return;
+      for (const id of tree.queryRect(x0, y0, x1, y1)) consider.add(id);
+    };
+    // Dominant-axis distance is along semantic x (screen y when coord_flip).
+    // Axis token maps stay for group(); nearest uses spatial strips.
+    // Filled path verts are not in spatial (#1342) — filled-only strip AABBs.
+    const addXStrip = (tree: StaticQuadtree | null) => {
+      addRect(tree, px - maxDistance, -STRIP, px + maxDistance, STRIP);
+      addFilledPathIntersecting(px - maxDistance, -STRIP, px + maxDistance, STRIP, consider);
+    };
+    const addYStrip = (tree: StaticQuadtree | null) => {
+      addRect(tree, -STRIP, py - maxDistance, STRIP, py + maxDistance);
+      addFilledPathIntersecting(-STRIP, py - maxDistance, STRIP, py + maxDistance, consider);
     };
     if (mode === "xy") {
-      addRect(px - maxDistance, py - maxDistance, px + maxDistance, py + maxDistance);
+      addRect(spatial, px - maxDistance, py - maxDistance, px + maxDistance, py + maxDistance);
       // Filled areas omit anchors from `spatial`; full extended tree still
       // holds one rep per filled subpath plus rects/segments/stroked paths.
       addExtendedIntersecting(
@@ -377,45 +435,20 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
         consider,
       );
     } else if (mode === "x") {
-      // Dominant-axis distance is along semantic x (screen y when coord_flip).
-      // Axis token maps stay for group(); nearest uses spatial strips.
-      // Filled path verts are not in spatial (#1342) — filled-only strip AABBs.
-      if (flip) {
-        addRect(-STRIP, py - maxDistance, STRIP, py + maxDistance);
-        addFilledPathIntersecting(-STRIP, py - maxDistance, STRIP, py + maxDistance, consider);
-      } else {
-        addRect(px - maxDistance, -STRIP, px + maxDistance, STRIP);
-        addFilledPathIntersecting(px - maxDistance, -STRIP, px + maxDistance, STRIP, consider);
-      }
+      if (flip) addYStrip(spatial);
+      else addXStrip(spatial);
     } else if (mode === "y") {
-      if (flip) {
-        addRect(px - maxDistance, -STRIP, px + maxDistance, STRIP);
-        addFilledPathIntersecting(px - maxDistance, -STRIP, px + maxDistance, STRIP, consider);
-      } else {
-        addRect(-STRIP, py - maxDistance, STRIP, py + maxDistance);
-        addFilledPathIntersecting(-STRIP, py - maxDistance, STRIP, py + maxDistance, consider);
-      }
+      if (flip) addXStrip(spatial);
+      else addYStrip(spatial);
     } else {
       // exact / auto: point anchors within hit reach + extended geometry whose
       // AABB meets the probe (rects/segments/paths can sit far from anchors).
       // Filled path verts are NaN-skipped in spatial; reps arrive via extended.
-      const r = mode === "auto" ? Math.max(maxDistance, maxPointReach) : maxPointReach;
-      addRect(px - r, py - r, px + r, py + r);
+      const r = maxPointReach;
+      addRect(spatial, px - r, py - r, px + r, py + r);
       if (mode === "auto") {
-        // Per-candidate autoMode can still be x/y (line/area/smooth, etc.):
-        // include dominant-axis strips so orthogonal distance does not drop them.
-        // Filled path reps: filled-only strip trees (not every bar AABB).
-        if (flip) {
-          addRect(-STRIP, py - maxDistance, STRIP, py + maxDistance);
-          addRect(px - maxDistance, -STRIP, px + maxDistance, STRIP);
-          addFilledPathIntersecting(-STRIP, py - maxDistance, STRIP, py + maxDistance, consider);
-          addFilledPathIntersecting(px - maxDistance, -STRIP, px + maxDistance, STRIP, consider);
-        } else {
-          addRect(px - maxDistance, -STRIP, px + maxDistance, STRIP);
-          addRect(-STRIP, py - maxDistance, STRIP, py + maxDistance);
-          addFilledPathIntersecting(px - maxDistance, -STRIP, px + maxDistance, STRIP, consider);
-          addFilledPathIntersecting(-STRIP, py - maxDistance, STRIP, py + maxDistance, consider);
-        }
+        addXStrip(autoXStrip);
+        addYStrip(autoYStrip);
       }
       // exact containment uses the point AABB; auto still needs maxDistance pad
       // for dominant-axis extended matches that refine after shortlist.
@@ -437,5 +470,6 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
     pointBatchIndexes,
     addExtendedIntersecting,
     shortlistNearest,
+    firstNearestRadius,
   };
 }

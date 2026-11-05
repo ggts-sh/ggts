@@ -152,6 +152,7 @@ type NearestContext = FilledSpanContext & {
       mode: CandidateInspectMode,
       maxDistance: number,
     ): number[];
+    firstNearestRadius(mode: CandidateInspectMode, maxDistance: number): number;
   };
   readonly indexesFact: (id: number) => CandidateFacts | null;
   readonly isFilledPath: Uint8Array;
@@ -189,17 +190,24 @@ function resolveNearestCandidate(
   return measured === null ? null : { id, ...measured, mode: candidateModeValue };
 }
 
-export function findNearest(
+type NearestSearch = {
+  readonly mode: CandidateInspectMode;
+  readonly maxDistance: number;
+  readonly panelId?: string;
+};
+
+function bestOnShortlist(
   ctx: NearestContext,
   px: number,
   py: number,
-  search: { mode: CandidateInspectMode; maxDistance: number; panelId?: string },
-): CandidateMatch | null {
+  search: NearestSearch,
+  radius: number,
+): FilledSpanResult | null {
   const isAuto = search.mode === "auto";
   const mode: ResolvedCandidateInspectMode = search.mode === "auto" ? "exact" : search.mode;
   let best: FilledSpanResult | null = null;
   let bestGeometric = false;
-  for (const id of ctx.query.shortlistNearest(px, py, search.mode, search.maxDistance)) {
+  for (const id of ctx.query.shortlistNearest(px, py, search.mode, radius)) {
     if (search.panelId !== undefined && ctx.scene.panels[ctx.panelIds[id]!]!.id !== search.panelId)
       continue;
     const candidate = resolveNearestCandidate(ctx, id, px, py, isAuto, mode, search.maxDistance);
@@ -218,6 +226,25 @@ export function findNearest(
     )
       best = candidate;
   }
+  return best;
+}
+
+export function findNearest(
+  ctx: NearestContext,
+  px: number,
+  py: number,
+  search: NearestSearch,
+): CandidateMatch | null {
+  const { mode, maxDistance } = search;
+  if (mode === "auto" && Number.isNaN(maxDistance)) return null;
+  // Search a narrow radius first. A candidate outside the radius is farther than
+  // the radius, so a closer match ends the search. Exact hits are in every shortlist.
+  // ponytail: many candidates in one column can fill both passes, which costs twice
+  // one full pass. An index sorted per axis removes that limit.
+  const narrow = ctx.query.firstNearestRadius(mode, maxDistance);
+  let best = narrow < maxDistance ? bestOnShortlist(ctx, px, py, search, narrow) : null;
+  if (best === null || !((mode === "auto" && best.mode === "exact") || best.distance < narrow))
+    best = bestOnShortlist(ctx, px, py, search, maxDistance);
   if (best === null) return null;
   const found = ctx.indexesFact(best.id);
   return found === null ? null : { ...found, distance: best.distance, mode: best.mode };
