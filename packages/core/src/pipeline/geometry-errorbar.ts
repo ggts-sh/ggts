@@ -17,7 +17,7 @@ import {
   numericStyleVector,
   type ResolvedStyleScales,
 } from "./geometry-style.js";
-import { DEFAULT_RULE_LINEWIDTH, removedWarning } from "./geometry-shared.js";
+import { DEFAULT_RULE_LINEWIDTH, droppedFrameRows, removedWarning } from "./geometry-shared.js";
 import { emitErrorbarRows } from "./geometry-errorbar-rows.js";
 import { makeErrorbarXSpan } from "./geometry-errorbar-width.js";
 
@@ -55,6 +55,8 @@ export function errorbarBatch(
     panelIndex: 0,
     segments: emitted.segments,
     rowIndex: emitted.rowIndex,
+    // Three segments (stem and two caps) per kept row.
+    ...droppedFrameRows(emitted.styleRows, frame.n * 3),
     stroke: binding.color.constant,
     linewidth: constantStyle(binding, params, "linewidth", DEFAULT_RULE_LINEWIDTH),
     alpha: constantStyle(binding, params, "alpha", 1),

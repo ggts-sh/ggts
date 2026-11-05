@@ -15,6 +15,7 @@ import type { Frame } from "./geometry-shared.js";
 import {
   DEFAULT_POINT_SIZE,
   DEFAULT_RULE_LINEWIDTH,
+  droppedFrameRows,
   positionOf,
   removedWarning,
 } from "./geometry-shared.js";
@@ -48,6 +49,7 @@ function packStrokeBatch(
     panelIndex: 0,
     segments,
     rowIndex,
+    ...droppedFrameRows(styleRows, frame.n),
     stroke: binding.color.constant,
     linewidth: baseLw * linewidthScale,
     alpha: constantStyle(binding, params, "alpha", 1),
@@ -247,6 +249,7 @@ function buildCrossbarRectBatch(input: {
     panelIndex: 0,
     rects,
     rowIndex,
+    ...droppedFrameRows(styleRows, frame.n),
     fill: binding.fill.constant,
     ...(hasFill ? {} : { fillRole: "paper" as const }),
     alpha: constantStyle(binding, params, "alpha", 1),
@@ -290,6 +293,7 @@ function buildMidPointBatch(input: {
     panelIndex: 0,
     positions,
     rowIndex,
+    ...droppedFrameRows(styleRows, frame.n),
     size:
       typeof binding.size?.constant === "number"
         ? binding.size.constant
