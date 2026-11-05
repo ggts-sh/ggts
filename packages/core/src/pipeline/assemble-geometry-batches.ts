@@ -113,7 +113,10 @@ function buildPanelGeometryBatches(input: {
       : panelScale;
   const built = buildBatch(
     frame,
-    geometryPanelFrame(placement, panelScalesForGeom, flip, pathLike ? undefined : projector),
+    {
+      ...geometryPanelFrame(placement, panelScalesForGeom, flip, pathLike ? undefined : projector),
+      clip: projector?.clip ?? true,
+    },
     color,
     fill,
     styles,

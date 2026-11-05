@@ -21,8 +21,11 @@ export function writeClosedPathGroups(input: {
   strokes: (string | null)[];
 } {
   const { frame, fx, groupRows, yTop, yBottom, fillOf } = input;
+  // A clipped edge gains up to two crossing vertices per segment, so a group
+  // needs at most 6n - 4 slots. Trim the buffers once the cursor is known.
+  const perRow = fx.clip === true ? 6 : 2;
   let total = 0;
-  for (const rows of groupRows) total += rows.length * 2;
+  for (const rows of groupRows) total += rows.length * perRow;
   const positions = new Float32Array(total * 2);
   const rowIndex = new Uint32Array(total);
   const closedFrameRows = new Uint32Array(total);
@@ -48,5 +51,14 @@ export function writeClosedPathGroups(input: {
     strokes.push(null);
   }
   pathOffsets[groupRows.length] = cursor;
-  return { positions, rowIndex, closedFrameRows, pathOffsets, fills, strokes };
+  if (cursor === total)
+    return { positions, rowIndex, closedFrameRows, pathOffsets, fills, strokes };
+  return {
+    positions: positions.slice(0, cursor * 2),
+    rowIndex: rowIndex.slice(0, cursor),
+    closedFrameRows: closedFrameRows.slice(0, cursor),
+    pathOffsets,
+    fills,
+    strokes,
+  };
 }
