@@ -13,12 +13,7 @@ import type { PathsBatch, Scene } from "../../../src/scene.ts";
 import { scene } from "../fixtures.ts";
 
 /** Closed band: upper ascending, lower descending — same layout as geom_area. */
-function stackedAreaScene(
-  groups: number,
-  rows: number,
-  panelW = 200,
-  panelH = 120,
-): Scene {
+function stackedAreaScene(groups: number, rows: number, panelW = 200, panelH = 120): Scene {
   const pathOffsets = [0];
   const positions: number[] = [];
   const rowIndex: number[] = [];
@@ -128,12 +123,7 @@ function oracleHitId(plot: Scene, px: number, py: number): number | null {
 }
 
 /** Independent nearest-x oracle over every candidate (axis distance then orth). */
-function oracleNearestX(
-  plot: Scene,
-  px: number,
-  py: number,
-  maxDistance: number,
-): number | null {
+function oracleNearestX(plot: Scene, px: number, py: number, maxDistance: number): number | null {
   const indexes = buildCandidateStoreIndexes(plot, { hitTolerance: 3 });
   let best = -1;
   let bestDistance = Infinity;
@@ -142,10 +132,7 @@ function oracleNearestX(
     const distance = Math.abs(indexes.xs[id]! - px);
     if (distance > maxDistance) continue;
     const orth = Math.abs(indexes.ys[id]! - py);
-    if (
-      distance < bestDistance ||
-      (distance === bestDistance && orth < bestOrth)
-    ) {
+    if (distance < bestDistance || (distance === bestDistance && orth < bestOrth)) {
       best = id;
       bestDistance = distance;
       bestOrth = orth;
@@ -189,8 +176,7 @@ describe("filled-area hit shortlist (#1342)", () => {
     for (let i = 0; i < 8; i++) {
       const px = 20 + i * 20;
       const py = 55;
-      const got =
-        store.nearest(px, py, { mode: "auto", maxDistance })?.id ?? null;
+      const got = store.nearest(px, py, { mode: "auto", maxDistance })?.id ?? null;
       const want = oracleNearestX(plot, px, py, maxDistance);
       expect(got).toBe(want);
     }
@@ -242,10 +228,8 @@ describe("filled-area hit shortlist (#1342)", () => {
     const maxDistance = 24;
     const px = 100;
     const py = 20; // far above the band (y≈87–102)
-    const explicit =
-      store.nearest(px, py, { mode: "x", maxDistance })?.id ?? null;
-    const auto =
-      store.nearest(px, py, { mode: "auto", maxDistance })?.id ?? null;
+    const explicit = store.nearest(px, py, { mode: "x", maxDistance })?.id ?? null;
+    const auto = store.nearest(px, py, { mode: "auto", maxDistance })?.id ?? null;
     const want = oracleNearestX(plot, px, py, maxDistance);
     expect(want).not.toBeNull();
     expect(explicit).toBe(want);
@@ -273,9 +257,7 @@ describe("filled-area hit shortlist (#1342)", () => {
     const plot = stackedAreaScene(1, rows);
     const store = areaStore(plot);
     // Interior brush whose center is inside the band, anchors may lie outside.
-    const hits = Array.from(store.queryRect(90, 40, 110, 50)).toSorted(
-      (a, b) => a - b,
-    );
+    const hits = Array.from(store.queryRect(90, 40, 110, 50)).toSorted((a, b) => a - b);
     expect(hits).toEqual(Array.from({ length: rows * 2 }, (_, i) => i));
   });
 
@@ -315,8 +297,7 @@ describe("filled-area hit shortlist (#1342)", () => {
     let batchIndexReads = 0;
     plot.batches = new Proxy(plot.batches, {
       get(target, property, receiver): unknown {
-        if (typeof property === "string" && /^\d+$/.test(property))
-          batchIndexReads++;
+        if (typeof property === "string" && /^\d+$/.test(property)) batchIndexReads++;
         return Reflect.get(target, property, receiver) as unknown;
       },
     });
@@ -333,8 +314,7 @@ describe("filled-area hit shortlist (#1342)", () => {
     for (const [x, y] of probes) store.hitTest(x, y);
     const hitReads = batchIndexReads;
     batchIndexReads = 0;
-    for (const [x, y] of probes)
-      store.nearest(x, y, { mode: "auto", maxDistance: 24 });
+    for (const [x, y] of probes) store.nearest(x, y, { mode: "auto", maxDistance: 24 });
     const nearestReads = batchIndexReads;
     // The shortlist holds at most one entry per subpath (8), so reads stay
     // far below the 32k vertices that one probe would read in a full scan.
@@ -392,9 +372,7 @@ describe("filled-area hit shortlist (#1342)", () => {
         kind: "paths",
         layerIndex: 0,
         panelIndex: 0,
-        positions: new Float32Array([
-          20, 40, 60, 40, 100, 40, 100, 80, 60, 80, 20, 80,
-        ]),
+        positions: new Float32Array([20, 40, 60, 40, 100, 40, 100, 80, 60, 80, 20, 80]),
         rowIndex: new Uint32Array([0, 1, 2, 2, 1, 0]),
         pathOffsets: new Uint32Array([0, 6]),
         fills: [null],
