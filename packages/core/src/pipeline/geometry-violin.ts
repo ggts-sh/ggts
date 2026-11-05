@@ -23,6 +23,7 @@ import {
   type ResolvedStyleScales,
 } from "./geometry-style.js";
 import { areaGroupFillsOf } from "./geometry-paths-area-fill.js";
+import { putCrossings } from "./geometry-paths-closed.js";
 
 function sortRowsByY(rows: number[], y: Float64Array): number[] {
   return rows.toSorted((a, b) => y[a]! - y[b]!);
@@ -115,13 +116,45 @@ function writeViolinBuffers(input: {
     fillFallback,
     strokeFallback,
   } = input;
-  const positions = new Float32Array(totalVertices * 2);
-  const rowIndex = new Uint32Array(totalVertices);
-  const closedFrameRows = new Uint32Array(totalVertices);
+  // Rows run in y order, so each side gains at most two crossing vertices.
+  const capacity = totalVertices + (fx.clip === true ? groups.length * 4 : 0);
+  const positions = new Float32Array(capacity * 2);
+  const rowIndex = new Uint32Array(capacity);
+  const closedFrameRows = new Uint32Array(capacity);
   const pathOffsets = new Uint32Array(groups.length + 1);
   const fills: (string | null)[] = [];
   const strokes: (string | null)[] = [];
   let cursor = 0;
+  let centerPx = 0;
+  let halfMaxPx = 0;
+  let sign = 1;
+  const put = (half: number, y: number, row: number): void => {
+    positions[cursor * 2] = centerPx + sign * half;
+    positions[cursor * 2 + 1] = fx.innerHeight - y * fx.innerHeight;
+    rowIndex[cursor] = frame.rowIndex[row]!;
+    closedFrameRows[cursor] = row;
+    cursor++;
+  };
+  // Each side runs in y order; `sign` mirrors the half width about the center.
+  const side = (ordered: readonly number[], mirror: number): void => {
+    sign = mirror;
+    let prevHalf = 0;
+    let prevY = 0;
+    for (let k = 0; k < ordered.length; k++) {
+      const row = ordered[k]!;
+      const y = positionOf(fx.yScale, frame.yNumeric, frame.yValues, row);
+      const half = halfMaxPx * Math.max(0, violinwidth[row]!);
+      if (fx.clip === true) {
+        // Cut where the outline crosses the panel edge so the shape does not bend (#1937).
+        if (k > 0) putCrossings(prevHalf, prevY, half, y, row, put);
+        prevHalf = half;
+        prevY = y;
+        // Rows beyond the edge add nothing once the crossings are in place.
+        if (y < 0 || y > 1) continue;
+      }
+      put(half, y, row);
+    }
+  };
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     pathOffsets[groupIndex] = cursor;
     const rows = groups[groupIndex]!;
@@ -134,34 +167,24 @@ function writeViolinBuffers(input: {
       width = widthFraction / slotCount;
       center += widthFraction * ((slot + 0.5) / slotCount - 0.5);
     }
-    const centerPx = center * fx.innerWidth;
-    const halfMaxPx = (width / 2) * fx.innerWidth;
-    for (const row of rows) {
-      const y = positionOf(fx.yScale, frame.yNumeric, frame.yValues, row);
-      const half = halfMaxPx * Math.max(0, violinwidth[row]!);
-      positions[cursor * 2] = centerPx + half;
-      positions[cursor * 2 + 1] = fx.innerHeight - y * fx.innerHeight;
-      rowIndex[cursor] = frame.rowIndex[row]!;
-      closedFrameRows[cursor] = row;
-      cursor++;
-    }
-    for (let i = rows.length - 1; i >= 0; i--) {
-      const row = rows[i]!;
-      const y = positionOf(fx.yScale, frame.yNumeric, frame.yValues, row);
-      const half = halfMaxPx * Math.max(0, violinwidth[row]!);
-      positions[cursor * 2] = centerPx - half;
-      positions[cursor * 2 + 1] = fx.innerHeight - y * fx.innerHeight;
-      rowIndex[cursor] = frame.rowIndex[row]!;
-      closedFrameRows[cursor] = row;
-      cursor++;
-    }
+    halfMaxPx = (width / 2) * fx.innerWidth;
+    centerPx = center * fx.innerWidth;
+    side(rows, 1);
+    side(rows.toReversed(), -1);
     fills.push(fillPaints[groupIndex] ?? fillFallback ?? null);
     let stroke = strokePaints[groupIndex]!;
     if (stroke === null && strokeFallback !== undefined) stroke = strokeFallback;
     strokes.push(stroke);
   }
   pathOffsets[groups.length] = cursor;
-  return { positions, rowIndex, closedFrameRows, pathOffsets, fills, strokes };
+  return {
+    positions: positions.subarray(0, cursor * 2),
+    rowIndex: rowIndex.subarray(0, cursor),
+    closedFrameRows: closedFrameRows.subarray(0, cursor),
+    pathOffsets,
+    fills,
+    strokes,
+  };
 }
 
 export function violinBatch(

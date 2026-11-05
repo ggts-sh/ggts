@@ -13,7 +13,7 @@ type EdgeBuffers = {
 };
 
 /** Emit a vertex wherever the segment crosses y = 0 or y = 1, in travel order. */
-function putCrossings(
+export function putCrossings(
   x0: number,
   y0: number,
   x1: number,
