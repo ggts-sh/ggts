@@ -230,6 +230,20 @@ describe("hex cells at the edge of the panel (#1939)", () => {
     expect(batch.positions.length / 2).toBe((batch.pathOffsets.length - 1) * 6);
   });
 
+  it("leaves a polar panel alone", () => {
+    const spec = gg(points, aes({ x: "x", y: "y" }))
+      .geomHex({ bins: 5 })
+      .coordPolar()
+      .spec();
+    const model = runPipeline(spec, size);
+    const flat = runPipeline({ ...spec, coord: { type: "transform", clip: false } }, size);
+    const polar = model.scene.batches.find((b) => b.kind === "paths");
+    const base = flat.scene.batches.find((b) => b.kind === "paths");
+    // Polar projects after geometry, so the cell count matches the uncut cells.
+    expect(polar?.kind).toBe("paths");
+    expect(polar!.pathOffsets.length).toBe(base!.pathOffsets.length);
+  });
+
   it("keeps vertices inside the panel on a flipped coordinate", () => {
     const spec = gg(points, aes({ x: "x", y: "y" }))
       .geomHex({ bins: 5 })
@@ -284,16 +298,39 @@ describe("hexBatch cut edge cases (#1939)", () => {
   it.each([
     ["at one corner", 1.25, 1.25],
     ["along one side", -0.25, 0.5],
-  ])("keeps every vertex inside for a cell that touches the panel %s", (_, cx, cy) => {
-    const batch = hexBatch(frameOf(cx, cy, 0.5, 0.5), fx, null, null, styles, []);
-    // Rounding may leave a sliver or nothing; either way no vertex is outside.
-    if (batch === null) return;
-    for (let i = 0; i < batch.positions.length; i += 2) {
-      expect(batch.positions[i]!).toBeGreaterThanOrEqual(0);
-      expect(batch.positions[i]!).toBeLessThanOrEqual(352);
-      expect(batch.positions[i + 1]!).toBeGreaterThanOrEqual(0);
-      expect(batch.positions[i + 1]!).toBeLessThanOrEqual(300);
-    }
+    ["along the other side", 1.25, 0.5],
+  ])("writes no path for a cell that touches the panel %s", (_, cx, cy) => {
+    expect(hexBatch(frameOf(cx, cy, 0.5, 0.5), fx, null, null, styles, [])).toBeNull();
+  });
+
+  it("keeps style vectors aligned when a cell in the middle lies outside", () => {
+    const frame = fromAny<LayerFrame>({
+      ...frameOf(0.2, 0.2, 0.2, 0.2),
+      n: 3,
+      xNumeric: new Float64Array([0.2, 3, 0.8]),
+      yNumeric: new Float64Array([0.2, 0.5, 0.8]),
+      hexWidth: new Float64Array([0.2, 0.2, 0.2]),
+      hexHeight: new Float64Array([0.2, 0.2, 0.2]),
+      rowIndex: new Uint32Array([0, 1, 2]),
+      alphaValues: [0.2, 0.5, 0.9],
+      binding: {
+        ...frameOf(0, 0, 1, 1).binding,
+        alpha: { field: "a", statColumn: null, constant: null, scaledConstant: null },
+        linewidth: { field: null, statColumn: null, constant: null, scaledConstant: null },
+      },
+    });
+    const aligned = fromAny<ResolvedStyleScales>({
+      alpha: { scale: { valueOf: Number } },
+      linewidth: null,
+      size: null,
+      shape: null,
+      linetype: null,
+    });
+    const batch = hexBatch(frame, fx, null, null, aligned, [])!;
+    expect(batch.pathOffsets.length - 1).toBe(2);
+    expect(batch.alphas?.[0]).toBeCloseTo(0.2);
+    expect(batch.alphas?.[1]).toBeCloseTo(0.9);
+    expect(Array.from(batch.closedFrameRows!)).toEqual([0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2]);
   });
 
   it("writes no path for a cell with a non-finite corner", () => {

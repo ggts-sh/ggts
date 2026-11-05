@@ -52,12 +52,14 @@ function cutToUnitSquare(poly: readonly number[]): number[] | null {
       kept.push(pts[i]!, pts[i + 1]!);
     }
   }
+  if (kept.length > 2 && kept[0] === kept.at(-2) && kept[1] === kept.at(-1)) kept.length -= 2;
   let area = 0;
   for (let i = 0; i < kept.length; i += 2) {
     const k = (i + 2) % kept.length;
     area += kept[i]! * kept[k + 1]! - kept[k]! * kept[i + 1]!;
   }
-  return kept.length >= 6 && area !== 0 ? kept : null;
+  // Rounding can leave a sliver when a cell only touches the panel; drop it.
+  return kept.length >= 6 && Math.abs(area) > 1e-9 ? kept : null;
 }
 
 /**
