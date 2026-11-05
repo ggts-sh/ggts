@@ -120,6 +120,13 @@ export function destroyAllLives(lives: Map<number, LiveSvgHandle>): void {
   lives.clear();
 }
 
+/**
+ * The inputs of each SVG host's markup. A paint that changes only masks skips the O(nodes) rebuild.
+ * The scene and the label are enough: the strata come from the same model as the scene, the id
+ * prefix is fixed for a host, and the markup uses CSS variables, so a theme change does not alter it.
+ */
+const written = new WeakMap<HTMLElement, { scene: Scene; label: string | undefined }>();
+
 function syncSvgSlot(
   element: HTMLElement,
   scene: Scene,
@@ -131,6 +138,8 @@ function syncSvgSlot(
 ): void {
   element.className = "gg-stratum gg-svg-host";
   if (slot.mode === "full") {
+    // Full mode never reads the entry. Dropping it releases the old scene.
+    written.delete(element);
     let live = lives.get(index);
     if (live === undefined) {
       element.replaceChildren();
@@ -142,8 +151,11 @@ function syncSvgSlot(
   } else {
     lives.get(index)?.destroy();
     lives.delete(index);
+    const last = written.get(element);
+    if (last?.scene === scene && last.label === label) return;
     const markup = slotSvg(scene, slot, prefix, label);
     if (element.innerHTML !== markup) element.innerHTML = markup;
+    written.set(element, { scene, label });
   }
 }
 
