@@ -1,5 +1,17 @@
 # @ggts-sh/core
 
+## 0.48.2
+
+### Patch Changes
+
+- 0778dba: A hex layer no longer writes path vertices outside the panel. A cell at the edge of the data now ends at the panel edge on its original outline, so the drawn shape does not change. A cell that lies fully outside the panel writes no path. Panels that do not clip, and polar panels, keep their paths as before.
+- 4c48a38: A stacked area under a pinned y domain that excludes 0 no longer writes path vertices outside the panel. The same holds for density areas and smooth confidence bands. Where an edge leaves the panel, the path now ends at the panel edge on the original line, so the drawn shape does not change. Panels that do not clip, such as polar panels by default, keep their paths as before.
+- d4b3d6e: A violin with `trim: false` under a pinned y domain no longer writes path vertices outside the panel. Where the outline leaves the panel, the path now ends at the panel edge on the original line, so the drawn shape does not change. Panels that do not clip keep their paths as before.
+- 0e6ec1b: Candidates for bars, count points and boxplots now report the right data after a scale `domain` leaves out categories. Before, the first categories of the data appeared in place of the kept ones, so `x` and `y` values (and `position: "fill"` shares) belonged to the wrong bar. A domain that drops only the last categories was not affected.
+- 295bcb9: Candidates for `geomErrorbar`, `geomLinerange`, `geomPointrange` and `geomCrossbar` with a computed stat now report the right data after a scale `domain` leaves out categories. Before, the first categories of the data appeared in place of the kept ones, so `x` and `y` values belonged to the wrong mark. A domain that drops only the last categories was not affected.
+- d6a3020: A click on an entry of the second legend now presses that entry in the React host when two legends have entries with the same rows. The React host used to press the matching entry of the first legend. When emphasis keys from a controller match two entries, the React host now presses none, as the Svelte host does.
+- @ggts-sh/spec@0.48.2
+
 ## 0.48.1
 
 ### Patch Changes

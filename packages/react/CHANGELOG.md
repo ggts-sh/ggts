@@ -1,5 +1,20 @@
 # @ggts-sh/react
 
+## 0.48.2
+
+### Patch Changes
+
+- d6a3020: A click on an entry of the second legend now presses that entry in the React host when two legends have entries with the same rows. The React host used to press the matching entry of the first legend. When emphasis keys from a controller match two entries, the React host now presses none, as the Svelte host does.
+- Updated dependencies [0778dba]
+- Updated dependencies [4c48a38]
+- Updated dependencies [d4b3d6e]
+- Updated dependencies [0e6ec1b]
+- Updated dependencies [295bcb9]
+- Updated dependencies [d6a3020]
+  - @ggts-sh/core@0.48.2
+  - @ggts-sh/compose@0.48.2
+  - @ggts-sh/spec@0.48.2
+
 ## 0.48.1
 
 ### Patch Changes

@@ -1,5 +1,9 @@
 # @ggts-sh/spec
 
+## 0.48.2
+
+No changes in this release.
+
 ## 0.48.1
 
 No changes in this release.
