@@ -117,6 +117,7 @@ function rectsToPolarPaths(
   if (hasStrokeWidths) pathBatch.linewidths = Float32Array.from(strokeWidths);
   if (batch.linetype !== undefined) pathBatch.linetype = batch.linetype;
   if (hasLinetypes) pathBatch.linetypeIndexes = Uint8Array.from(linetypeIndexes);
+  if (batch.frameRowIndex !== undefined) pathBatch.frameRowIndex = batch.frameRowIndex;
   if (batch.fillPaint !== undefined) pathBatch.fillPaint = batch.fillPaint;
   if (batch.strokePaint !== undefined) pathBatch.strokePaint = batch.strokePaint;
   if (batch.glow !== undefined) pathBatch.glow = batch.glow;

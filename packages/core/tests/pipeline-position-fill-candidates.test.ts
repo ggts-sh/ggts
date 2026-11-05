@@ -9,9 +9,6 @@ import { aes, gg } from "@ggts-sh/spec";
 
 import { registerAll } from "../src/index.ts";
 import { runPipeline } from "../src/pipeline.ts";
-import { sourceBackedInspectY } from "../src/pipeline/candidate-source-values.ts";
-import type { FinalizedLayerFrame } from "../src/pipeline/types.ts";
-import type { Scene } from "../src/scene.ts";
 
 registerAll();
 
@@ -296,65 +293,117 @@ describe("stacked rect candidates after a scale domain drops rows", () => {
   }
 });
 
-describe("frame row lookup for a source row", () => {
-  const stackedFrame = (rowIndex: readonly number[]) =>
-    ({
-      n: rowIndex.length,
-      rowIndex,
-      ymin: Float64Array.from(rowIndex, () => 0),
-      ymax: Float64Array.from(rowIndex, (_, i) => 10 + i),
-      binding: { layer: { geom: "col", position: "stack" }, yTransform: undefined },
-      y: null,
-    }) as unknown as FinalizedLayerFrame;
-  const scene = { batches: [{ kind: "rects" }] } as unknown as Scene;
-  const inspectY = (frame: FinalizedLayerFrame, primitiveIndex: number, sourceRow: number | null) =>
-    sourceBackedInspectY(
-      [[frame]],
-      scene,
-      { panelIndex: 0, layerIndex: 0, batchIndex: 0, primitiveIndex, sourceRow },
-      -1,
+describe("candidates after a scale domain drops categories", () => {
+  // Counts per category and fill: a 1,2; b 3,4; c 5,6; d 7,8.
+  const counts: Record<string, [number, number]> = { a: [1, 2], b: [3, 4], c: [5, 6], d: [7, 8] };
+  const rows = Object.entries(counts).flatMap(([x, [p, q]]) => [
+    ...Array.from({ length: p }, () => ({ x, f: "p" })),
+    ...Array.from({ length: q }, () => ({ x, f: "q" })),
+  ]);
+  const domain = ["b", "c", "d"];
+  const candidatesOf = (model: ReturnType<typeof runPipeline>) =>
+    Array.from({ length: model.candidates.size }, (_, id) => model.candidates.candidate(id)).filter(
+      (candidate) => candidate !== null,
     );
+  const readXY = (spec: Parameters<typeof runPipeline>[0]) =>
+    candidatesOf(runPipeline(spec, size)).map((c) => [c.xValue, c.yValue]);
 
-  it("takes the first frame row when a source row repeats", () => {
-    const frame = stackedFrame([5, 7, 7, 9]);
-    expect(inspectY(frame, 0, 7)).toBe(11);
+  it("reads the kept frame row for a count bar with stack", () => {
+    const spec = gg(rows, aes({ x: "x", fill: "f" }))
+      .geomBar()
+      .scaleXDiscrete({ domain })
+      .spec();
+    expect(readXY(spec)).toEqual([
+      ["b", 3],
+      ["b", 4],
+      ["c", 5],
+      ["c", 6],
+      ["d", 7],
+      ["d", 8],
+    ]);
   });
 
-  it("falls back to the primitive index when the source row is not in the frame", () => {
-    const frame = stackedFrame([5, 7, 9]);
-    expect(inspectY(frame, 1, 123)).toBe(11);
-    expect(inspectY(frame, 8, 123)).toBe(12);
-    expect(inspectY(frame, 2, null)).toBe(12);
-  });
-
-  it("does not share a lookup between frames of the same length", () => {
-    const first = stackedFrame([5, 7, 9]);
-    const second = stackedFrame([9, 5, 7]);
-    expect(inspectY(first, 0, 9)).toBe(12);
-    expect(inspectY(second, 1, 9)).toBe(10);
-    expect(inspectY(first, 0, 7)).toBe(11);
-    expect(inspectY(second, 0, 7)).toBe(12);
-  });
-
-  it("reads the frame rows about once per candidate after a drop, not once per pair", () => {
-    // Counts reads through a Proxy, so any scan fails this: indexOf, findIndex, or a loop.
-    const n = 2_000;
-    let reads = 0;
-    const counted = new Proxy(
-      Array.from({ length: n }, (_, i) => i + 5),
-      {
-        get(target, key, receiver) {
-          if (typeof key === "string" && /^\d+$/.test(key)) reads++;
-          return Reflect.get(target, key, receiver) as unknown;
-        },
-      },
-    );
-    const frame = stackedFrame(counted);
-    reads = 0;
-    // Every primitive sits 5 rows before its frame row, as after a dropped first category.
-    for (let primitive = 0; primitive < n; primitive++) {
-      expect(inspectY(frame, primitive, Math.min(primitive + 10, n + 4))).toBeGreaterThan(0);
+  it("reads the kept frame row for a count bar with fill", () => {
+    const spec = gg(rows, aes({ x: "x", fill: "f" }))
+      .geomBar({ position: "fill" })
+      .scaleXDiscrete({ domain })
+      .spec();
+    const shares = readXY(spec);
+    expect(shares.map(([x]) => x)).toEqual(["b", "b", "c", "c", "d", "d"]);
+    for (const [i, x] of ["b", "b", "c", "c", "d", "d"].entries()) {
+      const [p, q] = counts[x]!;
+      expect(shares[i]![1]).toBeCloseTo((i % 2 === 0 ? p : q) / (p + q), 12);
     }
-    expect(reads).toBeLessThan(3 * n);
+  });
+
+  it("reads the kept frame row for a count bar without fill", () => {
+    const spec = gg(rows, aes({ x: "x" }))
+      .geomBar()
+      .scaleXDiscrete({ domain })
+      .spec();
+    expect(readXY(spec)).toEqual([
+      ["b", 7],
+      ["c", 11],
+      ["d", 15],
+    ]);
+  });
+
+  it("reads the kept frame row for a polar count bar", () => {
+    const spec = gg(rows, aes({ x: "x" }))
+      .geomBar()
+      .scaleXDiscrete({ domain })
+      .coordPolar()
+      .spec();
+    expect(readXY(spec)).toEqual([
+      ["b", 7],
+      ["c", 11],
+      ["d", 15],
+    ]);
+  });
+
+  it("reads the kept frame row for count points", () => {
+    const spec = gg(rows, aes({ x: "x", y: "f" }))
+      .geomCount()
+      .scaleXDiscrete({ domain })
+      .spec();
+    expect(readXY(spec)).toEqual([
+      ["b", "p"],
+      ["b", "q"],
+      ["c", "p"],
+      ["c", "q"],
+      ["d", "p"],
+      ["d", "q"],
+    ]);
+  });
+
+  it("reads the kept frame row for boxplot marks", () => {
+    // Category x holds values in its own range, so a candidate from the wrong row is out of range.
+    const base: Record<string, number> = { a: 0, b: 10, c: 20, d: 30 };
+    const data = Object.entries(base).flatMap(([x, lo]) =>
+      Array.from({ length: 5 }, (_, i) => ({ x, v: lo + i })),
+    );
+    const spec = gg(data, aes({ x: "x", y: "v" }))
+      .geomBoxplot()
+      .scaleXDiscrete({ domain })
+      .spec();
+    const marks = readXY(spec);
+    expect(marks.length).toBeGreaterThan(0);
+    for (const [x, y] of marks) {
+      expect(domain).toContain(x as string);
+      expect(y as number).toBeGreaterThanOrEqual(base[x as string]!);
+      expect(y as number).toBeLessThanOrEqual(base[x as string]! + 4);
+    }
+  });
+
+  it("reads the kept frame row for histogram bars", () => {
+    // Bin k (width 10) holds k + 1 values; limits drop bins 0 and 1.
+    const data = Array.from({ length: 6 }, (_, k) =>
+      Array.from({ length: k + 1 }, (__, i) => ({ v: k * 10 + 1 + i })),
+    ).flat();
+    const spec = gg(data, aes({ x: "v" }))
+      .geomHistogram({ binwidth: 10, boundary: 0 })
+      .scaleXContinuous({ limits: [20, 60] })
+      .spec();
+    expect(candidatesOf(runPipeline(spec, size)).map((c) => c.yValue)).toEqual([3, 4, 5, 6]);
   });
 });

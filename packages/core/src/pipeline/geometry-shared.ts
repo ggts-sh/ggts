@@ -9,6 +9,7 @@ export {
   DEFAULT_POINT_SIZE,
   DEFAULT_RULE_LINEWIDTH,
   DEFAULT_TEXT_SIZE,
+  droppedFrameRows,
   MAX_BOXPLOT_PANEL_FRAC,
   positionOf,
   removedWarning,

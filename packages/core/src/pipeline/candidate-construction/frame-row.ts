@@ -234,6 +234,13 @@ export function resolveCandidateFrameRow(input: {
   const { frame, batch, primitiveIndex, orderedGroups } = input;
   const fallback = defaultFrameRow(frame, primitiveIndex);
   if (frame === undefined) return fallback;
+  if (batch.kind === "rects" || batch.kind === "points" || batch.kind === "segments") {
+    // The emitter dropped marks, so the primitive index is not a frame row.
+    const kept = batch.frameRowIndex?.[primitiveIndex];
+    if (kept !== undefined) {
+      return { frameRow: kept, derivedGroup: frame.groups[kept] ?? fallback.derivedGroup };
+    }
+  }
   if (batch.kind === "paths")
     return resolvePathFrameRow(frame, batch, primitiveIndex, orderedGroups, fallback);
   if (batch.kind === "segments")

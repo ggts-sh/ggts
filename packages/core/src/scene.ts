@@ -35,6 +35,8 @@ export interface PointsBatch {
   positions: Float32Array;
   /** Source row per mark. */
   rowIndex: Uint32Array;
+  /** Frame row per mark. Set only when the emitter dropped marks, so the primitive index no longer equals the frame row. */
+  frameRowIndex?: Uint32Array;
   /** Point radius in px. */
   size: number;
   /** Per-mark radii when aes.size is mapped; omitted keeps the scalar fast path. */
@@ -141,6 +143,8 @@ export interface RectsBatch {
   rects: Float32Array;
   /** Source row per rect. */
   rowIndex: Uint32Array;
+  /** Frame row per mark. Set only when the emitter dropped marks, so the primitive index no longer equals the frame row. */
+  frameRowIndex?: Uint32Array;
   /** Constant fill, or null when `fills` carries per-rect values
    *  (null = the theme role in `fillRole`). */
   fill: string | null;
@@ -185,6 +189,8 @@ export interface SegmentsBatch {
   segments: Float32Array;
   /** Source row per segment (0xffffffff for annotation-form rules). */
   rowIndex: Uint32Array;
+  /** Frame row per mark. Set only when the emitter dropped marks, so the primitive index no longer equals the frame row. */
+  frameRowIndex?: Uint32Array;
   /** Optional tessellated render topology for nonlinear coordinate transforms.
    * `renderPathOffsets[j..j+1]` owns segment j; semantic candidates remain
    * one-per-entry in `segments`. */

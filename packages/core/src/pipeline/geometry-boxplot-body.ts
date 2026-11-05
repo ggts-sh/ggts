@@ -168,6 +168,16 @@ function layoutBoxplotBody(
   };
 }
 
+/** Frame row of each mark (`perRow` marks per kept row), or undefined when no row was dropped. */
+function markFrameRows(
+  frame: LayerFrame,
+  layout: BoxplotBodyLayout,
+  perRow: number,
+): number[] | undefined {
+  if (layout.keptRows.length === frame.n) return undefined;
+  return perRow === 1 ? layout.keptRows : layout.keptRows.flatMap((row) => [row, row]);
+}
+
 function makeBoxplotRectsBatch(
   frame: LayerFrame,
   layout: BoxplotBodyLayout,
@@ -175,12 +185,14 @@ function makeBoxplotRectsBatch(
 ): RectsBatch {
   const { binding } = frame;
   const { linewidth, alpha } = layout;
+  const frameRows = markFrameRows(frame, layout, 1);
   const rectsBatchOut: RectsBatch = {
     kind: "rects",
     layerIndex: binding.index,
     panelIndex: 0,
     rects: Float32Array.from(layout.rects),
     rowIndex: Uint32Array.from(layout.rectRows),
+    ...(frameRows !== undefined && { frameRowIndex: Uint32Array.from(frameRows) }),
     fill: binding.fill.constant,
     fillRole: "paper",
     stroke: null,
@@ -200,12 +212,15 @@ function batchesFromLayout(
 ): BoxplotBodyResult {
   const { binding } = frame;
   const { linewidth, alpha, params } = layout;
+  const frameRows1 = markFrameRows(frame, layout, 1);
+  const frameRows2 = markFrameRows(frame, layout, 2);
   const whiskers: GeometryBatch = {
     kind: "segments",
     layerIndex: binding.index,
     panelIndex: 0,
     segments: Float32Array.from(layout.whiskers),
     rowIndex: Uint32Array.from(layout.whiskerRows),
+    ...(frameRows2 !== undefined && { frameRowIndex: Uint32Array.from(frameRows2) }),
     stroke: null,
     linewidth,
     alpha,
@@ -216,6 +231,7 @@ function batchesFromLayout(
     panelIndex: 0,
     segments: Float32Array.from(layout.medians),
     rowIndex: Uint32Array.from(layout.medianRows),
+    ...(frameRows1 !== undefined && { frameRowIndex: Uint32Array.from(frameRows1) }),
     stroke: null,
     linewidth: linewidth * BOX_MEDIAN_FATTEN,
     alpha,
