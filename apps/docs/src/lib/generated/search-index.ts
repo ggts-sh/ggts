@@ -20732,14 +20732,14 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["@ggts-sh/core (./interaction)"],
   },
   {
-    id: "heading:guide-lifecycle:experimental-229",
+    id: "heading:guide-lifecycle:experimental-231",
     kind: "heading",
-    title: "experimental (229)",
+    title: "experimental (231)",
     summary:
-      "experimental (229) in Lifecycle & editions. API stability tags per export, and the defaults-edition mechanism.",
-    href: "/guide/lifecycle#experimental-229",
+      "experimental (231) in Lifecycle & editions. API stability tags per export, and the defaults-edition mechanism.",
+    href: "/guide/lifecycle#experimental-231",
     keywords: ["Lifecycle & editions", "Reference"],
-    exact: ["experimental (229)"],
+    exact: ["experimental (231)"],
   },
   {
     id: "heading:guide-lifecycle:ggts-sh-core-data",
@@ -35653,6 +35653,15 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["FacetIntervalPreset"],
   },
   {
+    id: "api:ggts-sh-core-interaction:FindLegendPressedIdentityInput",
+    kind: "api",
+    title: "FindLegendPressedIdentityInput",
+    summary: "@ggts-sh/core ./interaction · type · experimental.",
+    href: "/guide/lifecycle#ggts-sh-core-interaction",
+    keywords: ["@ggts-sh/core", "./interaction", "type", "experimental"],
+    exact: ["FindLegendPressedIdentityInput"],
+  },
+  {
     id: "api:ggts-sh-core-interaction:FormatTooltipCellOptions",
     kind: "api",
     title: "FormatTooltipCellOptions",
@@ -36821,6 +36830,15 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/lifecycle#ggts-sh-core-interaction",
     keywords: ["@ggts-sh/core", "./interaction", "value", "experimental"],
     exact: ["filterZoomDomainsByMode"],
+  },
+  {
+    id: "api:ggts-sh-core-interaction:findLegendPressedIdentity",
+    kind: "api",
+    title: "findLegendPressedIdentity",
+    summary: "@ggts-sh/core ./interaction · value · experimental.",
+    href: "/guide/lifecycle#ggts-sh-core-interaction",
+    keywords: ["@ggts-sh/core", "./interaction", "value", "experimental"],
+    exact: ["findLegendPressedIdentity"],
   },
   {
     id: "api:ggts-sh-core-interaction:formatBoundsDraft",

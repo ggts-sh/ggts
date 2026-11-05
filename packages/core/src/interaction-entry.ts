@@ -184,6 +184,8 @@ export {
   samePropertyKeySet,
   legendInteractionSource,
   keysForLegendEntry,
+  findLegendPressedIdentity,
+  type FindLegendPressedIdentityInput,
   clampLegendRovingIndex,
   moveLegendRovingIndex,
 } from "./legend-focus.js";
