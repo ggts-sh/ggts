@@ -49,6 +49,11 @@ export interface SummaryStatResult {
   dropped: number;
 }
 
+/** Median of the first n values of an ascending array. */
+export function medianOfSorted(values: ArrayLike<number>, n: number): number {
+  return n % 2 === 1 ? values[(n - 1) / 2]! : (values[n / 2 - 1]! + values[n / 2]!) / 2;
+}
+
 /**
  * Apply a summary function to a group of values.
  * - median requires ascending sort (caller must pass sorted).
@@ -66,8 +71,7 @@ export function applySummaryFun(
       if (!sorted) {
         throw new Error("statSummary: median requires sorted values");
       }
-      const n = values.length;
-      return n % 2 === 1 ? values[(n - 1) / 2]! : (values[n / 2 - 1]! + values[n / 2]!) / 2;
+      return medianOfSorted(values, values.length);
     }
     case "sum": {
       let s = 0;
