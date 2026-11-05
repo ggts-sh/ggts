@@ -51,6 +51,14 @@ export function positionOf(
   return scale.normalizeTransformed(offsets === null ? v : v + offsets[row]!);
 }
 
+/** Batch fields that map each kept mark to its frame row; empty when no mark was dropped. */
+export function droppedFrameRows(
+  keptRows: Uint32Array,
+  n: number,
+): { frameRowIndex?: Uint32Array } {
+  return keptRows.length < n ? { frameRowIndex: keptRows.slice() } : {};
+}
+
 export function removedWarning(removed: number, index: number, warnings: PipelineWarning[]): void {
   if (removed > 0) {
     warnings.push({

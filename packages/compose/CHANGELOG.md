@@ -1,5 +1,11 @@
 # @ggts-sh/compose
 
+## 0.48.1
+
+### Patch Changes
+
+- @ggts-sh/spec@0.48.1
+
 ## 0.48.0
 
 ### Patch Changes

@@ -130,7 +130,7 @@ Compare Svelte ecosystem capabilities:
 | **ggplot2 API**                                  | ✅                             | ❌       | ❌         | ❌       | ❌        |
 | **Scale, axis & coord control**                  | ✅                             | ✅       | ✅         | ✅       | ⚠️ d3     |
 | **Bundle size** (min+gzip, scatter import graph) | 94 KB core SVG / 232 KB Svelte | ✅ 43 KB | ⚠️ 90 KB   | ✅ 64 KB | ✅ 30 KB  |
-| **API stability**                                | ⚠️ v0.48.0                     | ⚠️ v0.14 | ⚠️ v0.14   | ✅ v1.6  | ✅ v10    |
+| **API stability**                                | ⚠️ v0.48.1                     | ⚠️ v0.14 | ⚠️ v0.14   | ✅ v1.6  | ✅ v10    |
 
 ## Reference
 

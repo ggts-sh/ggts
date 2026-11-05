@@ -15,7 +15,7 @@ import {
   numericStyleVector,
   type ResolvedStyleScales,
 } from "./geometry-style.js";
-import { DEFAULT_POINT_SIZE, removedWarning } from "./geometry-shared.js";
+import { DEFAULT_POINT_SIZE, droppedFrameRows, removedWarning } from "./geometry-shared.js";
 import {
   collectPointPositions,
   packContinuousPointsOnePass,
@@ -185,6 +185,7 @@ export function pointsBatch(
     panelIndex: 0,
     positions,
     rowIndex,
+    ...droppedFrameRows(collectedKeptRows, n),
     size: markSize,
     alpha: constantStyle(binding, params, "alpha", 1),
     shape:

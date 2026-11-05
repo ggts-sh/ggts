@@ -14,30 +14,6 @@ export function sourceBackedRewritesInspectY(
   return (position === "stack" || position === "fill") && frame.binding.yTransform === undefined;
 }
 
-/** Source row to frame row. Only a compacted batch builds one, on its first miss. */
-const frameRowLookups = new WeakMap<Uint32Array, Map<number, number>>();
-
-function frameRowForSourceRow(
-  frame: FinalizedLayerFrame,
-  sourceRow: number | null,
-  primitiveIndex: number,
-): number {
-  const fallback = Math.min(primitiveIndex, Math.max(0, frame.n - 1));
-  if (sourceRow === null) return fallback;
-  // Dense path: primitive still indexes the same frame row.
-  if (frame.rowIndex[fallback] === sourceRow) return fallback;
-  // Compacted rects (dropped earlier slots): recover the original frame row.
-  const { rowIndex } = frame;
-  let lookup = frameRowLookups.get(rowIndex);
-  if (lookup === undefined) {
-    lookup = new Map();
-    // Backward, so a repeated source row keeps its first frame row.
-    for (let row = rowIndex.length - 1; row >= 0; row--) lookup.set(rowIndex[row]!, row);
-    frameRowLookups.set(rowIndex, lookup);
-  }
-  return lookup.get(sourceRow) ?? fallback;
-}
-
 export function sourceBackedInspectY(
   panelFrames: readonly (readonly FinalizedLayerFrame[])[],
   scene: Scene,
@@ -46,16 +22,17 @@ export function sourceBackedInspectY(
     layerIndex: number;
     batchIndex: number;
     primitiveIndex: number;
-    sourceRow: number | null;
   },
   fallback: CellValue,
 ): CellValue {
   const batch = scene.batches[facts.batchIndex];
   const frame = panelFrames[facts.panelIndex]?.[facts.layerIndex];
   if (frame === undefined || !sourceBackedRewritesInspectY(frame, batch?.kind)) return fallback;
-  return stackOrFillInspectY(
-    frame,
-    frameRowForSourceRow(frame, facts.sourceRow, facts.primitiveIndex),
-    fallback,
-  );
+  // Rects dropped by the emitter carry their frame rows; otherwise the primitive is the row.
+  const { primitiveIndex } = facts;
+  const frameRow =
+    batch?.kind === "rects" && batch.frameRowIndex !== undefined
+      ? batch.frameRowIndex[primitiveIndex]!
+      : Math.min(primitiveIndex, Math.max(0, frame.n - 1));
+  return stackOrFillInspectY(frame, frameRow, fallback);
 }

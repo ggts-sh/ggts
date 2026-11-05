@@ -66,7 +66,6 @@ export function createRawCandidateDatumResolver(
           layerIndex: facts.layerIndex,
           batchIndex: facts.batchIndex,
           primitiveIndex: facts.primitiveIndex,
-          sourceRow: facts.rowIndex,
         },
         read(state.y),
       ),
