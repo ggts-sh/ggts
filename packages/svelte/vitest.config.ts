@@ -27,6 +27,10 @@ export default defineConfig({
     //   - Cannot connect to the iframe
     // (Storybook vitest-addon CI FAQ; seen on Version Packages #440).
     maxWorkers: process.env.CI === "true" ? 2 : undefined,
+    // CI also sets VITEST_CHROMIUM_GC_DISK_THRESHOLD_GB (see
+    // .github/workflows/ci-component-svelte.yml). Chromium holds file
+    // descriptors for every module an iframe loads until a garbage collection
+    // runs. Without it a shard can lose its browser (issue #1924).
     // Opt-in via --coverage. Browser collection runs on Chromium only
     // (v8-over-CDP); invoke with --project chromium so firefox/webkit
     // are not asked to report coverage.

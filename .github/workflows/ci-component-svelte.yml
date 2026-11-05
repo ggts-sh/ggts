@@ -103,7 +103,18 @@ jobs:
           SHARD: ${{ matrix.shard }}/3
           # Issue #1924: log the browser events around a lost connection.
           GGTS_BROWSER_DIAGNOSTICS: "1"
-          DEBUG: vitest:browser:api
+          # Chromium keeps one deleted shared-memory file (and its file
+          # descriptor) for each module that a test iframe loads, until a
+          # garbage collection runs. Each iframe of this shard adds about 600
+          # descriptors. In the failing runs the renderer exited at 16300 to
+          # 16500 open descriptors, and vitest reported "Browser connection
+          # was closed". Why Chromium fails at that count is unknown.
+          # Vitest runs the collection after each test file when free space
+          # in /tmp is below this many GB, so a value above any disk size
+          # runs it every time. See https://issues.chromium.org/issues/530892387
+          # and vitest issues 9437 and 10912.
+          DEBUG: vitest:browser:api,vitest:browser:gc
+          VITEST_CHROMIUM_GC_DISK_THRESHOLD_GB: "1000000"
         run: |
           set -euo pipefail
           shard_args=(
