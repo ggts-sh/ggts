@@ -90,11 +90,15 @@ export function usePlotLegends(input: {
   const emphasis = focusEnabled
     ? (previewKeys ?? controllerKeys ?? localKeys)
     : (controllerKeys ?? []);
+  const pressedKeys = controllerKeys ?? localKeys;
+  const pressedKeySet = useMemo(() => new Set(pressedKeys), [pressedKeys]);
+  // Index values are unique, so equal size and full membership mean equal sets.
   const isPressed = (entry: InteractiveLegendEntry) => {
-    const keys = controllerKeys ?? localKeys;
+    const keys = index.get(legendIdentityKey(entry.identity)) ?? [];
     return (
-      keys.length > 0 &&
-      samePropertyKeySet(keys, index.get(legendIdentityKey(entry.identity)) ?? [])
+      pressedKeySet.size > 0 &&
+      keys.length === pressedKeySet.size &&
+      keys.every((key) => pressedKeySet.has(key))
     );
   };
   const emit = (event: LegendFocusEvent) => {
