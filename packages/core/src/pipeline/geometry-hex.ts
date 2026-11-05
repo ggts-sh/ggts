@@ -13,6 +13,78 @@ import {
   type ResolvedStyleScales,
 } from "./geometry-style.js";
 
+/**
+ * Cut a convex polygon (flat x,y pairs) to the unit square. Each pass keeps the
+ * points on the inner side of one edge and adds a point where the outline
+ * crosses it; the added point takes the edge value exactly. Returns null when
+ * no area is left (the cell lies outside, or touches the panel at an edge or
+ * corner only).
+ */
+function cutToUnitSquare(poly: readonly number[]): number[] | null {
+  let pts = poly;
+  for (let axis = 0; axis < 2; axis++) {
+    for (let bound = 0; bound < 2; bound++) {
+      const inside = (v: number): boolean => (bound === 0 ? v >= 0 : v <= 1);
+      const out: number[] = [];
+      for (let i = 0; i < pts.length; i += 2) {
+        const j = (i + pts.length - 2) % pts.length;
+        const a = pts[j + axis]!;
+        const b = pts[i + axis]!;
+        if (inside(a) !== inside(b)) {
+          const t = (bound - a) / (b - a);
+          const crossing = [
+            pts[j]! + t * (pts[i]! - pts[j]!),
+            pts[j + 1]! + t * (pts[i + 1]! - pts[j + 1]!),
+          ];
+          crossing[axis] = bound;
+          out.push(crossing[0]!, crossing[1]!);
+        }
+        if (inside(b)) out.push(pts[i]!, pts[i + 1]!);
+      }
+      pts = out;
+    }
+  }
+  // Drop repeats (a corner on the edge) and keep only a polygon with area.
+  const kept: number[] = [];
+  for (let i = 0; i < pts.length; i += 2) {
+    const n = kept.length;
+    if (n === 0 || kept[n - 2] !== pts[i] || kept[n - 1] !== pts[i + 1]) {
+      kept.push(pts[i]!, pts[i + 1]!);
+    }
+  }
+  let area = 0;
+  for (let i = 0; i < kept.length; i += 2) {
+    const k = (i + 2) % kept.length;
+    area += kept[i]! * kept[k + 1]! - kept[k]! * kept[i + 1]!;
+  }
+  return kept.length >= 6 && area !== 0 ? kept : null;
+}
+
+/**
+ * Unit-space vertices of one cell, cut to the panel when it clips and a corner
+ * leaves it. Pointy-top: width = √3 · size, height = 2 · size, so rx = width/√3
+ * and ry = height/2 are the center-to-vertex radii. Null drops the cell.
+ */
+function cellVertices(
+  fx: Frame,
+  project: { x: (v: number) => number; y: (v: number) => number },
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+): number[] | null {
+  const unit: number[] = [];
+  let leaves = false;
+  for (const [dx, dy] of hexVertices(cx, cy, rx, ry)) {
+    const tx = project.x(dx);
+    const ty = project.y(dy);
+    if (!Number.isFinite(tx) || !Number.isFinite(ty)) return null;
+    if (tx < 0 || tx > 1 || ty < 0 || ty > 1) leaves = true;
+    unit.push(tx, ty);
+  }
+  return fx.clip === true && leaves ? cutToUnitSquare(unit) : unit;
+}
+
 function emittedNoHexes(cursor: number, subpaths: number): boolean {
   return cursor === 0 || subpaths === 0;
 }
@@ -49,7 +121,15 @@ export function hexBatch(
     return null;
   }
 
-  const totalVerts = n * 6;
+  // Narrowed above: both scales are continuous here.
+  const { xScale, yScale } = fx;
+  const project = {
+    x: (v: number) => xScale.normalizeTransformed(v),
+    y: (v: number) => yScale.normalizeTransformed(v),
+  };
+  // A cut cell gains at most four vertices (one per panel edge).
+  const clip = fx.clip === true;
+  const totalVerts = n * (clip ? 10 : 6);
   const positions = new Float32Array(totalVerts * 2);
   const rowIndex = new Uint32Array(totalVerts);
   // One frame-row id per vertex so hover/tooltip maps each hex to its cell,
@@ -67,29 +147,14 @@ export function hexBatch(
 
     const w = widths[row]!;
     const h = heights[row]!;
-    // Pointy-top: width = √3 · size, height = 2 · size
-    // ⇒ size_x = width/√3, size_y = height/2 as center-to-vertex radii.
-    const rx = w / Math.sqrt(3);
-    const ry = h / 2;
-    const dataVerts = hexVertices(cx, cy, rx, ry);
-    let ok = true;
-    const start = cursor;
-    for (const [dx, dy] of dataVerts) {
-      const tx = fx.xScale.normalizeTransformed(dx);
-      const ty = fx.yScale.normalizeTransformed(dy);
-      if (!Number.isFinite(tx) || !Number.isFinite(ty)) {
-        ok = false;
-        break;
-      }
-      positions[cursor * 2] = tx * fx.innerWidth;
-      positions[cursor * 2 + 1] = fx.innerHeight - ty * fx.innerHeight;
+    const verts = cellVertices(fx, project, cx, cy, w / Math.sqrt(3), h / 2);
+    if (verts === null) continue;
+    for (let i = 0; i < verts.length; i += 2) {
+      positions[cursor * 2] = verts[i]! * fx.innerWidth;
+      positions[cursor * 2 + 1] = fx.innerHeight - verts[i + 1]! * fx.innerHeight;
       rowIndex[cursor] = frame.rowIndex[row]!;
       closedFrameRows[cursor] = row;
       cursor++;
-    }
-    if (!ok) {
-      cursor = start;
-      continue;
     }
     keptRows[subpaths] = row;
     subpaths++;
