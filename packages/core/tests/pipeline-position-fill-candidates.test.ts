@@ -407,3 +407,51 @@ describe("candidates after a scale domain drops categories", () => {
     expect(candidatesOf(runPipeline(spec, size)).map((c) => c.yValue)).toEqual([3, 4, 5, 6]);
   });
 });
+
+describe("interval candidates after a scale domain drops categories", () => {
+  // Category k holds y = 10k + 1 and 10k + 3, so its summary mean is 10k + 2.
+  const means: Record<string, number> = { a: 2, b: 12, c: 22, d: 32 };
+  const rows = Object.entries(means).flatMap(([x, mean]) => [
+    { x, y: mean - 1 },
+    { x, y: mean + 1 },
+  ]);
+  type Geom = "Errorbar" | "Linerange" | "Pointrange" | "Crossbar";
+  const marks = (geom: Geom, domain: string[], polar = false) => {
+    const base = gg(rows, aes({ x: "x", y: "y" }));
+    const plot = base[`geom${geom}`]({ stat: "summary" }).scaleXDiscrete({ domain });
+    const model = runPipeline((polar ? plot.coordPolar() : plot).spec(), size);
+    return Array.from({ length: model.candidates.size }, (_, id) => model.candidates.candidate(id))
+      .filter((candidate) => candidate !== null)
+      .map((c) => [c.xValue, c.yValue]);
+  };
+  // Marks per category in each batch, and how many batches the geom emits.
+  const shapes: Record<Geom, { perBatch: number; batches: number }> = {
+    Errorbar: { perBatch: 3, batches: 1 },
+    Linerange: { perBatch: 1, batches: 1 },
+    Pointrange: { perBatch: 1, batches: 2 },
+    Crossbar: { perBatch: 1, batches: 2 },
+  };
+  const expected = (geom: Geom, domain: string[]) => {
+    const { perBatch, batches } = shapes[geom];
+    return Array.from({ length: batches }, () =>
+      domain.flatMap((x) => Array.from({ length: perBatch }, () => [x, means[x]!])),
+    ).flat();
+  };
+
+  for (const geom of Object.keys(shapes) as Geom[]) {
+    for (const [label, domain] of [
+      ["the first category", ["b", "c", "d"]],
+      ["a middle category", ["a", "c", "d"]],
+      ["no category", ["a", "b", "c", "d"]],
+    ] as const) {
+      it(`reads the kept frame row for ${geom.toLowerCase()} when the domain drops ${label}`, () => {
+        expect(marks(geom, [...domain])).toEqual(expected(geom, [...domain]));
+      });
+    }
+  }
+
+  it("reads the kept frame row for a polar crossbar", () => {
+    const domain = ["b", "c", "d"];
+    expect(marks("Crossbar", domain, true)).toEqual(expected("Crossbar", domain));
+  });
+});
