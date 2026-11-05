@@ -1,0 +1,511 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`fitLinearQuantileRegression output is pinned noisy line, n = 12 1`] = `
+[
+  {
+    "intercept": -15.159228007909704,
+    "slope": 2.230627962267023,
+  },
+  {
+    "intercept": -0.6428933871023617,
+    "slope": 2.0591671632457293,
+  },
+  {
+    "intercept": 11.53728336831589,
+    "slope": 2.0209326048670433,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned noisy line, n = 120 1`] = `
+[
+  {
+    "intercept": -8.550816108069853,
+    "slope": 2.040675943654657,
+  },
+  {
+    "intercept": 4.770733567291273,
+    "slope": 2.0099641572641085,
+  },
+  {
+    "intercept": 16.718665452841293,
+    "slope": 2.010379124225154,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned noisy line, n = 151 1`] = `
+[
+  {
+    "intercept": -5.645137193466876,
+    "slope": 1.9718042232061177,
+  },
+  {
+    "intercept": 8.54968920925219,
+    "slope": 1.9683135721067573,
+  },
+  {
+    "intercept": 18.535392191939494,
+    "slope": 1.9874594960875434,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned noisy line, n = 400 1`] = `
+[
+  {
+    "intercept": -6.027972977045042,
+    "slope": 1.9984047919203118,
+  },
+  {
+    "intercept": 4.898423550351808,
+    "slope": 2.011005197021415,
+  },
+  {
+    "intercept": 17.225507943259093,
+    "slope": 1.997375352280593,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned integer grid with non-unique optima, n = 12 1`] = `
+[
+  {
+    "intercept": 0,
+    "slope": 0,
+  },
+  {
+    "intercept": 2,
+    "slope": 0,
+  },
+  {
+    "intercept": 10,
+    "slope": -0.5,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned integer grid with non-unique optima, n = 120 1`] = `
+[
+  {
+    "intercept": 0,
+    "slope": 0,
+  },
+  {
+    "intercept": 4,
+    "slope": 0,
+  },
+  {
+    "intercept": 8,
+    "slope": 0,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned integer grid with non-unique optima, n = 151 1`] = `
+[
+  {
+    "intercept": -5.000000000013941e-13,
+    "slope": 1.6666666666713138e-13,
+  },
+  {
+    "intercept": 3.1999999999992,
+    "slope": 0.20000000000020002,
+  },
+  {
+    "intercept": 7.9999999999985,
+    "slope": 5.000266701754254e-13,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned integer grid with non-unique optima, n = 400 1`] = `
+[
+  {
+    "intercept": -2.0000000000006135e-13,
+    "slope": 2.0000000000006135e-13,
+  },
+  {
+    "intercept": 4,
+    "slope": 2.499999999994563e-13,
+  },
+  {
+    "intercept": 7.875000000000125,
+    "slope": 0.12499999999987499,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned duplicate x, n = 12 1`] = `
+[
+  {
+    "intercept": 0.044531361665576696,
+    "slope": 2.998748687483991,
+  },
+  {
+    "intercept": 0.24808209808543324,
+    "slope": 3.1890973809640855,
+  },
+  {
+    "intercept": 0.7178951199166477,
+    "slope": 3.0829492469783872,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned duplicate x, n = 120 1`] = `
+[
+  {
+    "intercept": 0.15139301074668765,
+    "slope": 2.982846630504355,
+  },
+  {
+    "intercept": 0.5032275938428938,
+    "slope": 2.9941454915485033,
+  },
+  {
+    "intercept": 0.9465090963058174,
+    "slope": 2.9914808177854866,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned duplicate x, n = 151 1`] = `
+[
+  {
+    "intercept": 0.13768933876417577,
+    "slope": 2.98974609375,
+  },
+  {
+    "intercept": 0.5021877666004002,
+    "slope": 2.9895654004846612,
+  },
+  {
+    "intercept": 0.932772068772465,
+    "slope": 2.996059826962938,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned duplicate x, n = 400 1`] = `
+[
+  {
+    "intercept": 0.14419167581945658,
+    "slope": 2.97802734375,
+  },
+  {
+    "intercept": 0.5090608731843531,
+    "slope": 2.9872743649560114,
+  },
+  {
+    "intercept": 0.9239188898349777,
+    "slope": 2.995494986186303,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned constant y, n = 12 1`] = `
+[
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned constant y, n = 120 1`] = `
+[
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned constant y, n = 151 1`] = `
+[
+  {
+    "intercept": 7.000000000000289,
+    "slope": -1.923370128897744e-14,
+  },
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+  {
+    "intercept": 6.999999999999711,
+    "slope": 1.923370128897744e-14,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned constant y, n = 400 1`] = `
+[
+  {
+    "intercept": 7.000000000000279,
+    "slope": -7.144625831346154e-15,
+  },
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+  {
+    "intercept": 6.999999999999712,
+    "slope": 7.19424473684618e-15,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned outlier, n = 12 1`] = `
+[
+  {
+    "intercept": 1,
+    "slope": 0.5,
+  },
+  {
+    "intercept": 1,
+    "slope": 0.5,
+  },
+  {
+    "intercept": 1374999997.5625,
+    "slope": -124999999.1875,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned outlier, n = 120 1`] = `
+[
+  {
+    "intercept": 1,
+    "slope": 0.5,
+  },
+  {
+    "intercept": 1,
+    "slope": 0.5,
+  },
+  {
+    "intercept": 1,
+    "slope": 0.5,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned outlier, n = 151 1`] = `
+[
+  {
+    "intercept": 1.0000000000003126,
+    "slope": 0.49999999999998046,
+  },
+  {
+    "intercept": 0.9999999999989981,
+    "slope": 0.5000000000000133,
+  },
+  {
+    "intercept": 0.999999999999714,
+    "slope": 0.5000000000000191,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned outlier, n = 400 1`] = `
+[
+  {
+    "intercept": 1.0000000000002878,
+    "slope": 0.4999999999999928,
+  },
+  {
+    "intercept": 0.9999999999989768,
+    "slope": 0.5000000000000051,
+  },
+  {
+    "intercept": 0.9999999999997158,
+    "slope": 0.5000000000000071,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned negative x, n = 12 1`] = `
+[
+  {
+    "intercept": 0.08490212442472966,
+    "slope": -0.25290439232237777,
+  },
+  {
+    "intercept": 37.927076520100826,
+    "slope": -0.22335411605455985,
+  },
+  {
+    "intercept": 53.66614305039792,
+    "slope": -0.23959436628020567,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned negative x, n = 120 1`] = `
+[
+  {
+    "intercept": 7.309494149276169,
+    "slope": -0.24785996587345033,
+  },
+  {
+    "intercept": 19.06834435226034,
+    "slope": -0.2575355673538349,
+  },
+  {
+    "intercept": 43.725098407079315,
+    "slope": -0.2524238527242995,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned negative x, n = 151 1`] = `
+[
+  {
+    "intercept": 5.816851103128428,
+    "slope": -0.24989601513899584,
+  },
+  {
+    "intercept": 26.98939551660763,
+    "slope": -0.24860117684800126,
+  },
+  {
+    "intercept": 51.01335854030912,
+    "slope": -0.23888822735184828,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned negative x, n = 400 1`] = `
+[
+  {
+    "intercept": 3.5596726636823774,
+    "slope": -0.25481191375052914,
+  },
+  {
+    "intercept": 23.507086420158508,
+    "slope": -0.25311450610232245,
+  },
+  {
+    "intercept": 45.240704280829576,
+    "slope": -0.24969879889498708,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned noisy line, n = 150 1`] = `
+[
+  {
+    "intercept": -7.054194660486274,
+    "slope": 1.9900699629876668,
+  },
+  {
+    "intercept": 7.08578189769392,
+    "slope": 1.9942304963039572,
+  },
+  {
+    "intercept": 17.816659256008805,
+    "slope": 2.0098651209291085,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned integer grid with non-unique optima, n = 150 1`] = `
+[
+  {
+    "intercept": 0,
+    "slope": 0,
+  },
+  {
+    "intercept": 3,
+    "slope": 0.25,
+  },
+  {
+    "intercept": 8,
+    "slope": 0,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned duplicate x, n = 150 1`] = `
+[
+  {
+    "intercept": 0.1142695746384561,
+    "slope": 3.0014083485584706,
+  },
+  {
+    "intercept": 0.5021877666004002,
+    "slope": 2.992263121297583,
+  },
+  {
+    "intercept": 0.932772068772465,
+    "slope": 2.9960598269632706,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned constant y, n = 150 1`] = `
+[
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+  {
+    "intercept": 7,
+    "slope": 0,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned outlier, n = 150 1`] = `
+[
+  {
+    "intercept": 1,
+    "slope": 0.5,
+  },
+  {
+    "intercept": 1,
+    "slope": 0.5,
+  },
+  {
+    "intercept": 1,
+    "slope": 0.5,
+  },
+]
+`;
+
+exports[`fitLinearQuantileRegression output is pinned negative x, n = 150 1`] = `
+[
+  {
+    "intercept": 6.685134432675142,
+    "slope": -0.2468649577788891,
+  },
+  {
+    "intercept": 28.375937812442704,
+    "slope": -0.24595855215332255,
+  },
+  {
+    "intercept": 47.176420767659096,
+    "slope": -0.24638452397901048,
+  },
+]
+`;
