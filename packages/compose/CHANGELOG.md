@@ -1,5 +1,20 @@
 # @ggts-sh/compose
 
+## 0.49.0
+
+### Patch Changes
+
+- Updated dependencies [2987f0a]
+- Updated dependencies [986e5c8]
+- Updated dependencies [7fb7d74]
+- Updated dependencies [cec2c22]
+- Updated dependencies [6d0a6b8]
+- Updated dependencies [4cdc6ee]
+- Updated dependencies [ad04679]
+- Updated dependencies [2b1d75d]
+- Updated dependencies [cdbb11e]
+  - @ggts-sh/spec@0.49.0
+
 ## 0.48.3
 
 ### Patch Changes

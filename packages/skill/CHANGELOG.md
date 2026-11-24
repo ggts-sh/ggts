@@ -1,5 +1,9 @@
 # @ggts-sh/skill
 
+## 0.49.0
+
+No changes in this release.
+
 ## 0.48.3
 
 ### Patch Changes
