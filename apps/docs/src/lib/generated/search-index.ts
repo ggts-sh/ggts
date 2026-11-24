@@ -20493,6 +20493,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["ordinal-color-times-alpha (needs: data)"],
   },
   {
+    id: "heading:guide-advisories:manual-palette-too-large-needs-spec",
+    kind: "heading",
+    title: "manual-palette-too-large (needs: spec)",
+    summary:
+      "manual-palette-too-large (needs: spec) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#manual-palette-too-large-needs-spec",
+    keywords: ["Advisories", "Reference"],
+    exact: ["manual-palette-too-large (needs: spec)"],
+  },
+  {
     id: "heading:guide-advisories:pipeline-heuristic-advisories-ggts-sh-core",
     kind: "heading",
     title: "Pipeline heuristic advisories (@ggts-sh/core)",

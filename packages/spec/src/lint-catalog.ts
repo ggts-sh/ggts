@@ -1,8 +1,8 @@
 /**
  * Spec lint-advisory catalog — pure data for docs and code identity.
  * Runtime SpecAdvisory instances and lintSpec() live in lint.ts;
- * Rule emission sites: lint-layer-rules.ts, lint-scale-rules.ts, lint-node-link.ts,
- * lint-area-period.ts, lint-labs-rules.ts, lint-color-alpha.ts.
+ * Rule emission sites: lint-layer-rules.ts, lint-scale-rules.ts, lint-color-scale.ts,
+ * lint-node-link.ts, lint-area-period.ts, lint-labs-rules.ts, lint-color-alpha.ts.
  */
 
 /** One entry of the lint catalog (docs render straight from it). */
@@ -91,6 +91,13 @@ export const LINT_CATALOG = {
     needs: "data",
     rationale:
       "A hue scale and a continuous alpha ramp multiply into a grid of shades the reader cannot separate. Encode one variable with color and the other with position or small multiples.",
+  },
+  "manual-palette-too-large": {
+    summary:
+      "A manual or ordinal color/fill scale defines an explicit range with more than 8 colors.",
+    needs: "spec",
+    rationale:
+      "More than eight hues cannot be told apart in a legend or on the marks, even when every hue is authored. Use a named ordinal scheme with eight or fewer classes, or move the field to position or small multiples.",
   },
 } as const satisfies Record<string, LintCatalogEntry>;
 
