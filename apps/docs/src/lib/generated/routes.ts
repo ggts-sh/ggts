@@ -12416,6 +12416,11 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "bar-end-label-offset-needs-spec",
+        title: "bar-end-label-offset (needs: spec)",
+        level: 3,
+      },
+      {
         id: "pipeline-heuristic-advisories-ggts-sh-core",
         title: "Pipeline heuristic advisories (@ggts-sh/core)",
         level: 2,

@@ -25,6 +25,7 @@
  * Implementation:
  *  - lint-catalog.ts — pure advisory catalog (re-exported here)
  *  - lint-layer-rules.ts — layer-scoped rules
+ *  - lint-bar-end-label.ts — bar-end text/label anchor offset advisories
  *  - lint-scale-rules.ts — scale-level transform-domain-data and
  *    fractional-calendar-years (year+month/12 linear pitfall)
  *  - lint-color-scale.ts — color/fill scale-level rules (manual-palette-too-large)
@@ -48,6 +49,7 @@ import {
 
 import type { LintAdvisoryCode } from "./lint-catalog.js";
 import { collectLayerLintAdvisories } from "./lint-layer-rules.js";
+import { collectBarEndLabelAdvisories } from "./lint-bar-end-label.js";
 import { collectScaleLintAdvisories } from "./lint-scale-rules.js";
 import { collectColorScaleLintAdvisories } from "./lint-color-scale.js";
 import { collectNodeLinkAdvisories } from "./lint-node-link.js";
@@ -131,6 +133,7 @@ export function lintSpec(
 
   return [
     ...collectLayerLintAdvisories({ layers, fieldOf }),
+    ...collectBarEndLabelAdvisories(spec, layerEvidence, evidence),
     ...collectScaleLintAdvisories({ layers, scales, fieldOf }),
     ...collectColorScaleLintAdvisories({ layers, scales, plotAes, fieldOf, layerEvidence }),
     ...(layerEvidence === undefined

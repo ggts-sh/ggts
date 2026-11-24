@@ -1,8 +1,9 @@
 /**
  * Spec lint-advisory catalog — pure data for docs and code identity.
  * Runtime SpecAdvisory instances and lintSpec() live in lint.ts;
- * Rule emission sites: lint-layer-rules.ts, lint-scale-rules.ts, lint-color-scale.ts,
- * lint-node-link.ts, lint-area-period.ts, lint-labs-rules.ts, lint-color-alpha.ts.
+ * Rule emission sites: lint-layer-rules.ts, lint-bar-end-label.ts, lint-scale-rules.ts,
+ * lint-color-scale.ts, lint-node-link.ts, lint-area-period.ts, lint-labs-rules.ts,
+ * lint-color-alpha.ts.
  */
 
 /** One entry of the lint catalog (docs render straight from it). */
@@ -98,6 +99,13 @@ export const LINT_CATALOG = {
     needs: "spec",
     rationale:
       "More than eight hues cannot be told apart in a legend or on the marks, even when every hue is authored. Use a named ordinal scheme with eight or fewer classes, or move the field to position or small multiples.",
+  },
+  "bar-end-label-offset": {
+    summary:
+      'A text or label layer sets params.anchor to "start" or "end" over a col or bar layer instead of centering.',
+    needs: "spec",
+    rationale:
+      "A value label on a bar is read as belonging to the bar. A start or end anchor puts the label's edge at the bar's value end, so the value sits beside the mark instead of on it. Center the label, or place it with a rule that knows the bar's geometry.",
   },
 } as const satisfies Record<string, LintCatalogEntry>;
 
