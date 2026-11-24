@@ -1,5 +1,30 @@
 # @ggts-sh/core
 
+## 0.49.0
+
+### Minor Changes
+
+- eceb215: Add the `facet-grid-too-tall` pipeline warning when a multi-row facet grid exceeds 1200 px in height. The warning reports the rendered grid height, row count, and bottom x-axis title `y` coordinate, and is not suppressed by `theme.panelAspect: "free"` or constrained coordinates while retaining degenerate viewport and placement guards.
+
+  Migration: none — additive.
+
+- 4cdc6ee: Add the `missing-axis-title` spec-lint advisory when a mapped positional channel (`x` or `y`) has an absent or blank `labs` title, and export `humanizeFieldTitle` and `spaceFieldName` from `@ggts-sh/spec` (re-exported by `@ggts-sh/core`).
+
+  Migration: none — additive
+
+### Patch Changes
+
+- Updated dependencies [2987f0a]
+- Updated dependencies [986e5c8]
+- Updated dependencies [7fb7d74]
+- Updated dependencies [cec2c22]
+- Updated dependencies [6d0a6b8]
+- Updated dependencies [4cdc6ee]
+- Updated dependencies [ad04679]
+- Updated dependencies [2b1d75d]
+- Updated dependencies [cdbb11e]
+  - @ggts-sh/spec@0.49.0
+
 ## 0.48.3
 
 ### Patch Changes

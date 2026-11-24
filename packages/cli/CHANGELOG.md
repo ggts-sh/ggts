@@ -1,5 +1,13 @@
 # @ggts-sh/cli
 
+## 0.49.0
+
+### Patch Changes
+
+- Updated dependencies [eceb215]
+- Updated dependencies [4cdc6ee]
+  - @ggts-sh/core@0.49.0
+
 ## 0.48.3
 
 ### Patch Changes

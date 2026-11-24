@@ -1,5 +1,42 @@
 # @ggts-sh/spec
 
+## 0.49.0
+
+### Minor Changes
+
+- 2987f0a: Add the `bar-end-label-offset` spec-lint advisory (`needs: "spec"`). It flags `text` and `label` layers that set `params.anchor` to `"start"` or `"end"` over a `col` or `bar` (`stat !== "bin"`) layer sharing the same panel and categorical `x` (plus `y` for `col`), where the anchor places the label's edge at the bar's value end instead of centering over the mark. Suggests `{ params: { anchor: "middle" } }` (with `params.dy` for vertical offsets and a note on stacked segments).
+
+  Migration: none — additive.
+
+- cec2c22: Add the `line-over-period-totals` spec-lint advisory. On data-bearing specs it warns when a `line` or `step` layer (with `identity` or default stat) has `x` on a regular calendar grid (year, quarter, or month starts in UTC, or integer years on a linear scale) across 8 or more distinct periods while `y` holds jagged non-negative integer counts. `lintSpec()` and `validate(spec, { lint: true })` surface it alongside guidance to plot cumulative stock or signed deltas from the finest dated data, or to label a per-period count in the chart title.
+
+  Migration: none — additive.
+
+- 6d0a6b8: Add the `manual-palette-too-large` spec-lint advisory when a manual or ordinal `color`/`fill` scale defines an explicit `range` with more than 8 colors.
+
+  Migration: none — additive.
+
+- 4cdc6ee: Add the `missing-axis-title` spec-lint advisory when a mapped positional channel (`x` or `y`) has an absent or blank `labs` title, and export `humanizeFieldTitle` and `spaceFieldName` from `@ggts-sh/spec` (re-exported by `@ggts-sh/core`).
+
+  Migration: none — additive
+
+- ad04679: Add the `missing-chart-title` spec-lint advisory (`needs: "spec"`). It advises at `/labs` when `labs.title` is missing or blank and either `labs.subtitle` is non-empty or at least one layer has data, prompting the author to add a one-line `labs.title` stating the chart's message. `lintSpec()`, `validate(spec, { lint: true })`, and the CLI `check`/`render` commands surface it; the advisory never blocks a render.
+
+  Migration: none — additive.
+
+- 2b1d75d: Add the `ordinal-color-times-alpha` spec-lint advisory. On data-bearing specs it warns when a discrete `color` or `fill` scale with more than four classes co-occurs on a layer with a quantitative `alpha` field whose scale interpolates continuously (`type` omitted or `"sequential"` with a non-degenerate numeric range), producing a hue-by-opacity grid that exceeds roughly eight distinguishable shades. `lintSpec()` and `validate(spec, { lint: true })` emit the advisory at `/scales/color` or `/scales/fill` with suggestions to encode one variable via position or small multiples, drop `alpha` to a constant, or bin `alpha` into at most two steps.
+
+  Migration: none — additive.
+
+- cdbb11e: Add the `sparse-temporal-prefix` spec-lint advisory. On data-bearing specs it warns when a layer maps a temporal `x` column with at least 5 distinct parsed values whose earliest value `x[0]` accounts for at most 10% of valid rows and sits at least 5 calendar years and 3× the remaining median spacing ahead of `x[1]`, excluding pinned `scales.x.domain` bounds that already drop `x[0]`. `lintSpec()`, `validate(spec, { lint: true })`, and `ggts check` surface it alongside a `scales.x.domain` suggestion; the advisory never blocks a render.
+
+  Migration: none — additive.
+
+### Patch Changes
+
+- 986e5c8: Preserve `null` entries in `layerEvidence` inside `collectPeriodTotalAdvisories()` so `area`, `line`, and `step` layers using unresolved runtime datasets (`data: { name: "..." }`) do not fall back to plot-level `spec.data` and emit false-positive `area-over-period-totals` or `line-over-period-totals` advisories.
+- 7fb7d74: Require `dy` and `positionParams.y` to agree in direction without opposing shifts in `bar-end-label-offset` under `coord: { type: "flip" }`. Previously, a correctly signed `positionParams.y` suppressed the advisory even when paired with an opposing `dy` that shifted the label back inside or outside the bar.
+
 ## 0.48.3
 
 No changes in this release.
