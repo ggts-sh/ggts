@@ -79,6 +79,12 @@ export const LINT_CATALOG = {
     rationale:
       "A title states the chart's message. A subtitle without a title leaves the chart unnamed, and a heading outside the spec is host chrome that is not part of the chart.",
   },
+  "missing-axis-title": {
+    summary: "A positional channel (x or y) maps a field without a non-blank axis title in labs.",
+    needs: "spec",
+    rationale:
+      "Every positional channel that carries meaning needs an axis title. An absent title falls back to the humanized column name, and a blank title renders nothing; neither tells the reader what the axis measures.",
+  },
 } as const satisfies Record<string, LintCatalogEntry>;
 
 export type LintAdvisoryCode = keyof typeof LINT_CATALOG;

@@ -2436,6 +2436,10 @@
           "kind": "value",
           "lifecycle": "experimental"
         },
+        "humanizeFieldTitle": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
         "inferTemporalColumn": {
           "kind": "value",
           "lifecycle": "experimental"
@@ -3661,6 +3665,10 @@
           "lifecycle": "experimental"
         },
         "slugForScaleHelper": {
+          "kind": "value",
+          "lifecycle": "experimental"
+        },
+        "spaceFieldName": {
           "kind": "value",
           "lifecycle": "experimental"
         },

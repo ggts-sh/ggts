@@ -281,7 +281,7 @@ export type {
 } from "./diagnostics.js";
 
 // Layout (decision 0003)
-export { humanizeFieldTitle, spaceFieldName } from "./humanize-field.js";
+export { humanizeFieldTitle, spaceFieldName } from "@ggts-sh/spec";
 export { DEFAULT_FONT_STACK, MetricsTableMeasurer } from "./layout/measure.js";
 export type { MetricsTable, TextMeasurer } from "./layout/measure.js";
 export { FONT_METRICS } from "./layout/font-metrics.js";

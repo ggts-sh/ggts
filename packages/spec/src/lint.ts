@@ -29,7 +29,7 @@
  *    fractional-calendar-years (year+month/12 linear pitfall)
  *  - lint-node-link.ts — cross-layer, panel-local endpoint matching
  *  - lint-area-period.ts — area/line/step layers over totals on a regular period grid
- *  - lint-labs-rules.ts — labs title/label completeness rules
+ *  - lint-labs-rules.ts — labs title/label completeness and axis title advisories
  *
  * Wired into `validate(spec, { lint: true })` (advisories ride the result)
  * and into the `ggts render` CLI (stderr JSON lines, kind "advisory",
@@ -49,7 +49,7 @@ import { collectLayerLintAdvisories } from "./lint-layer-rules.js";
 import { collectScaleLintAdvisories } from "./lint-scale-rules.js";
 import { collectNodeLinkAdvisories } from "./lint-node-link.js";
 import { collectPeriodTotalAdvisories } from "./lint-area-period.js";
-import { collectLabsLintAdvisories } from "./lint-labs-rules.js";
+import { collectAxisTitleAdvisories, collectChartTitleAdvisories } from "./lint-labs-rules.js";
 
 export { LINT_CATALOG, type LintAdvisoryCode, type LintCatalogEntry } from "./lint-catalog.js";
 
@@ -119,7 +119,7 @@ export function lintSpec(
     channel: ChannelName,
   ): { field: string; info: FieldEvidenceEntry } | null => {
     const mapped = effectiveChannel(plotAes, layerAes, channel);
-    if (mapped === undefined || !("field" in mapped)) return null;
+    if (!isRecord(mapped) || !("field" in mapped) || typeof mapped.field !== "string") return null;
     const info = evidence?.get(mapped.field);
     if (info === undefined) return null;
     return { field: mapped.field, info };
@@ -134,6 +134,7 @@ export function lintSpec(
           ...collectNodeLinkAdvisories(spec, layerEvidence, evidence),
           ...collectPeriodTotalAdvisories(spec, layerEvidence, evidence),
         ]),
-    ...collectLabsLintAdvisories(spec),
+    ...collectChartTitleAdvisories(spec),
+    ...collectAxisTitleAdvisories(spec),
   ];
 }

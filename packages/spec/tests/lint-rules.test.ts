@@ -28,6 +28,7 @@ describe("line-over-nominal-x", () => {
   it("fires from a DataProfile too, and respects ordinal as ordered", () => {
     const bare = {
       aes: { x: { field: "grade" }, y: { field: "n" } },
+      labs: { title: "Line", x: "Grade", y: "Count" },
       layers: [{ geom: "line" }],
     };
     const nominal = lintSpec(bare, {
@@ -52,7 +53,11 @@ describe("line-over-nominal-x", () => {
 
   it("skips without evidence (no data, no profile)", () => {
     expect(
-      lintSpec({ aes: { x: { field: "x" }, y: { field: "y" } }, layers: [{ geom: "line" }] }),
+      lintSpec({
+        aes: { x: { field: "x" }, y: { field: "y" } },
+        labs: { title: "Line", x: "X", y: "Y" },
+        layers: [{ geom: "line" }],
+      }),
     ).toEqual([]);
   });
 });
