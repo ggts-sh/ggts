@@ -27,6 +27,7 @@
  *  - lint-layer-rules.ts — layer-scoped rules
  *  - lint-scale-rules.ts — scale-level transform-domain-data and
  *    fractional-calendar-years (year+month/12 linear pitfall)
+ *  - lint-color-scale.ts — color/fill scale-level rules (manual-palette-too-large)
  *  - lint-node-link.ts — cross-layer, panel-local endpoint matching
  *  - lint-area-period.ts — area/line/step layers over totals on a regular period grid
  *  - lint-labs-rules.ts — labs title/label completeness and axis title advisories
@@ -48,6 +49,7 @@ import {
 import type { LintAdvisoryCode } from "./lint-catalog.js";
 import { collectLayerLintAdvisories } from "./lint-layer-rules.js";
 import { collectScaleLintAdvisories } from "./lint-scale-rules.js";
+import { collectColorScaleLintAdvisories } from "./lint-color-scale.js";
 import { collectNodeLinkAdvisories } from "./lint-node-link.js";
 import { collectPeriodTotalAdvisories } from "./lint-area-period.js";
 import { collectAxisTitleAdvisories, collectChartTitleAdvisories } from "./lint-labs-rules.js";
@@ -130,6 +132,7 @@ export function lintSpec(
   return [
     ...collectLayerLintAdvisories({ layers, fieldOf }),
     ...collectScaleLintAdvisories({ layers, scales, fieldOf }),
+    ...collectColorScaleLintAdvisories({ layers, scales, plotAes, fieldOf, layerEvidence }),
     ...(layerEvidence === undefined
       ? []
       : [

@@ -12406,6 +12406,11 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "manual-palette-too-large-needs-spec",
+        title: "manual-palette-too-large (needs: spec)",
+        level: 3,
+      },
+      {
         id: "pipeline-heuristic-advisories-ggts-sh-core",
         title: "Pipeline heuristic advisories (@ggts-sh/core)",
         level: 2,
