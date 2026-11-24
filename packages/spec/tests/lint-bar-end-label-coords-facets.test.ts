@@ -130,6 +130,57 @@ describe("bar-end-label-offset coord and facet handling", () => {
     expect(codesOf(lintSpec(mixedDxAndDy))).toContain(CODE);
   });
 
+  it("handles combined dy and nudge positionParams.y under coord: flip", () => {
+    const cleanStartCombined = flippedSpec({
+      position: "nudge",
+      positionParams: { y: 2 },
+      params: { anchor: "start", dy: -6 },
+    });
+    expect(lintSpec(cleanStartCombined)).toEqual([]);
+
+    const cleanStartZeroDy = flippedSpec({
+      position: "nudge",
+      positionParams: { y: 2 },
+      params: { anchor: "start", dy: 0 },
+    });
+    expect(lintSpec(cleanStartZeroDy)).toEqual([]);
+
+    const cleanEndCombined = flippedSpec({
+      position: "nudge",
+      positionParams: { y: -2 },
+      params: { anchor: "end", dy: 6 },
+    });
+    expect(lintSpec(cleanEndCombined)).toEqual([]);
+
+    const opposingStartPosDy = flippedSpec({
+      position: "nudge",
+      positionParams: { y: 5 },
+      params: { anchor: "start", dy: 12 },
+    });
+    expect(codesOf(lintSpec(opposingStartPosDy))).toContain(CODE);
+
+    const opposingStartNegNudge = flippedSpec({
+      position: "nudge",
+      positionParams: { y: -5 },
+      params: { anchor: "start", dy: -6 },
+    });
+    expect(codesOf(lintSpec(opposingStartNegNudge))).toContain(CODE);
+
+    const opposingEndNegDy = flippedSpec({
+      position: "nudge",
+      positionParams: { y: -5 },
+      params: { anchor: "end", dy: -12 },
+    });
+    expect(codesOf(lintSpec(opposingEndNegDy))).toContain(CODE);
+
+    const opposingEndPosNudge = flippedSpec({
+      position: "nudge",
+      positionParams: { y: 5 },
+      params: { anchor: "end", dy: 6 },
+    });
+    expect(codesOf(lintSpec(opposingEndPosNudge))).toContain(CODE);
+  });
+
   it("skips coord: radial and keeps upright-Cartesian rule for cartesian, fixed, sf, transform", () => {
     expect(codesOf(lintSpec({ ...baseCartesian, coord: { type: "radial" } }))).not.toContain(CODE);
     expect(
