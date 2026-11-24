@@ -20523,6 +20523,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["bar-end-label-offset (needs: spec)"],
   },
   {
+    id: "heading:guide-advisories:sparse-temporal-prefix-needs-data",
+    kind: "heading",
+    title: "sparse-temporal-prefix (needs: data)",
+    summary:
+      "sparse-temporal-prefix (needs: data) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#sparse-temporal-prefix-needs-data",
+    keywords: ["Advisories", "Reference"],
+    exact: ["sparse-temporal-prefix (needs: data)"],
+  },
+  {
     id: "heading:guide-advisories:pipeline-heuristic-advisories-ggts-sh-core",
     kind: "heading",
     title: "Pipeline heuristic advisories (@ggts-sh/core)",
