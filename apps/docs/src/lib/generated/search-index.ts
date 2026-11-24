@@ -20483,6 +20483,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["missing-axis-title (needs: spec)"],
   },
   {
+    id: "heading:guide-advisories:ordinal-color-times-alpha-needs-data",
+    kind: "heading",
+    title: "ordinal-color-times-alpha (needs: data)",
+    summary:
+      "ordinal-color-times-alpha (needs: data) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#ordinal-color-times-alpha-needs-data",
+    keywords: ["Advisories", "Reference"],
+    exact: ["ordinal-color-times-alpha (needs: data)"],
+  },
+  {
     id: "heading:guide-advisories:pipeline-heuristic-advisories-ggts-sh-core",
     kind: "heading",
     title: "Pipeline heuristic advisories (@ggts-sh/core)",

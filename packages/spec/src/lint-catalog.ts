@@ -2,7 +2,7 @@
  * Spec lint-advisory catalog — pure data for docs and code identity.
  * Runtime SpecAdvisory instances and lintSpec() live in lint.ts;
  * Rule emission sites: lint-layer-rules.ts, lint-scale-rules.ts, lint-node-link.ts,
- * lint-area-period.ts, lint-labs-rules.ts.
+ * lint-area-period.ts, lint-labs-rules.ts, lint-color-alpha.ts.
  */
 
 /** One entry of the lint catalog (docs render straight from it). */
@@ -84,6 +84,13 @@ export const LINT_CATALOG = {
     needs: "spec",
     rationale:
       "Every positional channel that carries meaning needs an axis title. An absent title falls back to the humanized column name, and a blank title renders nothing; neither tells the reader what the axis measures.",
+  },
+  "ordinal-color-times-alpha": {
+    summary:
+      "A discrete color/fill scale (>4 classes) combines with a continuous interpolating alpha ramp.",
+    needs: "data",
+    rationale:
+      "A hue scale and a continuous alpha ramp multiply into a grid of shades the reader cannot separate. Encode one variable with color and the other with position or small multiples.",
   },
 } as const satisfies Record<string, LintCatalogEntry>;
 
