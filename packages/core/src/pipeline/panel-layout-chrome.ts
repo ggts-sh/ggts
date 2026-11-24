@@ -1,9 +1,13 @@
 /**
  * Panel layout chrome: labs, axis titles (coord flip), formatters, legends.
  */
-import type { PortableSpec, TemporalPrecision, TemporalScaleKind } from "@ggts-sh/spec";
+import {
+  humanizeFieldTitle,
+  type PortableSpec,
+  type TemporalPrecision,
+  type TemporalScaleKind,
+} from "@ggts-sh/spec";
 
-import { humanizeFieldTitle } from "../humanize-field.js";
 import { FONT_METRICS } from "../layout/font-metrics.js";
 import type { LayoutTheme, TickFormatter } from "../layout/layout.js";
 import { DEFAULT_LAYOUT_THEME } from "../layout/layout.js";

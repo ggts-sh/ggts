@@ -351,6 +351,7 @@ export type { ValidateResult } from "./validate.js";
 export { assertStructuralGate, structuralGateErrors } from "./structural-gate.js";
 /** Shared temporal-guide vs explicit scale-type check for validate and render. */
 export { temporalGuideTypeMismatchError } from "./validate-data-checks-position.js";
+export { humanizeFieldTitle, spaceFieldName } from "./humanize-field.js";
 export { LINT_CATALOG, lintSpec } from "./lint.js";
 export type { LintAdvisoryCode, LintCatalogEntry, SpecAdvisory } from "./lint.js";
 export { ERROR_CATALOG } from "./errors.js";

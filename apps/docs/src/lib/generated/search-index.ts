@@ -20473,6 +20473,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["missing-chart-title (needs: spec)"],
   },
   {
+    id: "heading:guide-advisories:missing-axis-title-needs-spec",
+    kind: "heading",
+    title: "missing-axis-title (needs: spec)",
+    summary:
+      "missing-axis-title (needs: spec) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#missing-axis-title-needs-spec",
+    keywords: ["Advisories", "Reference"],
+    exact: ["missing-axis-title (needs: spec)"],
+  },
+  {
     id: "heading:guide-advisories:pipeline-heuristic-advisories-ggts-sh-core",
     kind: "heading",
     title: "Pipeline heuristic advisories (@ggts-sh/core)",
@@ -20682,14 +20692,14 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["@ggts-sh/spec"],
   },
   {
-    id: "heading:guide-lifecycle:experimental-927",
+    id: "heading:guide-lifecycle:experimental-929",
     kind: "heading",
-    title: "experimental (927)",
+    title: "experimental (929)",
     summary:
-      "experimental (927) in Lifecycle & editions. API stability tags per export, and the defaults-edition mechanism.",
-    href: "/guide/lifecycle#experimental-927",
+      "experimental (929) in Lifecycle & editions. API stability tags per export, and the defaults-edition mechanism.",
+    href: "/guide/lifecycle#experimental-929",
     keywords: ["Lifecycle & editions", "Reference"],
-    exact: ["experimental (927)"],
+    exact: ["experimental (929)"],
   },
   {
     id: "heading:guide-lifecycle:stable-intent-8",
@@ -28609,6 +28619,15 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["hslToHex"],
   },
   {
+    id: "api:ggts-sh-spec:humanizeFieldTitle",
+    kind: "api",
+    title: "humanizeFieldTitle",
+    summary: "@ggts-sh/spec · value · experimental.",
+    href: "/guide/lifecycle#ggts-sh-spec",
+    keywords: ["@ggts-sh/spec", ".", "value", "experimental"],
+    exact: ["humanizeFieldTitle"],
+  },
+  {
     id: "api:ggts-sh-spec:inferTemporalColumn",
     kind: "api",
     title: "inferTemporalColumn",
@@ -31370,6 +31389,15 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/lifecycle#ggts-sh-spec",
     keywords: ["@ggts-sh/spec", ".", "value", "experimental"],
     exact: ["slugForScaleHelper"],
+  },
+  {
+    id: "api:ggts-sh-spec:spaceFieldName",
+    kind: "api",
+    title: "spaceFieldName",
+    summary: "@ggts-sh/spec · value · experimental.",
+    href: "/guide/lifecycle#ggts-sh-spec",
+    keywords: ["@ggts-sh/spec", ".", "value", "experimental"],
+    exact: ["spaceFieldName"],
   },
   {
     id: "api:ggts-sh-spec:statReferenceList",

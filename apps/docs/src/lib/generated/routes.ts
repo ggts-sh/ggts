@@ -12396,6 +12396,11 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "missing-axis-title-needs-spec",
+        title: "missing-axis-title (needs: spec)",
+        level: 3,
+      },
+      {
         id: "pipeline-heuristic-advisories-ggts-sh-core",
         title: "Pipeline heuristic advisories (@ggts-sh/core)",
         level: 2,
@@ -12513,8 +12518,8 @@ export const DOCS_ROUTES = [
         level: 2,
       },
       {
-        id: "experimental-927",
-        title: "experimental (927)",
+        id: "experimental-929",
+        title: "experimental (929)",
         level: 3,
       },
       {

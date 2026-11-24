@@ -11,7 +11,7 @@ import { validate } from "../src/validate.ts";
 const codesOf = (advisories: ReturnType<typeof lintSpec>) => advisories.map((a) => a.code);
 
 describe("lintSpec never throws on schema-invalid scale entries", () => {
-  it("skips non-record scale values without fabricating advisories", () => {
+  it("skips non-record scale entries without fabricating advisories", () => {
     const advisories = lintSpec({
       data: { columns: { x: [1, 2, -1], y: [1, 2, 3] } },
       aes: { x: { field: "x" }, y: { field: "y" } },
