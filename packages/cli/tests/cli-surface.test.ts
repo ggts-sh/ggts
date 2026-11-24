@@ -140,4 +140,29 @@ describe("@ggts-sh/cli surface (src/index.ts)", () => {
       .filter((row) => row !== null && row.kind === "advisory");
     expect(advisories.some((row) => row!.code === "percent-labels-out-of-range")).toBe(true);
   });
+
+  it("emits missing-chart-title on stderr when ggts check runs on a subtitle-only spec", async () => {
+    const repro = {
+      width: 960,
+      height: 480,
+      layers: [{ geom: "line", aes: { x: { field: "year" }, y: { field: "n" } } }],
+      scales: { x: { type: "linear" }, y: { type: "linear" } },
+      labs: { subtitle: "Normas restrictivas publicadas por año", x: "Año", y: "Normas" },
+      data: { columns: { year: [2019, 2020, 2021, 2022], n: [12, 9, 14, 7] } },
+    };
+    const { io, out, err } = makeIO(JSON.stringify(repro));
+    const code = await runCommand(["check"], io);
+    expect(code).toBe(0);
+    expect(out).toEqual([]);
+    const advisories = err.map((line) => JSON.parse(line) as Record<string, unknown>);
+    expect(
+      advisories.some(
+        (row) =>
+          row["kind"] === "advisory" &&
+          row["source"] === "spec-lint" &&
+          row["code"] === "missing-chart-title" &&
+          row["path"] === "/labs",
+      ),
+    ).toBe(true);
+  });
 });
