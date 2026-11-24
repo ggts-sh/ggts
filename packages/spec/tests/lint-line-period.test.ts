@@ -274,4 +274,57 @@ describe("line-over-period-totals", () => {
 
     expect(codesOf(lintSpec(issueReproSpec(), { limits: { maxRows: 5 } }))).not.toContain(CODE);
   });
+
+  it("preserves null layerEvidence for unresolved runtime datasets on area, line, and step layers", () => {
+    const plotRows = jaggedYears(2015, 10);
+    for (const geom of ["area", "line", "step"] as const) {
+      const runtimeOnlySpec = {
+        labs: defaultLabs,
+        data: { values: plotRows },
+        layers: [
+          { geom: "col", aes: { x: { field: "year" }, y: { field: "n" } } },
+          {
+            geom,
+            data: { name: "runtime_tbl" },
+            aes: { x: { field: "year" }, y: { field: "n" } },
+          },
+        ],
+      };
+      const lintAdvisories = lintSpec(runtimeOnlySpec);
+      expect(codesOf(lintAdvisories)).not.toContain(CODE);
+      expect(codesOf(lintAdvisories)).not.toContain("area-over-period-totals");
+
+      const validated = validate(runtimeOnlySpec, { lint: true });
+      expect(validated.ok).toBe(true);
+      expect(codesOf(validated.advisories ?? [])).not.toContain(CODE);
+      expect(codesOf(validated.advisories ?? [])).not.toContain("area-over-period-totals");
+    }
+
+    const expectedCode = (geom: "area" | "line" | "step") =>
+      geom === "area" ? "area-over-period-totals" : CODE;
+    for (const geom of ["area", "line", "step"] as const) {
+      const mixedSpec = {
+        labs: defaultLabs,
+        data: { values: plotRows },
+        layers: [
+          { geom, aes: { x: { field: "year" }, y: { field: "n" } } },
+          {
+            geom,
+            data: { name: "runtime_tbl" },
+            aes: { x: { field: "year" }, y: { field: "n" } },
+          },
+        ],
+      };
+      const code = expectedCode(geom);
+      const lintHits = lintSpec(mixedSpec).filter((a) => a.code === code);
+      expect(lintHits).toHaveLength(1);
+      expect(lintHits[0]!.path).toBe("/layers/0/aes/x");
+
+      const validated = validate(mixedSpec, { lint: true });
+      expect(validated.ok).toBe(true);
+      const validateHits = (validated.advisories ?? []).filter((a) => a.code === code);
+      expect(validateHits).toHaveLength(1);
+      expect(validateHits[0]!.path).toBe("/layers/0/aes/x");
+    }
+  });
 });
