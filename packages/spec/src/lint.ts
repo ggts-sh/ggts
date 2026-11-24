@@ -33,6 +33,7 @@
  *  - lint-area-period.ts — area/line/step layers over totals on a regular period grid
  *  - lint-labs-rules.ts — labs title/label completeness and axis title advisories
  *  - lint-color-alpha.ts — discrete color/fill paired with continuous alpha
+ *  - lint-temporal-prefix.ts — sparse leading spans on temporal x columns
  *
  * Wired into `validate(spec, { lint: true })` (advisories ride the result)
  * and into the `ggts render` CLI (stderr JSON lines, kind "advisory",
@@ -56,6 +57,7 @@ import { collectNodeLinkAdvisories } from "./lint-node-link.js";
 import { collectPeriodTotalAdvisories } from "./lint-area-period.js";
 import { collectAxisTitleAdvisories, collectChartTitleAdvisories } from "./lint-labs-rules.js";
 import { collectOrdinalColorTimesAlphaAdvisories } from "./lint-color-alpha.js";
+import { collectTemporalPrefixAdvisories } from "./lint-temporal-prefix.js";
 
 export { LINT_CATALOG, type LintAdvisoryCode, type LintCatalogEntry } from "./lint-catalog.js";
 
@@ -142,6 +144,7 @@ export function lintSpec(
           ...collectNodeLinkAdvisories(spec, layerEvidence, evidence),
           ...collectPeriodTotalAdvisories(spec, layerEvidence, evidence),
           ...collectOrdinalColorTimesAlphaAdvisories(spec, layerEvidence, evidence),
+          ...collectTemporalPrefixAdvisories(spec, layerEvidence, evidence),
         ]),
     ...collectChartTitleAdvisories(spec),
     ...collectAxisTitleAdvisories(spec),

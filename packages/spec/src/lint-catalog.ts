@@ -3,7 +3,7 @@
  * Runtime SpecAdvisory instances and lintSpec() live in lint.ts;
  * Rule emission sites: lint-layer-rules.ts, lint-bar-end-label.ts, lint-scale-rules.ts,
  * lint-color-scale.ts, lint-node-link.ts, lint-area-period.ts, lint-labs-rules.ts,
- * lint-color-alpha.ts.
+ * lint-color-alpha.ts, lint-temporal-prefix.ts.
  */
 
 /** One entry of the lint catalog (docs render straight from it). */
@@ -106,6 +106,13 @@ export const LINT_CATALOG = {
     needs: "spec",
     rationale:
       "A value label on a bar is read as belonging to the bar. A start or end anchor puts the label's edge at the bar's value end, so the value sits beside the mark instead of on it. Center the label, or place it with a rule that knows the bar's geometry.",
+  },
+  "sparse-temporal-prefix": {
+    summary:
+      "A temporal x column has a sparse leading span (>= 5 years and >= 3x median spacing) with at most 10% of rows at the start.",
+    needs: "data",
+    rationale:
+      "A temporal axis that starts at one early row implies the decades after it were measured and empty. Start at the first period with meaningful coverage, or state the sparse prefix explicitly.",
   },
 } as const satisfies Record<string, LintCatalogEntry>;
 
