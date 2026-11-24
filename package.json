@@ -110,7 +110,7 @@
     "knip": "6.37.0",
     "markdownlint-cli2": "0.23.2",
     "oxfmt": "0.75.0",
-    "oxlint": "1.90.0",
+    "oxlint": "1.91.0",
     "oxlint-tsgolint": "7.0.2005",
     "pnpm": "11.13.0",
     "prettier": "3.9.10",
