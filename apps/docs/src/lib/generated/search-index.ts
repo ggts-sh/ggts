@@ -19994,6 +19994,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["panel-height-share-low"],
   },
   {
+    id: "heading:guide-errors:facet-grid-too-tall",
+    kind: "heading",
+    title: "facet-grid-too-tall",
+    summary:
+      "facet-grid-too-tall in Errors reference. Understand validation, render, interaction, and CLI diagnostics and recover safely.",
+    href: "/guide/errors#facet-grid-too-tall",
+    keywords: ["Errors reference", "Reference"],
+    exact: ["facet-grid-too-tall"],
+  },
+  {
     id: "heading:guide-errors:stack-band-hidden",
     kind: "heading",
     title: "stack-band-hidden",
@@ -52265,6 +52275,20 @@ export const DOCS_SEARCH_INDEX = [
       "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
     ],
     exact: ["panel-height-share-low", "warning:panel-height-share-low"],
+  },
+  {
+    id: "diagnostic:warning:facet-grid-too-tall",
+    kind: "diagnostic",
+    title: "facet-grid-too-tall · warning",
+    summary:
+      "A multi-row facet grid exceeds 1200 px in height, placing the shared bottom x axis below the first viewport.",
+    href: "/guide/errors#facet-grid-too-tall",
+    keywords: [
+      "warning",
+      "warning",
+      "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
+    ],
+    exact: ["facet-grid-too-tall", "warning:facet-grid-too-tall"],
   },
   {
     id: "diagnostic:warning:stack-band-hidden",

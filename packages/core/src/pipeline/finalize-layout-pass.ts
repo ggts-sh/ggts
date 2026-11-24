@@ -268,6 +268,7 @@ export function finalizePanelLayoutPass(input: {
       viewport: { width: options.width, height: options.height },
       coordConstrained: coord?.type === "fixed" || coord?.type === "sf" || coord?.type === "radial",
       suppressed: typeof normalized.theme === "object" && normalized.theme.panelAspect === "free",
+      theme,
     }),
     ...collectStackBandWarnings({
       prepared,

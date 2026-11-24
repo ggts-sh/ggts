@@ -1,12 +1,19 @@
 /**
- * Final-layout panel diagnostics: extreme panel aspect (#1884) and low
- * vertical panel share (#1885).
+ * Final-layout panel diagnostics: extreme panel aspect (#1884), low
+ * vertical panel share (#1885), and tall multi-row facet grids (#1965).
  *
- * Both read the committed placements after fixed-aspect fitting, so the
+ * All read the committed placements after fixed-aspect fitting, so the
  * numbers match what the scene renders. Each kind is aggregated to at most
  * one warning per run.
  */
-import { LEGEND_EDGE_PAD, legendGapFor } from "./layout-helpers.js";
+import type { ThemeTokens } from "../theme.js";
+import {
+  DEFAULT_AXIS_TITLE_OFFSET,
+  LEGEND_EDGE_PAD,
+  legendGapFor,
+  xAxisBandTitleOffset,
+  xTickChromePx,
+} from "./layout-helpers.js";
 import type { PanelLayoutResult, PanelPlacement } from "./panel-layout-types.js";
 import type { PipelineWarning } from "./types.js";
 
@@ -14,6 +21,8 @@ import type { PipelineWarning } from "./types.js";
 const EXTREME_PANEL_ASPECT = 4;
 /** The panel grid must cover at least this fraction of the plot height. */
 const MIN_PANEL_HEIGHT_SHARE = 0.5;
+/** Multi-row facet grids taller than one desktop viewport warn. */
+const MAX_FACET_GRID_HEIGHT_PX = 1200;
 
 export interface PanelDiagnosticsInput {
   panelLayout: PanelLayoutResult;
@@ -22,6 +31,7 @@ export interface PanelDiagnosticsInput {
   coordConstrained: boolean;
   /** `theme.panelAspect: "free"` suppresses both panel-shape warnings. */
   suppressed: boolean;
+  theme?: Pick<ThemeTokens, "ticksX" | "tickLength">;
 }
 
 function isFinitePositive(value: number): boolean {
@@ -80,15 +90,23 @@ function aspectWarning({ panelLayout, viewport }: PanelDiagnosticsInput): Pipeli
   };
 }
 
-function shareWarning({ panelLayout, viewport }: PanelDiagnosticsInput): PipelineWarning | null {
-  const { placements, topBand, bottomBand, stripBand, strip, legendBlock } = panelLayout;
+function gridVerticalBounds(placements: readonly PanelPlacement[]): {
+  gridTop: number;
+  gridBottom: number;
+  gridHeight: number;
+} {
   let gridTop = Infinity;
   let gridBottom = -Infinity;
   for (const placement of placements) {
     gridTop = Math.min(gridTop, placement.y);
     gridBottom = Math.max(gridBottom, placement.y + placement.height);
   }
-  const gridHeight = gridBottom - gridTop;
+  return { gridTop, gridBottom, gridHeight: gridBottom - gridTop };
+}
+
+function shareWarning({ panelLayout, viewport }: PanelDiagnosticsInput): PipelineWarning | null {
+  const { placements, topBand, bottomBand, stripBand, strip, legendBlock } = panelLayout;
+  const { gridBottom, gridHeight } = gridVerticalBounds(placements);
   if (!isFinitePositive(gridHeight)) return null;
   const share = gridHeight / viewport.height;
   if (share >= MIN_PANEL_HEIGHT_SHARE) return null;
@@ -139,13 +157,42 @@ function shareWarning({ panelLayout, viewport }: PanelDiagnosticsInput): Pipelin
   };
 }
 
+function tallFacetGridWarning({
+  panelLayout,
+  theme,
+}: PanelDiagnosticsInput): PipelineWarning | null {
+  const { placements, guides } = panelLayout;
+  const rowCount = new Set(placements.map((p) => p.y)).size;
+  if (rowCount <= 1) return null;
+
+  const { gridBottom, gridHeight } = gridVerticalBounds(placements);
+  if (!isFinitePositive(gridHeight) || gridHeight <= MAX_FACET_GRID_HEIGHT_PX) return null;
+
+  const tickChromePx =
+    theme === undefined ? 9 : xTickChromePx(theme.tickLength, theme.ticksX && guides.h.showTicks);
+  const bandOffset = xAxisBandTitleOffset(placements, tickChromePx);
+  const titleOffset = bandOffset > 0 ? bandOffset : DEFAULT_AXIS_TITLE_OFFSET;
+  const xTitleY = gridBottom + titleOffset;
+  const reportedGridHeight = Math.max(MAX_FACET_GRID_HEIGHT_PX + 1, Math.round(gridHeight));
+  // Match render-svg-format.ts `px()` 2-decimal rounding before integer rounding.
+  const reportedXTitleY = Math.round(Math.round(xTitleY * 100) / 100);
+
+  return {
+    code: "facet-grid-too-tall",
+    message:
+      `The facet grid is ${reportedGridHeight} px tall across ${rowCount} rows; ` +
+      `the x axis sits at y=${reportedXTitleY}, below the first ${MAX_FACET_GRID_HEIGHT_PX} px viewport. ` +
+      "Repeat the x axis on each row, reduce the rows, or split the chart.",
+  };
+}
+
 /**
  * Collect final-layout panel warnings. Invalid/degenerate viewports and
- * placements produce nothing; coordinate-constrained proportions are authored
- * and escape both checks, as does `theme.panelAspect: "free"`.
+ * placements produce nothing; coordinate-constrained proportions and
+ * `theme.panelAspect: "free"` escape aspect/share checks, while multi-row
+ * facet-grid height still warns.
  */
 export function collectPanelLayoutWarnings(input: PanelDiagnosticsInput): PipelineWarning[] {
-  if (input.suppressed || input.coordConstrained) return [];
   const { viewport } = input;
   const { placements } = input.panelLayout;
   if (!isFinitePositive(viewport.width) || !isFinitePositive(viewport.height)) return [];
@@ -154,7 +201,11 @@ export function collectPanelLayoutWarnings(input: PanelDiagnosticsInput): Pipeli
     if (!Number.isFinite(placement.x) || !Number.isFinite(placement.y)) return [];
   }
 
-  return [aspectWarning(input), shareWarning(input)].filter(
-    (warning): warning is PipelineWarning => warning !== null,
-  );
+  const candidates: (PipelineWarning | null)[] = [
+    ...(input.suppressed || input.coordConstrained
+      ? []
+      : [aspectWarning(input), shareWarning(input)]),
+    tallFacetGridWarning(input),
+  ];
+  return candidates.filter((warning): warning is PipelineWarning => warning !== null);
 }
