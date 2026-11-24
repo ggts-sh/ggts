@@ -203,8 +203,11 @@ function panelsOverlap(
 
 function isCleanFlippedOffset(label: LabelLayerInfo): boolean {
   if (label.dx !== undefined || label.nudgeX !== 0) return false;
-  if (label.anchor === "start") return (label.dy !== undefined && label.dy < 0) || label.nudgeY > 0;
-  return (label.dy !== undefined && label.dy > 0) || label.nudgeY < 0;
+  const dir = label.anchor === "start" ? 1 : -1;
+  // Under coord: flip, positive data-y (nudgeY > 0) and negative pixel dy (dy < 0) both shift +x.
+  const dyDir = label.dy === undefined ? 0 : -label.dy * dir;
+  const nudgeDir = label.nudgeY * dir;
+  return dyDir >= 0 && nudgeDir >= 0 && (dyDir > 0 || nudgeDir > 0);
 }
 
 function buildCartesianAdvisory(label: LabelLayerInfo, bar: BarLayerInfo): SpecAdvisory {
