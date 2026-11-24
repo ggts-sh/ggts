@@ -12386,6 +12386,11 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "line-over-period-totals-needs-data",
+        title: "line-over-period-totals (needs: data)",
+        level: 3,
+      },
+      {
         id: "pipeline-heuristic-advisories-ggts-sh-core",
         title: "Pipeline heuristic advisories (@ggts-sh/core)",
         level: 2,

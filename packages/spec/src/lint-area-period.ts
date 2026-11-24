@@ -1,16 +1,13 @@
 /**
- * Layer lint rule: area-over-period-totals (issue #1882) — an `area` layer
- * whose x sits on a regular calendar grid (year/quarter/month starts, or
- * integer years on a linear scale) while its y holds one total per period.
- * The area then invents slopes between period boundaries that hold no data.
- *
- * Two signals reach this rule: an interior gap in a series (a zero between
- * non-zeros, or a missing union-x there) fires on its own — gap evidence is
- * strong. The weaker "fewer than 30 distinct x" signal fires only when the
- * layer reads as per-period counts: every y is a non-negative integer and
- * some series decreases. A monotone series is cumulative-shaped, and
- * fractional or negative y is a rate or measurement; issue #1882 endorses
- * "a line or area of a cumulative or rate series", so those stay silent.
+ * Layer lint rules for per-period totals on regular calendar grids:
+ *  - area-over-period-totals (issue #1882): an `area` layer whose x sits on a
+ *    regular calendar grid (year/quarter/month starts, or integer years on a
+ *    linear scale) while its y holds one total per period. Two signals reach
+ *    this rule: an interior gap (fires on its own) or fewer than 30 distinct x
+ *    with non-negative jagged integer counts (`countsShaped`).
+ *  - line-over-period-totals (issue #1963): a `line` or `step` layer (with
+ *    identity/default stat) over the same regular grid with >= 8 distinct
+ *    periods (no upper cap) and `countsShaped` y values.
  *
  * Layer rules: lint-layer-rules.ts. Orchestrator: lint.ts.
  */
@@ -28,6 +25,8 @@ import { isRecord } from "./validate-structure-layer-shared.js";
 
 /** About 30 x values per the issue heuristic: too few to read as a surface. */
 const MAX_PERIOD_GRID_POINTS = 30;
+/** Minimum distinct periods for line/step per-period totals (no upper cap). */
+const MIN_LINE_PERIOD_GRID_POINTS = 8;
 /** Month indices a quarter-start grid may land on (Jan/Apr/Jul/Oct). */
 const QUARTER_START_MONTHS: ReadonlySet<number> = new Set([0, 3, 6, 9]);
 /**
@@ -37,11 +36,11 @@ const QUARTER_START_MONTHS: ReadonlySet<number> = new Set([0, 3, 6, 9]);
  */
 const INTEGER_YEAR_GRID_MAX = 2500;
 
-/** A regular period grid detected on an area layer's x column. */
-interface AreaGrid {
+/** A regular period grid detected on a layer's x column. */
+interface PeriodGrid {
   /** Grid name for advisory copy ("year grid", "integer-year grid"). */
   label: string;
-  /** What every x value is ("every value 1 January"). */
+  /** What every x value is ("every value is 1 January"). */
   detail: string;
   /** Epoch-ms (temporal) or the numeric year itself, per input index. */
   order: number[];
@@ -52,7 +51,7 @@ interface AreaGrid {
  * year/quarter/month start in UTC. DateTime values with non-midnight times
  * still pass when UTC month/day match.
  */
-function temporalGrid(values: readonly CellValue[], entry: FieldEvidenceEntry): AreaGrid | null {
+function temporalGrid(values: readonly CellValue[], entry: FieldEvidenceEntry): PeriodGrid | null {
   if (entry.temporal?.status !== "temporal") return null;
   const parsed = parseTemporalColumn(values);
   const order: number[] = [];
@@ -93,7 +92,7 @@ function numericGrid(
   values: readonly CellValue[],
   entry: FieldEvidenceEntry,
   scaleType: string | undefined,
-): AreaGrid | null {
+): PeriodGrid | null {
   if (entry.type !== "quantitative") return null;
   if (scaleType !== undefined && scaleType !== "linear") return null;
   const order: number[] = [];
@@ -207,8 +206,8 @@ function layerColumns(
 function resolveGrid(
   columns: LayerColumns,
   scaleType: string | undefined,
-  grids: Map<readonly CellValue[], AreaGrid | null>,
-): AreaGrid | null {
+  grids: Map<readonly CellValue[], PeriodGrid | null>,
+): PeriodGrid | null {
   const cached = grids.get(columns.xValues);
   if (cached !== undefined) return cached;
   const grid =
@@ -226,7 +225,7 @@ interface PeriodSeries {
   byGroup: Map<string, Map<number, number>>;
 }
 
-function periodSeries(columns: LayerColumns, grid: AreaGrid): PeriodSeries | null {
+function periodSeries(columns: LayerColumns, grid: PeriodGrid): PeriodSeries | null {
   const { xValues, yValues, groups } = columns;
   const rows: PeriodRow[] = [];
   const union = new Set<number>();
@@ -289,8 +288,8 @@ function hasInteriorGap(series: PeriodSeries): boolean {
   return false;
 }
 
-/** Advisory object for a layer whose x sits on `grid`. */
-function periodAdvisory(index: number, xField: string, grid: AreaGrid): SpecAdvisory {
+/** Advisory object for an `area` layer whose x sits on `grid`. */
+function areaPeriodAdvisory(index: number, xField: string, grid: PeriodGrid): SpecAdvisory {
   const catalog = LINT_CATALOG["area-over-period-totals"];
   return {
     code: "area-over-period-totals",
@@ -303,53 +302,121 @@ function periodAdvisory(index: number, xField: string, grid: AreaGrid): SpecAdvi
   };
 }
 
+/** Advisory object for a `line` or `step` layer plotting jagged period counts. */
+function linePeriodAdvisory(
+  index: number,
+  geom: "line" | "step",
+  xField: string,
+  grid: PeriodGrid,
+  periodCount: number,
+): SpecAdvisory {
+  return {
+    code: "line-over-period-totals",
+    path: `/layers/${index}/aes/x`,
+    message: `This ${geom} layer's x field "${xField}" is a regular ${grid.label} (${grid.detail}) across ${periodCount} periods with jagged integer counts — connecting per-period totals implies a continuous trend where each point is a discrete period flow.`,
+    suggestion: {
+      description:
+        'Plot the cumulative stock (or signed deltas) from the finest dated data; keep the per-period count only when the question is "how many were published this period", with the title saying so.',
+    },
+  };
+}
+
+interface PeriodContext {
+  columns: LayerColumns;
+  grid: PeriodGrid;
+  series: PeriodSeries;
+}
+
+function resolvePeriodContext(input: {
+  layer: Record<string, unknown>;
+  fields: FieldEvidenceMap;
+  plotAes: Aes | undefined;
+  scaleType: string | undefined;
+  grids: Map<readonly CellValue[], PeriodGrid | null>;
+}): PeriodContext | null {
+  const columns = layerColumns(input.layer, input.fields, input.plotAes);
+  if (columns === null) return null;
+  const grid = resolveGrid(columns, input.scaleType, input.grids);
+  if (grid === null) return null;
+  const series = periodSeries(columns, grid);
+  if (series === null) return null;
+  return { columns, grid, series };
+}
+
+function areaLayerAdvisory(index: number, ctx: PeriodContext): SpecAdvisory | null {
+  const { columns, grid, series } = ctx;
+  if (hasInteriorGap(series)) return areaPeriodAdvisory(index, columns.xField, grid);
+  if (series.keys.length >= MAX_PERIOD_GRID_POINTS) return null;
+  if (!countsShaped(series.rows, series.byGroup, series.keys)) return null;
+  return areaPeriodAdvisory(index, columns.xField, grid);
+}
+
+function lineLayerAdvisory(
+  index: number,
+  geom: "line" | "step",
+  ctx: PeriodContext,
+): SpecAdvisory | null {
+  const { columns, grid, series } = ctx;
+  if (series.keys.length < MIN_LINE_PERIOD_GRID_POINTS) return null;
+  if (!countsShaped(series.rows, series.byGroup, series.keys)) return null;
+  return linePeriodAdvisory(index, geom, columns.xField, grid, series.keys.length);
+}
+
+function isPeriodTargetGeom(geom: unknown): geom is "area" | "line" | "step" {
+  return geom === "area" || geom === "line" || geom === "step";
+}
+
+function readXScaleType(spec: Record<string, unknown>): string | undefined {
+  const scales = isRecord(spec["scales"]) ? spec["scales"] : undefined;
+  const xScale = isRecord(scales?.["x"]) ? scales["x"] : undefined;
+  return typeof xScale?.["type"] === "string" ? xScale["type"] : undefined;
+}
+
 function layerAdvisory(input: {
   index: number;
   layer: Record<string, unknown>;
   fields: FieldEvidenceMap;
   plotAes: Aes | undefined;
   scaleType: string | undefined;
-  grids: Map<readonly CellValue[], AreaGrid | null>;
+  grids: Map<readonly CellValue[], PeriodGrid | null>;
 }): SpecAdvisory | null {
-  const { index, layer, fields, plotAes, scaleType, grids } = input;
-  const columns = layerColumns(layer, fields, plotAes);
-  if (columns === null) return null;
-  const grid = resolveGrid(columns, scaleType, grids);
-  if (grid === null) return null;
-  const series = periodSeries(columns, grid);
-  if (series === null) return null;
-  if (hasInteriorGap(series)) return periodAdvisory(index, columns.xField, grid);
-  if (series.keys.length >= MAX_PERIOD_GRID_POINTS) return null;
-  if (!countsShaped(series.rows, series.byGroup, series.keys)) return null;
-  return periodAdvisory(index, columns.xField, grid);
+  const geom = input.layer["geom"];
+  if (!isPeriodTargetGeom(geom)) return null;
+  if (geom !== "area" && input.layer["stat"] !== undefined && input.layer["stat"] !== "identity") {
+    return null;
+  }
+  const ctx = resolvePeriodContext(input);
+  if (ctx === null) return null;
+  return geom === "area"
+    ? areaLayerAdvisory(input.index, ctx)
+    : lineLayerAdvisory(input.index, geom, ctx);
 }
 
 /**
- * Advisories for `area` layers stacking totals over a regular calendar grid.
- * Evidence is per layer (a layer's own data wins over the plot's); profile
- * evidence has no raw values, so those layers skip silently.
+ * Advisories for `area`, `line`, and `step` layers plotting per-period totals
+ * over a regular calendar grid. Evidence is per layer (a layer's own data wins
+ * over the plot's); profile evidence has no raw values, so those layers skip
+ * silently.
  */
-export function collectAreaPeriodAdvisories(
+export function collectPeriodTotalAdvisories(
   spec: Record<string, unknown>,
   layerEvidence: readonly (FieldEvidenceMap | null)[],
   plotEvidence: FieldEvidenceMap | null,
 ): SpecAdvisory[] {
   const layers = spec["layers"] as unknown[];
   if (!Array.isArray(layers)) return [];
-  if (!layers.some((layer) => isRecord(layer) && layer["geom"] === "area")) return [];
+  if (!layers.some((layer) => isRecord(layer) && isPeriodTargetGeom(layer["geom"]))) return [];
 
   const plotAes = isRecord(spec["aes"]) ? (spec["aes"] as Aes) : undefined;
-  const scales = isRecord(spec["scales"]) ? spec["scales"] : undefined;
-  const xScale = isRecord(scales?.["x"]) ? scales["x"] : undefined;
-  const scaleType = typeof xScale?.["type"] === "string" ? xScale["type"] : undefined;
-  // Several area layers often read one table; key on the values array (evidence
-  // is per layer, so a field name does not identify the same data).
-  const grids = new Map<readonly CellValue[], AreaGrid | null>();
+  const scaleType = readXScaleType(spec);
+  // Layers often read one table; key on the values array (evidence is per
+  // layer, so a field name does not identify the same data).
+  const grids = new Map<readonly CellValue[], PeriodGrid | null>();
 
   const advisories: SpecAdvisory[] = [];
   for (let index = 0; index < layers.length; index++) {
     const layer = layers[index];
-    if (!isRecord(layer) || layer["geom"] !== "area") continue;
+    if (!isRecord(layer)) continue;
     const fields = layerEvidence[index] ?? plotEvidence;
     if (fields === null || fields === undefined) continue;
     const advisory = layerAdvisory({ index, layer, fields, plotAes, scaleType, grids });
