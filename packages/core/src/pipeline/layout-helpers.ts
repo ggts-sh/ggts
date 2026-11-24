@@ -33,7 +33,33 @@ export const CAPTION_BAND = 14;
 export const AXIS_TITLE_BAND = 18;
 export const LEGEND_GAP = 12;
 export const LEGEND_EDGE_PAD = 2;
+export const DEFAULT_AXIS_TITLE_OFFSET = 32;
 const LEGEND_GAP_MIN = 4;
+
+export function xTickChromePx(tickLength: number, ticksVisible: boolean): number {
+  return (ticksVisible ? tickLength : 0) + 3;
+}
+
+export function xAxisBandTitleOffset(
+  placements: readonly {
+    showAxisX: boolean;
+    hGuidePlan?: { bandLabelMode?: string; bandLabelBandHeight?: number };
+  }[],
+  tickChromePx: number,
+): number {
+  const gap = 10;
+  return placements.reduce((max, placement) => {
+    const plan = placement.showAxisX ? placement.hGuidePlan : undefined;
+    if (
+      plan?.bandLabelMode === undefined ||
+      plan.bandLabelMode === "single-line" ||
+      plan.bandLabelBandHeight === undefined
+    ) {
+      return max;
+    }
+    return Math.max(max, tickChromePx + plan.bandLabelBandHeight + gap);
+  }, 0);
+}
 
 /**
  * Gap between the panel and a bottom legend. Compact plots reclaim vertical

@@ -9,7 +9,7 @@ import type { PositionScale } from "../scales/train.js";
 
 import type { FacetPanelDef } from "./facets.js";
 import { capSideStripLabel, isSideStrip } from "./facets-strip.js";
-import { axisTicks } from "./layout-helpers.js";
+import { axisTicks, xAxisBandTitleOffset } from "./layout-helpers.js";
 import type { PanelPlacement } from "./panel-layout.js";
 
 const PROJECTED_LABEL_GAP_PX = 4;
@@ -218,17 +218,7 @@ function assembleSceneAxes(input: {
   const firstX = input.scenePanels.find((p) => p.axisX !== null);
   const firstY = input.scenePanels.find((p) => p.axisY !== null);
   const gap = 10;
-  const bandTitleOffset = input.placements.reduce((max, placement) => {
-    const plan = placement.showAxisX ? placement.hGuidePlan : undefined;
-    if (
-      plan?.bandLabelMode === undefined ||
-      plan.bandLabelMode === "single-line" ||
-      plan.bandLabelBandHeight === undefined
-    ) {
-      return max;
-    }
-    return Math.max(max, input.tickChromePx + plan.bandLabelBandHeight + gap);
-  }, 0);
+  const bandTitleOffset = xAxisBandTitleOffset(input.placements, input.tickChromePx);
   const yLabelsVisible = input.yLabelsVisible !== false;
   let yLabelBandPx = 0;
   if (input.vTitle !== "" && yLabelsVisible) {

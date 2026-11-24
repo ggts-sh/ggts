@@ -12144,6 +12144,11 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "facet-grid-too-tall",
+        title: "facet-grid-too-tall",
+        level: 3,
+      },
+      {
         id: "stack-band-hidden",
         title: "stack-band-hidden",
         level: 3,

@@ -233,6 +233,10 @@ export const PIPELINE_WARNING_CATALOG = {
     summary:
       "The rendered panel grid takes less than half the plot height; title, axis, and guide chrome dominate the viewport.",
   },
+  "facet-grid-too-tall": {
+    summary:
+      "A multi-row facet grid exceeds 1200 px in height, placing the shared bottom x axis below the first viewport.",
+  },
   "stack-band-hidden": {
     // The "2 px" here mirrors MIN_STACK_BAND_PX in pipeline/stack-band-diagnostics.ts;
     // change both together (this catalog stays free of pipeline imports).

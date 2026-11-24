@@ -11,7 +11,7 @@ import type { FacetPanelDef } from "./facets.js";
 import type { AxisGuideAppearance } from "./guide-config.js";
 import type { PanelPlacement } from "./panel-layout.js";
 import { placeSceneLegends } from "./assemble-scene-legends.js";
-import { LEGEND_EDGE_PAD } from "./layout-helpers.js";
+import { LEGEND_EDGE_PAD, xTickChromePx } from "./layout-helpers.js";
 import { assembleScenePanels } from "./assemble-scene-panels.js";
 
 export interface AssembleSceneInput {
@@ -139,8 +139,8 @@ export function assembleScene(input: AssembleSceneInput): Scene {
   // Tick chrome between gridBottom and the first x-label line, matching the SVG
   // renderer's own offset so a custom (longer/hidden) tick theme keeps the
   // band-label axis title clear of the labels. Same idea for y (left of gridLeft).
-  const tickChromePx = (theme.ticksX && hGuide.showTicks ? theme.tickLength : 0) + 3;
-  const yTickChromePx = (theme.ticksY && vGuide.showTicks ? theme.tickLength : 0) + 3;
+  const tickChromePx = xTickChromePx(theme.tickLength, theme.ticksX && hGuide.showTicks);
+  const yTickChromePx = xTickChromePx(theme.tickLength, theme.ticksY && vGuide.showTicks);
   const { scenePanels, xAxis, yAxis } = assembleScenePanels({
     placements,
     facetPanels,
