@@ -20513,6 +20513,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["manual-palette-too-large (needs: spec)"],
   },
   {
+    id: "heading:guide-advisories:bar-end-label-offset-needs-spec",
+    kind: "heading",
+    title: "bar-end-label-offset (needs: spec)",
+    summary:
+      "bar-end-label-offset (needs: spec) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#bar-end-label-offset-needs-spec",
+    keywords: ["Advisories", "Reference"],
+    exact: ["bar-end-label-offset (needs: spec)"],
+  },
+  {
     id: "heading:guide-advisories:pipeline-heuristic-advisories-ggts-sh-core",
     kind: "heading",
     title: "Pipeline heuristic advisories (@ggts-sh/core)",
