@@ -15,6 +15,7 @@ describe("lintSpec never throws on schema-invalid scale entries", () => {
     const advisories = lintSpec({
       data: { columns: { x: [1, 2, -1], y: [1, 2, 3] } },
       aes: { x: { field: "x" }, y: { field: "y" } },
+      labs: { title: "Invalid scale guard", x: "x", y: "y" },
       layers: [{ geom: "point" }],
       scales: { y: null, x: "log" },
     });
@@ -44,20 +45,31 @@ describe("lintSpec accepts authoring-sugar string aes (issue #1896)", () => {
     ],
   };
 
+  const labs = { title: "String aes", x: "x", y: "y" };
+
   it("resolves a bare-string plot aes instead of throwing", () => {
-    const advisories = lintSpec({ data, aes: { x: "x", y: "y" }, layers: [{ geom: "line" }] });
+    const advisories = lintSpec({
+      data,
+      aes: { x: "x", y: "y" },
+      labs,
+      layers: [{ geom: "line" }],
+    });
     expect(codesOf(advisories)).toEqual(["line-over-nominal-x"]);
     expect(advisories[0]!.path).toBe("/layers/0/aes/x");
   });
 
   it("resolves a bare-string layer aes instead of throwing", () => {
-    const advisories = lintSpec({ data, layers: [{ geom: "line", aes: { x: "x", y: "y" } }] });
+    const advisories = lintSpec({
+      data,
+      labs,
+      layers: [{ geom: "line", aes: { x: "x", y: "y" } }],
+    });
     expect(codesOf(advisories)).toEqual(["line-over-nominal-x"]);
   });
 
   it("keeps the validate() schema error while still emitting lint advisories", () => {
     const result = validate(
-      { data, aes: { x: "x", y: "y" }, layers: [{ geom: "line" }] },
+      { data, aes: { x: "x", y: "y" }, labs, layers: [{ geom: "line" }] },
       { lint: true },
     );
     expect(result.ok).toBe(false);
@@ -77,6 +89,7 @@ describe("lintSpec advisory ordering across rule modules", () => {
         },
       },
       aes: { x: { field: "cat" }, y: { field: "y" } },
+      labs: { title: "Advisory order", x: "cat", y: "y" },
       layers: [{ geom: "line" }],
       scales: { y: { type: "log" } },
     });
@@ -96,6 +109,7 @@ describe("lintSpec options.limits", () => {
         },
       },
       aes: { x: { field: "x" }, y: { field: "y" } },
+      labs: { title: "Byte limit", x: "x", y: "y" },
       layers: [{ geom: "line" }],
     };
   };
@@ -132,6 +146,7 @@ describe("lintSpec options.limits", () => {
         },
       },
       aes: { x: { field: "x" }, y: { field: "y" } },
+      labs: { title: "Byte limit", x: "x", y: "y" },
       layers: [{ geom: "line" }],
     };
 
@@ -144,6 +159,7 @@ describe("validate({ lint: true }) wiring", () => {
   const questionable = {
     data: { columns: { x: ["a", "b", "c"], y: [1, 2, 3] } },
     aes: { x: { field: "x" }, y: { field: "y" } },
+    labs: { title: "Validate lint wiring", x: "x", y: "y" },
     layers: [{ geom: "line", stat: "identity", position: "identity" }],
   };
 
@@ -187,6 +203,7 @@ describe("validate({ lint: true }) wiring", () => {
     const spec = {
       data: { values: rows },
       aes: { x: { field: "x" }, y: { field: "y" } },
+      labs: { title: "Single row pass", x: "x", y: "y" },
       layers: [{ geom: "line", stat: "identity", position: "identity" }],
     };
 

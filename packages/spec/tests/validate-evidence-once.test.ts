@@ -77,6 +77,7 @@ describe("tier 2 — single field-evidence pass", () => {
     const result = validate(
       {
         data: { columns: { x: plotX, y: plotY } },
+        labs: { title: "Aggregate limit", x: "x", y: "y" },
         layers: [
           {
             geom: "area",
@@ -99,6 +100,7 @@ describe("tier 2 — single field-evidence pass", () => {
   it("layer-only inline data keeps plot-scoped lint without layer values", () => {
     const result = validate(
       {
+        labs: { title: "Layer-only data", x: "x", y: "y" },
         layers: [
           {
             geom: "area",

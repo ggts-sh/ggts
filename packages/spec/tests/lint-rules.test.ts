@@ -9,6 +9,7 @@ describe("line-over-nominal-x", () => {
   const spec = (x: unknown[]) => ({
     data: { columns: { x, y: [1, 2, 3] } },
     aes: { x: { field: "x" }, y: { field: "y" } },
+    labs: { title: "Line series", x: "x", y: "y" },
     layers: [{ geom: "line" }],
   });
 
@@ -60,6 +61,7 @@ describe("discrete-discrete-scatter", () => {
   const spec = (position?: string) => ({
     data: { columns: { a: ["x", "y", "x"], b: ["u", "u", "v"] } },
     aes: { x: { field: "a" }, y: { field: "b" } },
+    labs: { title: "Discrete scatter", x: "a", y: "b" },
     layers: [{ geom: "point", ...(position !== undefined && { position }) }],
   });
 
@@ -74,6 +76,7 @@ describe("discrete-discrete-scatter", () => {
     const continuous = {
       data: { columns: { a: ["x", "y", "x"], b: [1, 2, 3] } },
       aes: { x: { field: "a" }, y: { field: "b" } },
+      labs: { title: "Mixed scatter", x: "a", y: "b" },
       layers: [{ geom: "point" }],
     };
     expect(lintSpec(continuous)).toEqual([]);
@@ -84,6 +87,7 @@ describe("stacked-area-negative", () => {
   const spec = (y: number[], position?: string) => ({
     data: { columns: { x: [1, 2, 3], y, g: ["a", "b", "a"] } },
     aes: { x: { field: "x" }, y: { field: "y" }, fill: { field: "g" } },
+    labs: { title: "Stacked area", x: "x", y: "y" },
     layers: [{ geom: "area", ...(position !== undefined && { position }) }],
   });
 
@@ -116,6 +120,7 @@ describe("stacked-area-negative", () => {
     const advisories = lintSpec({
       data: { columns: { x: [1, 2, 3], y: [1, 2, 3], g: ["a", "b", "a"] } },
       aes: { x: { field: "x" }, y: { field: "y" }, fill: { field: "g" } },
+      labs: { title: "Positive stacked area", x: "x", y: "y" },
       layers: [{ geom: "area" }, { geom: "area", position: "fill" }],
     });
     expect(advisories).toEqual([]);
@@ -145,6 +150,7 @@ describe("stacked-area-negative", () => {
     const advisories = lintSpec({
       data: { columns: { x: [1, 2, 3], y: [1, 2, 3], g: ["a", "b", "a"] } },
       aes: { x: { field: "x" }, y: { field: "y" }, fill: { field: "g" } },
+      labs: { title: "Plot-scoped area", x: "x", y: "y" },
       layers: [{ geom: "area", data: { columns: { y: [-1, -2, -3] } } }],
     });
     expect(advisories).toEqual([]);
@@ -165,6 +171,7 @@ describe("many-discrete-colors", () => {
   const spec = (n: number) => ({
     data: { columns: { x: categories(n).map((_, i) => i), g: categories(n) } },
     aes: { x: { field: "x" }, y: { field: "x" }, color: { field: "g" } },
+    labs: { title: "Color palette", x: "x", y: "x" },
     layers: [{ geom: "point" }],
   });
 
@@ -216,6 +223,7 @@ describe("transform-domain-data", () => {
   const spec = (y: number[], scaleY: Record<string, unknown>) => ({
     data: { columns: { x: y.map((_, i) => i + 1), y } },
     aes: { x: { field: "x" }, y: { field: "y" } },
+    labs: { title: "Transform scale", x: "x", y: "y" },
     layers: [{ geom: "point" }],
     scales: { y: scaleY },
   });
@@ -259,6 +267,7 @@ describe("transform-domain-data", () => {
     const advisories = lintSpec({
       data: { columns: { x: [1, 2, 3, 4], y: [5, -1, 0, 10] } },
       aes: { x: { field: "x" }, y: { field: "y" } },
+      labs: { title: "Shared transform", x: "x", y: "y" },
       scales: { y: { type: "log" } },
       layers: [{ geom: "point" }, { geom: "line" }, { geom: "smooth" }],
     });
@@ -273,6 +282,7 @@ describe("transform-domain-data", () => {
     const advisories = lintSpec({
       data: { columns: { x: [1, 2, 3], y: [4, -4, 9] } },
       aes: { x: { field: "x" }, y: { field: "y" } },
+      labs: { title: "Plot aes transform", x: "x", y: "y" },
       scales: { y: { type: "linear", transform: "sqrt" } },
       // Layer aes omit y so effectiveChannel falls back to plot aes.
       layers: [{ geom: "point" }, { geom: "line", aes: { x: { field: "x" } } }],
@@ -291,6 +301,7 @@ describe("transform-domain-data", () => {
           x: [1, 2, 3],
         },
       },
+      labs: { title: "Ordered transform", x: "x", y: "early" },
       scales: { y: { type: "log" } },
       layers: [
         { geom: "point", aes: { x: { field: "x" }, y: { field: "early" } } },

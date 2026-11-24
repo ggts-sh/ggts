@@ -2,7 +2,7 @@
  * Spec lint-advisory catalog — pure data for docs and code identity.
  * Runtime SpecAdvisory instances and lintSpec() live in lint.ts;
  * Rule emission sites: lint-layer-rules.ts, lint-scale-rules.ts, lint-node-link.ts,
- * lint-area-period.ts.
+ * lint-area-period.ts, lint-labs-rules.ts.
  */
 
 /** One entry of the lint catalog (docs render straight from it). */
@@ -72,6 +72,12 @@ export const LINT_CATALOG = {
     needs: "data",
     rationale:
       "A line over a per-period total invites a trend reading, but a total per period is a flow, not a stock. Plot the cumulative stock or signed deltas when the chart asks how much is in force; label a per-period count as such.",
+  },
+  "missing-chart-title": {
+    summary: "A chart with a subtitle or layer data has no labs.title.",
+    needs: "spec",
+    rationale:
+      "A title states the chart's message. A subtitle without a title leaves the chart unnamed, and a heading outside the spec is host chrome that is not part of the chart.",
   },
 } as const satisfies Record<string, LintCatalogEntry>;
 

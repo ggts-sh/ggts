@@ -29,6 +29,7 @@
  *    fractional-calendar-years (year+month/12 linear pitfall)
  *  - lint-node-link.ts — cross-layer, panel-local endpoint matching
  *  - lint-area-period.ts — area/line/step layers over totals on a regular period grid
+ *  - lint-labs-rules.ts — labs title/label completeness rules
  *
  * Wired into `validate(spec, { lint: true })` (advisories ride the result)
  * and into the `ggts render` CLI (stderr JSON lines, kind "advisory",
@@ -48,6 +49,7 @@ import { collectLayerLintAdvisories } from "./lint-layer-rules.js";
 import { collectScaleLintAdvisories } from "./lint-scale-rules.js";
 import { collectNodeLinkAdvisories } from "./lint-node-link.js";
 import { collectPeriodTotalAdvisories } from "./lint-area-period.js";
+import { collectLabsLintAdvisories } from "./lint-labs-rules.js";
 
 export { LINT_CATALOG, type LintAdvisoryCode, type LintCatalogEntry } from "./lint-catalog.js";
 
@@ -132,5 +134,6 @@ export function lintSpec(
           ...collectNodeLinkAdvisories(spec, layerEvidence, evidence),
           ...collectPeriodTotalAdvisories(spec, layerEvidence, evidence),
         ]),
+    ...collectLabsLintAdvisories(spec),
   ];
 }
