@@ -2,6 +2,7 @@
 import { describe, expect, it } from "bun:test";
 
 import { lintSpec, type SpecAdvisory } from "../src/lint.ts";
+import { validate } from "../src/validate.ts";
 
 const CODE = "area-over-period-totals";
 
@@ -410,5 +411,30 @@ describe("area-over-period-totals", () => {
       n: index === 4 ? 0 : index - 5,
     }));
     expect(codesOf(lintSpec(singleSeries(rows)))).toContain(CODE);
+  });
+
+  it("stays silent on an area layer with unresolved runtime data alongside period-total plot data", () => {
+    const spec = {
+      labs: { title: "Period totals", x: "Year", y: "Count" },
+      data: { values: reproRows() },
+      layers: [
+        { geom: "col", aes: { x: { field: "year" }, y: { field: "n" } } },
+        {
+          geom: "area",
+          position: "stack",
+          data: { name: "runtime_tbl" },
+          aes: {
+            x: { field: "year" },
+            y: { field: "n" },
+            fill: { field: "group" },
+            group: { field: "group" },
+          },
+        },
+      ],
+    };
+    expect(codesOf(lintSpec(spec))).not.toContain(CODE);
+    const validated = validate(spec, { lint: true });
+    expect(validated.ok).toBe(true);
+    expect(codesOf(validated.advisories ?? [])).not.toContain(CODE);
   });
 });

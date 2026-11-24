@@ -417,7 +417,7 @@ export function collectPeriodTotalAdvisories(
   for (let index = 0; index < layers.length; index++) {
     const layer = layers[index];
     if (!isRecord(layer)) continue;
-    const fields = layerEvidence[index] ?? plotEvidence;
+    const fields = index < layerEvidence.length ? layerEvidence[index] : plotEvidence;
     if (fields === null || fields === undefined) continue;
     const advisory = layerAdvisory({ index, layer, fields, plotAes, scaleType, grids });
     if (advisory !== null) advisories.push(advisory);
