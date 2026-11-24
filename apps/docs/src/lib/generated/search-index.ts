@@ -20453,6 +20453,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["area-over-period-totals (needs: data)"],
   },
   {
+    id: "heading:guide-advisories:line-over-period-totals-needs-data",
+    kind: "heading",
+    title: "line-over-period-totals (needs: data)",
+    summary:
+      "line-over-period-totals (needs: data) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#line-over-period-totals-needs-data",
+    keywords: ["Advisories", "Reference"],
+    exact: ["line-over-period-totals (needs: data)"],
+  },
+  {
     id: "heading:guide-advisories:pipeline-heuristic-advisories-ggts-sh-core",
     kind: "heading",
     title: "Pipeline heuristic advisories (@ggts-sh/core)",

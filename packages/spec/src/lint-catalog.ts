@@ -66,6 +66,13 @@ export const LINT_CATALOG = {
     rationale:
       'An area interpolates between x values, but a total per period has no value between periods. Use `col` with `position: "stack"` for totals per period, or a `line` or `area` of a cumulative or rate series.',
   },
+  "line-over-period-totals": {
+    summary:
+      "A line or step layer's x sits on a regular calendar grid (year/quarter/month starts or integer years) with >= 8 periods and jagged integer counts.",
+    needs: "data",
+    rationale:
+      "A line over a per-period total invites a trend reading, but a total per period is a flow, not a stock. Plot the cumulative stock or signed deltas when the chart asks how much is in force; label a per-period count as such.",
+  },
 } as const satisfies Record<string, LintCatalogEntry>;
 
 export type LintAdvisoryCode = keyof typeof LINT_CATALOG;
