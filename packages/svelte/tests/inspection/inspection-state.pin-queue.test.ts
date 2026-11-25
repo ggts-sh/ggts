@@ -4,8 +4,9 @@
 import { flushSync } from "svelte";
 import { describe, expect, it } from "vitest";
 
-import type { CandidateFacts, CellValue } from "@ggts-sh/core";
+import { runPipeline, type CandidateFacts, type CellValue } from "@ggts-sh/core";
 
+import { reactiveBox } from "../helpers/reactive-box.svelte.js";
 import type { PlotInspection } from "../../src/lib/interaction/interaction.js";
 import {
   candidateHit,
@@ -49,6 +50,45 @@ describe("createInspectionState presentationFocus (#1080)", () => {
 });
 
 describe("createInspectionState setInspection", () => {
+  it("keeps panel bounds stable across distinct inspections in the same panel", () => {
+    const spec = continuousSpec();
+    const model = modelFor(spec);
+    const modelBox = reactiveBox(model);
+    const { state, destroy } = mountInspectionController({ model: () => modelBox.value });
+    const first = model.candidates.candidate(0);
+    const second = model.candidates.candidate(1);
+
+    try {
+      if (first === null || second === null) throw new Error("expected two candidates");
+      expect(first.panelId).toBe(second.panelId);
+
+      state.setInspection(first, "pointer", "transient", "exact");
+      flushSync();
+      const panel = state.inspectionPanel;
+      if (panel === null) throw new Error("expected inspection panel bounds");
+      expect(panel.id).toBe(first.panelId);
+
+      state.setInspection(second, "pointer", "transient", "exact");
+      flushSync();
+      expect(state.inspection?.focus.anchor).toEqual({ x: second.x, y: second.y });
+      expect(state.inspectionPanel).toBe(panel);
+
+      state.toggleInspectionPin("pointer");
+      const widerModel = runPipeline(spec, { width: 480, height: 260 });
+      modelBox.set(widerModel);
+      flushSync();
+      expect(state.inspection?.state).toBe("pinned");
+      expect(state.inspectionPanel?.id).toBe(panel.id);
+      expect(state.inspectionPanel?.width).toBeGreaterThan(panel.width);
+
+      state.dismissInspection("close", "pointer");
+      flushSync();
+      expect(state.inspectionPanel).toBeNull();
+    } finally {
+      destroy();
+    }
+  });
+
   it("applies a transient snapshot and gates re-emits by fingerprint", () => {
     const model = modelFor(continuousSpec());
     const events: PlotInspection<Record<string, CellValue>>[] = [];
