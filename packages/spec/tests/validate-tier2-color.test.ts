@@ -44,13 +44,10 @@ describe("tier 2 — color scale data-aware validation", () => {
       readShared.mockRestore();
     }
 
-    expect(errors).toEqual([
-      expect.objectContaining({
-        code: "color-manual-domain-range",
-        path: "/scales/color",
-        message: expect.stringContaining("at least 5 known domain values"),
-      }),
-    ]);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]?.code).toBe("color-manual-domain-range");
+    expect(errors[0]?.path).toBe("/scales/color");
+    expect(errors[0]?.message).toContain("at least 5 known domain values");
     expect(iterations).toBe(1);
   });
 
