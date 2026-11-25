@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
 import { scenarioSpec } from "./adapters/ggsvelte-svg";
+import { createScatterAligner } from "./adapters/uplot";
 
 import {
   CASES,
@@ -13,6 +14,51 @@ import {
   makeStackedBars,
   perturbForUpdate,
 } from "./scenarios";
+
+describe("uPlot scatter alignment", () => {
+  test("keeps ties stable and refreshes the order when x changes in place", () => {
+    const align = createScatterAligner();
+    const x = [3, 1, 1, 2];
+    const y = [30, 10, 11, 20];
+    const first = align({ x, y });
+    const refreshed = align({ x: x.slice(), y });
+    expect(first).toEqual([
+      [1, 1, 2, 3],
+      [10, 11, 20, 30],
+    ]);
+    expect(refreshed).toEqual(first);
+    expect(refreshed[0]).not.toBe(first[0]);
+    expect(refreshed[1]).not.toBe(first[1]);
+
+    x[1] = 4;
+    expect(align({ x, y })).toEqual([
+      [1, 2, 3, 4],
+      [11, 20, 30, 10],
+    ]);
+    x[0] = -5;
+    expect(align({ x, y })).toEqual([
+      [-5, 1, 2, 4],
+      [30, 11, 20, 10],
+    ]);
+    expect(align({ x: [2, 1], y: [20, 10] })).toEqual([
+      [1, 2],
+      [10, 20],
+    ]);
+  });
+
+  test("refreshes the order when a previously empty x slot is filled", () => {
+    const align = createScatterAligner();
+    const x = [3];
+    x[2] = 2;
+    const y = [30, 10, 20];
+    align({ x, y });
+    x[1] = 1;
+    expect(align({ x, y })).toEqual([
+      [1, 2, 3],
+      [10, 20, 30],
+    ]);
+  });
+});
 
 describe("competitive scenario catalog", () => {
   test("has multiple geom families (not just scatter)", () => {

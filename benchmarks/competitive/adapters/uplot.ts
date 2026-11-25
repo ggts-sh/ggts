@@ -41,6 +41,24 @@ function seriesFromLong(data: SeriesColumns): {
   return { xs, ys, names };
 }
 
+export function createScatterAligner() {
+  let cached: { x: number[]; order: number[] } | undefined;
+  return ({ x, y }: Pick<ScatterColumns, "x" | "y">): uPlot.AlignedData => {
+    if (
+      cached === undefined ||
+      cached.x.length !== x.length ||
+      !cached.x.every((value, index) => Object.is(value, x[index]))
+    ) {
+      // Snapshot x so a later in-place edit invalidates the order.
+      cached = {
+        x: [...x],
+        order: Array.from({ length: x.length }, (_, i) => i).toSorted((a, b) => x[a]! - x[b]!),
+      };
+    }
+    return [cached.order.map((i) => x[i]!), cached.order.map((i) => y[i]!)];
+  };
+}
+
 export function mountUplot(
   scenario: ScenarioId,
   data: ScatterColumns | SeriesColumns,
@@ -48,15 +66,8 @@ export function mountUplot(
 ): { markHint: number; handle: UPlotHandle } {
   root.replaceChildren();
   if (scenario === "scatter-color") {
-    // uPlot requires data[0] (x) sorted ascending; it takes x-domain from first/last
-    // samples. Sort outside the timed region would need harness changes — sort here
-    // so paint cost still covers all N markers (not an off-canvas empty chart).
-    const aligned = (d: ScatterColumns): uPlot.AlignedData => {
-      const order = Array.from({ length: d.x.length }, (_, i) => i).toSorted(
-        (a, b) => d.x[a]! - d.x[b]!,
-      );
-      return [order.map((i) => d.x[i]!), order.map((i) => d.y[i]!)];
-    };
+    // uPlot reads the x domain from the first and last samples.
+    const aligned = createScatterAligner();
     const scatter = data as ScatterColumns;
     // uPlot is not a scatter specialist; plot as points with one series of x/y.
     // Fairness: still a cold canvas chart with N markers.
