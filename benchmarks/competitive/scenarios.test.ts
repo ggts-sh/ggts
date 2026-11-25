@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
+import { pivotStackedBars } from "./adapters/bar-columns";
 import { scatterPointsByClass } from "./adapters/echarts";
 import { scenarioSpec } from "./adapters/ggsvelte-svg";
 import { createScatterAligner, seriesFromLong as alignUplotSeries } from "./adapters/uplot";
@@ -15,6 +16,24 @@ import {
   makeStackedBars,
   perturbForUpdate,
 } from "./scenarios";
+
+test("D3 and LayerCake bar rows retain their encounter order and last value", () => {
+  const category = ["b", "a", "a", "b", "c", "missing"];
+  const stack = ["z", "q", "q", "category", "z", "missing", "tail"];
+  delete category[5];
+  delete stack[5];
+
+  expect<unknown>(pivotStackedBars({ category, stack, value: [1, 2, 3, 4, 5, 6] })).toStrictEqual({
+    categories: ["b", "a", "c", undefined],
+    stacks: ["z", "q", "category", undefined, "tail"],
+    wide: [
+      { category: 4, z: 1 },
+      { category: "a", q: 3 },
+      { category: "c", z: 5 },
+      { category: undefined, undefined: 6 },
+    ],
+  });
+});
 
 test("ECharts scatter keeps class order, empty classes and the order of present points", () => {
   const x = [0, 10, 20, 30, 40, 50];

@@ -26,6 +26,7 @@ import {
   type ScenarioId,
   type SeriesColumns,
 } from "../scenarios";
+import { pivotStackedBars } from "./bar-columns";
 
 type UpdateColumns = ScatterColumns | SeriesColumns | BarsColumns;
 
@@ -70,15 +71,7 @@ function buildSeriesRows(seriesData: SeriesColumns): SeriesRow[] {
  * line path's color Map).
  */
 function buildBarRows(bars: BarsColumns): BarRow[] {
-  const categories = [...new Set(bars.category)];
-  const stacks = [...new Set(bars.stack)];
-  const wide = categories.map((cat) => {
-    const row: Record<string, string | number> = { category: cat };
-    for (let i = 0; i < bars.category.length; i++) {
-      if (bars.category[i] === cat) row[bars.stack[i]!] = bars.value[i]!;
-    }
-    return row;
-  });
+  const { categories, stacks, wide } = pivotStackedBars(bars);
   const layers = d3Stack<Record<string, string | number>>().keys(stacks)(wide);
   return layers.flatMap((layer, s) =>
     layer.map((d, i) => ({
