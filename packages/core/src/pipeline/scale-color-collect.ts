@@ -113,13 +113,7 @@ function addCatalogValue(
   // Monomorphic strings (series labels): Set membership on the string
   // itself — encodeKey for plain strings is identity, but the call +
   // startsWith("@") check still costs at 30k cells.
-  if (typeof value === "string" && !value.startsWith("@")) {
-    if (catalogKeys.has(value)) return;
-    catalogKeys.add(value);
-    catalogValues.push(value);
-    return;
-  }
-  const key = encodeKey(value);
+  const key = typeof value === "string" && !value.startsWith("@") ? value : encodeKey(value);
   if (catalogKeys.has(key)) return;
   catalogKeys.add(key);
   catalogValues.push(value);
@@ -133,13 +127,7 @@ function addCatalogValues(
   // Keep the selected non-run loop self-contained so the JIT can optimize it
   // independently from the run-aware loop below.
   for (const value of values) {
-    if (typeof value === "string" && !value.startsWith("@")) {
-      if (catalogKeys.has(value)) continue;
-      catalogKeys.add(value);
-      catalogValues.push(value);
-      continue;
-    }
-    const key = encodeKey(value);
+    const key = typeof value === "string" && !value.startsWith("@") ? value : encodeKey(value);
     if (catalogKeys.has(key)) continue;
     catalogKeys.add(key);
     catalogValues.push(value);
@@ -168,18 +156,15 @@ function addStringRunCatalogValues(
 ): void {
   let previousString: string | undefined;
   for (const value of values) {
+    let key: string;
     if (typeof value === "string") {
       if (value === previousString) continue;
       previousString = value;
-      const key = value.startsWith("@") ? encodeKey(value) : value;
-      if (catalogKeys.has(key)) continue;
-      catalogKeys.add(key);
-      catalogValues.push(value);
-      continue;
+      key = value.startsWith("@") ? encodeKey(value) : value;
     } else {
       previousString = undefined;
+      key = encodeKey(value);
     }
-    const key = encodeKey(value);
     if (catalogKeys.has(key)) continue;
     catalogKeys.add(key);
     catalogValues.push(value);
@@ -195,6 +180,7 @@ export function collectColorCatalogValues(
   name: "color" | "fill",
   bindings: readonly LayerBinding[],
   catalogTable: ColumnTable,
+  walkCatalog = true,
 ): CollectedColorCatalog {
   const catalogValues: CellValue[] = [];
   const catalogKeys = new Set<string>();
@@ -207,20 +193,22 @@ export function collectColorCatalogValues(
     if (channel.field !== null && table.has(channel.field)) {
       anyField = true;
       if (table.discreteness(channel.field) === "discrete") anyDiscreteField = true;
-      const values = table.column(channel.field);
-      // Select the run-aware loop only when evenly spaced samples show that
-      // three-value string runs dominate; interleaved categories retain the
-      // standard catalog loop.
-      if (hasDenseStringRuns(values)) {
-        addStringRunCatalogValues(values, catalogValues, catalogKeys);
-      } else {
-        addCatalogValues(values, catalogValues, catalogKeys);
+      if (walkCatalog) {
+        const values = table.column(channel.field);
+        // Select the run-aware loop only when evenly spaced samples show that
+        // three-value string runs dominate; interleaved categories retain the
+        // standard catalog loop.
+        if (hasDenseStringRuns(values)) {
+          addStringRunCatalogValues(values, catalogValues, catalogKeys);
+        } else {
+          addCatalogValues(values, catalogValues, catalogKeys);
+        }
       }
     }
     if (channel.scaledConstant !== null) {
       anyDiscreteField = true;
       anyField = true;
-      addCatalogValue(catalogValues, catalogKeys, channel.scaledConstant);
+      if (walkCatalog) addCatalogValue(catalogValues, catalogKeys, channel.scaledConstant);
     }
   }
   return { catalogValues, anyDiscreteField, anyField };

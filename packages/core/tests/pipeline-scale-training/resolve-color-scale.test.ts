@@ -1,7 +1,7 @@
 /**
  * resolveColorScale characterization.
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { resolveColorScale } from "../../src/pipeline/scale-color.ts";
 import { EDITION_DEFAULTS } from "../../src/editions.ts";
@@ -63,11 +63,14 @@ describe("resolveColorScale", () => {
     expect(advisories.some((a) => a.code === "palette-inferred")).toBe(true);
   });
 
-  it("trains a sequential color scale for continuous fields", () => {
+  it("trains sequential color without reading the unfiltered catalog", () => {
     const table = ColumnTable.fromRows([
       { x: 1, y: 10, z: 0.1 },
       { x: 2, y: 20, z: 0.9 },
     ]);
+    const source = ColumnTable.fromColumns({ z: [0.1, 0.9, 3.5] });
+    source.discreteness("z");
+    const sourceColumn = spyOn(source, "column");
     const frame = pointFrame(table);
     frame.binding.color.field = "z";
     frame.colorValues = table.column("z");
@@ -77,9 +80,9 @@ describe("resolveColorScale", () => {
     const result = resolveColorScale(
       "color",
       [frame],
-      [],
+      [frame.binding],
       table,
-      table,
+      source,
       undefined,
       null,
       "z",
@@ -91,6 +94,35 @@ describe("resolveColorScale", () => {
     expect(result.legendInput?.kind).toBe("ramp");
     expect(result.state).toBeNull();
     expect(advisories.some((a) => a.code === "palette-inferred")).toBe(true);
+    expect(sourceColumn).not.toHaveBeenCalled();
+  });
+
+  it("recovers inferred ordinal color from one source walk when no frames remain", () => {
+    const table = ColumnTable.fromRows([{ x: 1, y: 10, z: "second" }]);
+    const source = ColumnTable.fromColumns({ z: ["second", "first", "second", "third"] });
+    source.discreteness("z");
+    const sourceColumn = spyOn(source, "column");
+    const { binding } = pointFrame(table);
+    binding.color.field = "z";
+
+    const result = resolveColorScale(
+      "color",
+      [],
+      [binding],
+      table,
+      source,
+      undefined,
+      null,
+      "z",
+      [],
+      [],
+      Object.values(EDITION_DEFAULTS)[0]!,
+    );
+
+    const legend = result.legendInput;
+    if (legend?.kind !== "discrete") throw new Error("expected an ordinal color legend");
+    expect(legend.domain).toEqual(["second", "first", "third"]);
+    expect(sourceColumn).toHaveBeenCalledTimes(1);
   });
 
   it("honors explicit ordinal type over continuous field inference", () => {
