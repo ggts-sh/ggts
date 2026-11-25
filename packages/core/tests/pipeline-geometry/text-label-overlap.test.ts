@@ -172,7 +172,10 @@ describe("checkTextLabelOverlap", () => {
       { withBox, checkOverlap, width: WIDTH, height: HEIGHT, clip },
       warnings,
     );
-    return { rows: Array.from(batch.rowIndex).join(","), warnings: warnings.map((w) => w.message) };
+    return {
+      rows: Array.from(batch.rowIndex).join(","),
+      warnings: warnings.map((w) => w.message),
+    };
   }
 
   it("counts a kept label that only a dropped label with a lower index touches", () => {
@@ -184,6 +187,31 @@ describe("checkTextLabelOverlap", () => {
     ];
     expect(run(labels, false).warnings[0]).toMatch(/^3 labels overlap/);
     expect(run(labels, true).rows).toBe("0,2");
+  });
+
+  it("preserves warning counts and draw order in a large unclipped batch", () => {
+    const labels = [
+      { x: 100, y: 100, width: 20, height: 10 },
+      { x: 125, y: 100, width: 40, height: 10 },
+      { x: 150, y: 100, width: 20, height: 10 },
+      ...Array.from({ length: 1_024 }, (_, index) => ({
+        x: 1_000 + 64 * index,
+        y: 100,
+        width: 20,
+        height: 10,
+      })),
+      { x: -1e9, y: -1e9, width: 20, height: 10 },
+      { x: 1e9, y: 1e9, width: 20, height: 10 },
+    ];
+    const rows = labels.map((_, index) => index);
+    const warned = run(labels, false, false);
+    expect(warned.warnings).toHaveLength(1);
+    expect(warned.warnings[0]).toMatch(/^3 labels overlap/);
+    expect(warned.rows).toBe(rows.join(","));
+    expect(run(labels, true, false)).toEqual({
+      rows: rows.filter((row) => row !== 1).join(","),
+      warnings: [],
+    });
   });
 
   it("does not count labels whose boxes only share an edge", () => {
@@ -199,6 +227,20 @@ describe("checkTextLabelOverlap", () => {
     let state = seed;
     return () => (state = (Math.imul(state, 1664525) + 1013904223) >>> 0) / 2 ** 32;
   }
+
+  it("keeps an unusually wide label from crowding separated labels into one cell", () => {
+    const labels = Array.from({ length: 64_000 }, (_, i) => ({
+      x: i * 24,
+      y: 0,
+      width: 20,
+      height: 10,
+    }));
+    labels.push({ x: 768_000, y: 100, width: 1_536_000, height: 10 });
+    const started = performance.now();
+    const result = run(labels, false, false);
+    expect(performance.now() - started).toBeLessThan(500);
+    expect(result.warnings).toEqual([]);
+  }, 30_000);
 
   const COUNT = 80;
   const LAYOUTS: Record<string, () => Label[]> = {
@@ -236,7 +278,13 @@ describe("checkTextLabelOverlap", () => {
         height: 6,
       })),
     ],
-    identical: () => Array.from({ length: COUNT }, () => ({ x: 50, y: 50, width: 20, height: 10 })),
+    identical: () =>
+      Array.from({ length: COUNT }, () => ({
+        x: 50,
+        y: 50,
+        width: 20,
+        height: 10,
+      })),
     "outside the panel": () => {
       const next = seeded(7);
       return Array.from({ length: COUNT }, () => ({
@@ -307,17 +355,24 @@ describe("checkTextLabelOverlap", () => {
     expect(performance.now() - started).toBeLessThan(500);
   }, 30_000);
 
-  it("does not compare every pair of one long row with clip off", () => {
-    // Bands across the row take about 7 s here; bands along it take about 10 ms.
-    const next = seeded(19);
-    const labels = Array.from({ length: 64_000 }, () => ({
-      x: next() * 1e6,
-      y: 100,
-      width: 10,
-      height: 10,
-    }));
-    const started = performance.now();
-    run(labels, false, false);
-    expect(performance.now() - started).toBeLessThan(500);
-  }, 30_000);
+  it.each([
+    ["far perpendicular outlier", 0, true],
+    ["large x offset", 1e9, false],
+  ] as const)(
+    "bounds long unclipped row work with a %s",
+    (_name, offset, outlier) => {
+      const next = seeded(19);
+      const labels = Array.from({ length: 64_000 }, () => ({
+        x: offset + next() * 1e6,
+        y: 100,
+        width: 10,
+        height: 10,
+      }));
+      if (outlier) labels.push({ x: 0, y: 1e9, width: 10, height: 10 });
+      const started = performance.now();
+      run(labels, false, false);
+      expect(performance.now() - started).toBeLessThan(500);
+    },
+    30_000,
+  );
 });

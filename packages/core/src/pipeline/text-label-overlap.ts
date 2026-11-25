@@ -19,7 +19,11 @@ export function checkTextLabelOverlap(
   const n = batch.texts.length;
   if (n < 2) return;
   const boxes = glyphBounds(batch, options);
-  const bands = createLabelBands(boxes, n);
+  const x = measureLabelAxis(boxes, n, 0);
+  const y = measureLabelAxis(boxes, n, 1);
+  const bandAxis = x.count > y.count ? x : y;
+  const grid = !options.clip && n >= 1_024 ? createLabelGrid(boxes, n, x, y) : null;
+  const bands = grid ?? createLabelBands(boxes, bandAxis);
   const overlapping = new Uint8Array(n);
   const dropped: number[] = [];
   let count = 0;
@@ -64,38 +68,52 @@ function boxesOverlap(boxes: Float64Array, i: number, j: number): boolean {
   );
 }
 
+function measureLabelAxis(boxes: Float64Array, n: number, axis: 0 | 1) {
+  let start = Infinity;
+  let end = -Infinity;
+  let totalLength = 0;
+  let measured = 0;
+  let maxLength = 0;
+  let minLength = Infinity;
+  for (let i = 0; i < n; i++) {
+    if (!hasArea(boxes, i)) continue;
+    const offset = i * 4 + axis;
+    const first = boxes[offset]!;
+    const last = boxes[offset + 2]!;
+    const length = last - first;
+    start = Math.min(start, first);
+    end = Math.max(end, last);
+    totalLength += length;
+    measured++;
+    maxLength = Math.max(maxLength, length);
+    minLength = Math.min(minLength, length);
+  }
+  // A non-finite box gives one band. A far outlier gives coarse bands, which
+  // costs time and never changes the result.
+  const wanted = Math.ceil(((end - start) * measured) / totalLength);
+  return {
+    axis,
+    start,
+    end,
+    count: wanted >= 1 ? Math.min(wanted, n) : 1,
+    maxLength,
+    minLength,
+  };
+}
+
 /**
  * Kept label boxes in bands about one mean label long, cut along the axis that
  * gives more bands. A box is listed in each band it touches. Kept boxes do not
  * overlap, so labels inside the panel leave few in each band, and a lookup does
  * not grow with the label count.
  *
- * ponytail: with clip off, labels far outside the panel can crowd one band, such
- * as one long row and one long column, or one long row with far outliers. Cost
- * then grows with n squared, and warn mode can run 2.4x slower than a pairwise
- * loop. A 2D grid removes that limit for about 400 more bundle bytes.
+ * Large unclipped runs can crowd one band. Use the sparse grid when the
+ * caller detects likely aligned labels.
  */
-function createLabelBands(boxes: Float64Array, n: number) {
-  const measure = (axis: 0 | 1) => {
-    let start = Infinity;
-    let end = -Infinity;
-    let totalLength = 0;
-    let measured = 0;
-    for (let i = 0; i < n; i++) {
-      if (!hasArea(boxes, i)) continue;
-      start = Math.min(start, boxes[i * 4 + axis]!);
-      end = Math.max(end, boxes[i * 4 + 2 + axis]!);
-      totalLength += boxes[i * 4 + 2 + axis]! - boxes[i * 4 + axis]!;
-      measured++;
-    }
-    // A non-finite box gives one band. A far outlier gives coarse bands, which
-    // costs time and never changes the result.
-    const wanted = Math.ceil(((end - start) * measured) / totalLength);
-    return { axis, start, end, count: wanted >= 1 ? Math.min(wanted, n) : 1 };
-  };
-  const x = measure(0);
-  const y = measure(1);
-  const { axis, start, end, count } = x.count > y.count ? x : y;
+function createLabelBands(
+  boxes: Float64Array,
+  { axis, start, end, count }: ReturnType<typeof measureLabelAxis>,
+) {
   const bandLength = (end - start) / count;
   // Monotonic, so two overlapping boxes always share a band.
   const bandOf = (position: number): number => {
@@ -129,6 +147,76 @@ function createLabelBands(boxes: Float64Array, n: number) {
         }
       }
       return marked;
+    },
+  };
+}
+
+/**
+ * Large unclipped runs can span vastly more cells than they have labels.
+ * Size cells from box extents instead of the position range and allocate
+ * buckets only where kept labels occur.
+ */
+function createLabelGrid(
+  boxes: Float64Array,
+  n: number,
+  xAxis: ReturnType<typeof measureLabelAxis>,
+  yAxis: ReturnType<typeof measureLabelAxis>,
+) {
+  // Sample two boxes two rows apart around the first quarter of the batch.
+  const sample = n - (n % 4);
+  if (boxes[sample] !== boxes[sample + 8] && boxes[sample + 1] !== boxes[sample + 9]) {
+    return null;
+  }
+
+  const columns = (xAxis.end - xAxis.start) / xAxis.maxLength;
+  const rows = (yAxis.end - yAxis.start) / yAxis.maxLength;
+  // This bounds the area ratio of any two positive-area boxes. Kept labels
+  // are disjoint, so a grid cell can only be occupied by a bounded number.
+  const boxAreaRatio = (xAxis.maxLength / xAxis.minLength) * (yAxis.maxLength / yAxis.minLength);
+  // Bands handle single rows or columns. Grid indices need safe integer increments.
+  if (!(columns > 1 && rows > 1 && Math.max(columns, rows) < 2 ** 53 && boxAreaRatio <= 32)) {
+    return null;
+  }
+  const cells = new Map<number, Map<number, number[]>>();
+
+  function visit(i: number, insert: boolean, marks?: Uint8Array): number {
+    const offset = i * 4;
+    const left = Math.floor((boxes[offset]! - xAxis.start) / xAxis.maxLength);
+    const right = Math.floor((boxes[offset + 2]! - xAxis.start) / xAxis.maxLength);
+    const top = Math.floor((boxes[offset + 1]! - yAxis.start) / yAxis.maxLength);
+    const bottom = Math.floor((boxes[offset + 3]! - yAxis.start) / yAxis.maxLength);
+    let marked = 0;
+    for (let y = top; y <= bottom; y++) {
+      let row = cells.get(y);
+      if (!row && insert) {
+        row = new Map<number, number[]>();
+        cells.set(y, row);
+      }
+      if (!row) continue;
+      for (let x = left; x <= right; x++) {
+        const bucket = row.get(x);
+        if (insert) {
+          if (bucket) bucket.push(i);
+          else row.set(x, [i]);
+          continue;
+        }
+        for (const j of bucket ?? []) {
+          if ((marks?.[j] ?? 0) !== 0 || !boxesOverlap(boxes, i, j)) continue;
+          if (marks === undefined) return 1;
+          marks[j] = 1;
+          marked++;
+        }
+      }
+    }
+    return marked;
+  }
+
+  return {
+    add(i: number): void {
+      visit(i, true);
+    },
+    overlaps(i: number, marks?: Uint8Array): number {
+      return visit(i, false, marks);
     },
   };
 }
