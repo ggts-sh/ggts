@@ -121,24 +121,27 @@ describe("React resource lifecycle", () => {
     }
     const setUrgent = updateUrgent;
     const setDeferred = updateDeferred;
-    act(() => {
+    await act(() => {
       startTransition(() => {
         setDeferred({ size: 3, suspend: true });
       });
+      return Promise.resolve();
     });
     await waitFor(() => {
       expect(attemptedSuspension).toHaveBeenCalled();
     });
 
-    act(() => {
+    await act(() => {
       flushSync(() => {
         setUrgent(8);
       });
+      return Promise.resolve();
     });
-    act(() => {
+    await act(() => {
       flushSync(() => {
         setDeferred({ size: 2, suspend: false });
       });
+      return Promise.resolve();
     });
 
     const sizes = rendered.mock.calls
