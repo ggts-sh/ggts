@@ -53,6 +53,34 @@ describe("collectColorChannelFlags + countNullColorChannelValues", () => {
   });
 });
 
+describe("collectColorCatalogValues metadata", () => {
+  it("keeps source-field flags without reading catalog rows", async () => {
+    const { collectColorCatalogValues } = await import("../src/pipeline/scale-color-collect.ts");
+    let columnReads = 0;
+    const table = fromAny({
+      has: () => true,
+      discreteness: () => "discrete",
+      column() {
+        columnReads++;
+        return ["first", "second"];
+      },
+    });
+    const bindings = fromAny([
+      {
+        color: { field: "series", scaledConstant: null },
+        sourceTable: table,
+      },
+    ]);
+
+    expect(collectColorCatalogValues("color", bindings, table, false)).toEqual({
+      catalogValues: [],
+      anyDiscreteField: true,
+      anyField: true,
+    });
+    expect(columnReads).toBe(0);
+  });
+});
+
 describe("collectColorCatalogValues string monomorph path", () => {
   it("keeps first-seen order for series labels", async () => {
     const { collectColorCatalogValues } = await import("../src/pipeline/scale-color-collect.ts");

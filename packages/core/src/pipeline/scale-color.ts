@@ -57,16 +57,22 @@ export function resolveColorScale(
   advisories: Advisory[],
   editionDefaults: EditionDefaults,
 ): ColorResolution {
-  // Catalog first: ordinal multi-series only needs distinct source values
-  // (often 3 labels), not a 30k-element values array. Flags avoid the full
-  // push when type resolves to ordinal (#1468).
-  const catalog = collectColorCatalogValues(name, bindings, catalogTable);
+  // Retain source-field evidence without scanning its values unless the
+  // configured kind consumes the unfiltered catalog. An inferred ordinal
+  // scale collects values after its source and frame flags are combined.
+  const configuredType = configuredColorScaleType(config);
+  const catalog = collectColorCatalogValues(
+    name,
+    bindings,
+    catalogTable,
+    configuredType === "ordinal" || configuredType === "manual",
+  );
   const flags = collectColorChannelFlags(name, frames, table);
   const anyDiscreteField = flags.anyDiscreteField || catalog.anyDiscreteField;
   const anyField = flags.anyField || catalog.anyField;
   if (!anyField) return { resolved: null, legendInput: null, guidePlan: null, state: null };
 
-  const type = configuredColorScaleType(config) ?? (anyDiscreteField ? "ordinal" : "sequential");
+  const type = configuredType ?? (anyDiscreteField ? "ordinal" : "sequential");
 
   // NA-color warning: count nulls without allocating a full values array.
   const missingCount = countNullColorChannelValues(name, frames);
@@ -77,7 +83,10 @@ export function resolveColorScale(
     });
   }
 
-  const catalogValues = catalog.catalogValues;
+  const catalogValues =
+    configuredType === undefined && type === "ordinal"
+      ? collectColorCatalogValues(name, bindings, catalogTable).catalogValues
+      : catalog.catalogValues;
   const shared = {
     name,
     catalogValues,

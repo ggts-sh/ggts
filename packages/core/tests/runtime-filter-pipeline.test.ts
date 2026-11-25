@@ -96,6 +96,23 @@ describe("runPipeline runtime row filters", () => {
     );
   });
 
+  test("keeps manual colors in source order when the domain is inferred", () => {
+    const model = runPipeline(
+      { ...spec, scales: { color: { type: "manual", range: ["#ef4444", "#3b82f6"] } } },
+      {
+        ...size,
+        rowFilters: [{ scale: "color", field: "group", mode: "exclude", values: ["west"] }],
+      },
+    );
+    const legend = model.scene.legends[0];
+    if (legend?.type !== "discrete") throw new Error("expected a manual color legend");
+    expect(legend.entries.map(({ value, color }) => [value, color])).toEqual([
+      ["west", "#ef4444"],
+      ["east", "#3b82f6"],
+    ]);
+    expect(model.candidates.size).toBe(1);
+  });
+
   test("applies equally to named runtime datasets", () => {
     const model = runPipeline(
       {
