@@ -14,6 +14,7 @@
   import { sceneLabel } from "@ggts-sh/core";
 
   import {
+    indexFocusBatches,
     paintCanvasStratum,
     resolveBatchFocusMasks,
   } from "./stratum-paint.js";
@@ -48,6 +49,12 @@
   // Redraw canvases when the host theme flips (canvas colors resolve from
   // computed style at draw time; SVG re-resolves via CSS automatically).
   let themeEpoch = $state(0);
+  const focusBatchIndex = $derived.by(() => {
+    if (interactionMasks.length === 0) return;
+    // Canvas repaint can read a mutable scene even when the masks are unchanged.
+    void themeEpoch;
+    return indexFocusBatches(model.scene.batches);
+  });
   $effect(() => {
     if (!hasCanvas) return;
     const observer = new MutationObserver(() => {
@@ -60,6 +67,18 @@
     return () => observer.disconnect();
   });
 
+  function masksFor(
+    batches: readonly GeometryBatch[],
+    index: ReadonlyMap<GeometryBatch, number> | undefined,
+  ) {
+    return resolveBatchFocusMasks(
+      model.scene.batches,
+      batches,
+      interactionMasks,
+      index,
+    );
+  }
+
   /** Svelte attachment: paint stratum and signal first paint only on success. */
   function canvasAttachment(
     m: RenderModel,
@@ -67,11 +86,7 @@
     stratumKey: string,
   ) {
     void themeEpoch;
-    const focusMasks = resolveBatchFocusMasks(
-      m.scene.batches,
-      batches,
-      interactionMasks,
-    );
+    const focusMasks = masksFor(batches, focusBatchIndex);
     return (canvas: HTMLCanvasElement) => {
       const painted = paintCanvasStratum({
         canvas,
@@ -107,7 +122,11 @@
         batches={stratum.batches}
         focusable={false}
         {markLabel}
-        focusMasks={interactionMasks}
+        focusMasks={() =>
+          masksFor(
+            stratum.batches,
+            untrack(() => focusBatchIndex),
+          )}
       />
     {/if}
   {/each}
