@@ -1,7 +1,7 @@
 /**
  * Pure Q–Q stat tests (#804).
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { ppoints, qnorm, statQq, statQqLine } from "../../src/stats/qq.ts";
 
@@ -50,6 +50,27 @@ describe("statQq (#804)", () => {
 });
 
 describe("statQqLine (#804)", () => {
+  it("computes only the two theoretical tails needed for the line span", () => {
+    const size = 1_000;
+    const input = {
+      sample: Float64Array.from({ length: size }, (_, i) => i),
+      groups: Array.from({ length: size }, () => 0),
+    };
+    const cloud = statQq(input);
+    const log = spyOn(Math, "log");
+    let line: ReturnType<typeof statQqLine>;
+    let tailEvaluations: number;
+    try {
+      line = statQqLine(input);
+      tailEvaluations = log.mock.calls.length;
+    } finally {
+      log.mockRestore();
+    }
+
+    expect([...line.theoretical]).toEqual([cloud.theoretical[0], cloud.theoretical.at(-1)]);
+    expect(tailEvaluations).toBe(2);
+  });
+
   it("emits two endpoints per group", () => {
     const result = statQqLine({
       sample: Float64Array.from([1, 2, 3, 4, 5]),
