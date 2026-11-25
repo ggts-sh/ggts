@@ -44,6 +44,29 @@ function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
 }
 
+function unionFieldEvidence(
+  plotFields: FieldEvidenceMap | null,
+  layerMaps: readonly (FieldEvidenceMap | null)[],
+): FieldEvidenceMap {
+  const fields: FieldEvidenceMap = new Map(plotFields ?? undefined);
+  const lastUse = new Map<FieldEvidenceMap, number>();
+  for (const [index, layerMap] of layerMaps.entries()) {
+    if (layerMap !== null) lastUse.set(layerMap, index);
+  }
+  const inserted = new Set<FieldEvidenceMap>();
+  for (const [index, layerMap] of layerMaps.entries()) {
+    if (layerMap === null) continue;
+    if (lastUse.get(layerMap) === index) {
+      for (const [name, entry] of layerMap) fields.set(name, entry);
+    } else if (!inserted.has(layerMap)) {
+      inserted.add(layerMap);
+      // Reserve keys in their original first-seen order.
+      for (const [name, entry] of layerMap) if (!fields.has(name)) fields.set(name, entry);
+    }
+  }
+  return fields;
+}
+
 export function dataChecks(
   spec: Record<string, unknown>,
   options: ValidateOptions,
@@ -98,11 +121,7 @@ export function dataChecks(
   // Union layer evidence as a fallback for non-layer-scoped lookups. Position,
   // style, and color scale checks prefer per-layer evidence via evidenceForUse
   // so same field names on different tables stay independent (#609 / #844).
-  const fields: FieldEvidenceMap = new Map(plotFields ?? undefined);
-  for (const layerMap of layerMaps) {
-    if (layerMap === null) continue;
-    for (const [name, entry] of layerMap) fields.set(name, entry);
-  }
+  const fields = unionFieldEvidence(plotFields, layerMaps);
   const evidenceForUse = (use: { field: string; path: string }) => {
     const match = /^\/layers\/(\d+)\//.exec(use.path);
     if (match !== null) {
