@@ -4,13 +4,53 @@
  * Authoring helpers / aliases: color-scale-api.test.ts.
  * Censored-temporal-recovery checks: validate-tier2-color-temporal-censor-a/b.test.ts.
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { normalize, validate } from "../src/index.js";
+import { checkColorScaleDataCompatibility } from "../src/validate-data-checks-color.ts";
 
 const point = { geom: "point" as const };
 
 describe("tier 2 — color scale data-aware validation", () => {
+  it("scans a shared manual color column once and keeps distinct category evidence", () => {
+    const shared = [0, -0, "0", null];
+    const columns = [shared, shared, ["local"], null] as const;
+    const uses = columns.map((_, index) => ({
+      field: "category",
+      path: `/layers/${index}/aes/color`,
+    }));
+    const valuesByUse = new Map(uses.map((use, index) => [use, columns[index] ?? null]));
+    const readShared = spyOn(shared, Symbol.iterator);
+    let errors: ReturnType<typeof checkColorScaleDataCompatibility>;
+    let iterations: number;
+    try {
+      errors = checkColorScaleDataCompatibility({
+        scales: { color: { type: "manual", range: ["red", "green", "blue", "black"] } },
+        fields: new Map(),
+        evidenceForUse(use) {
+          return {
+            type: "nominal",
+            allNull: false,
+            values: valuesByUse.get(use) ?? null,
+            temporal: null,
+          };
+        },
+        colorFields: { color: uses, fill: [] },
+        colorScaledConstants: { color: [false], fill: [] },
+        temporalDecisionCache: new Map(),
+      });
+      iterations = readShared.mock.calls.length;
+    } finally {
+      readShared.mockRestore();
+    }
+
+    expect(errors).toHaveLength(1);
+    expect(errors[0]?.code).toBe("color-manual-domain-range");
+    expect(errors[0]?.path).toBe("/scales/color");
+    expect(errors[0]?.message).toContain("at least 5 known domain values");
+    expect(iterations).toBe(1);
+  });
+
   it("validates explicit temporal color parsing against whole-column evidence", () => {
     const temporal = {
       data: {
