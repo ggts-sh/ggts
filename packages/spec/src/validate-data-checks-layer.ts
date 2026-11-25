@@ -380,7 +380,7 @@ function collectLayerChannels(input: {
   index: number;
   collections: LayerWalkCollections;
 }): void {
-  const available = [...input.fields.keys()];
+  let available: string[] | undefined;
   for (const channel of CHANNELS) {
     const mapped = effectiveChannel(input.plotAes, input.layerAes, channel);
     if (mapped === undefined) continue;
@@ -391,7 +391,20 @@ function collectLayerChannels(input: {
     } else if ("value" in mapped) {
       collectScaledConstant(input.collections, channel, mapped);
     } else if ("field" in mapped) {
-      collectFieldChannel(input.collections, channel, mapped.field, path, input.fields, available);
+      const field = mapped.field;
+      const info = input.fields.get(field);
+      if (info === undefined) {
+        available ??= [...input.fields.keys()];
+        input.collections.errors.push(unknownFieldError(channel, field, path, available));
+      } else if (info.allNull) {
+        input.collections.errors.push({
+          code: "all-null-column",
+          path,
+          message: `Field "${field}" contains only null values; the "${channel}" channel cannot be drawn from it.`,
+        });
+      } else {
+        collectFieldUse(input.collections, channel, { field, path });
+      }
     }
   }
 }
@@ -427,30 +440,6 @@ function collectScaledConstant(
   if (channel === "size" || channel === "linewidth" || channel === "alpha") {
     collections.numericStyleScaledConstants[channel].push(mapped.value);
   }
-}
-
-function collectFieldChannel(
-  collections: LayerWalkCollections,
-  channel: ChannelName,
-  field: string,
-  path: string,
-  fields: FieldEvidenceMap,
-  available: string[],
-): void {
-  const info = fields.get(field);
-  if (info === undefined) {
-    collections.errors.push(unknownFieldError(channel, field, path, available));
-    return;
-  }
-  if (info.allNull) {
-    collections.errors.push({
-      code: "all-null-column",
-      path,
-      message: `Field "${field}" contains only null values; the "${channel}" channel cannot be drawn from it.`,
-    });
-    return;
-  }
-  collectFieldUse(collections, channel, { field, path });
 }
 
 function unknownFieldError(
