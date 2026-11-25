@@ -39,7 +39,8 @@ const onlyCases = process.env["COMPETITIVE_CASES"]
   .filter(Boolean);
 const cases = casesForRun(full).filter((c) => !onlyCases || onlyCases.includes(c.id));
 const browserLibs = LIBS.filter((lib) => lib.browser && (!onlyLibs || onlyLibs.includes(lib.id)));
-let benchUrl = "http://127.0.0.1:5199/";
+const benchRootUrl = "http://127.0.0.1:5199/";
+let benchUrl = benchRootUrl;
 
 type BenchApi = {
   mount: (lib: string, caseId: string) => Promise<{ ms: number; syncMs: number; markHint: number }>;
@@ -191,15 +192,7 @@ async function recoverPage(): Promise<void> {
 await gotoBenchPage(page);
 
 for (const cell of matrix) {
-  // Load each GGPlot host only on its own page, keeping its registration
-  // and framework state out of the lean core and other peer cells.
-  const query =
-    cell.lib.id === "ggsvelte-ggplot"
-      ? "?ggplot=1"
-      : cell.lib.id === "ggsvelte-react"
-        ? "?ggreact=1"
-        : "";
-  benchUrl = `http://127.0.0.1:5199/${query}`;
+  benchUrl = `${benchRootUrl}?lib=${encodeURIComponent(cell.lib.id)}`;
   // A fresh page keeps each cell independent from framework state, detached
   // DOM, and garbage-collection pressure accumulated by earlier libraries.
   // The preview server and Chromium process stay warm; each cell still performs
