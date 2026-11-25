@@ -78,6 +78,33 @@ describe("gallery filter URL contract", () => {
     );
   });
 
+  test("keeps results ordered across filter changes and refreshed catalog entries", () => {
+    const bar = {
+      ...entries[0]!,
+      id: "fixture/bar",
+      category: "bar",
+      title: "Palette",
+      description: "A clue",
+      tags: ["legend", "fill"],
+    };
+    const area = { ...bar, id: "fixture/area", category: "area" };
+    const otherCategory = { ...bar, id: "fixture/line", category: "line" };
+    const singleTag = { ...bar, id: "fixture/one-tag", tags: ["legend"] };
+    const partialText = { ...bar, id: "fixture/partial", description: "" };
+    const catalog = [bar, otherCategory, singleTag, area, partialText];
+    const filters = { categories: ["bar", "area"], tags: ["legend", "fill"] };
+
+    const matched = filterGallery(catalog, { ...filters, query: " PALETTE\t\u00A0clue " });
+    expect(matched).toHaveLength(2);
+    expect(matched[0]).toBe(bar);
+    expect(matched[1]).toBe(area);
+    expect(filterGallery(catalog, { ...filters, query: " \t " })).toEqual([bar, area, partialText]);
+
+    const refreshed = { ...bar, description: "A new hint" };
+    expect(filterGallery([refreshed], { ...filters, query: "clue" })).toEqual([]);
+    expect(filterGallery([refreshed], { ...filters, query: "hint" })[0]).toBe(refreshed);
+  });
+
   test("URL-filter journey query and category stay findable on the public gallery", () => {
     // Shared with docs-home-gallery.spec.ts so a #765-style content deletion
     // fails here instead of only on the required component-journeys job (#773).
