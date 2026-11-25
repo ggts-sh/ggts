@@ -98,6 +98,26 @@ test("CLI reference renders every implementation-owned option anchor", async ({ 
   await expectNoDocumentOverflow(page);
 });
 
+test("scale reference caps related examples in manifest order", async ({ page }) => {
+  await page.goto("/reference/scales/x_log10");
+  const links = page.locator(".example-list a");
+  await expect(links).toHaveCount(8);
+  expect(
+    await links.evaluateAll((anchors) =>
+      anchors.map((anchor) => new URL((anchor as HTMLAnchorElement).href).pathname),
+    ),
+  ).toEqual([
+    "/examples/blank/axes-only",
+    "/examples/blank/domain-expand",
+    "/examples/boxplot/by-category",
+    "/examples/boxplot/violin",
+    "/examples/col/mixed-outlier-labels",
+    "/examples/col/value-labels",
+    "/examples/crossbar/boxes",
+    "/examples/errorbar/caps",
+  ]);
+});
+
 for (const chapter of [
   {
     group: "core grammar",
