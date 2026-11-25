@@ -21,6 +21,7 @@ import {
   type ScenarioId,
   type SeriesColumns,
 } from "../scenarios";
+import { pivotStackedBars } from "./bar-columns";
 
 const MARGIN = { top: 20, right: 20, bottom: 40, left: 50 };
 
@@ -179,15 +180,7 @@ function mountBars(initial: BarsColumns, root: HTMLElement): D3MountResult {
   const yAxisG = g.append("g");
   const marksG = g.append("g");
   const render = (data: BarsColumns): number => {
-    const categories = [...new Set(data.category)];
-    const stacks = [...new Set(data.stack)];
-    const wide = categories.map((cat) => {
-      const row: Record<string, string | number> = { category: cat };
-      for (let i = 0; i < data.category.length; i++) {
-        if (data.category[i] === cat) row[data.stack[i]!] = data.value[i]!;
-      }
-      return row;
-    });
+    const { categories, stacks, wide } = pivotStackedBars(data);
     const stackGen = d3Stack<Record<string, string | number>>().keys(stacks);
     const series = stackGen(wide);
     const x = scaleBand().domain(categories).range([0, iw]).padding(0.15);
