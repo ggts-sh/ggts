@@ -54,7 +54,8 @@ let nextId = 0;
 export class LayerRegistry {
   readonly #byId = new Map<number, Layer>();
   readonly #capabilities = new Map<number, CapabilityEntry>();
-  #committed: readonly unknown[] = [];
+  readonly #committed = new Map<number, unknown>();
+  readonly #pending = new Set<number>();
   #version = 0;
   #capabilityVersion = 0;
   #registrationCount = 0;
@@ -81,6 +82,7 @@ export class LayerRegistry {
   registerPlotLayer(layer: Layer): number {
     const id = nextId++;
     this.#byId.set(id, layer);
+    this.#pending.add(id);
     this.#registrationCount += 1;
     this.#version += 1;
     return id;
@@ -97,23 +99,36 @@ export class LayerRegistry {
         return getValue();
       },
     });
+    this.#pending.add(id);
     this.#registrationCount += 1;
     this.#capabilityVersion += 1;
     return id;
   }
 
-  /** Safe after commit (layout effect). No-op when nobody is subscribed. */
+  /** Mark a live descriptor whose props were updated during render. */
+  markPending(id: number): void {
+    this.#pending.add(id);
+  }
+
+  /** Check descriptors touched during render once, from a layout effect. */
   notify(): void {
-    const next = [...this.layers, ...this.capabilities("inspect")].map((value) =>
-      snapshotValue(value),
-    );
-    if (sameValue(this.#committed, next)) return;
-    this.#committed = next;
+    let changed: [number, unknown][] | undefined;
+    for (const id of this.#pending) {
+      const value = this.#byId.get(id) ?? this.#capabilities.get(id)?.value;
+      const next = snapshotValue(value);
+      if (sameValue(this.#committed.get(id), next)) continue;
+      (changed ??= []).push([id, next]);
+    }
+    this.#pending.clear();
+    if (changed === undefined) return;
+    for (const [id, value] of changed) this.#committed.set(id, value);
     this.#version += 1;
     this.#emit();
   }
 
   unregister(id: number): void {
+    this.#pending.delete(id);
+    this.#committed.delete(id);
     const removedLayer = this.#byId.delete(id);
     const removedCapability = this.#capabilities.delete(id);
     if (removedLayer) this.#version += 1;
@@ -159,6 +174,7 @@ export function useRegisterLayer(layer: Layer): void {
   if (registry !== null && idRef.current === null) {
     idRef.current = registry.registerPlotLayer(layer);
   }
+  if (idRef.current !== null) registry?.markPending(idRef.current);
   useHostLayoutEffect(() => {
     if (registry !== null && idRef.current === null)
       idRef.current = registry.registerPlotLayer(layer);
@@ -185,6 +201,7 @@ export function useRegisterCapability<K extends HostCapabilityKind>(
   if (registry !== null && idRef.current === null) {
     idRef.current = registry.registerCapability(kind, () => getValueRef.current());
   }
+  if (idRef.current !== null) registry?.markPending(idRef.current);
   useHostLayoutEffect(() => {
     if (registry !== null && idRef.current === null)
       idRef.current = registry.registerCapability(kind, () => getValueRef.current());
