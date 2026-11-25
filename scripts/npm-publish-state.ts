@@ -115,6 +115,30 @@ export async function npmVersionExists(
   return false;
 }
 
+const NPM_PROBE_BATCH_SIZE = 8;
+
+/** Probe independent versions concurrently and yield results in package order. */
+export async function* probeNpmVersions(
+  pkgs: readonly PackageVersion[],
+  opts: Parameters<typeof npmVersionExists>[2] = {},
+): AsyncGenerator<{ pkg: PackageVersion; exists: boolean }> {
+  for (let offset = 0; offset < pkgs.length; offset += NPM_PROBE_BATCH_SIZE) {
+    const batch = pkgs.slice(offset, offset + NPM_PROBE_BATCH_SIZE);
+    const pending = batch.map(async (pkg) => {
+      try {
+        return { pkg, exists: await npmVersionExists(pkg.name, pkg.version, opts) };
+      } catch (error) {
+        return { error };
+      }
+    });
+    for (const probe of pending) {
+      const result = await probe;
+      if ("error" in result) throw result.error;
+      yield result;
+    }
+  }
+}
+
 /**
  * Poll npm until every version is served; return the "name@version" keys still
  * missing when `opts.retries` runs out. Packages poll in parallel, so the

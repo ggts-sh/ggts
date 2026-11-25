@@ -22,7 +22,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   filterUnpublished,
-  npmVersionExists,
+  probeNpmVersions,
   packageReleaseTag,
   readPublishedPackageVersions,
   waitForNpmVersions,
@@ -63,8 +63,8 @@ async function main(): Promise<number> {
   }
 
   const publishedKeys = new Set<string>();
-  for (const pkg of local) {
-    if (await npmVersionExists(pkg.name, pkg.version)) {
+  for await (const { pkg, exists } of probeNpmVersions(local)) {
+    if (exists) {
       publishedKeys.add(`${pkg.name}@${pkg.version}`);
     }
   }
