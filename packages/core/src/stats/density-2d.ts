@@ -150,6 +150,7 @@ function packRow(
  * one visit per sample-cell pair inside both windows. Scanning y per cell
  * instead — as this did before — costs O(G²·n·fx) with fx = 16·hx/xspan, and
  * throws away a share that grows with n (64% at n = 20 000, G = 100).
+ * Each sample's Gaussian y factor is reused across the x cells of that row.
  *
  * `gx` must ascend (the x slide only moves forward). Same ±8σ truncation and
  * invN scaling as the historical direct product (MASS::kde2d-shaped), and the
@@ -196,7 +197,9 @@ export function productKdeGrid(
   // addends keep their order. Packed rather than indexed so the innermost loop
   // reads one array element per coordinate either way.
   const rowX = everyRowTakesEverySample ? sortedX : new Float64Array(nx);
-  const rowY = everyRowTakesEverySample ? sortedY : new Float64Array(nx);
+  const rowKernelY = new Float64Array(nx);
+  // In packed rows, replace each y coordinate with its factor on first use.
+  const rowY = everyRowTakesEverySample ? sortedY : rowKernelY;
   let rowCount = nx;
 
   for (let j = 0; j < gridNY; j++) {
@@ -205,6 +208,8 @@ export function productKdeGrid(
       rowCount = packRow(yj, wy, sortedX, sortedY, rowX, rowY);
     }
     let lo = 0;
+    // The advancing lower x cursor leaves skipped indices behind.
+    let nextYFactor = 0;
     for (let i = 0; i < gridNX; i++) {
       const xi = gx[i]!;
       const xLo = xi - wx;
@@ -215,9 +220,11 @@ export function productKdeGrid(
         const xv = rowX[k]!;
         if (xv > xHi) break;
         if (count) examinations++;
-        const dy = yj - rowY[k]!;
-        const dx = xi - xv;
-        s += dnorm(dx / hx) * dnorm(dy / hy);
+        if (k >= nextYFactor) {
+          rowKernelY[k] = dnorm((yj - rowY[k]!) / hy);
+          nextYFactor = k + 1;
+        }
+        s += dnorm((xi - xv) / hx) * rowKernelY[k]!;
       }
       z[j]![i] = s * invN;
     }
