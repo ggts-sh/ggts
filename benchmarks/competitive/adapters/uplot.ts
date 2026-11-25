@@ -6,13 +6,13 @@ import "uplot/dist/uPlot.min.css";
 
 import {
   COLORS,
-  groupSeriesValues,
   PLOT_HEIGHT,
   PLOT_WIDTH,
   type ScatterColumns,
   type ScenarioId,
   type SeriesColumns,
 } from "../scenarios";
+import { groupSeriesValues } from "./series-columns";
 
 type UpdateColumns = ScatterColumns | SeriesColumns;
 

@@ -19,7 +19,6 @@ import {
 
 import {
   COLORS,
-  groupSeriesValues,
   PLOT_HEIGHT,
   PLOT_WIDTH,
   type BarsColumns,
@@ -27,6 +26,7 @@ import {
   type ScenarioId,
   type SeriesColumns,
 } from "../scenarios";
+import { groupSeriesValues } from "./series-columns";
 
 Chart.register(
   LinearScale,
