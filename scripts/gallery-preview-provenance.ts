@@ -66,36 +66,62 @@ export function listSourceFiles(dir: string): string[] {
   return out.toSorted();
 }
 
+type DependencyScope = "shared" | "package" | "all";
+
+function scanExampleSource(
+  exampleDir: string,
+  examplesRoot: string,
+  scope: DependencyScope,
+  onFile?: (relativePath: string, bytes: Buffer) => void,
+): { shared: string[]; packages: string[] } {
+  const ownRoot = resolve(exampleDir);
+  const ownPrefix = ownRoot + sep;
+  const examplesPrefix = resolve(examplesRoot) + sep;
+  const repoRoot = resolve(examplesRoot, "..");
+  const dataRoot = resolve(repoRoot, "packages/core/src/data");
+  const dataPrefix = dataRoot + sep;
+  const shared = new Set<string>();
+  const packages = new Set<string>();
+  const importRe = /from\s+["'](\.\.[^"']+)["']/g;
+
+  for (const rel of listSourceFiles(exampleDir)) {
+    const bytes = readFileSync(join(exampleDir, rel));
+    onFile?.(rel, bytes);
+    for (const match of bytes.toString("utf8").matchAll(importRe)) {
+      const spec = match[1];
+      if (spec === undefined) continue;
+      const resolved = resolve(exampleDir, dirname(rel), spec);
+      const isShared =
+        scope !== "package" &&
+        resolved.startsWith(examplesPrefix) &&
+        resolved !== ownRoot &&
+        !resolved.startsWith(ownPrefix);
+      const isPackage =
+        scope !== "shared" && (resolved === dataRoot || resolved.startsWith(dataPrefix));
+      if (!isShared && !isPackage) continue;
+
+      const candidates = [resolved];
+      if (resolved.endsWith(".js")) candidates.push(resolved.slice(0, -3) + ".ts");
+      for (const candidate of candidates) {
+        if (!existsSync(candidate) || !statSync(candidate).isFile()) continue;
+        if (isShared) shared.add(relative(examplesRoot, candidate).split(sep).join("/"));
+        if (isPackage) packages.add(relative(repoRoot, candidate).split(sep).join("/"));
+        break;
+      }
+    }
+  }
+
+  shared.delete("define.ts");
+  shared.delete("define.js");
+  return { shared: [...shared].toSorted(), packages: [...packages].toSorted() };
+}
+
 /**
  * Relative imports that escape the example dir into other `examples/` files
  * (e.g. `../../rng.js`). `define.js` is validation-only and excluded.
  */
 export function sharedExampleSourcePaths(exampleDir: string, examplesRoot: string): string[] {
-  const shared = new Set<string>();
-  const importRe = /from\s+["'](\.\.[^"']+)["']/g;
-  for (const rel of listSourceFiles(exampleDir)) {
-    const text = readFileSync(join(exampleDir, rel), "utf8");
-    for (const match of text.matchAll(importRe)) {
-      const spec = match[1];
-      if (spec === undefined) continue;
-      const resolved = resolve(exampleDir, dirname(rel), spec);
-      const underExamples = resolved.startsWith(resolve(examplesRoot) + sep);
-      const underSelf =
-        resolved.startsWith(resolve(exampleDir) + sep) || resolved === resolve(exampleDir);
-      if (!underExamples || underSelf) continue;
-      // Strip optional .js → prefer on-disk .ts when present.
-      const candidates = [resolved];
-      if (resolved.endsWith(".js")) candidates.push(resolved.slice(0, -3) + ".ts");
-      for (const candidate of candidates) {
-        if (!existsSync(candidate) || !statSync(candidate).isFile()) continue;
-        const base = relative(examplesRoot, candidate).split(sep).join("/");
-        if (base === "define.ts" || base === "define.js") break;
-        shared.add(base);
-        break;
-      }
-    }
-  }
-  return [...shared].toSorted();
+  return scanExampleSource(exampleDir, examplesRoot, "shared").shared;
 }
 
 /**
@@ -104,28 +130,7 @@ export function sharedExampleSourcePaths(exampleDir: string, examplesRoot: strin
  * gallery provenance notices package-data edits that change rendered previews.
  */
 export function packageDataSourcePaths(exampleDir: string, examplesRoot: string): string[] {
-  const repoRoot = resolve(examplesRoot, "..");
-  const dataRoot = resolve(repoRoot, "packages/core/src/data");
-  const dataRootPrefix = dataRoot + sep;
-  const found = new Set<string>();
-  const importRe = /from\s+["'](\.\.[^"']+)["']/g;
-  for (const rel of listSourceFiles(exampleDir)) {
-    const text = readFileSync(join(exampleDir, rel), "utf8");
-    for (const match of text.matchAll(importRe)) {
-      const spec = match[1];
-      if (spec === undefined) continue;
-      const resolved = resolve(exampleDir, dirname(rel), spec);
-      const candidates = [resolved];
-      if (resolved.endsWith(".js")) candidates.push(resolved.slice(0, -3) + ".ts");
-      for (const candidate of candidates) {
-        if (!existsSync(candidate) || !statSync(candidate).isFile()) continue;
-        if (candidate !== dataRoot && !candidate.startsWith(dataRootPrefix)) continue;
-        found.add(relative(repoRoot, candidate).split(sep).join("/"));
-        break;
-      }
-    }
-  }
-  return [...found].toSorted();
+  return scanExampleSource(exampleDir, examplesRoot, "package").packages;
 }
 
 /**
@@ -136,19 +141,19 @@ export function exampleSourceDigest(examplesRoot: string, exampleId: string): st
   const exampleDir = join(examplesRoot, ...exampleId.split("/"));
   const repoRoot = resolve(examplesRoot, "..");
   const hash = createHash("sha256");
-  for (const rel of listSourceFiles(exampleDir)) {
+  const sources = scanExampleSource(exampleDir, examplesRoot, "all", (rel, bytes) => {
     hash.update(rel);
     hash.update("\0");
-    hash.update(readFileSync(join(exampleDir, rel)));
+    hash.update(bytes);
     hash.update("\0");
-  }
-  for (const shared of sharedExampleSourcePaths(exampleDir, examplesRoot)) {
+  });
+  for (const shared of sources.shared) {
     hash.update(`shared:${shared}`);
     hash.update("\0");
     hash.update(readFileSync(join(examplesRoot, shared)));
     hash.update("\0");
   }
-  for (const pkg of packageDataSourcePaths(exampleDir, examplesRoot)) {
+  for (const pkg of sources.packages) {
     hash.update(`pkg:${pkg}`);
     hash.update("\0");
     hash.update(readFileSync(join(repoRoot, pkg)));
