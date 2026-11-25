@@ -278,11 +278,12 @@ export function planBandAxis(input: BandAxisPlanInput): BandAxisPlan {
 
   /** Try a wrap layout. When `force`, keep mode even if tokens can't wrap / overlap. */
   const tryWrapPlan = (force: boolean): BandAxisPlan | null => {
-    const wrapped = entries.map((e) =>
-      wrapLabel(e.label, bandBudget, measurer, fontSize, maxWrapLines, { force }),
-    );
-    if (!force && !wrapped.every((w): w is string[] => w !== null)) return null;
-    const linesList = wrapped as string[][];
+    const linesList: string[][] = [];
+    for (const entry of entries) {
+      const lines = wrapLabel(entry.label, bandBudget, measurer, fontSize, maxWrapLines, { force });
+      if (lines === null) return null;
+      linesList.push(lines);
+    }
     // Per-line widths; overlap uses top-aligned planes (matches renderer tspan stack),
     // not max(lineWidths) as a centered block — a longer line2 must not reject when
     // neighbours only occupy plane 0.

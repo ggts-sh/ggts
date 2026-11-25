@@ -85,6 +85,49 @@ describe("planBandAxis: escalation ladder", () => {
     expect(measureWidthCalls).toBeGreaterThan(0);
   });
 
+  it("stops measuring later wraps after an unbreakable label", () => {
+    const labels = ["unbreakable", "later"];
+    let laterMeasurements = 0;
+    const p = plan(labels, 24, {
+      marginCapPx: 200,
+      orthogonalMarginCapPx: 200,
+      measurer: {
+        measureWidth(text: string) {
+          if (text === "later") laterMeasurements++;
+          return text.length * 5;
+        },
+        measureHeight: () => 11,
+      },
+    });
+
+    expect(p.mode).toBe("rotated");
+    expect(p.angle).toBe(-90);
+    expect(p.ticks.map((tick) => tick.label)).toEqual(labels);
+    expect(laterMeasurements).toBeLessThanOrEqual(2);
+  });
+
+  it("skips measuring split lines when the hybrid baselines collide", () => {
+    const labels = ["aa bb", "cc dd"];
+    const measured = new Set<string>();
+    const p = plan(labels, 24, {
+      previousMode: "rotated",
+      marginCapPx: 200,
+      orthogonalMarginCapPx: 200,
+      measurer: {
+        measureWidth(text: string) {
+          measured.add(text);
+          return text.length * 5;
+        },
+        measureHeight: () => 11,
+      },
+    });
+
+    expect(p.mode).toBe("rotated");
+    expect(p.angle).toBe(-90);
+    expect(p.ticks.map((tick) => tick.label)).toEqual(labels);
+    expect(measured.has("aa")).toBe(false);
+  });
+
   it("uses a uniform mode across the whole axis (no ragged mix)", () => {
     const p = plan(["A", "Corrección (errores o erratas)", "B", "C"], 480);
     const angles = new Set(p.ticks.map((t) => t.angle ?? 0));
