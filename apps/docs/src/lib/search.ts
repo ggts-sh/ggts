@@ -79,30 +79,32 @@ export function searchDocs<Entry extends DocsSearchEntry>(
   const tokens = query.split(" ");
   // Prepared rows keep the same order as `entries`; reclaim Entry via index.
   const prepared = preparedFor(entries);
-  const scored: { order: number; score: number; kind: DocsSearchKind }[] = [];
+  const byRank = new Map<number, number[]>();
   for (let order = 0; order < prepared.length; order += 1) {
     const item = prepared[order];
     if (item === undefined) continue;
     const score = scorePrepared(query, tokens, item);
     if (score <= 0) continue;
-    scored.push({ order, score, kind: item.entry.kind });
+    // Kind priorities fit in the last two digits, so score always wins first.
+    const rank = score * 100 + KIND_PRIORITY[item.entry.kind];
+    const bucket = byRank.get(rank);
+    if (bucket === undefined) byRank.set(rank, [order]);
+    else bucket.push(order);
   }
-  scored.sort(
-    (left, right) =>
-      right.score - left.score ||
-      KIND_PRIORITY[right.kind] - KIND_PRIORITY[left.kind] ||
-      left.order - right.order,
-  );
 
+  // Sort the occupied ranks. Entries within each rank are already in source order.
+  const ranked = [...byRank];
+  ranked.sort(([left], [right]) => right - left);
   const hrefs = new Set<string>();
   const results: Entry[] = [];
-  for (const candidate of scored) {
-    const entry = entries[candidate.order];
-    if (entry === undefined) continue;
-    if (hrefs.has(entry.href)) continue;
-    hrefs.add(entry.href);
-    results.push(entry);
-    if (results.length === limit) break;
+  for (const [, orders] of ranked) {
+    for (const order of orders) {
+      const entry = entries[order];
+      if (entry === undefined || hrefs.has(entry.href)) continue;
+      hrefs.add(entry.href);
+      results.push(entry);
+      if (results.length === limit) return results;
+    }
   }
   return results;
 }

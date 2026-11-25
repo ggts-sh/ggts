@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 
 import { DOCS_SEARCH_INDEX } from "../apps/docs/src/lib/generated/search-index.ts";
 import { searchDocs } from "../apps/docs/src/lib/search.ts";
+import type { DocsSearchEntry } from "../apps/docs/src/lib/search-types.ts";
 
 const winners = [
   ["scale-scheme-type", "/guide/errors#scale-scheme-type"],
@@ -12,6 +13,10 @@ const winners = [
   ["server render", "/guide/production#server-and-export"],
   ["canvas selection", "/guide/production#rendering"],
 ] as const;
+
+function searchEntry(id: string, kind: DocsSearchEntry["kind"], href = `/${id}`): DocsSearchEntry {
+  return { id, kind, title: "mark", summary: "", href, exact: [], keywords: [] };
+}
 
 describe("Docs search ranking", () => {
   for (const [query, href] of winners) {
@@ -33,6 +38,32 @@ describe("Docs search ranking", () => {
     const results = searchDocs("canvas selection", DOCS_SEARCH_INDEX);
     expect(results.length).toBeGreaterThan(0);
     expect(new Set(results.map((result) => result.href)).size).toBe(results.length);
+  });
+
+  it("ranks before deduplicating and fills the result limit with unique destinations", () => {
+    const earlierDuplicate = searchEntry("earlier", "example", "/shared");
+    const exact = { ...searchEntry("exact", "example"), title: "Mark reference", exact: ["mark"] };
+    const first = searchEntry("first", "diagnostic", "/shared");
+    const tiedDuplicate = searchEntry("tied", "api", "/shared");
+    const second = searchEntry("second", "cli");
+    const page = searchEntry("page", "page");
+    const summary = { ...searchEntry("summary", "api"), title: "Reference", summary: "mark" };
+    const index = [earlierDuplicate, page, first, tiedDuplicate, second, exact, summary];
+    const ordered = [exact, first, second, page, summary];
+
+    for (const [limit, count] of [
+      [undefined, 5],
+      [3, 3],
+      [1.5, 5],
+      [NaN, 5],
+      [Infinity, 5],
+      [0, 0],
+      [-1, 0],
+    ] as const) {
+      const results = searchDocs("mark", index, limit);
+      expect(results).toHaveLength(count);
+      for (let i = 0; i < count; i += 1) expect(results[i]).toBe(ordered[i]);
+    }
   });
 
   it("keeps ranking stable across many queries on the same frozen index", () => {
