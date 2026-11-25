@@ -42,6 +42,30 @@ describe("trainContinuous — config semantics", () => {
 describe("trainContinuous — transformed-space (log10) training", () => {
   const log10 = scaleTransform("log10");
 
+  it("reads extent evidence only when the domain is inferred", () => {
+    const values = Float64Array.of(0, 3);
+    const evidence = [values];
+    let reads = 0;
+    Object.defineProperty(evidence, 0, {
+      get() {
+        reads++;
+        return values;
+      },
+    });
+
+    const pinned = trainContinuous(evidence, { transform: log10, domain: [1, 100], reverse: true });
+    expect(reads).toBe(0);
+    expect(pinned.empty).toBe(false);
+    expect(pinned.scale.domain).toEqual([1, 100]);
+    expect(pinned.scale.evidenceTransformedDomain).toEqual([0, 2]);
+    expect(pinned.scale.normalize(1)).toBe(1);
+    expect(pinned.scale.invert(0)).toBe(100);
+
+    const inferred = trainContinuous(evidence, { transform: log10, nice: false });
+    expect(reads).toBe(1);
+    expect(inferred.scale.domain).toEqual([1, 1_000]);
+  });
+
   it("trains affine over transformed evidence and inverse-projects a semantic domain", () => {
     // Evidence is ALREADY transformed (pre-stat log10 of 1,10,100,1000 = 0,1,2,3);
     // the trainer never re-forwards it.

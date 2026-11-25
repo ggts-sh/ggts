@@ -99,9 +99,9 @@ export function trainContinuous(
   const reverse = config.reverse === true;
   const expansion = config.expansion ?? NO_EXPANSION;
   const pinned = config.domain !== undefined;
-  const nice = config.nice !== false && !pinned && type !== "time";
+  const nice = config.nice !== false;
 
-  const extent = finiteExtent(arrays);
+  const extent = pinned ? null : finiteExtent(arrays);
   let t0: number;
   let t1: number;
   if (pinned) {
