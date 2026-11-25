@@ -1,29 +1,11 @@
 /**
- * Live-SVG parity gate (#1471): update a ggsvelte-svg mount in place twice
- * (both perturbation variants), then compare the patched DOM against a FRESH
- * mount of the same final data. The fresh mount's initial tree comes from
- * sceneToSVGString + innerHTML (the pre-#1471 behavior), so
- * isEqualNode equality means the incremental patcher produces exactly the
- * DOM the full re-render would have produced.
- * Returns the first mismatching node path when unequal.
+ * Compare the patched and fresh SVG trees without canonicalizing them (#1471).
+ * Report the first mismatching node path when unequal.
  */
-import { mountGgsvelteSvg } from "../adapters/ggsvelte-svg";
-import { dataForCase, perturbForUpdate } from "../scenarios";
-import { caseById } from "./lifecycle";
-
-export function parityLiveSvg(caseId: string): { equal: boolean; detail: string } {
-  const c = caseById(caseId);
-  const data = dataForCase(c);
-  const rootA = document.createElement("div");
-  const rootB = document.createElement("div");
-  const a = mountGgsvelteSvg(c.scenario, data, rootA);
-  const finalData = perturbForUpdate(data, 2);
-  a.handle.update?.(perturbForUpdate(data, 1));
-  a.handle.update?.(finalData);
-  const b = mountGgsvelteSvg(c.scenario, finalData, rootB);
-  const elA = rootA.firstElementChild;
-  const elB = rootB.firstElementChild;
-
+export function compareSvgDom(
+  updated: Element | null,
+  fresh: Element | null,
+): { equal: boolean; detail: string } {
   const describe = (el: Element): string => {
     const attrs = Array.from(el.attributes)
       .map((at) => `${at.name}=${at.value}`)
@@ -59,15 +41,8 @@ export function parityLiveSvg(caseId: string): { equal: boolean; detail: string 
     return null;
   };
 
-  let equal = false;
-  let detail = "no root element";
-  if (elA !== null && elB !== null) {
-    equal = elA.isEqualNode(elB);
-    detail = equal
-      ? "patched DOM identical to fresh render"
-      : (firstDiff(elA, elB, "svg") ?? "differs");
-  }
-  a.handle.destroy();
-  b.handle.destroy();
-  return { equal, detail };
+  if (updated === null || fresh === null) return { equal: false, detail: "no root element" };
+  if (updated.isEqualNode(fresh))
+    return { equal: true, detail: "patched DOM identical to fresh render" };
+  return { equal: false, detail: firstDiff(updated, fresh, "svg") ?? "svg: differs" };
 }

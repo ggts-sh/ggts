@@ -5,6 +5,7 @@
  */
 import { mountSync } from "./adapter-dispatch";
 import { afterPaint, caseById, type MountHandle } from "./lifecycle";
+import { compareSvgDom } from "./parity-svg";
 import { verificationRoot, type UpdateVerification, visibleSnapshot } from "./snapshot";
 import { dataForCase, perturbForUpdate, type LibId } from "../scenarios";
 
@@ -36,6 +37,16 @@ export async function verifyUpdate(lib: string, caseId: string): Promise<UpdateV
     const freshSnapshot = visibleSnapshot(freshRoot);
     const mutated = firstSnapshot !== finalSnapshot;
     const equal = finalSnapshot === freshSnapshot;
+    if (mutated && equal && lib === "ggsvelte-svg") {
+      const parity = compareSvgDom(updatedRoot.firstElementChild, freshRoot.firstElementChild);
+      if (!parity.equal) {
+        return {
+          equal: false,
+          mutated,
+          detail: `live-SVG parity failed for ${caseId}: ${parity.detail}`,
+        };
+      }
+    }
     const diffAt = equal
       ? -1
       : Array.from({ length: Math.max(finalSnapshot.length, freshSnapshot.length) }).findIndex(

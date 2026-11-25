@@ -31,7 +31,6 @@ import {
   trackLiveHandle,
   type UpdateSlot,
 } from "./lifecycle";
-import { parityLiveSvg } from "./parity-svg";
 import { verifyUpdate } from "./verify-update";
 import { CASES, dataForCase, LIBS, perturbForUpdate, type LibId } from "../scenarios";
 
@@ -133,7 +132,6 @@ declare global {
       clear: typeof clearMount;
       list: typeof listCatalog;
       /** Live-SVG patcher parity gate (#1471). */
-      parityLiveSvg: typeof parityLiveSvg;
       /** Every timed update mutates output and reaches fresh-final parity. */
       verifyUpdate: typeof verifyUpdate;
     };
@@ -147,6 +145,5 @@ window.competitiveBench = {
   endUpdate,
   clear: clearMount,
   list: listCatalog,
-  parityLiveSvg,
   verifyUpdate,
 };
