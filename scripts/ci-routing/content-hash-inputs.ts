@@ -326,21 +326,40 @@ export const JOB_CONTENT_INPUTS: Record<CacheableExecution, readonly string[]> =
   ],
 };
 
+function jobContentMatcher(patterns: readonly string[]): (file: string) => boolean {
+  const exact = new Set<string>();
+  const directories = new Set<string>();
+  const wildcards: string[] = [];
+  for (const raw of patterns) {
+    const pattern = raw.replaceAll("\\", "/");
+    if (pattern.startsWith("**/")) wildcards.push(pattern);
+    else if (pattern.endsWith("/**")) directories.add(pattern.slice(0, -3));
+    else if (pattern.includes("*")) wildcards.push(pattern);
+    else exact.add(pattern);
+  }
+
+  return (file) => {
+    if (exact.has(file) || directories.has(file)) return true;
+    let slash = file.lastIndexOf("/");
+    while (slash >= 0) {
+      if (directories.has(file.slice(0, slash))) return true;
+      if (slash === 0) break;
+      slash = file.lastIndexOf("/", slash - 1);
+    }
+    return wildcards.some((pattern) => matchPathPattern(pattern, file));
+  };
+}
+
 export function listJobContentPaths(
   execution: CacheableExecution,
   allPaths: readonly string[],
 ): string[] {
-  const patterns = JOB_CONTENT_INPUTS[execution];
+  const matches = jobContentMatcher(JOB_CONTENT_INPUTS[execution]);
   const matched = new Set<string>();
   for (const raw of allPaths) {
     const file = raw.replaceAll("\\", "/").replace(/^\.\//, "");
     if (!file || file === ".") continue;
-    for (const pattern of patterns) {
-      if (matchPathPattern(pattern, file)) {
-        matched.add(file);
-        break;
-      }
-    }
+    if (matches(file)) matched.add(file);
   }
   return [...matched].toSorted();
 }
