@@ -4,7 +4,8 @@ import {
   buildInteractiveLegendEntries,
   buildLegendEntryKeyIndexForPlot,
   findLegendPressedIdentity,
-  isLegendValueVisible,
+  isLegendValueKeyVisible,
+  legendFilterValueKeys,
   legendIdentityKey,
   nextLegendFilterValues,
   samePropertyKeySet,
@@ -230,6 +231,10 @@ export function usePlotLegends(input: {
   const filterEntries = entries.filter(
     (entry) => capability.filter.has(entry.legend.scale) || Boolean(props.legendFilter),
   );
+  const filterControls = new Map<
+    string,
+    { visibility: { keys: ReadonlySet<string>; mode: LegendFilterClause["mode"] } | null } | null
+  >();
   const focusEntries = entries.filter(
     (entry) => capability.focus.has(entry.legend.scale) || Boolean(props.legendFocus),
   );
@@ -251,14 +256,38 @@ export function usePlotLegends(input: {
         >
           {filterEntries.map((entry) => {
             const identity = legendIdentityKey(entry.identity);
-            const field = fieldFor(entry);
-            const clause = filters.find(
-              (value) => value.scale === entry.legend.scale && value.field === field,
-            );
+            const scale = entry.legend.scale;
+            let control = filterControls.get(scale);
+            if (control === undefined) {
+              const field = fieldFor(entry);
+              if (field === undefined) {
+                control = null;
+              } else {
+                const clause = filters.find(
+                  (value) => value.scale === scale && value.field === field,
+                );
+                control = {
+                  visibility:
+                    clause === undefined
+                      ? null
+                      : {
+                          keys: legendFilterValueKeys(clause.values),
+                          mode: clause.mode,
+                        },
+                };
+              }
+              filterControls.set(scale, control);
+            }
+            if (control === null) return null;
+            const { visibility } = control;
             const visible =
-              clause === undefined ||
-              isLegendValueVisible(clause.values, entry.entry.value as CellValue, clause.mode);
-            return field === undefined ? null : (
+              visibility === null ||
+              isLegendValueKeyVisible(
+                visibility.keys,
+                entry.entry.value as CellValue,
+                visibility.mode,
+              );
+            return (
               <label
                 key={identity}
                 style={{ display: "inline-flex", alignItems: "center", minHeight: 44, gap: 6 }}

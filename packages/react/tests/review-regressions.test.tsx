@@ -82,6 +82,51 @@ describe("flipped axis brushes", () => {
   });
 });
 
+describe("legend filter controls", () => {
+  it("looks up the field once for all checkboxes of the same scale", () => {
+    const rendered = vi.fn<NonNullable<GGPlotProps["onrender"]>>();
+    const onlegendfilter = vi.fn<NonNullable<GGPlotProps["onlegendfilter"]>>();
+    const mapped = { ...aes, color: "group" };
+    const legendFilter = { mode: "include" } as const;
+    const chart = () => (
+      <GGPlot
+        data={rows}
+        aes={mapped}
+        width={480}
+        height={320}
+        legendFilter={legendFilter}
+        onrender={rendered}
+        onlegendfilter={onlegendfilter}
+      >
+        <GeomPoint />
+      </GGPlot>
+    );
+    const view = render(chart());
+    const checkbox = (name: string) => view.getByRole("checkbox", { name }) as HTMLInputElement;
+    fireEvent.click(checkbox("Show A"));
+    const model = rendered.mock.calls.at(-1)?.[0];
+    if (model === undefined) throw new Error("Missing filtered render model");
+    const flatFields = vi.spyOn(model.layerFields, "flat");
+    rendered.mockClear();
+
+    try {
+      view.rerender(chart());
+      expect(rendered).not.toHaveBeenCalled();
+      expect(checkbox("Show A").checked).toBe(false);
+      expect(checkbox("Show B").checked).toBe(true);
+      expect(onlegendfilter.mock.calls.at(-1)?.[0].clause).toEqual({
+        scale: "color",
+        field: "group",
+        values: ["B"],
+        mode: "include",
+      });
+      expect(flatFields).toHaveBeenCalledTimes(1);
+    } finally {
+      flatFields.mockRestore();
+    }
+  });
+});
+
 describe("disabled legend filtering", () => {
   it.each(["prop", "child"] as const)(
     "restores rows when the %s capability is removed",
