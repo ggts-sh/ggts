@@ -3,8 +3,11 @@
  * Production: validate.ts orchestrator + structure/data modules.
  */
 import { fromAny } from "@total-typescript/shoehorn";
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
+import { dataChecks } from "../src/validate-data-checks.ts";
+import { DEFAULT_VALIDATE_LIMITS } from "../src/validate-data.ts";
+import type { FieldEvidenceEntry } from "../src/validate-data-evidence.ts";
 import { validate } from "../src/validate.ts";
 
 function errorsOf(input: unknown, options?: Parameters<typeof validate>[1]) {
@@ -14,6 +17,56 @@ function errorsOf(input: unknown, options?: Parameters<typeof validate>[1]) {
 }
 
 describe("tier 2 — cross-stage error ordering (characterization)", () => {
+  it("limits repeated evidence walks while preserving layer-specific categories", () => {
+    const coordinate: FieldEvidenceEntry = {
+      type: "quantitative",
+      allNull: false,
+      values: null,
+      temporal: null,
+    };
+    const category: FieldEvidenceEntry = {
+      type: "nominal",
+      allNull: false,
+      values: ["A", "B"],
+      temporal: null,
+    };
+    const shared = new Map([
+      ["x", coordinate],
+      ["y", coordinate],
+      ["category", category],
+    ]);
+    const local = new Map([
+      ["unique", category],
+      ["x", coordinate],
+      ["y", coordinate],
+      ["category", { ...category, values: ["C"] }],
+    ]);
+    const layers = [shared, local, shared, shared, shared, shared];
+    const readShared = spyOn(shared, Symbol.iterator);
+    let errors: ReturnType<typeof dataChecks>;
+    let visits: number;
+    try {
+      errors = dataChecks(
+        {
+          aes: { x: { field: "x" }, y: { field: "y" }, color: { field: "category" } },
+          scales: { color: { type: "manual", range: ["red", "blue"] } },
+          layers: layers.map(() => ({ geom: "point" })),
+        },
+        {},
+        DEFAULT_VALIDATE_LIMITS,
+        { status: "ok", plot: null, layers },
+      );
+      visits = readShared.mock.calls.length;
+    } finally {
+      readShared.mockRestore();
+    }
+
+    expect(errors).toHaveLength(1);
+    expect(errors[0]?.code).toBe("color-manual-domain-range");
+    expect(errors[0]?.message).toContain("3 values, 2 colors");
+    expect(visits).toBe(2);
+  });
+
   // Locks layer-structural → facet → data order so extract refactors cannot
   // reorder pipeline stages without a deliberate test update.
   it("reports structural, then facet, then data errors in that order", () => {
