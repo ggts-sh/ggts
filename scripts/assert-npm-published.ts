@@ -11,7 +11,7 @@
 import {
   filterUnpublished,
   formatUnpublishedFailure,
-  npmVersionExists,
+  probeNpmVersions,
   readPublishedPackageVersions,
 } from "./npm-publish-state.ts";
 
@@ -24,14 +24,9 @@ async function main(): Promise<number> {
   }
 
   const publishedKeys = new Set<string>();
-  for (const pkg of local) {
-    // Retries + cache-bust: same run may have 404-probed these URLs before
-    // publish, and a negative CDN cache can still be warm.
-    const exists = await npmVersionExists(pkg.name, pkg.version, {
-      retries: 5,
-      retryDelayMs: 2000,
-    });
-
+  // Retries + cache-bust: same run may have 404-probed these URLs before
+  // publish, and a negative CDN cache can still be warm.
+  for await (const { pkg, exists } of probeNpmVersions(local, { retries: 5, retryDelayMs: 2000 })) {
     if (exists) {
       publishedKeys.add(`${pkg.name}@${pkg.version}`);
       console.log(`ok  ${pkg.name}@${pkg.version}`);

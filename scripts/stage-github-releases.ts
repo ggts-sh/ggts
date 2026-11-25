@@ -28,7 +28,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   changelogSectionForVersion,
-  npmVersionExists,
+  probeNpmVersions,
   parsePackageReleaseTag,
   planGithubReleaseStaging,
   readPublishedPackageVersions,
@@ -101,9 +101,9 @@ async function main(): Promise<number> {
   }
 
   const includeKeys = readJustPublishedTags(staging);
-  for (const pkg of local) {
-    // Retries: post-publish negative-cache lag after publish-unpublished's 404 probes.
-    if (await npmVersionExists(pkg.name, pkg.version, { retries: 5, retryDelayMs: 2000 })) {
+  // Retries: post-publish negative-cache lag after publish-unpublished's 404 probes.
+  for await (const { pkg, exists } of probeNpmVersions(local, { retries: 5, retryDelayMs: 2000 })) {
+    if (exists) {
       includeKeys.add(`${pkg.name}@${pkg.version}`);
     }
   }

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import { rejects } from "node:assert/strict";
 import { join } from "node:path";
 import {
   changelogSectionForVersion,
@@ -9,6 +10,7 @@ import {
   packageReleaseTag,
   parsePackageReleaseTag,
   planGithubReleaseStaging,
+  probeNpmVersions,
   readPublishedPackageVersions,
   type PackageVersion,
   waitForNpmVersions,
@@ -224,6 +226,88 @@ describe("npmVersionExists retries", () => {
     expect(ok).toBe(true);
     expect(calls).toBe(3);
     expect(sleeps.length).toBe(2);
+  });
+});
+
+describe("probeNpmVersions", () => {
+  const pkgs = Array.from({ length: 9 }, (_, index): PackageVersion => ({
+    dir: `packages/demo-${String(index)}`,
+    name: `demo-${String(index)}`,
+    version: "1.0.0",
+  }));
+
+  it("probes up to eight versions at once and yields every result in package order", async () => {
+    const gates = pkgs.map(() => Promise.withResolvers<void>());
+    const urls = pkgs.map((pkg) => npmVersionUrl(pkg.name, pkg.version));
+    const requests: string[] = [];
+    const completed: string[] = [];
+    const fetchImpl = (async (url: string) => {
+      const gate = gates[urls.indexOf(url)];
+      if (gate === undefined) throw new Error(`Unexpected URL ${url}`);
+      requests.push(url);
+      await gate.promise;
+      completed.push(url);
+      return new Response("{}", { status: url.includes("demo-4") ? 404 : 200 });
+    }) as unknown as typeof fetch;
+    const versions = probeNpmVersions(pkgs, { fetchImpl });
+    let yielded = false;
+    const first = versions.next().then((result) => {
+      yielded = true;
+      return result;
+    });
+    const initialRequests = requests.slice();
+    for (const later of gates.slice(1, 8).toReversed()) later.resolve();
+    await Bun.sleep(0);
+    const beforeFirst = { yielded, requests: requests.slice(), completed: completed.slice() };
+    for (const gate of gates) gate.resolve();
+
+    expect(initialRequests).toEqual(urls.slice(0, 8));
+    expect(beforeFirst).toEqual({
+      yielded: false,
+      requests: urls.slice(0, 8),
+      completed: urls.slice(1, 8).toReversed(),
+    });
+    const initial = await first;
+    if (initial.done === true) throw new Error("Expected a first probe result");
+    const results = [initial.value];
+    for await (const result of versions) results.push(result);
+    expect(results).toEqual(pkgs.map((pkg) => ({ pkg, exists: pkg.name !== "demo-4" })));
+    expect(requests).toEqual(urls);
+  });
+
+  it("yields earlier results and raises the first error in package order", async () => {
+    const gate = Promise.withResolvers<Response>();
+    let laterErrorServed = false;
+    const fetchImpl = ((url: string) => {
+      if (url.includes("demo-1")) return gate.promise;
+      if (url.includes("demo-2")) {
+        laterErrorServed = true;
+        return Promise.resolve(new Response("{}", { status: 503 }));
+      }
+      return Promise.resolve(new Response("{}", { status: 200 }));
+    }) as unknown as typeof fetch;
+    const unhandled: unknown[] = [];
+    const recordUnhandled = (error: unknown) => {
+      unhandled.push(error);
+    };
+    process.on("unhandledRejection", recordUnhandled);
+    try {
+      const [firstPackage] = pkgs;
+      if (firstPackage === undefined) throw new Error("Expected a first package");
+      const versions = probeNpmVersions(pkgs.slice(0, 3), { fetchImpl });
+      expect(await versions.next()).toEqual({
+        value: { pkg: firstPackage, exists: true },
+        done: false,
+      });
+      await Bun.sleep(0);
+      const laterErrorWasServed = laterErrorServed;
+      gate.resolve(new Response("{}", { status: 502 }));
+      expect(laterErrorWasServed).toBe(true);
+      await rejects(versions.next(), /npm registry 502 for demo-1/);
+      expect(unhandled).toEqual([]);
+    } finally {
+      process.off("unhandledRejection", recordUnhandled);
+    }
   });
 });
 
