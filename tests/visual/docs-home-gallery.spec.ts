@@ -302,8 +302,10 @@ test("homepage switches four benchmark tabs and sends details to GitHub", async 
         "src",
         new RegExp(`bench-core-${paths[index]}${theme === "dark" ? "-dark-site" : ""}\\.svg\\?v=`),
       );
-      await expect(chart).toHaveAttribute("alt", /ggts core SVG/);
-      await expect(chart).not.toHaveAttribute("alt", /D3/);
+      for (const library of ["ggts", "LayerCake", "TanStack", "Unovis"]) {
+        await expect(chart).toHaveAttribute("alt", new RegExp(`${library} [\\d.,]+ ms`));
+      }
+      await expect(chart).not.toHaveAttribute("alt", /D3|SveltePlot/);
       await expect
         .poll(() =>
           chart.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),

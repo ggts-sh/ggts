@@ -2,6 +2,7 @@
 import { createHash } from "node:crypto";
 import { format, resolveConfig } from "prettier";
 
+import { BENCHMARK_GRID } from "../../apps/docs/src/lib/benchmarks/charts.ts";
 import { formatGeneratedSource } from "../artifact.ts";
 import type { ChartCard } from "./cards";
 import { PROJECTION } from "./results";
@@ -35,10 +36,10 @@ export const BENCHMARK_CHART_CARDS = ${JSON.stringify(entries)} as const;
   );
 }
 
-/** README and homepage share the same four selected comparisons. */
+/** Embed the four selected comparisons as one faceted SVG. */
 export async function readmeSource(
   source: string,
-  cards: readonly ChartCard[],
+  gridLabel: string,
   bundles: {
     coreKb: number;
     svelteKb: number;
@@ -52,12 +53,9 @@ export async function readmeSource(
   const block =
     /<!-- framework-benchmark-charts:start -->[\s\S]*?<!-- framework-benchmark-charts:end -->/;
   if (!block.test(source)) throw new Error("README is missing framework benchmark markers");
-  const featured = cards.map(
-    (card) => `![${card.chart.ariaLabel}](apps/docs/static/benchmarks/bench-${card.id}.svg)`,
-  );
   const body = source.replace(
     block,
-    `<!-- framework-benchmark-charts:start -->\n\n${featured.join("\n\n")}\n\n<!-- framework-benchmark-charts:end -->`,
+    `<!-- framework-benchmark-charts:start -->\n\n![${gridLabel}](apps/docs/static/benchmarks/${BENCHMARK_GRID.filename})\n\n<!-- framework-benchmark-charts:end -->`,
   );
   const row = /^\|\s*\*\*Bundle size\*\*[^\n]*$/m;
   if (!row.test(body)) throw new Error("README is missing its bundle-size comparison row");

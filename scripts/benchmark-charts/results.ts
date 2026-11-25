@@ -15,6 +15,13 @@ export const PROJECTION = join(
   "benchmark-charts.ts",
 );
 
+export const BENCHMARK_LIBRARIES = [
+  ["ggsvelte-svg", "ggts"],
+  ["layercake", "LayerCake"],
+  ["tanstack-svelte", "TanStack"],
+  ["unovis", "Unovis"],
+] as const;
+
 interface MeasurementProvenance {
   readonly commit: string;
   readonly dirty: boolean;
@@ -139,14 +146,7 @@ function validateRendererSnapshot(renderer: BrowserResults): void {
   ) {
     throw new Error("SVG measurements require a dated production run from a clean source commit.");
   }
-  for (const lib of [
-    "ggsvelte-svg",
-    "d3",
-    "layercake",
-    "unovis",
-    "tanstack-svelte",
-    "svelteplot",
-  ]) {
+  for (const lib of [...BENCHMARK_LIBRARIES.map(([id]) => id), "d3"]) {
     if (renderer.libs.find((entry) => entry.id === lib)?.form !== "svg") {
       throw new Error(`SVG comparison requires an SVG adapter: ${lib}`);
     }

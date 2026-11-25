@@ -8,12 +8,17 @@ import {
   type ArtifactGroup,
 } from "../artifact.ts";
 import {
+  BENCHMARK_GRID,
   benchmarkChartDarkSiteSvg,
   benchmarkChartSvg,
+  benchmarkGridLabel,
+  benchmarkGridSpec,
+  renderBenchmarkSvg,
 } from "../../apps/docs/src/lib/benchmarks/charts.ts";
 import { buildCards } from "./cards.ts";
 import { projectionSource, readmeSource, type ShellFile } from "./projection.ts";
 import {
+  BENCHMARK_LIBRARIES,
   bundleGzipKb,
   readJson,
   readSnapshot,
@@ -35,6 +40,19 @@ function build(snapshot: PublishedSnapshot) {
       { filename: `bench-${card.id}-dark-site.svg`, body: benchmarkChartDarkSiteSvg(light) },
     ];
   });
+  const gridLabel = benchmarkGridLabel(cards);
+  files.push({
+    filename: BENCHMARK_GRID.filename,
+    body: renderBenchmarkSvg(
+      benchmarkGridSpec(
+        cards,
+        BENCHMARK_LIBRARIES.map(([, label]) => label),
+      ),
+      BENCHMARK_GRID.filename,
+      gridLabel,
+      BENCHMARK_GRID,
+    ),
+  });
   const bundleKb = {
     coreKb: bundleGzipKb(bundles, "ggsvelte-svg", "scatter-color"),
     svelteKb: bundleGzipKb(bundles, "ggsvelte-ggplot", "scatter-color"),
@@ -45,7 +63,7 @@ function build(snapshot: PublishedSnapshot) {
   };
   const renderer = snapshot.renderer ?? browser;
   const generatedAt = `${renderer.generatedAt}; commit ${renderer.provenance.commit}`;
-  return { files, cards, bundleKb, generatedAt };
+  return { files, cards, bundleKb, generatedAt, gridLabel };
 }
 
 /** Prepare every output before allowing the artifact group to mutate files. */
@@ -62,7 +80,7 @@ export async function benchmarkChartArtifacts(
         ssr: readJson("ssr.json", root) as SsrResults,
       })
     : committed;
-  const { files, cards, bundleKb, generatedAt } = build(snapshot);
+  const { files, cards, bundleKb, generatedAt, gridLabel } = build(snapshot);
   const output = join(root, "apps/docs/static/benchmarks");
   const readmePath = join(root, "README.md");
   const outputs: [string, string][] = files.map((file) => [join(output, file.filename), file.body]);
@@ -71,7 +89,10 @@ export async function benchmarkChartArtifacts(
       join(root, "apps/docs/src/lib/generated/benchmark-charts.ts"),
       await projectionSource(files, cards, generatedAt),
     ],
-    [readmePath, await readmeSource(readFileSync(readmePath, "utf8"), cards, bundleKb, readmePath)],
+    [
+      readmePath,
+      await readmeSource(readFileSync(readmePath, "utf8"), gridLabel, bundleKb, readmePath),
+    ],
   );
   if (publish) {
     const { renderer: _renderer, ...fullSnapshot } = snapshot;

@@ -5,7 +5,12 @@ import { join } from "node:path";
 import { describe, expect, it } from "bun:test";
 
 import { benchmarkChartSrc } from "../apps/docs/src/lib/benchmarks/asset-url.ts";
-import { benchmarkChartSpec, benchmarkChartSvg } from "../apps/docs/src/lib/benchmarks/charts.ts";
+import {
+  BENCHMARK_GRID,
+  benchmarkChartSpec,
+  benchmarkChartSvg,
+  benchmarkGridLabel,
+} from "../apps/docs/src/lib/benchmarks/charts.ts";
 import { readmeSource } from "./benchmark-charts/projection";
 import { buildCards } from "./benchmark-charts/cards";
 import {
@@ -112,6 +117,28 @@ describe("committed bench SVGs", () => {
       expect(values, card.id).toEqual([...values].toSorted((a, b) => a - b));
     }
   });
+
+  it("renders the README grid as four panels with the same four libraries in each", () => {
+    const svg = readFileSync(join(STATIC_BENCHMARKS, BENCHMARK_GRID.filename), "utf8");
+    const strips = [
+      ...svg.matchAll(/class="gg-strip" transform="translate\(([\d.]+),([\d.]+)\)"/g),
+    ];
+    const [topLeft, topRight, bottomLeft, bottomRight] = strips;
+    expect(strips).toHaveLength(4);
+    expect(topLeft?.[1]).toBe(bottomLeft?.[1]);
+    expect(topRight?.[1]).toBe(bottomRight?.[1]);
+    expect(topLeft?.[2]).toBe(topRight?.[2]);
+    expect(bottomLeft?.[2]).toBe(bottomRight?.[2]);
+    expect(Number(topLeft?.[1])).toBeLessThan(Number(topRight?.[1]));
+    expect(Number(topLeft?.[2])).toBeLessThan(Number(bottomLeft?.[2]));
+    const axes = svg.split('class="gg-axis gg-axis-y"').slice(1);
+    expect(axes).toHaveLength(4);
+    for (const axis of axes) {
+      expect(tickTitlesTopToBottom(axis)).toEqual(["ggts", "LayerCake", "TanStack", "Unovis"]);
+    }
+    expect([...svg.matchAll(/>[\d,.]+ ms<\/text>/g)]).toHaveLength(16);
+    expect(svg).toContain(">Median time including paint · Lower is better</text>");
+  });
 });
 
 describe("benchmarkChartSrc", () => {
@@ -128,7 +155,7 @@ describe("benchmarkChartSrc", () => {
 });
 
 describe("homepage highlights", () => {
-  it("publishes four winning SVG comparisons without D3", () => {
+  it("publishes the same four-library SVG cohort in each tab", () => {
     expect(BENCHMARK_CHART_CARDS.map((card) => card.id)).toEqual([
       "core-scatter-10k-mount",
       "core-scatter-1k-mount",
@@ -136,9 +163,12 @@ describe("homepage highlights", () => {
       "core-line-30k-update",
     ]);
     for (const card of buildCards(readSnapshot().renderer!)) {
-      expect(card.chart.bars[0]?.kind, card.id).toBe("ggsvelte");
-      expect(card.chart.bars).toHaveLength(5);
-      expect(card.chart.ariaLabel).not.toContain("D3");
+      expect(card.chart.bars.map((bar) => bar.lib).toSorted(), card.id).toEqual([
+        "LayerCake",
+        "TanStack",
+        "Unovis",
+        "ggts",
+      ]);
     }
   });
 });
@@ -193,14 +223,15 @@ describe("benchmark claim integrity", () => {
     };
     const rendered = await readmeSource(
       source,
-      buildCards(browser),
+      benchmarkGridLabel(buildCards(browser)),
       bundles,
       join(import.meta.dir, "../README.md"),
     );
     expect(rendered).toContain("# Intro");
-    expect(rendered).toContain("bench-core-scatter-10k-mount.svg");
-    expect(rendered).toContain("bench-core-line-30k-update.svg");
-    expect(rendered.match(/!\[/g)).toHaveLength(4);
+    expect(rendered).toContain(BENCHMARK_GRID.filename);
+    expect(rendered).toContain("30,000-point line · Data update");
+    expect(rendered.match(/!\[/g)).toHaveLength(1);
+    expect(rendered).not.toContain("SveltePlot");
     expect(rendered).not.toContain("bench-react");
     expect(rendered).not.toContain("bench-svelte");
     expect(rendered).not.toContain("999 KB");
@@ -216,7 +247,7 @@ describe("benchmark claim integrity", () => {
     const cards = buildCards(renderer);
     const core = cards.find((card) => card.id === "core-scatter-10k-mount")!;
     expect(core.chart.bars.map((bar) => bar.lib).toSorted()).toEqual(
-      ["ggts core SVG", "LayerCake", "Unovis", "TanStack", "SveltePlot"].toSorted(),
+      ["ggts", "LayerCake", "Unovis", "TanStack"].toSorted(),
     );
     expect(core.chart.bars.every((bar) => bar.value === 7)).toBe(true);
     expect(cards.every((card) => card.id.startsWith("core-"))).toBe(true);

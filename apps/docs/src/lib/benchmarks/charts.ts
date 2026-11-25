@@ -76,6 +76,12 @@ export interface BenchmarkChartInput {
   readonly ariaLabel: string;
 }
 
+export const BENCHMARK_GRID = {
+  filename: "bench-core-svg-grid.svg",
+  width: 720,
+  height: 370,
+};
+
 /** Library names in ascending mount time. Ties break on the library name. */
 function libsByAscendingValue(bars: readonly BenchmarkBar[]): readonly string[] {
   return bars
@@ -86,12 +92,19 @@ function libsByAscendingValue(bars: readonly BenchmarkBar[]): readonly string[] 
 /**
  * Horizontal bar chart spec (coord flip): lower-is-better time benchmarks.
  * The quantitative axis is hidden (guides y none) — bar-end labels carry the
- * values, like bun's bundler chart. Title + subtitle live in the SVG so bare
- * README embeds stay self-describing (GitHub renders the image alone).
+ * values, like bun's bundler chart. The title and subtitle identify the
+ * workload on the homepage tab.
  */
 export function benchmarkChartSpec(input: BenchmarkChartInput): PortableSpec {
-  const spec = {
-    data: { values: input.bars },
+  return {
+    ...benchmarkBarsSpec(libsByAscendingValue(input.bars)),
+    data: { values: input.bars.map((bar) => ({ ...bar })) },
+    labs: { title: input.title, subtitle: input.subtitle, x: "" },
+  };
+}
+
+function benchmarkBarsSpec(libs: readonly string[], labelSize = 12): PortableSpec {
+  return {
     aes: { x: { field: "lib" }, y: { field: "value" } },
     layers: [
       {
@@ -103,15 +116,14 @@ export function benchmarkChartSpec(input: BenchmarkChartInput): PortableSpec {
         geom: "text",
         aes: { label: { field: "label" } },
         // Under coord flip, pre-flip dy pushes the label past the bar end.
-        params: { anchor: "start", dx: 0, dy: -6, size: 12 },
+        params: { anchor: "start", dx: 0, dy: -6, size: labelSize },
       },
     ],
     scales: {
-      // Domain is ascending mount time. Coord flip paints the first band at
-      // the bottom, so reverse puts the fastest bar on top.
-      x: { type: "band", domain: libsByAscendingValue(input.bars), reverse: true },
-      // Headroom past the longest bar so bar-end value labels never clip.
-      y: { expand: { mult: 0.45, add: 0 } },
+      // Coord flip paints the first band at the bottom.
+      x: { type: "band", domain: [...libs], reverse: true },
+      // Start bars next to the library labels and leave room for end labels.
+      y: { type: "linear", zero: true, expand: { mult: [0, 0.49] } },
       fill: {
         type: "manual",
         domain: ["ggsvelte", "peer"],
@@ -120,10 +132,47 @@ export function benchmarkChartSpec(input: BenchmarkChartInput): PortableSpec {
     },
     coord: { type: "flip" },
     guides: { fill: { type: "none" }, y: { type: "none" } },
-    labs: { title: input.title, subtitle: input.subtitle, x: "" },
     theme: BENCH_THEME,
   };
-  return spec as unknown as PortableSpec;
+}
+
+export function benchmarkGridSpec(
+  panels: readonly { chart: BenchmarkChartInput; facetLabel: string }[],
+  libs: readonly string[],
+): PortableSpec {
+  const bars = benchmarkBarsSpec(libs, 14);
+  return {
+    ...bars,
+    data: {
+      values: panels.flatMap(({ chart, facetLabel }) =>
+        chart.bars.map((bar) => ({ ...bar, workload: facetLabel })),
+      ),
+    },
+    facet: {
+      wrap: { field: "workload", levels: panels.map((panel) => panel.facetLabel) },
+      ncol: 2,
+      // Free scales let each workload train its own time axis and draw the
+      // library labels in both columns. The pinned library domain keeps the order.
+      scales: "free",
+    },
+    labs: {
+      title: "SVG chart benchmarks",
+      subtitle: "Median time including paint · Lower is better",
+      x: "",
+    },
+    theme: { ...BENCH_THEME, axisTextSize: 14, stripSize: 14, stripWeight: 650, ticksY: false },
+  };
+}
+
+export function benchmarkGridLabel(
+  panels: readonly { chart: BenchmarkChartInput; facetLabel: string }[],
+): string {
+  return `SVG chart benchmarks. Median time including paint. Lower is better. ${panels
+    .map(
+      ({ chart, facetLabel }) =>
+        `${facetLabel}. ${chart.bars.map((bar) => `${bar.lib} ${bar.label}`).join(", ")}.`,
+    )
+    .join(" ")}`;
 }
 
 function escapeXml(text: string): string {
@@ -143,15 +192,23 @@ export function benchmarkChartSvg(
   input: BenchmarkChartInput,
   options: { readonly width: number; readonly height: number },
 ): string {
-  const spec = benchmarkChartSpec(input);
+  return renderBenchmarkSvg(benchmarkChartSpec(input), input.id, input.ariaLabel, options);
+}
+
+export function renderBenchmarkSvg(
+  spec: PortableSpec,
+  id: string,
+  ariaLabel: string,
+  options: { readonly width: number; readonly height: number },
+): string {
   const result = validate(spec);
   if (!result.ok) {
     const first = result.errors[0];
     throw new Error(
-      `benchmark chart "${input.id}" failed validation: ${first?.code} at ${first?.path}: ${first?.message}`,
+      `benchmark chart "${id}" failed validation: ${first?.code} at ${first?.path}: ${first?.message}`,
     );
   }
-  const label = escapeXml(input.ariaLabel);
+  const label = escapeXml(ariaLabel);
   return renderToSVGString(spec, options)
     .replace(/aria-label="[^"]*"/, `aria-label="${label}"`)
     .replace(/<title>[^<]*<\/title>/, `<title>${label}</title>`);
