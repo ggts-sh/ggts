@@ -28,6 +28,19 @@ describe("runtime docs route projection helpers", () => {
     expect(findDocsRoute("/examples/interactions/inspection")?.index).toBe(false);
   });
 
+  it("omits guide neighbors at sequence boundaries and matches paths exactly", () => {
+    const first = guideSequence("/docs");
+    expect(Object.keys(first)).toEqual(["next"]);
+    expect(first.next?.path).toBe("/guide/agents");
+    expect(guideSequence("/docs")).not.toBe(first);
+    const last = guideSequence("/guide/upgrading");
+    expect(Object.keys(last)).toEqual(["previous"]);
+    expect(last.previous?.path).toBe("/guide/lifecycle");
+    for (const path of ["/docs/", "/themes", "/not-a-route"]) {
+      expect(guideSequence(path)).toStrictEqual({});
+    }
+  });
+
   it("assigns preserved reference guides to the global Reference navigation owner", () => {
     expect(primaryNavigationOwner(findDocsRoute("/docs"))).toBe("docs");
     expect(primaryNavigationOwner(findDocsRoute("/guide/getting-started"))).toBe("docs");

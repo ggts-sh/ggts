@@ -15,6 +15,12 @@ const ROUTES: readonly DocsRouteMetadata[] = DOCS_ROUTES;
 const ROUTES_BY_PATH = new Map<string, DocsRouteMetadata>(
   ROUTES.map((route) => [route.path, route]),
 );
+const GUIDES = ROUTES.filter((route) => route.navigation !== undefined).toSorted(
+  (a, b) => (a.navigation?.order ?? 0) - (b.navigation?.order ?? 0),
+);
+const GUIDE_INDEX_BY_PATH = new Map<string, number>(
+  GUIDES.map((route, index) => [route.path, index]),
+);
 
 export function routePath(pathname: string, base: string): string {
   const hasBaseBoundary = base !== "" && (pathname === base || pathname.startsWith(`${base}/`));
@@ -39,13 +45,10 @@ export function guideSequence(path: string): {
   previous?: DocsRouteMetadata;
   next?: DocsRouteMetadata;
 } {
-  const guides = ROUTES.filter((route) => route.navigation !== undefined).toSorted(
-    (a, b) => (a.navigation?.order ?? 0) - (b.navigation?.order ?? 0),
-  );
-  const index = guides.findIndex((route) => route.path === path);
-  if (index < 0) return {};
-  const previous = guides[index - 1];
-  const next = guides[index + 1];
+  const index = GUIDE_INDEX_BY_PATH.get(path);
+  if (index === undefined) return {};
+  const previous = GUIDES[index - 1];
+  const next = GUIDES[index + 1];
   return {
     ...(previous !== undefined && { previous }),
     ...(next !== undefined && { next }),
