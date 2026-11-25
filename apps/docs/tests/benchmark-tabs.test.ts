@@ -25,7 +25,7 @@ describe("benchmark tabs", () => {
     expect(image?.getAttribute("src")?.split("?")[0]).toBe(
       "/benchmarks/bench-core-scatter-10k-mount.svg",
     );
-    expect(image?.getAttribute("alt")).toContain("ggts core SVG");
+    expect(image?.getAttribute("alt")).toMatch(/\bggts [\d.,]+ ms\b/);
     expect(image?.getAttribute("alt")).not.toContain("D3");
   });
 });

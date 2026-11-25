@@ -157,7 +157,7 @@ export function benchmarkGridSpec(
     },
     labs: {
       title: "SVG chart benchmarks",
-      subtitle: "Median time including paint · Lower is better · Scales vary by panel",
+      subtitle: "Median time including paint · Lower is better",
       x: "",
     },
     theme: { ...BENCH_THEME, axisTextSize: 14, stripSize: 14, stripWeight: 650, ticksY: false },
@@ -167,7 +167,7 @@ export function benchmarkGridSpec(
 export function benchmarkGridLabel(
   panels: readonly { chart: BenchmarkChartInput; facetLabel: string }[],
 ): string {
-  return `SVG chart benchmarks. Median time including paint. Lower is better. Scales vary by panel. ${panels
+  return `SVG chart benchmarks. Median time including paint. Lower is better. ${panels
     .map(
       ({ chart, facetLabel }) =>
         `${facetLabel}. ${chart.bars.map((bar) => `${bar.lib} ${bar.label}`).join(", ")}.`,

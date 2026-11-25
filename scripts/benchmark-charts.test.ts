@@ -134,14 +134,10 @@ describe("committed bench SVGs", () => {
     const axes = svg.split('class="gg-axis gg-axis-y"').slice(1);
     expect(axes).toHaveLength(4);
     for (const axis of axes) {
-      expect(tickTitlesTopToBottom(axis)).toEqual([
-        "ggts core SVG",
-        "LayerCake",
-        "TanStack",
-        "Unovis",
-      ]);
+      expect(tickTitlesTopToBottom(axis)).toEqual(["ggts", "LayerCake", "TanStack", "Unovis"]);
     }
     expect([...svg.matchAll(/>[\d,.]+ ms<\/text>/g)]).toHaveLength(16);
+    expect(svg).toContain(">Median time including paint · Lower is better</text>");
   });
 });
 
@@ -171,7 +167,7 @@ describe("homepage highlights", () => {
         "LayerCake",
         "TanStack",
         "Unovis",
-        "ggts core SVG",
+        "ggts",
       ]);
     }
   });
@@ -251,7 +247,7 @@ describe("benchmark claim integrity", () => {
     const cards = buildCards(renderer);
     const core = cards.find((card) => card.id === "core-scatter-10k-mount")!;
     expect(core.chart.bars.map((bar) => bar.lib).toSorted()).toEqual(
-      ["ggts core SVG", "LayerCake", "Unovis", "TanStack"].toSorted(),
+      ["ggts", "LayerCake", "Unovis", "TanStack"].toSorted(),
     );
     expect(core.chart.bars.every((bar) => bar.value === 7)).toBe(true);
     expect(cards.every((card) => card.id.startsWith("core-"))).toBe(true);

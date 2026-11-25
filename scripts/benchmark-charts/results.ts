@@ -16,7 +16,7 @@ export const PROJECTION = join(
 );
 
 export const BENCHMARK_LIBRARIES = [
-  ["ggsvelte-svg", "ggts core SVG"],
+  ["ggsvelte-svg", "ggts"],
   ["layercake", "LayerCake"],
   ["tanstack-svelte", "TanStack"],
   ["unovis", "Unovis"],

@@ -18,7 +18,7 @@ ggts is a fast agent-native implementation of the grammar of graphics in TypeScr
 
 <!-- framework-benchmark-charts:start -->
 
-![SVG chart benchmarks. Median time including paint. Lower is better. Scales vary by panel. 10,000-point scatter · First render. ggts core SVG 42.2 ms, LayerCake 137.8 ms, TanStack 171 ms, Unovis 202 ms. 1,000-point scatter · First render. ggts core SVG 7.8 ms, LayerCake 15.5 ms, TanStack 20.4 ms, Unovis 27.8 ms. 10,000-point scatter · Data update. ggts core SVG 38.8 ms, LayerCake 61.1 ms, TanStack 115.9 ms, Unovis 268.7 ms. 30,000-point line · Data update. ggts core SVG 14.4 ms, LayerCake 20.5 ms, TanStack 50.5 ms, Unovis 58.9 ms.](apps/docs/static/benchmarks/bench-core-svg-grid.svg)
+![SVG chart benchmarks. Median time including paint. Lower is better. 10,000-point scatter · First render. ggts 42.2 ms, LayerCake 137.8 ms, TanStack 171 ms, Unovis 202 ms. 1,000-point scatter · First render. ggts 7.8 ms, LayerCake 15.5 ms, TanStack 20.4 ms, Unovis 27.8 ms. 10,000-point scatter · Data update. ggts 38.8 ms, LayerCake 61.1 ms, TanStack 115.9 ms, Unovis 268.7 ms. 30,000-point line · Data update. ggts 14.4 ms, LayerCake 20.5 ms, TanStack 50.5 ms, Unovis 58.9 ms.](apps/docs/static/benchmarks/bench-core-svg-grid.svg)
 
 <!-- framework-benchmark-charts:end -->
 
