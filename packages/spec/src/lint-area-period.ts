@@ -157,8 +157,15 @@ function countsShaped(
 ): boolean {
   if (!rows.every((row) => Number.isInteger(row.y) && row.y >= 0)) return false;
   for (const series of byGroup.values()) {
+    const size = series.size;
+    if (size <= 1) continue;
+    // Sparse groups can sort their observed periods for less than a full scan.
+    const ordered =
+      size * Math.log2(size) <= keys.length
+        ? [...series.keys()].toSorted((left, right) => left - right)
+        : keys;
     let previous: number | undefined;
-    for (const key of keys) {
+    for (const key of ordered) {
       const y = series.get(key);
       if (y === undefined) continue;
       if (previous !== undefined && y < previous) return true;

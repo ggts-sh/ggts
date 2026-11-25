@@ -1,5 +1,5 @@
 /** line-over-period-totals lint behavior (issue #1963). */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { lintSpec, type SpecAdvisory } from "../src/lint.ts";
 import { normalize, type SpecInput } from "../src/normalize.ts";
@@ -67,6 +67,36 @@ const jaggedYears = (start: number, count: number, y = (i: number) => [3, 8, 4, 
   Array.from({ length: count }, (_, i) => ({ year: start + i, n: y(i) }));
 
 describe("line-over-period-totals", () => {
+  it("checks sparse groups using observed periods and still detects a late decline", () => {
+    const values = Array.from({ length: 60 }, (_, index) => {
+      const year = 1850 + 2 * index;
+      const group = `segment ${index}`;
+      return [
+        { year: year + 1, n: 2, group },
+        { year, n: 1, group },
+      ];
+    }).flat();
+    const spec = lineSpec(values, { groupChannel: "group" });
+    const mapGet = spyOn(Map.prototype, "get");
+    let advisories: ReturnType<typeof lintSpec>;
+    let lookups: number;
+    try {
+      advisories = lintSpec(spec);
+      lookups = mapGet.mock.calls.filter(
+        ([key]) => typeof key === "number" && key >= 1850 && key < 1970,
+      ).length;
+    } finally {
+      mapGet.mockRestore();
+    }
+
+    const falling = values.map((row, index) =>
+      index === values.length - 1 ? { ...row, n: 8 } : row,
+    );
+    expect(advisories).toEqual([]);
+    expect(codesOf(lintSpec(lineSpec(falling, { groupChannel: "group" })))).toEqual([CODE]);
+    expect(lookups).toBeLessThan(500);
+  });
+
   it("fires on the issue #1963 repro via lintSpec and validate({ lint: true })", () => {
     const spec = issueReproSpec();
     const lintAdvisories = lintSpec(spec);
