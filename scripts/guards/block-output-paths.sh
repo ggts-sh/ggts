@@ -42,17 +42,55 @@ ${staged}
 EOF
 
 blocked=()
-for f in "$@"; do
-  if printf '%s\n' "${staged}" | grep -Fqx -- "${f}"; then
-    # Baseline updates: legacy bot branch, or same-PR with render-relevant paths.
-    if [[ "${f}" =~ ^tests/visual/__screenshots__/ ]]; then
-      if [[ "${branch}" =~ ^vr-update/pr-[0-9]+$ ]] || [[ "${has_render_relevant}" -eq 1 ]]; then
-        continue
-      fi
+record_blocked() {
+  local f="$1"
+  # Baseline updates: legacy bot branch, or same-PR with render-relevant paths.
+  if [[ "${f}" =~ ^tests/visual/__screenshots__/ ]]; then
+    if [[ "${branch}" =~ ^vr-update/pr-[0-9]+$ ]] || [[ "${has_render_relevant}" -eq 1 ]]; then
+      return
     fi
-    blocked+=("${f}")
   fi
-done
+  blocked+=("${f}")
+}
+
+batch_matches=0
+if [[ $# -gt 1 ]]; then
+  batch_matches=1
+  for f in "$@"; do
+    # Keep empty and multiline arguments in the per-argument matcher.
+    if [[ -z "${f}" || "${f}" == *$'\n'* ]]; then
+      batch_matches=0
+      break
+    fi
+  done
+fi
+
+if [[ "${batch_matches}" -eq 1 ]]; then
+  if arguments="$(printf '%s\n' "$@")" &&
+    matches="$({ grep -aFxf /dev/fd/3 || [[ $? -eq 1 ]]; } 2>/dev/null 3<<< "${staged}" <<< "${arguments}")"; then
+    if [[ -n "${matches}" ]]; then
+      while IFS= read -r f; do
+        record_blocked "${f}"
+      done <<< "${matches}"
+    fi
+  else
+    batch_matches=0
+  fi
+fi
+if [[ "${batch_matches}" -eq 0 ]]; then
+  for f in "$@"; do
+    match_status=0
+    { grep -Fqx -- "${f}" || match_status=$?; } <<< "${staged}" || match_status=2
+    case "${match_status}" in
+      0) record_blocked "${f}" ;;
+      1) ;;
+      *)
+        printf 'Could not verify staged output path: %s\n' "${f}" >&2
+        exit 1
+        ;;
+    esac
+  done
+fi
 
 if [[ ${#blocked[@]} -eq 0 ]]; then
   exit 0
