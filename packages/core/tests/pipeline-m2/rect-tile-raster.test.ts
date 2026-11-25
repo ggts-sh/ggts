@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "bun:test";
 import { aes, gg } from "@ggts-sh/spec";
-import { PipelineError, runPipeline } from "../../src/pipeline.ts";
+import { runPipeline } from "../../src/pipeline.ts";
 import { renderToSVGString } from "../../src/render-svg-full.ts";
 import type { RectsBatch } from "../../src/scene.ts";
 import { size } from "./fixtures.ts";
@@ -170,15 +170,60 @@ describe("geom tile", () => {
     expect(w0).toBeCloseTo(w1, 3);
   });
 
-  it("rejects non-positive mapped width", () => {
-    expect(() =>
-      runPipeline(
-        gg({ x: [1], y: [1], w: [0] }, aes({ x: "x", y: "y", width: "w" }))
-          .geomTile()
+  it("prefers mapped sizes and resolves missing sizes independently on both axes", () => {
+    const mappedCenters = [1, 5, 3];
+    const defaultCenters = [2, 8, 5];
+    const mappedSpans = [1, 2, 4];
+    const noExpansion = { nice: false, expand: { mult: 0, add: 0 } };
+    for (const mapWidth of [true, false]) {
+      const model = runPipeline(
+        gg(
+          {
+            x: mapWidth ? mappedCenters : defaultCenters,
+            y: mapWidth ? defaultCenters : mappedCenters,
+            span: mappedSpans,
+          },
+          aes({ x: "x", y: "y", ...(mapWidth ? { width: "span" } : { height: "span" }) }),
+        )
+          .geomTile(mapWidth ? { width: 0.25 } : { height: 0.25 })
+          .scales({ x: noExpansion, y: noExpansion })
           .spec(),
         size,
-      ),
-    ).toThrow(PipelineError);
+      );
+      const { x, y } = model.domains.effective;
+      expect(x).toEqual(mapWidth ? [0.5, 6] : [0.5, 9.5]);
+      expect(y).toEqual(mapWidth ? [0.5, 9.5] : [0.5, 6]);
+      const panel = model.scene.panels[0]!;
+      const batch = model.scene.batches[0] as RectsBatch;
+      expect(batch.rects.length / 4).toBe(mappedSpans.length);
+      for (let row = 0; row < mappedSpans.length; row++) {
+        const mappedFraction = mappedSpans[row]! / 5.5;
+        const defaultFraction = 3 / 9;
+        expect(batch.rects[row * 4 + 2]! / panel.width).toBeCloseTo(
+          mapWidth ? mappedFraction : defaultFraction,
+          6,
+        );
+        expect(batch.rects[row * 4 + 3]! / panel.height).toBeCloseTo(
+          mapWidth ? defaultFraction : mappedFraction,
+          6,
+        );
+      }
+    }
+  });
+
+  it("rejects invalid mapped width even with a valid literal width", () => {
+    for (const invalid of [0, null]) {
+      expect(() =>
+        runPipeline(
+          gg({ x: [1, 2], y: [1, 2], w: [invalid, 1] }, aes({ x: "x", y: "y", width: "w" }))
+            .geomTile({ width: 1 })
+            .spec(),
+          size,
+        ),
+      ).toThrow(
+        expect.objectContaining({ code: "tile-nonpositive-size", path: "/layers/0/aes/width" }),
+      );
+    }
   });
 
   it("infers a time x scale from temporal tile centers with synthetic edges", () => {

@@ -9,7 +9,7 @@ import type { RasterParams, TileParams } from "@ggts-sh/spec";
 
 import type { RectsBatch } from "../scene.js";
 import { linetypeIndex, type Linetype } from "../scales/style.js";
-import { resolution as resolutionOf } from "../stats/numeric.js";
+import { tileResolution } from "../stats/numeric.js";
 
 import type { LayerFrame, PipelineWarning, ResolvedColorScale } from "./types.js";
 import { PipelineError } from "./types.js";
@@ -38,12 +38,6 @@ function sizeAt(
   }
   if (param !== undefined) return param;
   return defaultSize;
-}
-
-function defaultResolution(values: Float64Array | null): number {
-  if (values === null || values.length === 0) return 1;
-  const gap = resolutionOf(values);
-  return gap > 0 ? gap : 1;
 }
 
 function emitEdges(input: {
@@ -161,11 +155,15 @@ function emitBandTiles(input: {
   const keptRows = new Uint32Array(n);
   let kept = 0;
   let removed = 0;
-  // Safe to hoist because the loop never writes xNumeric/yNumeric. Only the
-  // continuous branches read these; the band arms size from scale.step, so the
-  // guard exists to keep them from paying for a scan they never consult.
-  const defaultW = fx.xScale.type === "band" ? 1 : defaultResolution(frame.xNumeric);
-  const defaultH = fx.yScale.type === "band" ? 1 : defaultResolution(frame.yNumeric);
+  // Only continuous dimensions without an authored size need a spacing scan.
+  const defaultW =
+    fx.xScale.type === "band" || frame.binding.widthField !== null || widthParam !== undefined
+      ? 1
+      : tileResolution(frame.xNumeric);
+  const defaultH =
+    fx.yScale.type === "band" || frame.binding.heightField !== null || heightParam !== undefined
+      ? 1
+      : tileResolution(frame.yNumeric);
   for (let row = 0; row < n; row++) {
     const x = tileAxis(frame, fx, row, "x", widthParam, defaultW);
     const y = tileAxis(frame, fx, row, "y", heightParam, defaultH);

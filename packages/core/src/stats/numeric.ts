@@ -85,6 +85,12 @@ export function resolution(values: readonly number[] | Float64Array): number {
   return Number.isFinite(min) ? min : 0;
 }
 
+/** Default tile span on a quantitative axis, including one-value domains. */
+export function tileResolution(values: Float64Array | null): number {
+  if (values === null || values.length === 0) return 1;
+  return resolution(values) || 1;
+}
+
 // ---------------------------------------------------------------------------
 // Student-t quantile (qt) via the inverse regularized incomplete beta
 // ---------------------------------------------------------------------------
