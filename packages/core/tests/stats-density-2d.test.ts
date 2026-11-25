@@ -1,7 +1,7 @@
 /**
  * Pure stat_density_2d (#802).
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { bandwidthNRD, productKdeGrid, statDensity2d } from "../src/stats/density-2d.ts";
 
@@ -166,6 +166,26 @@ describe("productKdeGrid", () => {
     // Local bandwidth should examine far fewer than the naive full product.
     expect(examinations).toBeLessThan(full * 0.25);
     expect(examinations).toBeGreaterThan(0);
+  });
+
+  it.each([
+    ["packed rows", 0.5, 9, 12],
+    ["all-sample rows", 3, 18, 24],
+  ] as const)("reuses only the y factors reached by x windows in %s", (_, hy, visits, calls) => {
+    const xs = Float64Array.of(-100, -1, 0, 1, 100);
+    const ys = new Float64Array(xs.length);
+    const gx = Float64Array.of(-1, 0, 1);
+    const gy = Float64Array.of(0, 20);
+    const exp = spyOn(Math, "exp");
+    try {
+      const { examinations } = productKdeGrid(xs, ys, gx, gy, 1, hy, {
+        countExaminations: true,
+      });
+      expect(examinations).toBe(visits);
+      expect(exp).toHaveBeenCalledTimes(calls);
+    } finally {
+      exp.mockRestore();
+    }
   });
 
   it("sums in ascending-x order, bit for bit", () => {
