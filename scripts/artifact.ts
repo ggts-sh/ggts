@@ -83,6 +83,8 @@ export type ArtifactDef = {
   build: () => string | Promise<string>;
   /** npm script name for fix messages, e.g. "docs:routes:gen". */
   regenerateWith: string;
+  /** Reuse this check within one walk when its builder is read-only and inputs are stable. */
+  cacheCheck?: boolean;
   /** Optional label for messages; defaults to repo-relative path. */
   label?: string;
   /**
@@ -106,11 +108,30 @@ function defaultLabel(path: string): string {
   return rel === "" || rel.startsWith("..") ? path : rel;
 }
 
-async function ensureDepsCurrent(deps: readonly Artifact[] | undefined): Promise<void> {
-  if (deps === undefined) return;
+type ArtifactCheck = (verified?: Set<ArtifactCheck>) => Promise<void>;
+const artifactChecks = new WeakMap<Artifact, { check: Artifact["check"]; verify: ArtifactCheck }>();
+
+async function ensureArtifactsCurrent(
+  deps: readonly Artifact[] | undefined,
+  verified?: Set<ArtifactCheck>,
+): Promise<boolean> {
+  if (deps === undefined) return true;
+  let stable = true;
   for (const dep of deps) {
-    await dep.check();
+    const factory = verified && artifactChecks.get(dep);
+    const descriptor = factory && Object.getOwnPropertyDescriptor(dep, "check");
+    if (verified === undefined || factory === undefined || descriptor?.value !== factory.check) {
+      await dep.check();
+    } else {
+      const { verify } = factory;
+      if (!verified.has(verify)) await verify(verified);
+      if (verified.has(verify)) continue;
+    }
+    // A check without a stable builder can change files seen by later checks.
+    verified?.clear();
+    stable = false;
   }
+  return stable;
 }
 
 function wrapDepFailure(
@@ -133,15 +154,17 @@ function wrapDepFailure(
 
 export function defineArtifact(def: ArtifactDef): Artifact {
   const label = def.label ?? defaultLabel(def.path);
+  const cacheCheck = def.cacheCheck === true;
   const self = {
     path: def.path,
     regenerateWith: def.regenerateWith,
     label,
   };
 
-  async function check(): Promise<void> {
+  async function verify(verified?: Set<ArtifactCheck>): Promise<void> {
+    let stableDeps: boolean;
     try {
-      await ensureDepsCurrent(def.dependsOn);
+      stableDeps = await ensureArtifactsCurrent(def.dependsOn, verified);
     } catch (error) {
       wrapDepFailure(error, self);
     }
@@ -163,11 +186,16 @@ export function defineArtifact(def: ArtifactDef): Artifact {
         label,
       });
     }
+    if (stableDeps) verified?.add(verify);
+  }
+
+  function check(): Promise<void> {
+    return verify(cacheCheck ? new Set() : undefined);
   }
 
   async function write(): Promise<{ wrote: boolean }> {
     try {
-      await ensureDepsCurrent(def.dependsOn);
+      await ensureArtifactsCurrent(def.dependsOn);
     } catch (error) {
       wrapDepFailure(error, self);
     }
@@ -200,7 +228,7 @@ export function defineArtifact(def: ArtifactDef): Artifact {
     }
   }
 
-  return {
+  const artifact = {
     path: def.path,
     regenerateWith: def.regenerateWith,
     label,
@@ -208,11 +236,15 @@ export function defineArtifact(def: ArtifactDef): Artifact {
     write,
     cli,
   };
+  if (cacheCheck) artifactChecks.set(artifact, { check, verify });
+  return artifact;
 }
 
 export type ArtifactGroupDef = {
   regenerateWith: string;
   members: readonly Artifact[];
+  /** Reuse stable member checks during one group check when member iteration is read-only. */
+  cacheCheck?: boolean;
   /** Extra check after all members pass (orphan sweeps, provenance, digests). */
   extraCheck?: () => void | Promise<void>;
   /** Extra write after members write (PNG copy, provenance prune, dir wipe). */
@@ -226,9 +258,15 @@ export type ArtifactGroup = {
 };
 
 export function defineArtifactGroup(def: ArtifactGroupDef): ArtifactGroup {
+  const cacheCheck = def.cacheCheck === true;
+
   async function check(): Promise<void> {
-    for (const member of def.members) {
-      await member.check();
+    if (cacheCheck) {
+      await ensureArtifactsCurrent(def.members, new Set());
+    } else {
+      for (const member of def.members) {
+        await member.check();
+      }
     }
     await def.extraCheck?.();
   }

@@ -244,6 +244,7 @@ export function generateDocsSearchProjection(entries: readonly DocsSearchEntry[]
  * write refuses to cascade in-process (module graph would keep stale bindings).
  */
 export const docsSearchArtifact = defineArtifact({
+  cacheCheck: true,
   path: OUTPUT_PATH,
   label: "apps/docs/src/lib/generated/search-index.ts",
   regenerateWith: "docs:search:gen",

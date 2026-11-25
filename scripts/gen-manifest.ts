@@ -404,6 +404,7 @@ const examplesDir = join(repoRoot, "examples");
 
 /** Shared protocol handle for examples/manifest.ts. */
 export const manifestArtifact = defineArtifact({
+  cacheCheck: true,
   path: join(examplesDir, "manifest.ts"),
   label: "examples/manifest.ts",
   regenerateWith: "manifest:gen",

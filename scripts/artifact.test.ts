@@ -4,12 +4,14 @@
  * Behavior through the public defineArtifact / defineArtifactGroup surface —
  * not implementation details of individual generators.
  */
-import { afterEach, describe, expect, test } from "bun:test";
+import { afterEach, describe, expect, mock, test } from "bun:test";
+import { rejects } from "node:assert/strict";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import {
+  type Artifact,
   ArtifactError,
   defineArtifact,
   defineArtifactGroup,
@@ -17,7 +19,6 @@ import {
 } from "./artifact.ts";
 
 const temps: string[] = [];
-
 afterEach(() => {
   for (const dir of temps.splice(0)) {
     rmSync(dir, { recursive: true, force: true });
@@ -115,7 +116,145 @@ describe("defineArtifact check/write", () => {
   });
 });
 
+function cachedGroup(members: readonly Artifact[]) {
+  return defineArtifactGroup({ cacheCheck: true, regenerateWith: "group:gen", members });
+}
 describe("defineArtifact dependsOn", () => {
+  test("checks a shared artifact once per dependency walk and per group check", async () => {
+    const path = join(tempDir(), "same.txt");
+    writeFileSync(path, "current\n");
+    let sharedChecks = 0;
+    const shared = defineArtifact({
+      path,
+      cacheCheck: true,
+      build: () => {
+        sharedChecks++;
+        return "current\n";
+      },
+      regenerateWith: "shared:gen",
+    });
+    const left = defineArtifact({
+      path,
+      cacheCheck: true,
+      build: () => "current\n",
+      regenerateWith: "left:gen",
+      dependsOn: [shared],
+    });
+    const top = defineArtifact({
+      path,
+      cacheCheck: true,
+      build: () => "current\n",
+      regenerateWith: "top:gen",
+      dependsOn: [left, shared],
+    });
+    await top.check();
+    expect(sharedChecks).toBe(1);
+    const group = cachedGroup([left, shared]);
+    await group.check();
+    expect(sharedChecks).toBe(2);
+    await group.check();
+    expect(sharedChecks).toBe(3);
+  });
+  test("checks shared artifacts again after an external check changes the files", async () => {
+    const path = join(tempDir(), "shared.txt");
+    writeFileSync(path, "current\n");
+    const shared = defineArtifact({
+      path,
+      cacheCheck: true,
+      build: () => "current\n",
+      regenerateWith: "shared:gen",
+    });
+    const external = {
+      ...shared,
+      check() {
+        expect(this).toBe(external);
+        writeFileSync(path, "stale\n");
+        return Promise.resolve();
+      },
+    };
+    const group = cachedGroup([shared, external, shared]);
+    await rejects(group.check(), /shared\.txt is STALE/);
+  });
+
+  test.each([false, true])("runs getters returning a factory method", async (sameArtifact) => {
+    const path = join(tempDir(), "shared.txt");
+    writeFileSync(path, "current\n");
+    const shared = defineArtifact({
+      path,
+      cacheCheck: true,
+      build: () => {
+        Object.defineProperty(member, "check", {
+          configurable: true,
+          get() {
+            writeFileSync(path, "stale\n");
+            return check;
+          },
+        });
+        return "current\n";
+      },
+      regenerateWith: "shared:gen",
+    });
+    // oxlint-disable-next-line typescript/unbound-method -- the getter must return the original method.
+    const check = shared.check;
+    const member = sameArtifact ? shared : { ...shared };
+    const group = cachedGroup([shared, member]);
+    await rejects(group.check(), /shared\.txt is STALE/);
+  });
+
+  test.each(["build", "dependsOn"])("refreshes checks around unmarked %s", async (phase) => {
+    const dir = tempDir();
+    const path = join(dir, "shared.txt");
+    const otherPath = join(dir, "other.txt");
+    writeFileSync(path, "current\n");
+    writeFileSync(otherPath, "other\n");
+    const shared = defineArtifact({
+      path,
+      build: () => "current\n",
+      regenerateWith: "shared:gen",
+      cacheCheck: true,
+    });
+    const mutator = defineArtifact({
+      path: otherPath,
+      build: () => {
+        if (phase === "build") writeFileSync(path, "stale\n");
+        return "other\n";
+      },
+      get dependsOn() {
+        if (phase === "build") return [];
+        writeFileSync(path, "stale\n");
+        return [shared];
+      },
+      regenerateWith: "other:gen",
+    });
+    const group = cachedGroup([shared, mutator, shared]);
+    const error =
+      phase === "build" ? /shared\.txt is STALE/ : /bun run shared:gen && bun run other:gen/;
+    await rejects(group.check(), error);
+  });
+
+  test("rechecks a parent with an unmarked dependency", async () => {
+    const path = join(tempDir(), "same.txt");
+    writeFileSync(path, "current\n");
+    let dependencyChecks = 0;
+    const dependency = defineArtifact({
+      path,
+      build: () => {
+        dependencyChecks++;
+        return "current\n";
+      },
+      regenerateWith: "dependency:gen",
+    });
+    const parent = defineArtifact({
+      path,
+      build: () => "current\n",
+      regenerateWith: "parent:gen",
+      dependsOn: [dependency],
+      cacheCheck: true,
+    });
+    await cachedGroup([parent, parent]).check();
+    expect(dependencyChecks).toBe(2);
+  });
+
   test("check attributes a stale dependency instead of blaming the child", async () => {
     const dir = tempDir();
     const depPath = join(dir, "dep.txt");
@@ -254,6 +393,16 @@ describe("defineArtifact dependsOn", () => {
 });
 
 describe("defineArtifactGroup", () => {
+  test("starts the extra check immediately for an empty default group", async () => {
+    const extraCheck = mock(() => {
+      /* Track invocation. */
+    });
+    const group = defineArtifactGroup({ regenerateWith: "group:gen", members: [], extraCheck });
+    const check = group.check();
+    expect(extraCheck).toHaveBeenCalledTimes(1);
+    await check;
+  });
+
   test("check fails on the first stale member with that member's message", async () => {
     const dir = tempDir();
     const aPath = join(dir, "a.txt");

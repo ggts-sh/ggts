@@ -77,6 +77,7 @@ export function generateDocsGuideNavigationProjection(
 
 /** DOCS_ROUTES artifact — search and server routes depend on this alone. */
 export const docsRoutesArtifact = defineArtifact({
+  cacheCheck: true,
   path: ROUTES_OUTPUT_PATH,
   label: "apps/docs/src/lib/generated/routes.ts",
   regenerateWith: "docs:routes:gen",
@@ -86,6 +87,7 @@ export const docsRoutesArtifact = defineArtifact({
 });
 
 export const docsGuideNavigationArtifact = defineArtifact({
+  cacheCheck: true,
   path: GUIDE_NAV_OUTPUT_PATH,
   label: "apps/docs/src/lib/generated/guide-navigation.ts",
   regenerateWith: "docs:routes:gen",
@@ -94,6 +96,7 @@ export const docsGuideNavigationArtifact = defineArtifact({
 });
 
 const docsRoutesArtifacts = defineArtifactGroup({
+  cacheCheck: true,
   regenerateWith: "docs:routes:gen",
   members: [docsRoutesArtifact, docsGuideNavigationArtifact],
 });
