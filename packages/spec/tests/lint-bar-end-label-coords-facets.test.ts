@@ -1,4 +1,4 @@
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { lintSpec, type SpecAdvisory } from "../src/lint.ts";
 
@@ -37,6 +37,46 @@ function flippedSpec(textLayerOverrides: Record<string, unknown>) {
 }
 
 describe("bar-end-label-offset coord and facet handling", () => {
+  it("projects shared facet evidence once across inherited label layers", () => {
+    const rowCount = 16;
+    const labels = Array.from({ length: 6 }, () => ({
+      geom: "text",
+      aes: { label: "n" },
+      params: { anchor: "start" },
+    }));
+    const spec = {
+      data: {
+        columns: {
+          pathway: Array.from({ length: rowCount }, (_, index) => `group ${index}`),
+          n: Array.from({ length: rowCount }, (_, index) => index + 1),
+          panel: Array.from({ length: rowCount }, (_, index) =>
+            index % 2 === 0 ? "selected left" : "selected right",
+          ),
+        },
+      },
+      aes: { x: "pathway", y: "n" },
+      facet: { wrap: "panel" },
+      layers: [{ geom: "col" }, ...labels],
+    };
+    const serialize = spyOn(JSON, "stringify");
+    let advisories: SpecAdvisory[];
+    let projections: number;
+    try {
+      advisories = matching(lintSpec(spec));
+      projections = serialize.mock.calls.filter(([value]) => {
+        if (!Array.isArray(value) || value.length !== 1) return false;
+        return value[0] === '"selected left"' || value[0] === '"selected right"';
+      }).length;
+    } finally {
+      serialize.mockRestore();
+    }
+
+    expect(advisories.map((advisory) => advisory.path)).toEqual(
+      labels.map((_, index) => `/layers/${index + 1}/params/anchor`),
+    );
+    expect(projections).toBe(rowCount);
+  });
+
   it("stays silent on coord: flip with clean horizontal end offsets", () => {
     const startDy = flippedSpec({ params: { anchor: "start", dy: -6, size: 11 } });
     expect(codesOf(lintSpec(startDy))).not.toContain(CODE);
