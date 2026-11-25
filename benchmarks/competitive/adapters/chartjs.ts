@@ -26,6 +26,7 @@ import {
   type ScenarioId,
   type SeriesColumns,
 } from "../scenarios";
+import { groupSeriesValues } from "./series-columns";
 
 Chart.register(
   LinearScale,
@@ -62,24 +63,17 @@ function canvasIn(root: HTMLElement): HTMLCanvasElement {
 }
 
 function seriesFromLong(data: SeriesColumns) {
-  const names = [...new Set(data.series)];
-  const points = data.x.length / names.length;
-  const labels = data.x.slice(0, points);
-  const datasets = names.map((name, i) => {
-    const values: number[] = [];
-    for (let j = 0; j < data.series.length; j++) {
-      if (data.series[j] === name) values.push(data.y[j]!);
-    }
-    return {
-      label: name,
-      data: values,
-      borderColor: COLORS[i % COLORS.length],
-      backgroundColor: COLORS[i % COLORS.length],
-      pointRadius: 0,
-      borderWidth: 1.5,
-      fill: false as boolean | string,
-    };
-  });
+  const groups = groupSeriesValues(data);
+  const labels = data.x.slice(0, data.x.length / groups.size);
+  const datasets = Array.from(groups, ([name, values], i) => ({
+    label: name,
+    data: values,
+    borderColor: COLORS[i % COLORS.length],
+    backgroundColor: COLORS[i % COLORS.length],
+    pointRadius: 0,
+    borderWidth: 1.5,
+    fill: false as boolean | string,
+  }));
   return { labels, datasets };
 }
 
