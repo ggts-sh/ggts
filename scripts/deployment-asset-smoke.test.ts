@@ -9,6 +9,47 @@ import {
 } from "./deployment-asset-smoke.ts";
 
 describe("deployment immutable asset smoke", () => {
+  it("reuses verified assets, retries failures, and emits problems in route and asset order", async () => {
+    const assets = Array.from({ length: 10 }, (_, index) => `/_app/immutable/chunks/${index}.js`);
+    const recovering = assets[0]!;
+    const failing = assets[1]!;
+    const html = assets.map((asset) => `<link href="${asset}" rel="modulepreload">`).join("");
+    const hits = new Map<string, number>();
+    let inFlight = 0;
+    let peak = 0;
+    const fetchImpl: FetchLike = async (url) => {
+      const { pathname } = new URL(url);
+      if (pathname === "/one" || pathname === "/two") return new Response(html);
+      if (!assets.includes(pathname)) throw new Error(`unexpected fetch ${url}`);
+
+      const requestNumber = (hits.get(pathname) ?? 0) + 1;
+      hits.set(pathname, requestNumber);
+      inFlight++;
+      peak = Math.max(peak, inFlight);
+      if (pathname === recovering) await Promise.resolve();
+      await Promise.resolve();
+      inFlight--;
+
+      const status =
+        pathname === failing || (pathname === recovering && requestNumber === 1) ? 404 : 200;
+      return new Response(null, { status });
+    };
+
+    const problems = await smokeImmutableAssets({
+      baseUrl: "https://example.pages.dev",
+      paths: ["/one", "/two"],
+      fetchImpl,
+    });
+
+    expect(problems.map(({ path, message }) => [path, message.split(":")[0]])).toEqual([
+      ["/one", recovering.slice(1)],
+      ["/one", failing.slice(1)],
+      ["/two", failing.slice(1)],
+    ]);
+    expect(assets.map((asset) => hits.get(asset))).toEqual([2, 2, 1, 1, 1, 1, 1, 1, 1, 1]);
+    expect(peak).toBe(8);
+  });
+
   it("extracts hashed SvelteKit immutable assets from prerendered HTML", () => {
     const html = `
       <link href="./_app/immutable/entry/start.ABC.js" rel="modulepreload">

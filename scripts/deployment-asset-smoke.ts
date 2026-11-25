@@ -61,6 +61,8 @@ export type FetchLike = (
 /** Match deployment-smoke-cli: fail fast on stalled edge connections. */
 export const ASSET_SMOKE_FETCH_TIMEOUT_MS = 15_000;
 
+const ASSET_PROBE_CONCURRENCY = 8;
+
 export async function smokeImmutableAssets(input: {
   readonly baseUrl: string;
   readonly paths: readonly string[];
@@ -75,20 +77,39 @@ export async function smokeImmutableAssets(input: {
   // exactOptionalPropertyTypes, and FetchLike's init is already a structural
   // subset of RequestInit.
   const fetchImpl: FetchLike = input.fetchImpl ?? ((url, init) => fetch(url, init));
+  const request = (url: string) =>
+    fetchImpl(url, {
+      redirect: "follow",
+      headers: {
+        "cache-control": "no-cache",
+        "user-agent": "ggsvelte-deployment-asset-smoke/1",
+      },
+      signal: AbortSignal.timeout(timeoutMs),
+    });
   const problems: AssetSmokeProblem[] = [];
+  const verifiedAssets = new Set<string>();
+  const probeAsset = async (asset: string): Promise<string | null> => {
+    const assetUrl = new URL(asset, `${origin}/`).href;
+    try {
+      const response = await request(assetUrl);
+      const problem = evaluateAssetProbe({
+        asset,
+        url: assetUrl,
+        status: response.status,
+        contentType: response.headers.get("content-type"),
+      });
+      if (problem === null) verifiedAssets.add(asset);
+      return problem;
+    } catch (error) {
+      return `${asset}: request failed: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  };
 
   for (const path of input.paths) {
     const pageUrl = new URL(path.startsWith("/") ? path : `/${path}`, `${origin}/`).href;
     let html: string;
     try {
-      const response = await fetchImpl(pageUrl, {
-        redirect: "follow",
-        headers: {
-          "cache-control": "no-cache",
-          "user-agent": "ggsvelte-deployment-asset-smoke/1",
-        },
-        signal: AbortSignal.timeout(timeoutMs),
-      });
+      const response = await request(pageUrl);
       if (response.status !== 200) {
         problems.push({
           path,
@@ -111,30 +132,12 @@ export async function smokeImmutableAssets(input: {
       continue;
     }
 
-    for (const asset of assets) {
-      const assetUrl = new URL(asset, `${origin}/`).href;
-      try {
-        const response = await fetchImpl(assetUrl, {
-          redirect: "follow",
-          headers: {
-            "cache-control": "no-cache",
-            "user-agent": "ggsvelte-deployment-asset-smoke/1",
-          },
-          signal: AbortSignal.timeout(timeoutMs),
-        });
-        const probe: AssetProbe = {
-          asset,
-          url: assetUrl,
-          status: response.status,
-          contentType: response.headers.get("content-type"),
-        };
-        const problem = evaluateAssetProbe(probe);
-        if (problem !== null) problems.push({ path, message: problem });
-      } catch (error) {
-        problems.push({
-          path,
-          message: `${asset}: request failed: ${error instanceof Error ? error.message : String(error)}`,
-        });
+    const uncheckedAssets = assets.filter((asset) => !verifiedAssets.has(asset));
+    for (let offset = 0; offset < uncheckedAssets.length; offset += ASSET_PROBE_CONCURRENCY) {
+      const batch = uncheckedAssets.slice(offset, offset + ASSET_PROBE_CONCURRENCY);
+      const issues = await Promise.all(batch.map((asset) => probeAsset(asset)));
+      for (const message of issues) {
+        if (message !== null) problems.push({ path, message });
       }
     }
   }
