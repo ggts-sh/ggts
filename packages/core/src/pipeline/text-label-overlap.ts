@@ -22,7 +22,7 @@ export function checkTextLabelOverlap(
   const x = measureLabelAxis(boxes, n, 0);
   const y = measureLabelAxis(boxes, n, 1);
   const bandAxis = x.count > y.count ? x : y;
-  const grid = !options.clip && n >= 1_024 ? createLabelGrid(boxes, n, x, y) : undefined;
+  const grid = !options.clip && n >= 1_024 ? createLabelGrid(boxes, n, x, y) : null;
   const bands = grid ?? createLabelBands(boxes, bandAxis);
   const overlapping = new Uint8Array(n);
   const dropped: number[] = [];
@@ -165,7 +165,7 @@ function createLabelGrid(
   // Sample two boxes two rows apart around the first quarter of the batch.
   const sample = n - (n % 4);
   if (boxes[sample] !== boxes[sample + 8] && boxes[sample + 1] !== boxes[sample + 9]) {
-    return;
+    return null;
   }
 
   const columns = (xAxis.end - xAxis.start) / xAxis.maxLength;
@@ -175,7 +175,7 @@ function createLabelGrid(
   const boxAreaRatio = (xAxis.maxLength / xAxis.minLength) * (yAxis.maxLength / yAxis.minLength);
   // Bands handle single rows or columns. Grid indices need safe integer increments.
   if (!(columns > 1 && rows > 1 && Math.max(columns, rows) < 2 ** 53 && boxAreaRatio <= 32)) {
-    return;
+    return null;
   }
   const cells = new Map<number, Map<number, number[]>>();
 
@@ -201,7 +201,7 @@ function createLabelGrid(
           continue;
         }
         for (const j of bucket ?? []) {
-          if (marks?.[j] || !boxesOverlap(boxes, i, j)) continue;
+          if ((marks?.[j] ?? 0) !== 0 || !boxesOverlap(boxes, i, j)) continue;
           if (marks === undefined) return 1;
           marks[j] = 1;
           marked++;
