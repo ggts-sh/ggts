@@ -40,7 +40,6 @@ const onlyCases = process.env["COMPETITIVE_CASES"]
 const cases = casesForRun(full).filter((c) => !onlyCases || onlyCases.includes(c.id));
 const browserLibs = LIBS.filter((lib) => lib.browser && (!onlyLibs || onlyLibs.includes(lib.id)));
 const benchRootUrl = "http://127.0.0.1:5199/";
-let benchUrl = benchRootUrl;
 
 type BenchApi = {
   mount: (lib: string, caseId: string) => Promise<{ ms: number; syncMs: number; markHint: number }>;
@@ -128,8 +127,6 @@ const browser = await chromium.launch({
   args: ["--disable-frame-rate-limit", "--disable-gpu-vsync"],
 });
 const provenance = measurementProvenance(browser.version());
-let page = await browser.newPage();
-page.setDefaultTimeout(120_000);
 
 function wirePageDiagnostics(p: Page): void {
   p.on("pageerror", (e) => process.stderr.write(`PAGEERROR: ${String(e).slice(0, 800)}\n`));
@@ -139,7 +136,6 @@ function wirePageDiagnostics(p: Page): void {
     }
   });
 }
-wirePageDiagnostics(page);
 
 const results: Record<string, unknown>[] = [];
 const matrix = pairs();
@@ -147,7 +143,7 @@ process.stderr.write(
   `competitive browser: ${matrix.length} cells (full=${full ? "yes" : "no"}, cases=${cases.length}, libs=${browserLibs.length})\n`,
 );
 
-async function waitForBenchApi(): Promise<void> {
+async function waitForBenchApi(page: Page): Promise<void> {
   await page.waitForFunction(() => {
     const w = window as unknown as { competitiveBench?: BenchApi };
     return w.competitiveBench !== undefined;
@@ -160,48 +156,48 @@ function isTimeout(err: unknown): boolean {
 
 /** Load the bench page and wait for the API, retrying once on goto timeout
  * (a cold vite dep-optimize can stall the first load past the page timeout). */
-async function gotoBenchPage(p: Page): Promise<void> {
+async function gotoBenchPage(page: Page, url: string): Promise<void> {
   try {
-    await p.goto(benchUrl);
-    await waitForBenchApi();
+    await page.goto(url);
+    await waitForBenchApi(page);
   } catch (err) {
     if (!isTimeout(err)) throw err;
     process.stderr.write("page load timed out; retrying once...\n");
-    await p.goto(benchUrl);
-    await waitForBenchApi();
+    await page.goto(url);
+    await waitForBenchApi(page);
   }
 }
 
-async function recoverPage(): Promise<void> {
+async function openBenchPage(url: string): Promise<Page> {
+  const page = await browser.newPage();
+  page.setDefaultTimeout(120_000);
+  wirePageDiagnostics(page);
+  await gotoBenchPage(page, url);
+  return page;
+}
+
+async function recoverPage(page: Page, url: string): Promise<Page> {
   try {
     await page.reload();
-    await waitForBenchApi();
+    await waitForBenchApi(page);
+    return page;
   } catch {
     try {
       await page.close();
     } catch {
       // already closed
     }
-    page = await browser.newPage();
-    page.setDefaultTimeout(120_000);
-    wirePageDiagnostics(page);
-    await gotoBenchPage(page);
+    return openBenchPage(url);
   }
 }
 
-await gotoBenchPage(page);
-
 for (const cell of matrix) {
-  benchUrl = `${benchRootUrl}?lib=${encodeURIComponent(cell.lib.id)}`;
+  const benchUrl = `${benchRootUrl}?lib=${encodeURIComponent(cell.lib.id)}`;
   // A fresh page keeps each cell independent from framework state, detached
   // DOM, and garbage-collection pressure accumulated by earlier libraries.
   // The preview server and Chromium process stay warm; each cell still performs
   // its own two warmups before the recorded samples.
-  await page.close();
-  page = await browser.newPage();
-  page.setDefaultTimeout(120_000);
-  wirePageDiagnostics(page);
-  await gotoBenchPage(page);
+  let page = await openBenchPage(benchUrl);
 
   const label = `${cell.lib.id} ${cell.caseId}`;
   process.stderr.write(`bench mount ${label}...\n`);
@@ -281,8 +277,10 @@ for (const cell of matrix) {
       ok: false,
       error: message,
     });
-    // Recover page if a lib crashed the tab; rebind `page` so later cells run.
-    await recoverPage();
+    // Recover page if a lib crashed the tab before continuing the matrix.
+    page = await recoverPage(page, benchUrl);
+  } finally {
+    await page.close();
   }
 }
 

@@ -37,7 +37,7 @@ async function loadAdapter(
   legacyFlag?: "ggplot" | "ggreact",
 ): Promise<void> {
   const enabled =
-    selected === id || (legacyFlag === undefined ? selected === null : params.has(legacyFlag));
+    selected === null ? legacyFlag === undefined || params.has(legacyFlag) : selected === id;
   if (enabled) mounts.set(id, await load());
 }
 
