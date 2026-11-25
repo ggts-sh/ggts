@@ -279,6 +279,9 @@ export function createRotatedBandPlanner(context: RotatedBandPlannerContext): {
    * Single-token-only axes return null.
    */
   const tryHybridRotatePlan = (): BandAxisPlan | null => {
+    // Parallel −45 must clear; otherwise full-string may escalate to −90.
+    if (rotatedTextCollides(1, -45)) return null;
+
     const linesList = entries.map((e) =>
       balanceLabelLines(e.label, maxWrapLines, measurer, fontSize),
     );
@@ -287,8 +290,6 @@ export function createRotatedBandPlanner(context: RotatedBandPlannerContext): {
     const widths = linesList.map((lines) =>
       Math.max(...lines.map((l) => measurer.measureWidth(l, fontSize))),
     );
-    // Parallel −45 must clear; otherwise full-string may escalate to −90.
-    if (rotatedTextCollides(1, -45)) return null;
 
     const hybrid = rotatedPlan(-45, { linesList, widths });
     // Reject hybrid when it still collides or overflows — fall through to the
