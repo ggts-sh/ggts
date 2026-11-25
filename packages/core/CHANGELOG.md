@@ -1,5 +1,37 @@
 # @ggts-sh/core
 
+## 0.49.1
+
+### Patch Changes
+
+- 24a6c5f: Speed up color and fill legend preparation by aggregating mark styles once per layer.
+- e361bd6: Speed up transient tooltips for charts with large inspection groups.
+- f9ae757: Apply direct rectangle inspection and semantic emphasis in one interaction mask build.
+- a1fa157: Speed up x-axis snapping on dense filled area and ribbon charts.
+- 25a27d2: Skip cells that cannot cross a contour level while bounding the index memory.
+- 547c8cb: Speed up summary-bin and bindot charts with many groups and empty bins by indexing occupied bins.
+- 1464895: Speed up overlap checks for large unclipped label rows and crossings with distant outliers.
+- b170e2d: Compute only the theoretical endpoints needed by a Q–Q reference line.
+- 27a52e5: Avoid duplicate panel-table copies when resolving facet layout.
+- 672606d: Retain one source row per group when selecting the first or last observation.
+- b0c75f9: Reuse Gaussian y factors within each row of a 2D density grid.
+- 43ff6f0: Reuse the sequential color lookup table when the normalized ramp stops match.
+- c8f69da: Reuse frozen domain snapshots across fixed facets to reduce repeated copying.
+- fdda805: Skip scanning numeric extent evidence when both bounds of a continuous scale are supplied.
+- 7cdbda8: Speed up dense categorical axes by skipping label measurements for layouts that cannot fit.
+- 1c607e1: Speed up sequential, binned, and identity color scales by skipping unused source catalogs.
+- 9a4b700: Skip unused x-range scans on charts without analytic function layers.
+- 206f6a7: Skip default spacing calculations for tiles with mapped or explicit dimensions.
+- 2f5df4f: Store occupied counts for fine 2D bin grids when empty cells are dropped.
+- d23df7f: Build contiguous global row IDs for unfiltered layers with one registry lookup. Filtered layers and incomplete ranges retain per-row mapping.
+- Updated dependencies [f6bd3b0]
+- Updated dependencies [554ce46]
+- Updated dependencies [d3ea488]
+- Updated dependencies [2dd797c]
+- Updated dependencies [6f06e9c]
+- Updated dependencies [aace929]
+  - @ggts-sh/spec@0.49.1
+
 ## 0.49.0
 
 ### Minor Changes
