@@ -1,4 +1,5 @@
-import { StrictMode } from "react";
+import { startTransition, StrictMode, Suspense, use, useState } from "react";
+import { flushSync } from "react-dom";
 import { act, render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { GGPlot, GeomPoint, type GGPlotProps } from "../src/index.js";
@@ -44,6 +45,110 @@ describe("React resource lifecycle", () => {
     });
     expect(second.row(0)).toBeNull();
     expect(second.scene.batches).toEqual([]);
+  });
+
+  it("reads each registered descriptor once on an equivalent rerender", () => {
+    let reads = 0;
+    const countedAes = {
+      get x() {
+        reads++;
+        return aes.x;
+      },
+      y: aes.y,
+    };
+    const layers = Array.from({ length: 12 }, (_, index) => index);
+    const rendered = vi.fn<NonNullable<GGPlotProps["onrender"]>>();
+    const chart = () => (
+      <GGPlot data={rows} aes={aes} width={480} height={320} onrender={rendered}>
+        {layers.map((key) => (
+          <GeomPoint aes={countedAes} key={key} />
+        ))}
+      </GGPlot>
+    );
+    const view = render(chart());
+    rendered.mockClear();
+    reads = 0;
+
+    view.rerender(chart());
+
+    expect(rendered).not.toHaveBeenCalled();
+    expect(reads).toBe(layers.length);
+  });
+
+  it("publishes and paints the committed size after a suspended update is superseded", async () => {
+    type DeferredState = { size: number; suspend: boolean };
+    let updateUrgent: ((size: number) => void) | undefined;
+    let updateDeferred: ((state: DeferredState) => void) | undefined;
+    const attemptedSuspension = vi.fn();
+    const pending = new Promise<void>(() => {
+      // The transition stays suspended until the next update supersedes it.
+    });
+    const rendered = vi.fn<NonNullable<GGPlotProps["onrender"]>>();
+
+    function Urgent() {
+      const [size, setSize] = useState(4);
+      updateUrgent = setSize;
+      return <GeomPoint size={size} />;
+    }
+    function Blocker({ suspend }: { suspend: boolean }) {
+      if (suspend) {
+        attemptedSuspension();
+        use(pending);
+      }
+      return null;
+    }
+    function Deferred() {
+      const [state, setState] = useState({ size: 2, suspend: false });
+      updateDeferred = setState;
+      return (
+        <>
+          <GeomPoint size={state.size} />
+          <Blocker suspend={state.suspend} />
+        </>
+      );
+    }
+
+    const view = render(
+      <GGPlot data={rows} aes={aes} width={480} height={320} onrender={rendered}>
+        <Urgent />
+        <Suspense fallback={null}>
+          <Deferred />
+        </Suspense>
+      </GGPlot>,
+    );
+    if (updateUrgent === undefined || updateDeferred === undefined) {
+      throw new Error("Both point layers must mount");
+    }
+    const setUrgent = updateUrgent;
+    const setDeferred = updateDeferred;
+    act(() => {
+      startTransition(() => {
+        setDeferred({ size: 3, suspend: true });
+      });
+    });
+    await waitFor(() => {
+      expect(attemptedSuspension).toHaveBeenCalled();
+    });
+
+    act(() => {
+      flushSync(() => {
+        setUrgent(8);
+      });
+    });
+    act(() => {
+      flushSync(() => {
+        setDeferred({ size: 2, suspend: false });
+      });
+    });
+
+    const sizes = rendered.mock.calls
+      .at(-1)?.[1]
+      .layers.map((layer): unknown => layer.params?.size);
+    expect(sizes).toEqual([8, 2]);
+    const radii = Array.from(view.container.querySelectorAll(".gg-points circle"), (point) =>
+      point.getAttribute("r"),
+    );
+    expect(radii).toEqual(["8", "8", "2", "2"]);
   });
 
   it("disconnects container and canvas theme observers on unmount", async () => {
