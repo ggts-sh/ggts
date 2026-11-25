@@ -15,12 +15,18 @@ export function computeEffectiveDomains(
   yScale: PositionScale,
   panelScales: readonly { x: PositionScale; y: PositionScale }[],
 ): ScaleDomainSnapshot {
+  // Fixed panels can reuse the owned snapshot of their shared trained scale.
+  const x = scaleDomainSnapshot(xScale);
+  const y = scaleDomainSnapshot(yScale);
   return Object.freeze({
-    x: scaleDomainSnapshot(xScale),
-    y: scaleDomainSnapshot(yScale),
+    x,
+    y,
     panels: Object.freeze(
       panelScales.map((panel) =>
-        Object.freeze({ x: scaleDomainSnapshot(panel.x), y: scaleDomainSnapshot(panel.y) }),
+        Object.freeze({
+          x: panel.x === xScale ? x : scaleDomainSnapshot(panel.x),
+          y: panel.y === yScale ? y : scaleDomainSnapshot(panel.y),
+        }),
       ),
     ),
   });

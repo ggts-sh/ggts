@@ -21,9 +21,11 @@ export function computeTrainedBaselineDomains(input: {
 
   const baselineX = trainAxis("x", xInputs, options.baselineScales!.x).scale;
   const baselineY = trainAxis("y", yInputs, options.baselineScales!.y).scale;
+  const baselineXDomain = scaleDomainSnapshot(baselineX);
+  const baselineYDomain = scaleDomainSnapshot(baselineY);
   const baselinePanels = facetPanels.map((_, panelIndex) => {
-    let x = baselineX;
-    let y = baselineY;
+    let x = baselineXDomain;
+    let y = baselineYDomain;
     const scratch: Advisory[] = [];
     if (freeX) {
       const inputs = collectAxisInputs(
@@ -32,10 +34,12 @@ export function computeTrainedBaselineDomains(input: {
         options.baselineScales?.x?.type,
         scratch,
       );
-      x = trainAxis("x", inputs, {
-        ...options.baselineScales?.x,
-        type: baselineX.type,
-      }).scale;
+      x = scaleDomainSnapshot(
+        trainAxis("x", inputs, {
+          ...options.baselineScales?.x,
+          type: baselineX.type,
+        }).scale,
+      );
     }
     if (freeY) {
       const inputs = collectAxisInputs(
@@ -44,16 +48,18 @@ export function computeTrainedBaselineDomains(input: {
         options.baselineScales?.y?.type,
         scratch,
       );
-      y = trainAxis("y", inputs, {
-        ...options.baselineScales?.y,
-        type: baselineY.type,
-      }).scale;
+      y = scaleDomainSnapshot(
+        trainAxis("y", inputs, {
+          ...options.baselineScales?.y,
+          type: baselineY.type,
+        }).scale,
+      );
     }
-    return Object.freeze({ x: scaleDomainSnapshot(x), y: scaleDomainSnapshot(y) });
+    return Object.freeze({ x, y });
   });
   return Object.freeze({
-    x: scaleDomainSnapshot(baselineX),
-    y: scaleDomainSnapshot(baselineY),
+    x: baselineXDomain,
+    y: baselineYDomain,
     panels: Object.freeze(baselinePanels),
   });
 }
