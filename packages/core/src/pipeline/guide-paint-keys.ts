@@ -56,38 +56,6 @@ function isPaintScale(scale: string): scale is "color" | "fill" {
   return scale === "color" || scale === "fill";
 }
 
-function layerMapsPaint(binding: LayerBinding, aesthetic: "color" | "fill"): boolean {
-  const channel = binding[aesthetic];
-  return (
-    channel.scaledConstant !== null ||
-    channel.field !== null ||
-    (channel.statColumn !== null && channel.statColumn !== undefined)
-  );
-}
-
-/** True when this layer can produce the domain value for the paint aesthetic. */
-function layerContributesPaintValue(
-  binding: LayerBinding,
-  aesthetic: "color" | "fill",
-  value: unknown,
-): boolean {
-  const channel = binding[aesthetic];
-  if (channel.scaledConstant !== null) {
-    try {
-      return encodeKey(channel.scaledConstant) === encodeKey(value);
-    } catch {
-      return false;
-    }
-  }
-  // Field/stat mappings may emit any trained domain value; without the frame
-  // we cannot filter per-value, so the layer's constant mark style applies to
-  // every key (correct for the common single-layer colored-points case).
-  if (channel.field !== null || (channel.statColumn !== null && channel.statColumn !== undefined)) {
-    return true;
-  }
-  return false;
-}
-
 /**
  * Constant shape for a point-mark geom: aes constant, geom param, or the plot
  * default circle. Field / after-stat / scaled-constant shape returns undefined
@@ -136,121 +104,97 @@ function layerConstantLinetype(binding: LayerBinding): Linetype | undefined {
   return "solid";
 }
 
-function agreedMarkStyle<T>(
-  relevant: readonly LayerBinding[],
-  aesthetic: "color" | "fill",
-  domain: readonly unknown[],
-  constantOf: (binding: LayerBinding) => T | undefined,
-): Map<string, T> {
-  const byKey = new Map<string, T>();
-  for (const value of domain) {
-    let agreed: T | undefined;
-    let seen = false;
-    let conflict = false;
-    for (const binding of relevant) {
-      if (!layerContributesPaintValue(binding, aesthetic, value)) continue;
-      const style = constantOf(binding);
-      if (style === undefined) continue;
-      if (!seen) {
-        agreed = style;
-        seen = true;
-      } else if (agreed !== style) {
-        conflict = true;
-        break;
+// Undefined has no contribution. Null records disagreement between contributors.
+type Agreement<T> = T | null | undefined;
+type Contribution = {
+  shape?: Agreement<PointShape>;
+  linetype?: Agreement<Linetype>;
+  markKinds: number;
+};
+
+function combine<T>(left: Agreement<T>, right: Agreement<T>): Agreement<T> {
+  if (left === undefined) return right;
+  return right === undefined || left === right ? left : null;
+}
+
+function collectPaintContributions(bindings: readonly LayerBinding[], aesthetic: "color" | "fill") {
+  const broad: Contribution = { markKinds: 0 };
+  const byConstant = new Map<string, Contribution>();
+  for (const binding of bindings) {
+    const paint = binding[aesthetic];
+    let target = broad;
+    if (paint.scaledConstant !== null) {
+      let key: string;
+      try {
+        key = encodeKey(paint.scaledConstant);
+      } catch {
+        continue;
       }
+      target = byConstant.get(key) ?? { markKinds: 0 };
+      byConstant.set(key, target);
+    } else if (paint.field === null && (paint.statColumn ?? null) === null) {
+      continue;
     }
-    if (!seen || conflict || agreed === undefined) continue;
-    try {
-      byKey.set(encodeKey(value), agreed);
-    } catch {
-      // Non-encodable domain values cannot key a legend entry.
-    }
-  }
-  return byKey;
-}
-
-/**
- * Domain values whose colour keys should draw a stroke even when no
- * constant linetype agreed. Only when every contributing layer is a
- * line-family geom. A point or text layer on the same colour scale
- * suppresses the fallback. Fill-only geoms clear aes.color, so they
- * never join this set.
- */
-function lineStrokeFallbackKeys(
-  relevant: readonly LayerBinding[],
-  aesthetic: "color" | "fill",
-  domain: readonly unknown[],
-): Set<string> {
-  const keys = new Set<string>();
-  for (const value of domain) {
-    let sawLine = false;
-    let sawOther = false;
-    for (const binding of relevant) {
-      if (!layerContributesPaintValue(binding, aesthetic, value)) continue;
-      if (LINE_MARK_GEOMS.has(binding.layer.geom)) sawLine = true;
-      else sawOther = true;
-    }
-    if (!sawLine || sawOther) continue;
-    try {
-      keys.add(encodeKey(value));
-    } catch {
-      // Non-encodable domain values cannot key a legend entry.
+    target.shape = combine(target.shape, layerConstantShape(binding));
+    if (aesthetic === "color") {
+      target.linetype = combine(target.linetype, layerConstantLinetype(binding));
+      // Bit 1 is line-family, bit 2 is any other contributing geom.
+      target.markKinds |= LINE_MARK_GEOMS.has(binding.layer.geom) ? 1 : 2;
     }
   }
-  return keys;
+  return { broad, byConstant };
 }
 
-/**
- * Enrich a discrete paint legend so each domain value carries the constant
- * point shape and/or stroke pattern of the layer(s) that paint it. No-op
- * when no mark-style layer maps the aesthetic, or when styles conflict
- * and no line-only stroke fallback applies.
- */
+/** Resolve paint key styles by aggregating shared and typed constant contributions. */
 export function enrichPaintLegendKeys(
   input: DiscreteLegendInput,
   bindings: readonly LayerBinding[],
 ): DiscreteLegendInput {
-  if (!isPaintScale(input.scale)) return input;
   const aesthetic = input.scale;
-  const relevant = bindings.filter((binding) => layerMapsPaint(binding, aesthetic));
-  if (relevant.length === 0) return input;
-
-  const shapeByKey = agreedMarkStyle(relevant, aesthetic, input.domain, layerConstantShape);
-  const linetypeByKey =
-    aesthetic === "color"
-      ? agreedMarkStyle(relevant, aesthetic, input.domain, layerConstantLinetype)
-      : new Map<string, Linetype>();
-  const strokeFallback =
-    aesthetic === "color"
-      ? lineStrokeFallbackKeys(relevant, aesthetic, input.domain)
-      : new Set<string>();
-  if (shapeByKey.size === 0 && linetypeByKey.size === 0 && strokeFallback.size === 0) {
+  if (!isPaintScale(aesthetic)) return input;
+  const { broad, byConstant } = collectPaintContributions(bindings, aesthetic);
+  if (byConstant.size === 0 && !broad.shape && !broad.linetype && broad.markKinds !== 1)
     return input;
-  }
 
-  // Capture as a free function so oxlint unbound-method does not flag the
-  // method reference when we call it from the enriched keyOf.
-  const previousKeyOf = (value: unknown) => input.keyOf?.(value);
+  const styles = new Map<
+    string,
+    {
+      shape: Agreement<PointShape>;
+      linetype: Linetype | undefined;
+    }
+  >();
+  for (const value of input.domain) {
+    let key: string;
+    try {
+      key = encodeKey(value);
+    } catch {
+      continue;
+    }
+    const constant = byConstant.get(key);
+    const shape = combine(broad.shape, constant?.shape);
+    const linetype = combine(broad.linetype, constant?.linetype);
+    const stroke = (broad.markKinds | (constant?.markKinds ?? 0)) === 1;
+    // An agreed linetype still installs the wrapper for mixed geoms even when
+    // the key gets no stroke style.
+    if (shape || linetype || stroke) {
+      styles.set(key, { shape, linetype: stroke ? (linetype ?? "solid") : undefined });
+    }
+  }
+  if (styles.size === 0) return input;
+
   return {
     ...input,
     keyOf(value: unknown): LegendKeyStyle {
-      const key: LegendKeyStyle = { ...previousKeyOf(value) };
+      const key: LegendKeyStyle = { ...input.keyOf?.(value) };
       try {
-        const encoded = encodeKey(value);
-        if (key.shape === undefined) {
-          const shape = shapeByKey.get(encoded);
-          if (shape !== undefined) key.shape = shape;
-        }
-        // mergeDiscrete deletes shape when both fields exist and no shape
-        // scale is merged. Skip linetype if this key already has a shape.
-        // Colour-key linetype only when every contributing layer is a
-        // line-family geom. Otherwise a lone line's default solid would
-        // paint stroke keys on mixed text/point colour legends.
-        if (key.shape === undefined && key.linetype === undefined && strokeFallback.has(encoded)) {
-          key.linetype = linetypeByKey.get(encoded) ?? "solid";
+        const style = styles.get(encodeKey(value));
+        if (key.shape === undefined && style?.shape) key.shape = style.shape;
+        // Preserve supplied marks and keep line strokes off shaped paint keys.
+        if (key.shape === undefined && key.linetype === undefined && style?.linetype) {
+          key.linetype = style.linetype;
         }
       } catch {
-        // leave key without mark style
+        // Non-encodable values keep the supplied key style.
       }
       return key;
     },
