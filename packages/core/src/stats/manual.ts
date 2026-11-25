@@ -91,19 +91,26 @@ function aggregateChannel(
 
 export function statManual(input: ManualStatInput): ManualStatResult {
   const { groups, x, y, fun } = input;
-  const { order, rows } = groupBuckets(groups);
-
   if (isManualKeepFun(fun)) {
+    const keepLast = fun === "last";
     const keep: number[] = [];
-    const outGroups: number[] = [];
-    for (const g of order) {
-      const list = rows.get(g)!;
-      if (list.length === 0) continue;
-      keep.push(fun === "first" ? list.at(0)! : list.at(-1)!);
-      outGroups.push(g);
+    const keptGroups: number[] = [];
+    const slots = new Map<number, number>();
+    for (let i = 0; i < groups.length; i++) {
+      const group = groups[i]!;
+      const slot = slots.get(group);
+      if (slot === undefined) {
+        slots.set(group, keep.length);
+        keep.push(i);
+        // Retain the first raw key, including its zero sign.
+        keptGroups.push(group);
+      } else if (keepLast) {
+        keep[slot] = i;
+      }
     }
-    return { kind: "keep", keep, groups: outGroups };
+    return { kind: "keep", keep, groups: keptGroups };
   }
+  const { order, rows } = groupBuckets(groups);
 
   const outX: number[] = [];
   const outY: number[] = [];
