@@ -40,12 +40,10 @@ describe("selectTransientMembers top-k by value (#1274)", () => {
   });
 
   it("fills non-focus slots with the largest |y| values and always includes focus", () => {
-    // Stacking/group order is small→large (y = index+1). Focus the tiny first
-    // series so without top-k the hover window would be the eight smallest.
-    const data = Array.from({ length: 20 }, (_, index) => ({
+    const data = Array.from({ length: 128 }, (_, index) => ({
       id: `s${index}`,
       x: 1,
-      y: index + 1,
+      y: index < 120 ? index + 1 : 130 * (index % 2 === 0 ? 1 : -1),
       series: `s${index}`,
     }));
     const model = runPipeline(
@@ -54,23 +52,19 @@ describe("selectTransientMembers top-k by value (#1274)", () => {
         .spec(),
       { width: 400, height: 300 },
     );
-    const focus = model.candidates.candidate(0)!; // y = 1
-    expect(focus.yValue).toBe(1);
+    const focus = model.candidates.candidate(119)!;
+    expect(focus.yValue).toBe(120);
     const target = resolvedTarget(model, focus, "x")!;
-    expect(target.members.length).toBe(20);
+    expect(target.members.length).toBe(128);
 
     const selected = selectTransientMembers(target.members, focus.id, {
       groupAxis: "x",
       limit: TRANSIENT_MEMBER_LIMIT,
     });
-    expect(selected).toHaveLength(TRANSIENT_MEMBER_LIMIT);
-    expect(selected.some((c) => c.id === focus.id)).toBe(true);
-    // Non-focus slots: y = 20..14 (largest seven). Focus (y=1) is force-included.
-    // Prefer .sort over .toSorted here: this package's TS lib target does not
-    // declare Array#toSorted (oxlint type-aware treats it as error).
-    const nonFocusYs = selected.filter((c) => c.id !== focus.id).map((c) => Number(c.yValue));
-    nonFocusYs.sort((a, b) => b - a);
-    expect(nonFocusYs).toEqual([20, 19, 18, 17, 16, 15, 14]);
+    const highestIds = [120, 121, 122, 123, 124, 125, 126, 127];
+    expect(selected.map(({ id }) => id)).toEqual([focus.id, ...highestIds.slice(0, -1)]);
+    const withoutFocus = selectTransientMembers(target.members, -1, { groupAxis: "x" });
+    expect(withoutFocus.map(({ id }) => id)).toEqual(highestIds);
     model.dispose();
   });
 
