@@ -1,7 +1,7 @@
 /**
  * Sequential color ramps (M1 scale surface companions).
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import {
   buildRampLut,
@@ -13,6 +13,44 @@ import {
 } from "../../src/scales/color.ts";
 
 describe("sequential color", () => {
+  it("reuses the lookup table for equal normalized stops and isolates later ranges", () => {
+    const range = ["#123", "#abc", "#fed"];
+    const original = trainSequential([0, 1], { range });
+    const round = spyOn(Math, "round");
+    let normalized: ReturnType<typeof trainSequential>;
+    let tableRounding: number;
+    try {
+      normalized = trainSequential([1, 100], {
+        range: ["#112233", "#AABBCC", "#ffeedd"],
+        transform: "log10",
+      });
+      tableRounding = round.mock.calls.length;
+    } finally {
+      round.mockRestore();
+    }
+
+    expect(tableRounding).toBe(0);
+    expect(original.at(0.5)).toBe("#aabbcc");
+    expect(normalized.at(0.5)).toBe("#aabbcc");
+
+    Object.defineProperty(normalized.stops, 1, { value: "#000000" });
+    range[1] = "#456";
+    const changed = trainSequential([0, 1], { range, reverse: true });
+    expect(changed.at(0)).toBe("#ffeedd");
+    expect(changed.at(0.5)).toBe("#445566");
+    expect(original.at(0.5)).toBe("#aabbcc");
+    expect(normalized.at(0.5)).toBe("#aabbcc");
+  });
+
+  it("rejects an empty range even after training a one-slot sparse range", () => {
+    const sparse: string[] = [];
+    sparse.length = 1;
+    trainSequential([0, 1], { range: sparse });
+    expect(() => trainSequential([0, 1], { range: [] })).toThrow(
+      "Ramp LUT needs at least one color stop.",
+    );
+  });
+
   it("interpolates the viridis ramp deterministically", () => {
     expect(rampColor(VIRIDIS_RAMP_10, 0)).toBe("#440154");
     expect(rampColor(VIRIDIS_RAMP_10, 1)).toBe("#fde725");

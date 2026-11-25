@@ -126,6 +126,9 @@ export interface SequentialConfig {
   unknownValue?: string;
 }
 
+let lastRampKey: string | undefined;
+let lastRamp: readonly string[];
+
 /**
  * Train a sequential color scale over a data extent. Zero-variance domains
  * pad symmetrically (matching the positional-scale failure policy).
@@ -151,7 +154,13 @@ export function trainSequential(
   const stops = config.reverse === true ? base.toReversed() : [...base];
   const span = transformedMax - transformedMin;
   // Trained dense LUT: per-point color is one index lookup after t (#1423).
-  const lut = buildRampLut(stops, RAMP_LUT_STEPS);
+  // Distinguish an empty range from a single omitted stop.
+  const rampKey = stops.length + stops.join();
+  if (rampKey !== lastRampKey) {
+    lastRamp = buildRampLut(stops);
+    lastRampKey = rampKey;
+  }
+  const lut = lastRamp;
   const at = (t: number) => sampleRampLut(lut, t);
   const { naValue, unknownValue } = resolveMissingColors(config);
   return {
