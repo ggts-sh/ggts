@@ -98,23 +98,31 @@ export function rankRelatedExamples(
   seed?: RelatedSeed,
 ): GalleryEntry[] {
   const current = seed ?? entries.find((entry) => entry.id === currentId);
-  if (current === undefined || limit <= 0) return [];
-  const ranked = entries
-    .map((entry, index) => ({
-      entry,
-      index,
-      score:
-        entry.id === current.id
-          ? -1
-          : (entry.category === current.category ? 2 : 0) +
-            entry.tags.filter((tag) => current.tags.includes(tag)).length,
-    }))
-    .filter(({ score }) => score >= 0);
-  const hasOverlap = ranked.some(({ score }) => score > 0);
-  return ranked
-    .toSorted((left, right) =>
-      hasOverlap ? right.score - left.score || left.index - right.index : left.index - right.index,
-    )
-    .slice(0, limit)
-    .map(({ entry }) => entry);
+  const count = Math.trunc(limit);
+  if (current === undefined || !(count > 0)) return [];
+
+  const currentTags = new Set(current.tags);
+  const byScore: GalleryEntry[][] = [];
+  entries.forEach((entry) => {
+    if (entry.id === current.id) return;
+    let score = entry.category === current.category ? 2 : 0;
+    entry.tags.forEach((tag) => {
+      if (currentTags.has(tag)) score += 1;
+    });
+
+    const bucket = byScore[score];
+    if (bucket === undefined) byScore[score] = [entry];
+    else bucket.push(entry);
+  });
+
+  const related: GalleryEntry[] = [];
+  for (let score = byScore.length - 1; score >= 0; score -= 1) {
+    const bucket = byScore[score];
+    if (bucket === undefined) continue;
+    for (const entry of bucket) {
+      related.push(entry);
+      if (related.length === count) return related;
+    }
+  }
+  return related;
 }

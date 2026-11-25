@@ -145,6 +145,33 @@ describe("related example ranking", () => {
     ).toEqual([synthetic[0]!.id, synthetic[1]!.id]);
   });
 
+  test("ranks repeated tags and category ties in catalog order with an explicit seed", () => {
+    const base = entries[0]!;
+    const unrelated = { ...base, id: "unrelated", category: "point", tags: [] };
+    const category = { ...base, id: "category", category: "bar", tags: [] };
+    const two = { ...unrelated, id: "two", tags: ["repeat", "repeat"] };
+    const three = { ...unrelated, id: "three", tags: ["repeat", "repeat", "repeat"] };
+    const seed = { ...category, id: "seed", tags: ["repeat", "repeat"] };
+    const candidates: GalleryEntry[] = [unrelated, category];
+    candidates[3] = two;
+    candidates.push(three, seed);
+    const ordered = [three, category, two, unrelated];
+
+    for (const [limit, count] of [
+      [3, 3],
+      [Infinity, 4],
+      [1.5, 1],
+      [0.5, 0],
+      [NaN, 0],
+      [-1, 0],
+    ] as const) {
+      const result = rankRelatedExamples(category.id, candidates, limit, seed);
+      expect(result).toHaveLength(count);
+      for (const [index, entry] of ordered.slice(0, count).entries())
+        expect(result[index]).toBe(entry);
+    }
+  });
+
   test("without a seed, id outside the candidate catalog returns empty", () => {
     // Exposition aliases use galleryCatalog (excludes expositions) as candidates.
     expect(rankRelatedExamples("interaction/linked-views", catalog, 3)).toEqual([]);
