@@ -67,6 +67,56 @@ describe("statBin2d (#799)", () => {
     expect(result.count[0]).toBe(5);
   });
 
+  it("uses only occupied storage for a fine grid with dropped cells", () => {
+    const input = {
+      x: Float64Array.of(8, 0, 0, 8, 0, 4, NaN),
+      y: Float64Array.of(8, 0, 0, 0, 8, 4, 1),
+      groups: [9, 9, 9, 3, 3, 9, 3],
+      weights: Float64Array.of(2, 7, -7, -3, 4, 1, 0.5),
+      carried: { label: ["a", "a", "a", "b", "b", "a", "b"] },
+      params: { bins: 128 },
+    };
+    const dense = statBin2d({ ...input, params: { ...input.params, drop: false } });
+    expect(dense.count).toHaveLength(2 * 128 ** 2);
+    const occupied = Array.from(dense.count.keys()).filter((i) => dense.count[i] !== 0);
+    expect(occupied).toHaveLength(4);
+
+    const NativeFloat64Array = globalThis.Float64Array;
+    let largestAllocation = 0;
+    globalThis.Float64Array = new Proxy(NativeFloat64Array, {
+      construct(target, args: unknown[]) {
+        const length = args[0];
+        if (typeof length === "number") largestAllocation = Math.max(largestAllocation, length);
+        return Reflect.construct(target, args) as Float64Array;
+      },
+    });
+    let sparse: ReturnType<typeof statBin2d>;
+    try {
+      sparse = statBin2d(input);
+    } finally {
+      globalThis.Float64Array = NativeFloat64Array;
+    }
+
+    for (const field of [
+      "x",
+      "y",
+      "xmin",
+      "xmax",
+      "ymin",
+      "ymax",
+      "count",
+      "density",
+      "ncount",
+      "ndensity",
+    ] as const) {
+      expect([...sparse[field]]).toEqual(occupied.map((i) => dense[field][i]));
+    }
+    expect(sparse.groups).toEqual(occupied.map((i) => dense.groups[i]));
+    expect(sparse.carried.label).toEqual(occupied.map((i) => dense.carried.label![i]));
+    expect(sparse.dropped).toBe(dense.dropped);
+    expect(largestAllocation).toBe(occupied.length);
+  });
+
   it("emits xmin/xmax/ymin/ymax edges consistent with centers", () => {
     const result = statBin2d({
       x: Float64Array.from([0.5]),
