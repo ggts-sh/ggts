@@ -4,8 +4,10 @@
  * Production: validate-data*.ts (style: validate-data-checks-style.ts).
  */
 import { fromAny } from "@total-typescript/shoehorn";
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
+import { collectLayerDataChecks } from "../src/validate-data-checks-layer.ts";
+import type { FieldEvidenceEntry } from "../src/validate-data-evidence.ts";
 import type { DataProfile } from "../src/validate-data.ts";
 import { validate } from "../src/validate.ts";
 
@@ -20,6 +22,49 @@ function codesOf(input: unknown, options?: Parameters<typeof validate>[1]) {
 }
 
 describe("tier 2 — DataProfile", () => {
+  it("collects field names only for the layer with missing fields", () => {
+    const evidence: FieldEvidenceEntry = {
+      type: "quantitative",
+      allNull: false,
+      values: null,
+      temporal: null,
+    };
+    const fields = new Map([
+      ["alpha", evidence],
+      ["beta", evidence],
+    ]);
+    const point = { geom: "point" };
+    const keyReads = spyOn(fields, "keys");
+    let result: ReturnType<typeof collectLayerDataChecks>;
+    let enumerations: number;
+    try {
+      result = collectLayerDataChecks({
+        layers: [
+          point,
+          point,
+          { geom: "point", aes: { x: { field: "alpa" }, color: { field: "bta" } } },
+        ],
+        plotAes: { x: { field: "alpha" }, y: { field: "beta" } },
+        plotFields: fields,
+        layerMaps: null,
+        scaleRequestsTime: () => false,
+      });
+      enumerations = keyReads.mock.calls.length;
+    } finally {
+      keyReads.mockRestore();
+    }
+
+    expect(result.errors.map((error) => [error.code, error.path])).toEqual([
+      ["unknown-field", "/layers/2/aes/x"],
+      ["unknown-field", "/layers/2/aes/color"],
+    ]);
+    expect(result.errors[0]?.message).toContain('Did you mean "alpha"?');
+    expect(result.errors[1]?.message).toContain('Did you mean "beta"?');
+    expect(result.errors[0]?.allowed).toEqual(["alpha", "beta"]);
+    expect(result.errors[0]?.allowed).toBe(result.errors[1]?.allowed);
+    expect(enumerations).toBe(1);
+  });
+
   const profile: DataProfile = {
     fields: [
       { name: "city", type: "nominal" },
