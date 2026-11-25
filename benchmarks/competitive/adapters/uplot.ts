@@ -6,6 +6,7 @@ import "uplot/dist/uPlot.min.css";
 
 import {
   COLORS,
+  groupSeriesValues,
   PLOT_HEIGHT,
   PLOT_WIDTH,
   type ScatterColumns,
@@ -21,24 +22,21 @@ export type UPlotHandle = {
   update: (data: UpdateColumns) => void;
 };
 
-function seriesFromLong(data: SeriesColumns): {
+export function seriesFromLong(data: SeriesColumns): {
   xs: number[];
   ys: number[][];
   names: string[];
 } {
-  const names = [...new Set(data.series)];
-  const points = data.x.length / names.length;
+  const groups = groupSeriesValues(data);
+  const points = Math.floor(data.x.length / groups.size);
   // Require shared x grid (makeMultiSeries guarantees this).
   const xs = data.x.slice(0, points);
-  const ys = names.map((name) => {
-    const out = Array.from<number>({ length: points });
-    let j = 0;
-    for (let i = 0; i < data.series.length; i++) {
-      if (data.series[i] === name) out[j++] = data.y[i]!;
-    }
-    return out;
-  });
-  return { xs, ys, names };
+  const ys = Array.from(groups.values(), (values) =>
+    values.length < points
+      ? values.concat(Array.from<number>({ length: points - values.length }))
+      : values,
+  );
+  return { xs, ys, names: [...groups.keys()] };
 }
 
 export function createScatterAligner() {

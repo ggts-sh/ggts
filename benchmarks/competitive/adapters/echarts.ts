@@ -44,15 +44,15 @@ function hostIn(root: HTMLElement): HTMLDivElement {
 }
 
 function seriesFromLong(data: SeriesColumns) {
-  const names = [...new Set(data.series)];
-  const datasets = names.map((name) => {
-    const pts: [number, number][] = [];
-    for (let i = 0; i < data.series.length; i++) {
-      if (data.series[i] === name) pts.push([data.x[i]!, data.y[i]!]);
-    }
-    return { name, pts };
-  });
-  return datasets;
+  const groups = new Map<string, [number, number][]>();
+  for (let i = 0; i < data.series.length; i++) {
+    const name = data.series[i]!;
+    const point: [number, number] = [data.x[i]!, data.y[i]!];
+    const points = groups.get(name);
+    if (points === undefined) groups.set(name, [point]);
+    else points.push(point);
+  }
+  return Array.from(groups, ([name, pts]) => ({ name, pts }));
 }
 
 export function mountEcharts(

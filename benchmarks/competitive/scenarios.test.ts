@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
 import { scenarioSpec } from "./adapters/ggsvelte-svg";
-import { createScatterAligner } from "./adapters/uplot";
+import { createScatterAligner, seriesFromLong as alignUplotSeries } from "./adapters/uplot";
 
 import {
   CASES,
@@ -14,6 +14,35 @@ import {
   makeStackedBars,
   perturbForUpdate,
 } from "./scenarios";
+
+test("uPlot aligns interleaved series in encounter order and pads short series", () => {
+  const input = {
+    x: [10, 20, 30, 40, 50, 60, 70],
+    y: [1, 2, 3, 4, 5, 6, 7],
+    series: ["b", "b", "a", "b", "b", "b", "b"],
+  };
+  const aligned = alignUplotSeries(input);
+  expect<unknown>(aligned).toStrictEqual({
+    xs: [10, 20, 30],
+    ys: [
+      [1, 2, 4, 5, 6, 7],
+      [3, undefined, undefined],
+    ],
+    names: ["b", "a"],
+  });
+  input.series[0] = "a";
+  const updated = alignUplotSeries(input);
+  expect<unknown>(updated).toStrictEqual({
+    xs: [10, 20, 30],
+    ys: [
+      [1, 3, undefined],
+      [2, 4, 5, 6, 7],
+    ],
+    names: ["a", "b"],
+  });
+  expect(updated.xs).not.toBe(aligned.xs);
+  expect(aligned.ys[0]).toEqual([1, 2, 4, 5, 6, 7]);
+});
 
 describe("uPlot scatter alignment", () => {
   test("keeps ties stable and refreshes the order when x changes in place", () => {
