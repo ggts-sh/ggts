@@ -1,4 +1,4 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, spyOn, test } from "bun:test";
 
 import {
   CACHEABLE_EXECUTIONS,
@@ -73,6 +73,22 @@ describe("JOB_CONTENT_INPUTS (split build hashes)", () => {
 });
 
 describe("content-hash inputs", () => {
+  test("compiles job path patterns once for unmatched repository paths", () => {
+    const paths = Array.from({ length: 512 }, (_, index) => `unrelated/${index}/row.json`);
+    const startsWith = spyOn(String.prototype, "startsWith");
+    let matches: string[];
+    let checks: number;
+    try {
+      matches = listJobContentPaths("build", paths);
+      checks = startsWith.mock.calls.length;
+    } finally {
+      startsWith.mockRestore();
+    }
+
+    expect(matches).toEqual([]);
+    expect(checks).toBeLessThan(2_000);
+  });
+
   test("packages_dist includes package trees and workflow recipe, not spikes", () => {
     const paths = listJobContentPaths("packages_dist", [
       "packages/core/src/x.ts",
