@@ -13,10 +13,14 @@ import type { CellValue } from "../table.js";
 
 import { quantile7 } from "./numeric.js";
 
+function defaultPlottingPositionPad(n: number): number {
+  return n <= 10 ? 3 / 8 : 1 / 2;
+}
+
 /** R's ppoints(n, a): plotting positions in (0,1). */
 export function ppoints(n: number, a?: number): Float64Array {
   if (n <= 0) return new Float64Array(0);
-  const aa = a ?? (n <= 10 ? 3 / 8 : 1 / 2);
+  const aa = a ?? defaultPlottingPositionPad(n);
   const out = new Float64Array(n);
   const denom = n + 1 - 2 * aa;
   for (let i = 0; i < n; i++) out[i] = (i + 1 - aa) / denom;
@@ -205,15 +209,12 @@ export function statQqLine(input: QqLineStatInput): QqLineStatResult {
     if (!(Math.abs(dx) > 0) || !Number.isFinite(y0) || !Number.isFinite(y1)) continue;
     const slope = (y1 - y0) / dx;
     const intercept = y0 - slope * x0;
-    // Span the full theoretical range of the qq cloud for this group.
-    const pp = ppoints(vals.length);
-    let tMin = Infinity;
-    let tMax = -Infinity;
-    for (let i = 0; i < pp.length; i++) {
-      const t = qnorm(pp[i]!);
-      if (t < tMin) tMin = t;
-      if (t > tMax) tMax = t;
-    }
+    // The outer plotting positions span this group's theoretical range.
+    const n = vals.length;
+    const pad = defaultPlottingPositionPad(n);
+    const denominator = n + 1 - 2 * pad;
+    let tMin = qnorm((1 - pad) / denominator);
+    let tMax = qnorm((n - pad) / denominator);
     if (!Number.isFinite(tMin) || !Number.isFinite(tMax) || tMin === tMax) {
       tMin = x0;
       tMax = x1;
