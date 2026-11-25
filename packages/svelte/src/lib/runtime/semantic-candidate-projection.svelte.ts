@@ -58,11 +58,26 @@ export function createSemanticCandidateProjection(
   deps: SemanticCandidateProjectionDeps,
 ): SemanticCandidateProjection {
   const muteSiblingsOnInspect = $derived(deps.muteSiblingsOnInspect?.() === true);
-  const presentationFocusKeys = $derived(
-    mergePresentationFocusKeys(deps.emphasisKeys(), deps.inspectionFocus(), {
-      muteSiblings: muteSiblingsOnInspect,
-    }),
-  );
+  const emphasisKeySet = $derived.by((): ReadonlySet<PropertyKey> | null => {
+    const keys = deps.emphasisKeys();
+    // Frozen keys keep the membership index valid for the current emphasis.
+    return Object.isFrozen(keys) ? new Set(keys) : null;
+  });
+  const presentationFocusKeys = $derived.by(() => {
+    const emphasis = deps.emphasisKeys();
+    const focus = deps.inspectionFocus();
+    if (focus !== null && emphasis.length > 0) {
+      const keys = emphasisKeySet;
+      if (
+        keys !== null &&
+        (focus.key === null || keys.has(focus.key)) &&
+        focus.sourceKeys.every((key) => keys.has(key))
+      ) {
+        return emphasis;
+      }
+    }
+    return mergePresentationFocusKeys(emphasis, focus, { muteSiblings: muteSiblingsOnInspect });
+  });
   const selectedKeyCount = $derived(deps.selectedKeys().length);
   const emphasisKeyCount = $derived(deps.emphasisKeys().length);
   const presentationFocusKeyCount = $derived(presentationFocusKeys.length);
@@ -126,21 +141,21 @@ export function createSemanticCandidateProjection(
       anchorsFromCandidateKeys(sharedCandidateProjection, deps.emphasisKeys()),
     ),
   );
+  const rectInspection = $derived.by(() => {
+    if (!muteSiblingsOnInspect && emphasisKeyCount === 0) return null;
+    const focus = deps.inspectionFocus();
+    const primitives = focus?.kind === "rects" ? focus.primitives : undefined;
+    if (primitives === undefined || primitives.length === 0) return null;
+    // Project each rect inspection even when a producer reuses its address list.
+    return { primitives };
+  });
+
   const interactionMasks = $derived.by((): readonly (BatchInteractionMask | null)[] => {
     const model = deps.model();
     if (model === null) return EMPTY_INTERACTION_MASKS;
-    const focus = deps.inspectionFocus();
-    // Rect inspection primitives: muteSiblings opt-in, or layer under active
-    // legend/controller emphasis so the seed bar stays focused (#386 / #633).
-    const applyRectInspectionMask = muteSiblingsOnInspect || emphasisKeyCount > 0;
-    const rectPrimitives =
-      applyRectInspectionMask &&
-      focus?.kind === "rects" &&
-      focus.primitives !== undefined &&
-      focus.primitives.length > 0
-        ? focus.primitives
-        : null;
-
+    // Mutable emphasis can change in place between inspections.
+    if (!Object.isFrozen(deps.emphasisKeys())) void deps.inspectionFocus();
+    const rectPrimitives = rectInspection?.primitives ?? null;
     if (presentationFocusKeys.length > 0) {
       return buildInteractionMasks(
         model.scene.batches,

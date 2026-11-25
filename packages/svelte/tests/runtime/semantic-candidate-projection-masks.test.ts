@@ -4,10 +4,80 @@ import type { CandidateFacts } from "@ggts-sh/core";
 import { aes, gg } from "@ggts-sh/spec";
 
 import { createSemanticCandidateProjection } from "../../src/lib/runtime/semantic-candidate-projection.svelte.js";
+import type { PresentationInspectionFocus } from "../../src/lib/selection/selection.js";
 import { withFlushedEffectRoot } from "../helpers/effect-root.svelte.js";
+import { reactiveBox } from "../helpers/reactive-box.svelte.js";
 import { modelFor } from "../helpers/model.js";
 
 describe("createSemanticCandidateProjection", () => {
+  it("reuses masks when a changed point focus is already emphasized", () => {
+    const model = modelFor(
+      gg(
+        [
+          { x: 1, y: 1 },
+          { x: 2, y: 2 },
+          { x: 3, y: 3 },
+        ],
+        aes({ x: "x", y: "y" }),
+      )
+        .geomPoint()
+        .spec(),
+    );
+    const names = ["a", "b", "c"];
+    const emphasis = reactiveBox<readonly PropertyKey[]>(Object.freeze(["a", "b"]));
+    const focus = reactiveBox<PresentationInspectionFocus | null>(null);
+    const { value, destroy } = withFlushedEffectRoot(() =>
+      createSemanticCandidateProjection({
+        model: () => model,
+        candidateSemanticKeys: (candidate) => {
+          const key = names[candidate.rowIndex ?? -1];
+          return key === undefined ? [] : [key];
+        },
+        selectedKeys: () => ["a"],
+        intervalKeys: () => [],
+        intervals: () => [],
+        emphasisKeys: () => emphasis.value,
+        inspectionFocus: () => focus.value,
+      }),
+    );
+
+    try {
+      const initial = value.interactionMasks;
+      expect(initial[0]?.focusedCount).toBe(2);
+      focus.set({ kind: "points", key: "a", sourceKeys: ["a"] });
+      expect(value.interactionMasks).toBe(initial);
+      focus.set({ kind: "points", key: null, sourceKeys: ["b"] });
+      expect(value.interactionMasks).toBe(initial);
+
+      focus.set({ kind: "points", key: "a", sourceKeys: ["a", "c"] });
+      expect(value.interactionMasks[0]?.focusedCount).toBe(3);
+      emphasis.set(Object.freeze(["a", "c"]));
+      expect(value.interactionMasks[0]?.focusedCount).toBe(2);
+      expect(value.interactionMasks[0]?.isFocused(1)).toBe(false);
+      expect(value.interactionMasks[0]?.isFocused(2)).toBe(true);
+      focus.set({ kind: "points", key: null, sourceKeys: ["b"] });
+      expect(value.interactionMasks[0]?.focusedCount).toBe(3);
+
+      const mutableEmphasis = ["a", "b"];
+      emphasis.set(mutableEmphasis);
+      focus.set({ kind: "points", key: "a", sourceKeys: ["a"] });
+      expect(value.interactionMasks[0]?.focusedCount).toBe(2);
+      mutableEmphasis[1] = "c";
+      focus.set({ kind: "points", key: "b", sourceKeys: ["b"] });
+      expect(value.interactionMasks[0]?.focusedCount).toBe(3);
+
+      const initiallyEmpty: PropertyKey[] = [];
+      emphasis.set(initiallyEmpty);
+      focus.set({ kind: "points", key: "a", sourceKeys: ["a"] });
+      expect(value.interactionMasks).toEqual([]);
+      initiallyEmpty.push("a");
+      focus.set(null);
+      expect(value.interactionMasks[0]?.isFocused(0)).toBe(true);
+    } finally {
+      destroy();
+    }
+  });
+
   it("does not mute siblings from rect inspection by default (#633)", () => {
     const colModel = modelFor(
       gg(
@@ -76,6 +146,17 @@ describe("createSemanticCandidateProjection", () => {
       }
       throw new Error("missing col candidate");
     })();
+    const emphasis: readonly PropertyKey[] = Object.freeze([]);
+    const address = {
+      batchIndex: first.batchIndex,
+      primitiveIndex: first.primitiveIndex,
+    };
+    const focus = reactiveBox<PresentationInspectionFocus>({
+      sourceKeys: [],
+      key: null,
+      kind: first.kind,
+      primitives: [address],
+    });
     const { value, destroy } = withFlushedEffectRoot(() =>
       createSemanticCandidateProjection({
         model: () => colModel,
@@ -83,19 +164,9 @@ describe("createSemanticCandidateProjection", () => {
         selectedKeys: () => [],
         intervalKeys: () => [],
         intervals: () => [],
-        emphasisKeys: () => [],
+        emphasisKeys: () => emphasis,
         muteSiblingsOnInspect: () => true,
-        inspectionFocus: () => ({
-          sourceKeys: [],
-          key: null,
-          kind: first.kind,
-          primitives: [
-            {
-              batchIndex: first.batchIndex,
-              primitiveIndex: first.primitiveIndex,
-            },
-          ],
-        }),
+        inspectionFocus: () => focus.value,
       }),
     );
 
@@ -103,6 +174,14 @@ describe("createSemanticCandidateProjection", () => {
     expect(value.interactionMasks.some((mask) => mask !== null)).toBe(true);
     const mask = value.interactionMasks.find((entry) => entry !== null);
     expect(mask?.focusedCount).toBe(1);
+    expect(mask?.isFocused(first.primitiveIndex)).toBe(true);
+
+    address.primitiveIndex = (first.primitiveIndex + 1) % 3;
+    focus.set({ ...focus.value });
+    const nextMask = value.interactionMasks[first.batchIndex];
+    expect(nextMask?.focusedCount).toBe(1);
+    expect(nextMask?.isFocused(first.primitiveIndex)).toBe(false);
+    expect(nextMask?.isFocused(address.primitiveIndex)).toBe(true);
     destroy();
   });
 
