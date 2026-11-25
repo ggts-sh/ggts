@@ -14,6 +14,8 @@ import type { CellValue } from "../table.js";
 
 import { binBreaksBins, binBreaksWidth, binIndexOf } from "./bin-breaks.js";
 
+const SPARSE_CELLS_PER_ROW = 32;
+
 interface Bin2dParamsInput {
   bins?: number | undefined;
   binwidth?: number | undefined;
@@ -111,6 +113,42 @@ function countCells(
   return { counts, dropped };
 }
 
+function countSparseCells(
+  input: Bin2dStatInput,
+  rowCount: number,
+  xBreaks: BinBreaks,
+  yBreaks: BinBreaks,
+  groupSlots: Map<number, number>,
+) {
+  const nx = xBreaks.breaks.length - 1;
+  const counts: Map<number, number>[] = [];
+  let dropped = 0;
+  for (let i = 0; i < rowCount; i++) {
+    const x = input.x[i]!;
+    const y = input.y[i]!;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) {
+      dropped++;
+      continue;
+    }
+    const ix = binIndexOf(x, xBreaks.fuzzy, xBreaks.rightClosed);
+    const iy = binIndexOf(y, yBreaks.fuzzy, yBreaks.rightClosed);
+    if (ix === -1 || iy === -1) {
+      dropped++;
+      continue;
+    }
+    const rawWeight = input.weights?.[i];
+    const weight = rawWeight === undefined ? 1 : Number.isFinite(rawWeight) ? rawWeight : 0;
+    const group = groupSlots.get(input.groups[i]!)!;
+    if (weight === 0) continue;
+    const cell = iy * nx + ix;
+    const bins = (counts[group] ??= new Map());
+    const value = (bins.get(cell) ?? 0) + weight;
+    if (value === 0) bins.delete(cell);
+    else bins.set(cell, value);
+  }
+  return { counts, dropped };
+}
+
 function outputRowCount(
   counts: Float64Array,
   groupCount: number,
@@ -134,17 +172,7 @@ function normalized(value: number, max: number): number {
   return max > 0 ? value / max : 0;
 }
 
-function emitCells(
-  input: Bin2dStatInput,
-  counts: Float64Array,
-  xBreaks: BinBreaks,
-  yBreaks: BinBreaks,
-  groupOrder: number[],
-  sampleRows: number[],
-  carriedNames: string[],
-  drop: boolean,
-  rowCount: number,
-) {
+function createOutput(rowCount: number, carriedNames: string[]) {
   const x = new Float64Array(rowCount);
   const y = new Float64Array(rowCount);
   const xmin = new Float64Array(rowCount);
@@ -158,6 +186,36 @@ function emitCells(
   const groups: number[] = [];
   const carried: Record<string, CellValue[]> = {};
   for (const name of carriedNames) carried[name] = [];
+  return {
+    x,
+    y,
+    xmin,
+    xmax,
+    ymin,
+    ymax,
+    count,
+    densities,
+    ncount,
+    ndensity,
+    groups,
+    carried,
+  };
+}
+
+function emitCells(
+  input: Bin2dStatInput,
+  counts: Float64Array,
+  xBreaks: BinBreaks,
+  yBreaks: BinBreaks,
+  groupOrder: number[],
+  sampleRows: number[],
+  carriedNames: string[],
+  drop: boolean,
+  rowCount: number,
+) {
+  const output = createOutput(rowCount, carriedNames);
+  const { x, y, xmin, xmax, ymin, ymax, count, densities, ncount, ndensity, groups, carried } =
+    output;
 
   const nx = xBreaks.breaks.length - 1;
   const ny = yBreaks.breaks.length - 1;
@@ -207,20 +265,67 @@ function emitCells(
       }
     }
   }
-  return {
-    x,
-    y,
-    xmin,
-    xmax,
-    ymin,
-    ymax,
-    count,
-    densities,
-    ncount,
-    ndensity,
-    groups,
-    carried,
-  };
+  return output;
+}
+
+function emitSparseCells(
+  input: Bin2dStatInput,
+  counts: readonly Map<number, number>[],
+  xBreaks: BinBreaks,
+  yBreaks: BinBreaks,
+  groupOrder: number[],
+  sampleRows: number[],
+  carriedNames: string[],
+  rowCount: number,
+) {
+  const output = createOutput(rowCount, carriedNames);
+  const { x, y, xmin, xmax, ymin, ymax, count, densities, ncount, ndensity, groups, carried } =
+    output;
+
+  const nx = xBreaks.breaks.length - 1;
+  let row = 0;
+  for (let group = 0; group < groupOrder.length; group++) {
+    const bins = counts[group];
+    if (bins === undefined || bins.size === 0) continue;
+    // Match the dense traversal and the order of floating-point additions.
+    const cells = [...bins.keys()].toSorted((left, right) => left - right);
+    let total = 0;
+    let maxCount = 0;
+    for (const cell of cells) {
+      const magnitude = Math.abs(bins.get(cell)!);
+      total += magnitude;
+      if (magnitude > maxCount) maxCount = magnitude;
+    }
+    const start = row;
+    let maxDensity = 0;
+    for (const cell of cells) {
+      const ix = cell % nx;
+      const iy = (cell - ix) / nx;
+      const value = bins.get(cell)!;
+      const xLo = xBreaks.breaks[ix]!;
+      const xHi = xBreaks.breaks[ix + 1]!;
+      const yLo = yBreaks.breaks[iy]!;
+      const yHi = yBreaks.breaks[iy + 1]!;
+      const cellDensity = density(value, (xHi - xLo) * (yHi - yLo), total);
+      if (cellDensity > maxDensity) maxDensity = cellDensity;
+      x[row] = (xLo + xHi) / 2;
+      y[row] = (yLo + yHi) / 2;
+      xmin[row] = xLo;
+      xmax[row] = xHi;
+      ymin[row] = yLo;
+      ymax[row] = yHi;
+      count[row] = value;
+      densities[row] = cellDensity;
+      ncount[row] = normalized(value, maxCount);
+      groups.push(groupOrder[group]!);
+      for (const name of carriedNames) {
+        carried[name]!.push(input.carried![name]![sampleRows[group]!]!);
+      }
+      row++;
+    }
+    for (let i = start; i < row; i++) ndensity[i] = normalized(densities[i]!, maxDensity);
+  }
+  return output;
 }
 
 export function statBin2d(input: Bin2dStatInput): Bin2dStatResult {
@@ -271,23 +376,41 @@ export function statBin2d(input: Bin2dStatInput): Bin2dStatResult {
   const { order: groupOrder, slots: groupSlot, sampleRows: sampleRow } = indexGroups(input, nIn);
   const gCount = groupOrder.length;
   const cellCount = nx * ny;
-  const { counts, dropped } = countCells(input, nIn, xBreaks, yBreaks, groupSlot);
-
-  // First pass: how many output rows?
-  const nOut = outputRowCount(counts, gCount, cellCount, drop);
-  if (nOut === 0) return empty(dropped);
-
-  const output = emitCells(
-    input,
-    counts,
-    xBreaks,
-    yBreaks,
-    groupOrder,
-    sampleRow,
-    carriedNames,
-    drop,
-    nOut,
-  );
+  let output: ReturnType<typeof createOutput>;
+  let dropped: number;
+  // Even with one occupied cell per input row, this grid is mostly empty.
+  if (drop && Number.isSafeInteger(cellCount) && gCount * cellCount > SPARSE_CELLS_PER_ROW * nIn) {
+    const sparse = countSparseCells(input, nIn, xBreaks, yBreaks, groupSlot);
+    dropped = sparse.dropped;
+    const nOut = sparse.counts.reduce((sum, cells) => sum + cells.size, 0);
+    if (nOut === 0) return empty(dropped);
+    output = emitSparseCells(
+      input,
+      sparse.counts,
+      xBreaks,
+      yBreaks,
+      groupOrder,
+      sampleRow,
+      carriedNames,
+      nOut,
+    );
+  } else {
+    const dense = countCells(input, nIn, xBreaks, yBreaks, groupSlot);
+    dropped = dense.dropped;
+    const nOut = outputRowCount(dense.counts, gCount, cellCount, drop);
+    if (nOut === 0) return empty(dropped);
+    output = emitCells(
+      input,
+      dense.counts,
+      xBreaks,
+      yBreaks,
+      groupOrder,
+      sampleRow,
+      carriedNames,
+      drop,
+      nOut,
+    );
+  }
 
   return {
     x: output.x,
