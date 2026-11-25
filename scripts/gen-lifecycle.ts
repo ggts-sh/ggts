@@ -217,6 +217,7 @@ const repoRoot = join(import.meta.dir, "..");
 
 /** Shared protocol handle for lifecycle.json (#783). */
 export const lifecycleArtifact = defineArtifact({
+  cacheCheck: true,
   path: join(repoRoot, "lifecycle.json"),
   label: "lifecycle.json",
   regenerateWith: "lifecycle:gen",
