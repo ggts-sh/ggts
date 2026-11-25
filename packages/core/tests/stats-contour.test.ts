@@ -142,6 +142,37 @@ describe("stitchSegments", () => {
 });
 
 describe("statContour", () => {
+  it("checks plateau cells only at levels their corners can cross", () => {
+    const side = 9;
+    const plateau = 100;
+    const size = side ** 2;
+    const z = new Float64Array(size).fill(plateau);
+    z[2 * side + 2] = 109;
+    z[6 * side + 6] = 91;
+    const input = {
+      x: Float64Array.from(z, (_, i) => i % side),
+      y: Float64Array.from(z, (_, i) => Math.floor(i / side)),
+      z,
+      groups: Array.from({ length: size }, () => 0),
+      params: { breaks: [92, 94, 96, 98, 102, 104, 106, 108] },
+    };
+    const isFinite = Number.isFinite;
+    let plateauChecks = 0;
+    const finite = spyOn(Number, "isFinite").mockImplementation((value) => {
+      if (value === plateau) plateauChecks++;
+      return isFinite(value);
+    });
+    let result: ReturnType<typeof statContour>;
+    try {
+      result = statContour(input);
+    } finally {
+      finite.mockRestore();
+    }
+
+    expect([...new Set(result.level)]).toEqual(input.params.breaks);
+    expect(plateauChecks).toBeLessThan(600);
+  });
+
   // 3×3 grid z = x (vertical isolines at constant x where z crosses level)
   function gridXY(n: number): { x: Float64Array; y: Float64Array; z: Float64Array } {
     const x: number[] = [];

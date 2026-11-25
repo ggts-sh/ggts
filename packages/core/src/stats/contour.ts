@@ -13,6 +13,7 @@
  *  - contour_filled deferred
  */
 import type { CellValue } from "../table.js";
+import { indexCellsByLevel, type ContourGrid } from "./contour-grid-index.js";
 
 export interface ContourParamsInput {
   bins?: number | undefined;
@@ -182,9 +183,9 @@ function keyPt(p: Pt): string {
 
 /** Marching-squares segments for every complete cell on a regular grid. */
 function gridCellSegments(
-  xs: readonly number[],
-  ys: readonly number[],
-  grid: readonly (readonly (number | null)[])[],
+  xs: ArrayLike<number>,
+  ys: ArrayLike<number>,
+  grid: ContourGrid,
   level: number,
 ): Array<[Pt, Pt]> {
   const segs: Array<[Pt, Pt]> = [];
@@ -387,13 +388,61 @@ function contourGroup(
 
   const vertices: ContourVertex[] = [];
   let piece = 0;
-  for (const level of levels) {
-    for (const line of stitchSegments(gridCellSegments(xs, ys, grid, level))) {
+  for (const { level, segments } of contourSegmentsByLevel(xs, ys, grid, levels)) {
+    for (const line of stitchSegments(segments)) {
       const pieceId = piece++;
       for (const point of line) vertices.push({ ...point, level, piece: pieceId });
     }
   }
   return vertices;
+}
+
+function indexedCellSegments(
+  xs: ArrayLike<number>,
+  ys: ArrayLike<number>,
+  grid: ContourGrid,
+  level: number,
+  cells: readonly number[],
+): Array<[Pt, Pt]> {
+  const segs: Array<[Pt, Pt]> = [];
+  const columns = xs.length - 1;
+  for (const cell of cells) {
+    const i = cell % columns;
+    const j = (cell - i) / columns;
+    segs.push(
+      ...cellSegments(
+        xs[i]!,
+        xs[i + 1]!,
+        ys[j]!,
+        ys[j + 1]!,
+        grid[j]![i]!,
+        grid[j]![i + 1]!,
+        grid[j + 1]![i]!,
+        grid[j + 1]![i + 1]!,
+        level,
+      ),
+    );
+  }
+  return segs;
+}
+
+export function* contourSegmentsByLevel(
+  xs: ArrayLike<number>,
+  ys: ArrayLike<number>,
+  grid: ContourGrid,
+  levels: readonly number[],
+) {
+  const finite = levels.filter((level) => Number.isFinite(level));
+  const index = indexCellsByLevel(xs.length - 1, ys.length - 1, grid, finite);
+  for (let i = 0; i < finite.length; i++) {
+    const level = finite[i]!;
+    const cells = index?.[i];
+    const segments =
+      cells === undefined
+        ? gridCellSegments(xs, ys, grid, level)
+        : indexedCellSegments(xs, ys, grid, level, cells);
+    yield { level, segments };
+  }
 }
 
 export function statContour(input: ContourStatInput): ContourStatResult {

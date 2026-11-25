@@ -17,7 +17,7 @@
  */
 import type { CellValue } from "../table.js";
 
-import { cellSegments, contourLevels, stitchSegments } from "./contour.js";
+import { contourLevels, contourSegmentsByLevel, stitchSegments } from "./contour.js";
 import { quantile7, sampleSD } from "./numeric.js";
 
 interface Density2dParamsInput {
@@ -378,26 +378,13 @@ function densityContours(
   const vertices: DensityContourVertex[] = [];
   let openRingsDropped = 0;
   let piece = 0;
-  for (const level of surface.levels) {
-    if (level <= surface.zmin || level >= surface.zmax) continue;
-    const segments: Array<[{ x: number; y: number }, { x: number; y: number }]> = [];
-    for (let j = 0; j < surface.gy.length - 1; j++) {
-      for (let i = 0; i < surface.gx.length - 1; i++) {
-        segments.push(
-          ...cellSegments(
-            surface.gx[i]!,
-            surface.gx[i + 1]!,
-            surface.gy[j]!,
-            surface.gy[j + 1]!,
-            surface.z[j]![i]!,
-            surface.z[j]![i + 1]!,
-            surface.z[j + 1]![i]!,
-            surface.z[j + 1]![i + 1]!,
-            level,
-          ),
-        );
-      }
-    }
+  const levels = surface.levels.filter((level) => level > surface.zmin && level < surface.zmax);
+  for (const { level, segments } of contourSegmentsByLevel(
+    surface.gx,
+    surface.gy,
+    surface.z,
+    levels,
+  )) {
     for (const line of stitchSegments(segments)) {
       if (filled && !isClosedRing(line)) {
         openRingsDropped++;
