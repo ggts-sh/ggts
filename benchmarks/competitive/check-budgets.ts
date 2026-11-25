@@ -354,16 +354,19 @@ for (const key of knownGapKeys) {
   }
 }
 
-const colW = (sel: (c: Comparison) => string, min: string) =>
-  Math.max(...comparisons.map((c) => sel(c).length), min.length);
+const columnWidth = (select: (c: Comparison) => string, header: string) =>
+  comparisons.reduce((width, c) => Math.max(width, select(c).length), header.length);
+const caseWidth = columnWidth((c) => c.caseId, "case");
+const ggsvelteWidth = columnWidth((c) => c.ggLib, "ggsvelte");
+const peerWidth = columnWidth((c) => c.peerLib, "peer");
 
 console.log("\n=== Relative gate: ggsvelte vs Svelte peers (median, same run) ===\n");
 console.log(
   [
     "kind".padEnd(6),
-    "case".padEnd(colW((c) => c.caseId, "case")),
-    "ggsvelte".padEnd(colW((c) => c.ggLib, "ggsvelte")),
-    "peer".padEnd(colW((c) => c.peerLib, "peer")),
+    "case".padEnd(caseWidth),
+    "ggsvelte".padEnd(ggsvelteWidth),
+    "peer".padEnd(peerWidth),
     "ggsvelte ms".padStart(12),
     "peer ms".padStart(12),
     "ratio".padStart(7),
@@ -385,9 +388,9 @@ for (const c of comparisons) {
   console.log(
     [
       c.kind.padEnd(6),
-      c.caseId.padEnd(colW((x) => x.caseId, "case")),
-      c.ggLib.padEnd(colW((x) => x.ggLib, "ggsvelte")),
-      c.peerLib.padEnd(colW((x) => x.peerLib, "peer")),
+      c.caseId.padEnd(caseWidth),
+      c.ggLib.padEnd(ggsvelteWidth),
+      c.peerLib.padEnd(peerWidth),
       c.ggMs.toFixed(1).padStart(12),
       c.peerMs.toFixed(1).padStart(12),
       c.ratio.toFixed(3).padStart(7),
