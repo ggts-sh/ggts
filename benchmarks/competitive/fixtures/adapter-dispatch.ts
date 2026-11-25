@@ -1,7 +1,6 @@
 /**
- * Library dispatch for the browser harness: `mountSync` maps every browser
- * LibId to its adapter mount. Core ggsvelte scene registrations run at
- * module init, before any mount can happen.
+ * Load the browser adapters before publishing the fixture API. Driver pages
+ * select one library. The unscoped fixture supports multiple peers per page.
  */
 import {
   registerBasicAreas,
@@ -12,34 +11,71 @@ import {
   registerOrdinalColor,
 } from "@ggts-sh/core/headless/register";
 
-import { mountChartJs } from "../adapters/chartjs";
-import { mountD3 } from "../adapters/d3";
-import { mountEcharts } from "../adapters/echarts";
-import { mountGgsvelteCanvas } from "../adapters/ggsvelte-canvas";
-import { mountGgsvelteSvg } from "../adapters/ggsvelte-svg";
-import { mountLayerCake, mountLayerCakeCanvas } from "../adapters/layercake";
-import { mountSveltePlot } from "../adapters/svelteplot";
-import { mountTanstackReact } from "../adapters/tanstack-react";
-import { mountTanstackSvelte } from "../adapters/tanstack-svelte";
-import { mountUnovis } from "../adapters/unovis";
-import { mountUplot } from "../adapters/uplot";
 import {
   LIBS,
   type LibId,
+  type LibMeta,
   type ScenarioCase,
   type ScenarioId,
   type UpdateColumns,
 } from "../scenarios";
 import type { MountHandle } from "./lifecycle";
 
-// The harness loads the requested GGPlot host on its own page.
-// A static import would install its registrations in every peer cell.
-const ggplotAdapter = new URLSearchParams(location.search).has("ggplot")
-  ? await import("../adapters/ggsvelte-ggplot")
-  : null;
-const reactAdapter = new URLSearchParams(location.search).has("ggreact")
-  ? await import("../adapters/ggsvelte-react")
-  : null;
+type MountAdapter = (
+  scenario: ScenarioId,
+  data: UpdateColumns,
+  root: HTMLElement,
+) => { markHint: number; handle?: MountHandle };
+
+const params = new URLSearchParams(location.search);
+const selected = params.get("lib");
+const mounts = new Map<LibId, MountAdapter>();
+
+async function loadAdapter(
+  id: LibId,
+  load: () => Promise<MountAdapter>,
+  legacyFlag?: "ggplot" | "ggreact",
+): Promise<void> {
+  const enabled =
+    selected === null ? legacyFlag === undefined || params.has(legacyFlag) : selected === id;
+  if (enabled) mounts.set(id, await load());
+}
+
+// The catalog calls Canvas and uPlot only with scatter and long-series data.
+await Promise.all([
+  loadAdapter("ggsvelte-svg", () =>
+    import("../adapters/ggsvelte-svg").then((m) => m.mountGgsvelteSvg),
+  ),
+  loadAdapter("ggsvelte-canvas", () =>
+    import("../adapters/ggsvelte-canvas").then((m) => m.mountGgsvelteCanvas as MountAdapter),
+  ),
+  loadAdapter("d3", () => import("../adapters/d3").then((m) => m.mountD3)),
+  loadAdapter("uplot", () => import("../adapters/uplot").then((m) => m.mountUplot as MountAdapter)),
+  loadAdapter("chartjs", () => import("../adapters/chartjs").then((m) => m.mountChartJs)),
+  loadAdapter("echarts", () => import("../adapters/echarts").then((m) => m.mountEcharts)),
+  loadAdapter("svelteplot", () => import("../adapters/svelteplot").then((m) => m.mountSveltePlot)),
+  loadAdapter("layercake", () => import("../adapters/layercake").then((m) => m.mountLayerCake)),
+  loadAdapter("layercake-canvas", () =>
+    import("../adapters/layercake").then((m) => m.mountLayerCakeCanvas),
+  ),
+  loadAdapter("unovis", () => import("../adapters/unovis").then((m) => m.mountUnovis)),
+  loadAdapter("tanstack-svelte", () =>
+    import("../adapters/tanstack-svelte").then((m) => m.mountTanstackSvelte),
+  ),
+  loadAdapter("tanstack-react", () =>
+    import("../adapters/tanstack-react").then((m) => m.mountTanstackReact),
+  ),
+]);
+await loadAdapter(
+  "ggsvelte-ggplot",
+  () => import("../adapters/ggsvelte-ggplot").then((m) => m.mountGgsvelteGgplot),
+  "ggplot",
+);
+await loadAdapter(
+  "ggsvelte-react",
+  () => import("../adapters/ggsvelte-react").then((m) => m.mountGgsvelteReact),
+  "ggreact",
+);
 
 registerBasicPoints();
 registerBasicLines();
@@ -54,87 +90,26 @@ export function mountSync(
   data: UpdateColumns,
   root: HTMLElement,
 ): { markHint: number; handle?: MountHandle } {
-  switch (lib) {
-    case "ggsvelte-svg":
-      return mountGgsvelteSvg(scenario, data, root);
-    case "ggsvelte-canvas":
-      return mountGgsvelteCanvas(scenario, data, root);
-    case "d3":
-      return mountD3(scenario, data, root);
-    case "uplot": {
-      const r = mountUplot(scenario, data as never, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "chartjs": {
-      const r = mountChartJs(scenario, data, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "echarts": {
-      const r = mountEcharts(scenario, data, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "svelteplot": {
-      const r = mountSveltePlot(scenario, data, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "layercake": {
-      const r = mountLayerCake(scenario, data, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "layercake-canvas": {
-      const r = mountLayerCakeCanvas(scenario, data, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "unovis": {
-      const r = mountUnovis(scenario, data, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "tanstack-svelte": {
-      const r = mountTanstackSvelte(scenario, data, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "tanstack-react": {
-      const r = mountTanstackReact(scenario, data, root);
-      return { markHint: r.markHint, handle: r.handle };
-    }
-    case "ggsvelte-ggplot": {
-      if (ggplotAdapter === null) throw new Error("ggsvelte-ggplot is not loaded");
-      return ggplotAdapter.mountGgsvelteGgplot(scenario, data, root);
-    }
-    case "ggsvelte-react": {
-      if (reactAdapter === null) throw new Error("ggsvelte-react is not loaded");
-      return reactAdapter.mountGgsvelteReact(scenario, data, root);
-    }
-    default:
-      throw new Error(
-        `lib ${lib} has no browser harness (bundle-only peer — see scenarios.ts LIBS)`,
-      );
+  const mount = mounts.get(lib);
+  if (mount !== undefined) return mount(scenario, data, root);
+  if (selected !== null || lib === "ggsvelte-ggplot" || lib === "ggsvelte-react") {
+    throw new Error(`${lib} is not loaded`);
   }
+  throw new Error(`lib ${lib} has no browser harness (bundle-only peer — see scenarios.ts LIBS)`);
 }
 
-/** Shared mount guards for mountLib/updateLib: lib must exist, be browser
- * mounted (ggplot counts once its adapter has loaded), and support the case's
- * scenario. */
+/** Check the fixture catalog and scope before beginning a timed mount. */
 export function assertMountable(lib: string, c: ScenarioCase): void {
   const meta = LIBS.find((l) => l.id === lib);
   if (meta === undefined) throw new Error(`unknown lib ${lib}`);
-  if (
-    !meta.browser &&
-    !(lib === "ggsvelte-ggplot" && ggplotAdapter !== null) &&
-    !(lib === "ggsvelte-react" && reactAdapter !== null)
-  ) {
-    throw new Error(`${lib} is bundle-only in this harness`);
-  }
+  if (!meta.browser) throw new Error(`${lib} is bundle-only in this harness`);
   if (!meta.scenarios.includes(c.scenario)) {
     throw new Error(`${lib} does not support scenario ${c.scenario}`);
   }
+  if (selected !== null && !mounts.has(meta.id)) throw new Error(`${lib} is not loaded`);
 }
 
-/** Whether the optional ggplot adapter loaded (drives catalog availability). */
-export function ggplotLoaded(): boolean {
-  return ggplotAdapter !== null;
-}
-
-export function reactLoaded(): boolean {
-  return reactAdapter !== null;
+/** Legacy pages report the full browser catalog, including opt-in hosts. */
+export function browserAvailable(lib: LibMeta): boolean {
+  return selected === null ? lib.browser : mounts.has(lib.id);
 }
