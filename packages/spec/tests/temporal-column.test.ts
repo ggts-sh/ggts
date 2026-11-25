@@ -2,11 +2,57 @@
  * Column temporal inference / materialization (packages/spec/src/temporal-column.ts).
  * Value parsing: temporal-parse.test.ts. Authoring helpers: temporal-helpers.test.ts.
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { inferTemporalColumn, parseTemporalColumn } from "../src/temporal.ts";
 
 describe("value-driven temporal inference", () => {
+  it("classifies the original ordered head and tail across the 64-value boundary", () => {
+    for (const length of [63, 64, 65, 96, 97]) {
+      const date = "2024-01-01";
+      const values = Array.from({ length }, (): string => date);
+      const beforeTail = Math.max(32, length - 33);
+      values[beforeTail] = "not-a-date";
+      const decision = inferTemporalColumn(values);
+      expect(decision.status).toBe(length <= 64 ? "nominal" : "invalid");
+      if (length > 64) expect(decision.failures?.[0]?.index).toBe(beforeTail);
+
+      values[beforeTail] = date;
+      values[length - 32] = "not-a-date";
+      expect(inferTemporalColumn(values).status).toBe("nominal");
+    }
+  });
+
+  it("reads sampled years in chronological head and tail order", () => {
+    const years = Array.from({ length: 97 }, (_, index) => 1900 + index);
+    const values = years.map((year) => `${String(year)}-01-01`);
+    const conversion = spyOn(Date.prototype, "setUTCFullYear");
+    let sampledYears: number[];
+    try {
+      inferTemporalColumn(values);
+      sampledYears = conversion.mock.calls.slice(0, 64).map(([year]) => year);
+    } finally {
+      conversion.mockRestore();
+    }
+    expect(sampledYears).toEqual([...years.slice(0, 32), ...years.slice(-32)]);
+  });
+
+  it("collects nominal evidence without initializing the tail with Array.from", () => {
+    const values = Array.from({ length: 80 }, (_, index) => 1900 + index);
+    const arrayFrom = spyOn(Array, "from");
+    let decision: ReturnType<typeof inferTemporalColumn>;
+    let allocations: number;
+    try {
+      decision = inferTemporalColumn(values);
+      allocations = arrayFrom.mock.calls.length;
+    } finally {
+      arrayFrom.mockRestore();
+    }
+    expect(decision).toMatchObject({ status: "nominal", nonNullCount: 80 });
+    expect(decision.evidence).toEqual(values.slice(0, 8));
+    expect(allocations).toBe(0);
+  });
+
   it("infers string years but keeps numeric years quantitative/non-temporal", () => {
     const years = inferTemporalColumn(["1835", "1900", null, "2026"]);
     expect(years).toMatchObject({
