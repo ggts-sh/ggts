@@ -1,5 +1,16 @@
 # @ggts-sh/spec
 
+## 0.49.1
+
+### Patch Changes
+
+- f6bd3b0: Build the list of available fields only when validation encounters an unknown field.
+- 554ce46: Speed up validation of layered charts by reusing repeated field evidence maps.
+- d3ea488: Keep the bounded temporal inference sample in one array. Numeric columns avoid initializing a second sample buffer, and the first and last sampled values retain their order.
+- 2dd797c: Speed up bar label linting by reusing facet panel projections across layers that share data.
+- 6f06e9c: Check shared data columns once when computing the category count for manual color and fill scales.
+- aace929: Speed up period-total lint for area, line, and step charts with sparse groups.
+
 ## 0.49.0
 
 ### Minor Changes

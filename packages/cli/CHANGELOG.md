@@ -1,5 +1,31 @@
 # @ggts-sh/cli
 
+## 0.49.1
+
+### Patch Changes
+
+- Updated dependencies [24a6c5f]
+- Updated dependencies [e361bd6]
+- Updated dependencies [f9ae757]
+- Updated dependencies [a1fa157]
+- Updated dependencies [25a27d2]
+- Updated dependencies [547c8cb]
+- Updated dependencies [1464895]
+- Updated dependencies [b170e2d]
+- Updated dependencies [27a52e5]
+- Updated dependencies [672606d]
+- Updated dependencies [b0c75f9]
+- Updated dependencies [43ff6f0]
+- Updated dependencies [c8f69da]
+- Updated dependencies [fdda805]
+- Updated dependencies [7cdbda8]
+- Updated dependencies [1c607e1]
+- Updated dependencies [9a4b700]
+- Updated dependencies [206f6a7]
+- Updated dependencies [2f5df4f]
+- Updated dependencies [d23df7f]
+  - @ggts-sh/core@0.49.1
+
 ## 0.49.0
 
 ### Patch Changes

@@ -1,5 +1,42 @@
 # @ggts-sh/react
 
+## 0.49.1
+
+### Patch Changes
+
+- bf75320: Speed up large legend filter controls by reusing the mapped field and selected values for each scale.
+- 1c02cf7: Skip crosshair geometry work during exact hover so dense text layers do less work on pointer movement.
+- b23870d: Speed up rerenders of plots with many declarative layers by comparing each updated layer descriptor once per commit.
+- Updated dependencies [24a6c5f]
+- Updated dependencies [e361bd6]
+- Updated dependencies [f6bd3b0]
+- Updated dependencies [f9ae757]
+- Updated dependencies [a1fa157]
+- Updated dependencies [25a27d2]
+- Updated dependencies [547c8cb]
+- Updated dependencies [1464895]
+- Updated dependencies [554ce46]
+- Updated dependencies [b170e2d]
+- Updated dependencies [d3ea488]
+- Updated dependencies [27a52e5]
+- Updated dependencies [672606d]
+- Updated dependencies [b0c75f9]
+- Updated dependencies [2dd797c]
+- Updated dependencies [43ff6f0]
+- Updated dependencies [6f06e9c]
+- Updated dependencies [c8f69da]
+- Updated dependencies [fdda805]
+- Updated dependencies [7cdbda8]
+- Updated dependencies [1c607e1]
+- Updated dependencies [9a4b700]
+- Updated dependencies [206f6a7]
+- Updated dependencies [2f5df4f]
+- Updated dependencies [aace929]
+- Updated dependencies [d23df7f]
+  - @ggts-sh/core@0.49.1
+  - @ggts-sh/spec@0.49.1
+  - @ggts-sh/compose@0.49.1
+
 ## 0.49.0
 
 ### Patch Changes
