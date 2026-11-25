@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
+import { scatterPointsByClass } from "./adapters/echarts";
 import { scenarioSpec } from "./adapters/ggsvelte-svg";
 import { createScatterAligner, seriesFromLong as alignUplotSeries } from "./adapters/uplot";
 
@@ -14,6 +15,38 @@ import {
   makeStackedBars,
   perturbForUpdate,
 } from "./scenarios";
+
+test("ECharts scatter keeps class order, empty classes and the order of present points", () => {
+  const x = [0, 10, 20, 30, 40, 50];
+  delete x[0];
+  const cls = ["first", "other", "first", "other", "missing", "first", "tail"];
+  delete cls[4];
+
+  expect<unknown>([...scatterPointsByClass({ x, y: [0, 1, 2, 3, 4, 5], cls })]).toStrictEqual([
+    [
+      "first",
+      [
+        [20, 2],
+        [50, 5],
+      ],
+    ],
+    [
+      "other",
+      [
+        [10, 1],
+        [30, 3],
+      ],
+    ],
+    [undefined, [[40, 4]]],
+    ["tail", []],
+  ]);
+});
+
+test("ECharts scatter drops points without a class when no missing label was declared", () => {
+  expect([...scatterPointsByClass({ x: [10, 20], y: [1, 2], cls: ["first"] })]).toStrictEqual([
+    ["first", [[10, 1]]],
+  ]);
+});
 
 test("uPlot aligns interleaved series in encounter order and pads short series", () => {
   const input = {

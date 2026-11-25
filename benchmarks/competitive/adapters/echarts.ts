@@ -55,6 +55,17 @@ function seriesFromLong(data: SeriesColumns) {
   return Array.from(groups, ([name, pts]) => ({ name, pts }));
 }
 
+export function scatterPointsByClass(scatter: ScatterColumns): Map<string, [number, number][]> {
+  const groups = new Map<string, [number, number][]>();
+  // The full class column sets series order, including classes with no points.
+  for (const name of new Set(scatter.cls)) groups.set(name, []);
+  for (let i = 0; i < scatter.x.length; i++) {
+    if (!(i in scatter.x)) continue;
+    groups.get(scatter.cls[i]!)?.push([scatter.x[i]!, scatter.y[i]!]);
+  }
+  return groups;
+}
+
 export function mountEcharts(
   scenario: ScenarioId,
   data: ScatterColumns | SeriesColumns | BarsColumns,
@@ -69,20 +80,17 @@ export function mountEcharts(
 
   if (scenario === "scatter-color") {
     const optionFor = (scatter: ScatterColumns) => {
-      const names = [...new Set(scatter.cls)];
       return {
         animation: false,
         grid: { left: 50, right: 20, top: 20, bottom: 40 },
         xAxis: { type: "value" },
         yAxis: { type: "value" },
-        series: names.map((name, i) => ({
+        series: Array.from(scatterPointsByClass(scatter), ([name, data], i) => ({
           type: "scatter",
           name,
           symbolSize: 3,
           itemStyle: { color: COLORS[i % COLORS.length], opacity: 0.7 },
-          data: scatter.x
-            .map((x, idx) => (scatter.cls[idx] === name ? [x, scatter.y[idx]!] : null))
-            .filter((d): d is [number, number] => d !== null),
+          data,
         })),
       };
     };
