@@ -2,20 +2,24 @@ import { error } from "@sveltejs/kit";
 
 import { SCALE_REFERENCE, knownScaleSlugs, type ScaleReferenceEntry } from "@ggts-sh/spec";
 
-import { EXAMPLES } from "$lib/examples-manifest";
+import { EXAMPLES, type ExampleManifestEntry } from "$lib/examples-manifest";
 
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
 const SLUG_SET = new Set(knownScaleSlugs());
+const EXAMPLE_SEARCH = EXAMPLES.map((example) => ({
+  example,
+  text: [example.id, example.category, ...example.tags].join(" ").toLowerCase(),
+}));
 
 /** Prerender one page per Scale* surface (adapter-static). */
 export const entries: EntryGenerator = () => knownScaleSlugs().map((name) => ({ name }));
 
 function relatedExamples(entry: ScaleReferenceEntry) {
-  const tokens = new Set([
+  const tokens = [
     entry.slug,
     entry.helper,
-    entry.component.toLowerCase(),
+    entry.component,
     ...entry.aesthetics,
     entry.scaleType,
     entry.family,
@@ -27,14 +31,16 @@ function relatedExamples(entry: ScaleReferenceEntry) {
       ? ["log", "scale", "time", "date"]
       : []),
     ...(entry.aesthetics.includes("size") ? ["size"] : []),
-  ]);
-  return EXAMPLES.filter((ex) => {
-    const hay = [ex.id, ex.category, ...ex.tags].join(" ").toLowerCase();
-    for (const t of tokens) {
-      if (hay.includes(t.toLowerCase())) return true;
+  ].map((token) => token.toLowerCase());
+
+  const related: ExampleManifestEntry[] = [];
+  for (const { example, text } of EXAMPLE_SEARCH) {
+    if (tokens.some((token) => text.includes(token))) {
+      related.push(example);
+      if (related.length === 8) break;
     }
-    return false;
-  }).slice(0, 8);
+  }
+  return related;
 }
 
 export const load: PageServerLoad = ({ params }) => {
