@@ -57,12 +57,8 @@ export const TRANSIENT_MEMBER_LIMIT = 8;
  */
 function candidateValueMagnitude(candidate: CandidateFacts, groupAxis: "x" | "y"): number {
   const value = groupAxis === "x" ? candidate.yValue : candidate.xValue;
-  if (typeof value === "number" && Number.isFinite(value)) return Math.abs(value);
-  if (value instanceof Date) {
-    const time = value.getTime();
-    return Number.isFinite(time) ? Math.abs(time) : 0;
-  }
-  return 0;
+  const numeric = typeof value === "number" ? value : value instanceof Date ? value.getTime() : NaN;
+  return Number.isFinite(numeric) ? Math.abs(numeric) : 0;
 }
 
 /**
@@ -105,26 +101,31 @@ export function selectTransientMembers(
   if (members.length <= limit) return members;
 
   const groupAxis = options.groupAxis;
+  // Lower candidate id breaks equal-magnitude ties.
+  const compare = (left: CandidateFacts, right: CandidateFacts): number =>
+    candidateValueMagnitude(right, groupAxis) - candidateValueMagnitude(left, groupAxis) ||
+    left.id - right.id;
+
+  const capacity = limit === TRANSIENT_MEMBER_LIMIT && members.length >= 64 ? limit : Infinity;
   let focus: CandidateFacts | null = null;
   const others: CandidateFacts[] = [];
   for (const member of members) {
     if (member.id === focusId) focus = member;
-    else others.push(member);
+    else if (others.length !== capacity) {
+      if (others.push(member) === capacity) others.sort(compare);
+    } else if (compare(member, others[capacity - 1]!) < 0) {
+      let slot = 0;
+      while (compare(member, others[slot]!) >= 0) slot++;
+      for (let index = capacity - 1; index > slot; index--) {
+        others[index] = others[index - 1]!;
+      }
+      others[slot] = member;
+    }
   }
 
-  others.sort((left, right) => {
-    const delta =
-      candidateValueMagnitude(right, groupAxis) - candidateValueMagnitude(left, groupAxis);
-    if (delta !== 0) return delta;
-    // Stable-ish: lower candidate id wins ties (deterministic, not stack order).
-    return left.id - right.id;
-  });
+  others.sort(compare);
 
-  if (focus === null) {
-    return others.slice(0, limit);
-  }
-  if (limit === 1) return [focus];
-  return [focus, ...others.slice(0, limit - 1)];
+  return focus === null ? others.slice(0, limit) : [focus, ...others.slice(0, limit - 1)];
 }
 
 export function resolvedTarget(
