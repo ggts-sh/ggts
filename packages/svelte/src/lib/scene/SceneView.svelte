@@ -53,7 +53,9 @@
     focusable?: boolean;
     /** Accessible name for one mark's source row (focusable marks). */
     markLabel?: ((row: number) => string) | undefined;
-    focusMasks?: readonly (BatchInteractionMask | null)[];
+    focusMasks?:
+      | readonly (BatchInteractionMask | null)[]
+      | (() => readonly (BatchInteractionMask | null)[]);
   } = $props();
 
   /** Strip band geometry matching core renderToSVGString (issue #590 / #611). */
@@ -137,10 +139,11 @@
   const drawTop = $derived(mode === "full" || mode === "chrome-top");
   const drawMarks = $derived(mode === "full" || mode === "marks");
   const markBatches = $derived(batches ?? scene.batches);
-  // Project once per (scene, markBatches, focusMasks) — O(S + B) via Map, not
-  // indexOf per batch during panel loops.
+  // Mixed strata share their scene index for each focus update.
   const markFocusMasks = $derived(
-    resolveBatchFocusMasks(scene.batches, markBatches, focusMasks),
+    typeof focusMasks === "function"
+      ? focusMasks()
+      : resolveBatchFocusMasks(scene.batches, markBatches, focusMasks),
   );
   // Bucket batches by panel once. Batch count grows with panel count (the
   // pipeline emits per layer per panel), so testing every batch against every

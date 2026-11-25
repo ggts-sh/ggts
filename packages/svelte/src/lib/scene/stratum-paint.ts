@@ -7,19 +7,25 @@
 import type { BatchInteractionMask, GeometryBatch, RenderModel } from "@ggts-sh/core";
 import { cssColorResolver, drawStratum, sizeCanvasForDpr } from "@ggts-sh/core/dom";
 
+export function indexFocusBatches(
+  sceneBatches: readonly GeometryBatch[],
+): ReadonlyMap<GeometryBatch, number> {
+  return new Map(sceneBatches.map((batch, index) => [batch, index]));
+}
+
 /**
  * Project full-scene interaction masks onto a stratum batch subset using
- * scene batch identity. Builds a batch→index Map once (O(S + B)) rather than
- * `indexOf` per batch (O(B · S)), matching host masksForBatches semantics.
+ * scene batch identity. Mixed strata can share the index for one update.
  * Empty interactionMasks → empty result (no focus styling).
  */
 export function resolveBatchFocusMasks(
   sceneBatches: readonly GeometryBatch[],
   batches: readonly GeometryBatch[],
   interactionMasks: readonly (BatchInteractionMask | null)[],
+  focusBatchIndex?: ReadonlyMap<GeometryBatch, number>,
 ): (BatchInteractionMask | null)[] {
   if (interactionMasks.length === 0) return [];
-  const indexByBatch = new Map(sceneBatches.map((batch, index) => [batch, index]));
+  const indexByBatch = focusBatchIndex ?? indexFocusBatches(sceneBatches);
   return batches.map((batch) => {
     const index = indexByBatch.get(batch);
     return index === undefined ? null : (interactionMasks[index] ?? null);

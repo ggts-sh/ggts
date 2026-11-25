@@ -23,6 +23,26 @@ describe("resolveBatchFocusMasks", () => {
     ]);
   });
 
+  it("reuses one supplied index for multiple mask projections", () => {
+    const scene = [a, b, a];
+    const index = new Map(scene.map((batch, slot) => [batch, slot]));
+    const sceneMap = vi.spyOn(scene, "map");
+    try {
+      expect(resolveBatchFocusMasks(scene, [a, b], fromAny(masks), index)).toEqual([
+        masks[2],
+        null,
+      ]);
+      const nextMasks = [null, masks[0], masks[2]];
+      expect(resolveBatchFocusMasks(scene, [b, a], fromAny(nextMasks), index)).toEqual([
+        masks[0],
+        masks[2],
+      ]);
+      expect(sceneMap).not.toHaveBeenCalled();
+    } finally {
+      sceneMap.mockRestore();
+    }
+  });
+
   it("returns null for batches absent from the scene list", () => {
     const orphan = fromAny<GeometryBatch>({ id: "orphan" });
     expect(resolveBatchFocusMasks(sceneBatches, [orphan], fromAny(masks))).toEqual([null]);

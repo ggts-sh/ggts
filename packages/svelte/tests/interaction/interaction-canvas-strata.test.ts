@@ -1,7 +1,9 @@
+import type { RenderModel } from "@ggts-sh/core";
 import { describe, expect, it } from "vitest";
 import { withGrammarAsSpec } from "../helpers/ggplot-input.js";
 
 import GGPlot from "../../src/lib/GGPlot.svelte";
+import { createPlotInteraction } from "../../src/lib/index.js";
 import "../../src/lib/host-init.js";
 import { render } from "../helpers/render.js";
 import { until } from "../helpers/until.js";
@@ -25,7 +27,7 @@ describe("canvas strata (decision 0006 graduated)", () => {
   it("builds the strata sandwich and paints marks onto the canvas (readback)", async () => {
     const { container } = render(GGPlot, canvasProps);
     const root = container.querySelector<HTMLElement>(".gg-plot-root")!;
-    const canvas = container.querySelector("canvas.gg-canvas");
+    const canvas = container.querySelector<HTMLCanvasElement>("canvas.gg-canvas");
     expect(canvas).not.toBeNull();
     // Sandwich: chrome-bottom svg BEFORE the canvas, chrome-top svg after.
     const kids = [...root.children].map((el) => el.getAttribute("class") ?? "");
@@ -105,6 +107,67 @@ describe("canvas strata (decision 0006 graduated)", () => {
         (t) => t.getAttribute("aria-expanded") === "true",
       ),
     ).toBe(true);
+  });
+
+  it("refreshes canvas focus on theme changes without reprojecting the SVG focus", async () => {
+    const interaction = createPlotInteraction<string>();
+    const scope = { keys: "row-id" } as const;
+    const observed: { model?: RenderModel } = {};
+    const data = rows.map((row, index) => ({
+      ...row,
+      id: `mark-${String(index)}`,
+      label: `label-${String(index)}`,
+      panel: index < 2 ? "left" : "right",
+    }));
+    const { container } = render(
+      GGPlot,
+      withGrammarAsSpec({
+        ...canvasProps,
+        data,
+        layers: [
+          ...canvasProps.layers,
+          { geom: "text" as const, aes: { label: { field: "label" } } },
+        ],
+        facet: { wrap: { field: "panel" }, ncol: 2 },
+        interaction,
+        interactionScope: scope,
+        onrender: (model: RenderModel) => {
+          observed.model = model;
+        },
+      }),
+    );
+
+    interaction.setEmphasis(["mark-0"], { scope });
+    const focusedLabels = () =>
+      [...container.querySelectorAll(".gg-svg-marks [data-gg-focused=true]")].map(
+        (mark) => mark.textContent,
+      );
+    await until(() => focusedLabels().includes("label-0"));
+    const initialLabels = focusedLabels();
+    const canvas = container.querySelector<HTMLCanvasElement>("canvas.gg-canvas");
+    const batches = observed.model?.scene.batches;
+    if (canvas === null || batches === undefined) throw new Error("Expected a mixed plot");
+    const before = canvas.toDataURL();
+    for (const kind of ["glyphs", "points"] as const) {
+      const a = batches.findIndex((batch) => batch.kind === kind && batch.panelIndex === 0);
+      const b = batches.findIndex((batch) => batch.kind === kind && batch.panelIndex === 1);
+      const first = batches[a];
+      const second = batches[b];
+      if (first === undefined || second === undefined) throw new Error("Expected both panels");
+      batches[a] = second;
+      batches[b] = first;
+    }
+
+    const { dataset } = document.documentElement;
+    const theme = dataset["theme"];
+    try {
+      dataset["theme"] = "mask-projection-test";
+      await until(() => canvas.toDataURL() !== before);
+      expect(focusedLabels()).toEqual(initialLabels);
+    } finally {
+      if (theme === undefined) delete dataset["theme"];
+      else dataset["theme"] = theme;
+    }
   });
 
   it('a11y "force-svg" keeps marks in SVG with one virtual-navigation surface', () => {
