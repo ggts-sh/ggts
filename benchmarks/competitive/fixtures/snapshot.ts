@@ -10,13 +10,25 @@ export type UpdateVerification = {
   mutated: boolean;
 };
 
+function hasZeroOpacity(el: Element): boolean {
+  return /(?:^|;)\s*opacity\s*:\s*0(?:\s*;|\s*$)/.test(el.getAttribute("style") ?? "");
+}
+
+function needsNormalization(root: HTMLElement): boolean {
+  if (root.querySelector("[id], canvas") !== null) return true;
+  for (const el of root.querySelectorAll("[style]")) {
+    if (hasZeroOpacity(el)) return true;
+  }
+  return false;
+}
+
 export function canonicalDom(root: HTMLElement): string {
+  if (!needsNormalization(root)) return root.innerHTML;
   const clone = root.cloneNode(true) as HTMLElement;
   // Transition helpers can retain stale geometry in zero-opacity exit nodes.
   // They are not visible output and must not make mutation/fresh parity fail.
   for (const el of clone.querySelectorAll<HTMLElement | SVGElement>("[style]")) {
-    const style = el.getAttribute("style") ?? "";
-    if (/(?:^|;)\s*opacity\s*:\s*0(?:\s*;|\s*$)/.test(style)) el.remove();
+    if (hasZeroOpacity(el)) el.remove();
   }
   const ids = new Map<string, string>();
   let nextId = 0;
@@ -29,6 +41,8 @@ export function canonicalDom(root: HTMLElement): string {
   for (const el of clone.querySelectorAll("*")) {
     for (const attr of Array.from(el.attributes)) {
       let value = attr.value;
+      const isAriaIdList = attr.name === "aria-labelledby" || attr.name === "aria-describedby";
+      if (!isAriaIdList && attr.name !== "id" && !value.includes("#")) continue;
       for (const [id, replacement] of idReplacements) {
         if (attr.name === "id" && value === id) value = replacement;
         value = value.replaceAll(`url(#${id})`, `url(#${replacement})`);
@@ -39,7 +53,7 @@ export function canonicalDom(root: HTMLElement): string {
         if ((attr.localName === "href" || attr.name.startsWith("aria-")) && value === `#${id}`) {
           value = `#${replacement}`;
         }
-        if (attr.name === "aria-labelledby" || attr.name === "aria-describedby") {
+        if (isAriaIdList) {
           value = value
             .split(/\s+/)
             .map((token) => (token === id ? replacement : token))
