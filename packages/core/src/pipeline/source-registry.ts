@@ -31,10 +31,10 @@ export class SourceRegistry {
 
   /** Convert a local row index in `sourceId` to a global source-row id. */
   toGlobal(sourceId: number, localRow: number): number {
-    if (localRow === NO_ROW || localRow < 0) return NO_ROW;
-    const table = this.#tables[sourceId];
-    if (table === undefined || localRow >= table.rowCount) return NO_ROW;
-    return this.#bases[sourceId]! + localRow;
+    const table = localRow === NO_ROW || localRow < 0 ? undefined : this.#tables[sourceId];
+    return table === undefined || localRow >= table.rowCount
+      ? NO_ROW
+      : this.#bases[sourceId]! + localRow;
   }
 
   /**
