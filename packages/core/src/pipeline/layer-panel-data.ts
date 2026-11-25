@@ -11,6 +11,7 @@ import type { ColumnTable } from "../table.js";
 import { partitionByField, partitionByFields } from "./facets-tokens.js";
 import type { FacetPanelDef } from "./facets-types.js";
 import type { SourceRegistry } from "./source-registry.js";
+import { NO_ROW } from "./types-no-row.js";
 
 export interface LayerPanelSlice {
   table: ColumnTable;
@@ -89,8 +90,15 @@ export function createLayerPanelSlicer(
   // Indexed by filtered-table row, not panel row: panel slices index into this
   // through their kept-row list.
   const allGlobals: number[] = [];
-  for (let i = 0; i < filteredTable.rowCount; i++) {
-    allGlobals.push(registry.toGlobal(sourceId, filteredToSource?.[i] ?? i));
+  const count = filteredTable.rowCount;
+  // A valid last row proves the unfiltered local indexes map to one contiguous range.
+  const last = filteredToSource ? NO_ROW : registry.toGlobal(sourceId, count - 1);
+  for (let i = 0; i < count; i++) {
+    allGlobals.push(
+      last === NO_ROW
+        ? registry.toGlobal(sourceId, filteredToSource?.[i] ?? i)
+        : last - count + 1 + i,
+    );
   }
 
   const presentFields =

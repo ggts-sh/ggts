@@ -11,6 +11,7 @@ import { createFacetPanelIdentity } from "../src/facet-identity.ts";
 import type { FacetPanelDef } from "../src/pipeline/facets-types.ts";
 import { createLayerPanelSlicer, type LayerPanelSlice } from "../src/pipeline/layer-panel-data.ts";
 import { SourceRegistry } from "../src/pipeline/source-registry.ts";
+import { NO_ROW } from "../src/pipeline/types-no-row.ts";
 import { encodeKey } from "../src/scales/state.ts";
 import { ColumnTable } from "../src/table.ts";
 
@@ -225,6 +226,15 @@ describe("createLayerPanelSlicer matches the per-panel scan", () => {
   });
 });
 
+describe("createLayerPanelSlicer global source IDs", () => {
+  it("keeps out-of-range entries when a contiguous range is incomplete", () => {
+    const source = ColumnTable.fromColumns({ g: ["a", "a"] });
+    const table = ColumnTable.fromColumns({ g: ["a", "a", "a"] });
+    const slicer = createLayerPanelSlicer(inputFor(table, ["g"], null, source));
+    expect(slicer(wrapPanel("g", "a")).globalSourceRows).toEqual([0, 1, NO_ROW]);
+  });
+});
+
 describe("createLayerPanelSlicer invariant tripwires", () => {
   // Neither state is reachable through the pipeline: assertFacetForm rejects
   // wrap mixed with grid, and every panel identity carries every declared
@@ -288,6 +298,7 @@ describe("createLayerPanelSlicer cost", () => {
     const N = 200;
     const table = ColumnTable.fromColumns({ v: Array.from({ length: N }, (_, i) => i) });
     const registry = new SourceRegistry();
+    registry.register(ColumnTable.fromColumns({ v: [-2, -1] }));
     const sourceId = registry.register(table);
     let toGlobalCalls = 0;
     const realToGlobal = registry.toGlobal.bind(registry);
@@ -308,6 +319,7 @@ describe("createLayerPanelSlicer cost", () => {
     for (const slice of slices) expect(slice.globalSourceRows).toHaveLength(N);
     // Every panel takes the whole table, so one array serves them all.
     expect(slices.every((s) => s.globalSourceRows === slices[0]!.globalSourceRows)).toBe(true);
-    expect(toGlobalCalls).toBe(N);
+    expect(slices[0]?.globalSourceRows).toEqual(Array.from({ length: N }, (_, index) => index + 2));
+    expect(toGlobalCalls).toBe(1);
   });
 });
