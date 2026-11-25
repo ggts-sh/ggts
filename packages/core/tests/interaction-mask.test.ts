@@ -52,6 +52,27 @@ function outlineBatch(subpaths: number, layerIndex: number): GeometryBatch {
 }
 
 describe("buildInteractionMasks", () => {
+  it("adds direct focus without changing the semantic mask mirrored to outlines", () => {
+    const batches = [rectBatch(3), outlineBatch(3, 0), rectBatch(1)];
+    const candidates = [
+      { batchIndex: 0, primitiveIndex: 0, keys: ["selected"] },
+      { batchIndex: 0, primitiveIndex: 1, keys: ["other"] },
+    ];
+    const masks = buildInteractionMasks(batches, ["selected"], candidates, [
+      { batchIndex: 0, primitiveIndex: 0 },
+      { batchIndex: 0, primitiveIndex: 1 },
+      { batchIndex: 0, primitiveIndex: 1 },
+      { batchIndex: 2, primitiveIndex: 0 },
+      { batchIndex: 2, primitiveIndex: 9 },
+    ]);
+
+    expect(masks.map((mask) => mask?.focusedCount)).toEqual([2, 1, 1]);
+    expect(masks[0]?.isFocused(1)).toBe(true);
+    expect(masks[1]?.isFocused(0)).toBe(true);
+    expect(masks[1]?.isFocused(1)).toBe(false);
+    expect(masks[2]?.isFocused(0)).toBe(true);
+  });
+
   it("projects semantic emphasis onto immutable per-batch primitive masks", () => {
     const candidates: SemanticCandidateKeys<string>[] = [
       { batchIndex: 0, primitiveIndex: 0, keys: ["alpha"] },

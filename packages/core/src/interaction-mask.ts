@@ -95,10 +95,14 @@ export function buildInteractionMasks<Key extends PropertyKey>(
   batches: readonly GeometryBatch[],
   emphasisKeys: Iterable<Key>,
   candidates: Iterable<SemanticCandidateKeys<Key>>,
+  primitives?: Iterable<FocusedPrimitive>,
 ): ReadonlyArray<BatchInteractionMask | null> {
   const emphasis = new Set(emphasisKeys);
-  if (emphasis.size === 0)
-    return Object.freeze(Array.from<null>({ length: batches.length }).fill(null));
+  if (emphasis.size === 0) {
+    return primitives === undefined
+      ? Object.freeze(Array.from<null>({ length: batches.length }).fill(null))
+      : buildPrimitiveInteractionMasks(batches, primitives);
+  }
 
   const focused = new Map<number, Uint8Array>();
   for (const candidate of candidates) {
@@ -133,6 +137,13 @@ export function buildInteractionMasks<Key extends PropertyKey>(
     }
     const peer = peerByLayer?.get(batch.layerIndex);
     mirrorPeerMask(focused, peerByLayer, batch, index, peer);
+  }
+
+  // Direct focus belongs to its target batch, after semantic outline mirroring.
+  if (primitives !== undefined) {
+    for (const primitive of primitives) {
+      markFocusedPrimitive(focused, batches, primitive.batchIndex, primitive.primitiveIndex);
+    }
   }
 
   return freezeMasks(batches, focused);
