@@ -1,7 +1,7 @@
 /**
  * Pure stat_summary_bin (#817).
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { statSummaryBin } from "../src/stats/summary-bin.ts";
 
@@ -46,6 +46,33 @@ describe("statSummaryBin", () => {
     });
     expect(result.x.length).toBe(2);
     expect([...result.x]).toEqual([0.5, 2.5]);
+  });
+
+  it("visits occupied bins in first eligible group order on a sparse grid", () => {
+    const input = {
+      x: Float64Array.from([8, 0, 0, 8, 4, 8, NaN]),
+      y: Float64Array.from([80, NaN, 10, 30, 40, 50, 100]),
+      groups: [-0, 0, 0, 2, NaN, 2, 0],
+      carried: { label: ["a", "b", "c", "d", "e", "f", "g"] },
+      params: { bins: 128 },
+      range: [0, 8] as [number, number],
+    };
+    const mapGet = spyOn(Map.prototype, "get");
+    let result: ReturnType<typeof statSummaryBin>;
+    let lookups: number;
+    try {
+      result = statSummaryBin(input);
+      lookups = mapGet.mock.calls.length;
+    } finally {
+      mapGet.mockRestore();
+    }
+
+    expect(result.groups).toEqual([-0, -0, 2, NaN]);
+    expect([...result.cut.binIndex]).toEqual([0, 127, 127, 63]);
+    expect([...result.y]).toEqual([10, 80, 40, 40]);
+    expect(result.carried.label).toEqual(["c", "a", "d", "e"]);
+    expect(result.dropped).toBe(2);
+    expect(lookups).toBeLessThan(40);
   });
 
   it("stacks groups separately on shared breaks", () => {

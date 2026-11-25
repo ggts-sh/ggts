@@ -17,7 +17,8 @@
  */
 import type { CellValue } from "../table.js";
 
-import { binBreaksBins, binBreaksWidth, binIndexOf } from "./bin-breaks.js";
+import { binBreaksBins, binBreaksWidth } from "./bin-breaks.js";
+import { collectOccupiedBins, orderedOccupiedBins } from "./occupied-bins.js";
 
 type BindotStackdir = "up" | "down" | "center" | "centerwhole";
 
@@ -80,8 +81,6 @@ function stackPosition(
   }
 }
 
-type BinBreaks = ReturnType<typeof binBreaksBins>;
-
 function finiteExtent(values: Float64Array): [number, number] | undefined {
   let min = Infinity;
   let max = -Infinity;
@@ -93,40 +92,6 @@ function finiteExtent(values: Float64Array): [number, number] | undefined {
     if (value > max) max = value;
   }
   return count === 0 ? undefined : [min, max];
-}
-
-function collectBuckets(input: BindotStatInput, breaks: BinBreaks) {
-  const buckets = new Map<string, { rows: number[] }>();
-  const groupOrder: number[] = [];
-  const seenGroup = new Set<number>();
-  const binCount = breaks.breaks.length - 1;
-  let dropped = 0;
-
-  for (let i = 0; i < input.x.length; i++) {
-    const value = input.x[i]!;
-    if (!Number.isFinite(value)) {
-      dropped++;
-      continue;
-    }
-    const bin = binIndexOf(value, breaks.fuzzy, breaks.rightClosed);
-    if (bin < 0 || bin >= binCount) {
-      dropped++;
-      continue;
-    }
-    const group = input.groups[i]!;
-    if (!seenGroup.has(group)) {
-      seenGroup.add(group);
-      groupOrder.push(group);
-    }
-    const key = `${group}\0${bin}`;
-    let bucket = buckets.get(key);
-    if (bucket === undefined) {
-      bucket = { rows: [] };
-      buckets.set(key, bucket);
-    }
-    bucket.rows.push(i);
-  }
-  return { buckets, groupOrder, dropped };
 }
 
 export function statBindot(input: BindotStatInput): BindotStatResult {
@@ -165,7 +130,7 @@ export function statBindot(input: BindotStatInput): BindotStatResult {
     binCount > 0 ? breaks.breaks[1]! - breaks.breaks[0]! : (params.binwidth ?? 0);
 
   // Collect kept rows per (group, bin), preserving input order within bucket.
-  const { buckets, groupOrder, dropped } = collectBuckets(input, breaks);
+  const { occupied, dropped } = collectOccupiedBins(x, input.groups, breaks);
 
   // Emit in first-seen group order, then ascending bin index, then input order.
   const outX: number[] = [];
@@ -176,22 +141,20 @@ export function statBindot(input: BindotStatInput): BindotStatResult {
   const outGroups: number[] = [];
   const outSource: number[] = [];
 
-  for (const g of groupOrder) {
-    for (let bin = 0; bin < binCount; bin++) {
-      const bucket = buckets.get(`${g}\0${bin}`);
-      if (bucket === undefined || bucket.rows.length === 0) continue;
-      const k = bucket.rows.length;
+  for (const { group, bins } of occupied.values()) {
+    for (const [bin, rows] of orderedOccupiedBins(bins, binCount)) {
+      const k = rows.length;
       const lo = breaks.breaks[bin]!;
       const hi = breaks.breaks[bin + 1]!;
       const center = (lo + hi) / 2;
       for (let r = 0; r < k; r++) {
-        const src = bucket.rows[r]!;
+        const src = rows[r]!;
         outX.push(center);
         outXmin.push(lo);
         outXmax.push(hi);
         outStack.push(stackPosition(r + 1, k, stackdir, stackratio));
         outCount.push(k);
-        outGroups.push(g);
+        outGroups.push(group);
         outSource.push(src);
       }
     }

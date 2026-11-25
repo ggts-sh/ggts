@@ -97,6 +97,22 @@ describe("statBindot (histodot)", () => {
     expect([...result.sourceRows]).toEqual([0, 2, 1]);
   });
 
+  it("emits sparse bins in group and bin order with original stack order", () => {
+    const result = statBindot({
+      x: Float64Array.from([8, 0, 0, 8, 4, 8, NaN]),
+      groups: [-0, 0, 0, 2, NaN, 2, 0],
+      carried: { label: ["a", "b", "c", "d", "e", "f", "g"] },
+      params: { bins: 128 },
+      range: [0, 8],
+    });
+
+    expect(result.groups).toEqual([-0, -0, -0, 2, 2, NaN]);
+    expect(result.sourceRows).toEqual([1, 2, 0, 3, 5, 4]);
+    expect(result.carried.label).toEqual(["b", "c", "a", "d", "f", "e"]);
+    expect([...result.stackpos]).toEqual([1, 2, 1, 1, 2, 1]);
+    expect(result.dropped).toBe(1);
+  });
+
   it("k=1 yields a single stack position", () => {
     const x = Float64Array.from([1]);
     const result = statBindot({
