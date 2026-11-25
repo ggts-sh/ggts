@@ -81,10 +81,9 @@ function evidenceValue(value: unknown): string | number | boolean | null {
 /**
  * One full-column pass: non-null count, full-column number/boolean detection
  * (not sample-relative), and a representative sample of at most 64 non-null
- * values (all when ≤64; otherwise first 32 + last 32). Avoids allocating an
- * O(n) non-null array just to take a bounded sample. A number/boolean decides
- * nominal, so after one the pass only counts and the sample is the head (the
- * nominal decision reads its first 8 values as evidence).
+ * values. Keep the first 32 in order and reuse the last 32 slots for the tail.
+ * A number or boolean decides nominal, so only the first 8 values are needed
+ * for evidence.
  */
 function analyzeNonNull(values: readonly unknown[]): {
   sample: unknown[];
@@ -93,34 +92,23 @@ function analyzeNonNull(values: readonly unknown[]): {
 } {
   let nonNullCount = 0;
   let sawNumberOrBoolean = false;
-  const head: unknown[] = [];
-  const ring: unknown[] = Array.from({ length: 32 });
-  let ringWrite = 0;
-  let ringLen = 0;
+  let sample: unknown[] = [];
 
   for (const value of values) {
     if (value === null || value === undefined) continue;
-    nonNullCount++;
-    if (sawNumberOrBoolean) {
-      if (head.length < 8) head.push(value);
-      continue;
+    if (!sawNumberOrBoolean || nonNullCount < 8) {
+      const index = nonNullCount < 64 ? nonNullCount : 32 + (nonNullCount % 32);
+      sample[index] = value;
+      sawNumberOrBoolean ||= typeof value === "number" || typeof value === "boolean";
     }
-    if (typeof value === "number" || typeof value === "boolean") sawNumberOrBoolean = true;
-    if (head.length < 64) head.push(value);
-    ring[ringWrite] = value;
-    ringWrite = (ringWrite + 1) % 32;
-    if (ringLen < 32) ringLen++;
+    nonNullCount++;
   }
 
-  if (sawNumberOrBoolean || nonNullCount <= 64) {
-    return { sample: head, nonNullCount, sawNumberOrBoolean };
+  if (!sawNumberOrBoolean && nonNullCount > 64) {
+    const oldest = 32 + (nonNullCount % 32);
+    sample = sample.slice(0, 32).concat(sample.slice(oldest), sample.slice(32, oldest));
   }
-
-  const first = head.slice(0, 32);
-  const last: unknown[] = [];
-  // When full, ringWrite points at the oldest slot.
-  for (let i = 0; i < 32; i++) last.push(ring[(ringWrite + i) % 32]);
-  return { sample: [...first, ...last], nonNullCount, sawNumberOrBoolean };
+  return { sample, nonNullCount, sawNumberOrBoolean };
 }
 
 const AUTO_ORDERED_PARSERS = TEMPORAL_PARSER_NAMES.filter((parser): parser is TemporalParserName =>
