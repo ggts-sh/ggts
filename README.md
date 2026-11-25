@@ -14,18 +14,11 @@ ggts is a fast agent-native implementation of the grammar of graphics in TypeScr
 
 ## Benchmarks
 
-Selected SVG comparisons using the ggts core renderer; lower is better.
 [Source and full results](benchmarks/competitive).
 
 <!-- framework-benchmark-charts:start -->
 
-![10,000 points. First render · SVG · milliseconds. Lower is better. ggts core SVG: 91.6 ms; LayerCake: 329.4 ms; TanStack: 335.6 ms; Unovis: 427.3 ms; SveltePlot: 3,955.7 ms.](apps/docs/static/benchmarks/bench-core-scatter-10k-mount.svg)
-
-![1,000 points. First render · SVG · milliseconds. Lower is better. ggts core SVG: 11.1 ms; LayerCake: 25.1 ms; TanStack: 31.4 ms; Unovis: 50.6 ms; SveltePlot: 434.1 ms.](apps/docs/static/benchmarks/bench-core-scatter-1k-mount.svg)
-
-![10,000 points. Data update · SVG · milliseconds. Lower is better. ggts core SVG: 64.5 ms; LayerCake: 125.6 ms; TanStack: 206.1 ms; Unovis: 470.6 ms; SveltePlot: 3,157.5 ms.](apps/docs/static/benchmarks/bench-core-scatter-10k-update.svg)
-
-![30,000-point line chart. Data update · SVG · milliseconds. Lower is better. ggts core SVG: 27.3 ms; LayerCake: 31.2 ms; TanStack: 91.3 ms; Unovis: 154.8 ms; SveltePlot: 877.5 ms.](apps/docs/static/benchmarks/bench-core-line-30k-update.svg)
+![SVG chart benchmarks. Median time including paint. Lower is better. Scales vary by panel. 10,000-point scatter · First render. ggts core SVG 42.2 ms, LayerCake 137.8 ms, TanStack 171 ms, Unovis 202 ms. 1,000-point scatter · First render. ggts core SVG 7.8 ms, LayerCake 15.5 ms, TanStack 20.4 ms, Unovis 27.8 ms. 10,000-point scatter · Data update. ggts core SVG 38.8 ms, LayerCake 61.1 ms, TanStack 115.9 ms, Unovis 268.7 ms. 30,000-point line · Data update. ggts core SVG 14.4 ms, LayerCake 20.5 ms, TanStack 50.5 ms, Unovis 58.9 ms.](apps/docs/static/benchmarks/bench-core-svg-grid.svg)
 
 <!-- framework-benchmark-charts:end -->
 

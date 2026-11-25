@@ -43,10 +43,9 @@ Results: `results/bundles.json`, `results/browser.json`.
 
 ## Published benchmarks
 
-The homepage and README show four **core SVG** highlights against LayerCake,
-TanStack, Unovis, and SveltePlot: scatter first render at 1k/10k, scatter update
-at 10k, and line update at 30k. These are selected comparisons, not the full
-matrix. D3 remains in the benchmark data, not in the promotional charts.
+The homepage and README compare **ggts core SVG** with LayerCake, TanStack
+Charts for Svelte, and Unovis. The charts cover scatter first render at 1k and
+10k points, scatter update at 10k, and line update at 30k.
 
 Full results live here: [browser, bundles, SSR, and historical high-N](published.json)
 and the [focused SVG run](published-svg.json). There is no docs benchmark route.
@@ -85,7 +84,7 @@ bundles, SSR, or the large-data suite:
 
 ```sh
 cd benchmarks/competitive
-COMPETITIVE_LIBS=ggsvelte-svg,d3,layercake,unovis,tanstack-svelte,svelteplot \
+COMPETITIVE_LIBS=ggsvelte-svg,d3,layercake,unovis,tanstack-svelte \
 COMPETITIVE_CASES=scatter-color-1k,scatter-color-10k,line-3x1k,line-3x10k,area-3x1k,bars-stacked-50x4 \
 bun run measure:browser
 cp results/browser.json published-svg.json
