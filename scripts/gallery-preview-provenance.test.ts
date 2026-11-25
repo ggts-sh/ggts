@@ -1,4 +1,5 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, spyOn, test } from "bun:test";
+import * as fs from "node:fs";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -116,19 +117,47 @@ describe("exampleSourceDigest", () => {
     const dataDir = join(monorepo, "packages/core/src/data");
     mkdirSync(dataDir, { recursive: true });
     try {
-      writeFileSync(join(dataDir, "chocolate-bars.ts"), "export const chocolateBars = [{ n: 1 }]");
+      mkdirSync(examples, { recursive: true });
+      const sharedPath = join(examples, "sample.ts");
+      const packagePath = join(dataDir, "chocolate-bars.ts");
+      const sharedSource = "export const offset = 1";
+      writeFileSync(sharedPath, sharedSource);
+      writeFileSync(packagePath, "export const chocolateBars = [{ n: 1 }]");
       writeExample(examples, "smooth/loess", {
         "Example.svelte": "x",
         "spec.ts": "export default {}",
         "meta.json": "{}",
-        "data.ts":
-          'import { chocolateBars } from "../../../packages/core/src/data/chocolate-bars.js";\nexport const sample = chocolateBars',
+        "data.ts": [
+          'import { chocolateBars } from "../../../packages/core/src/data/chocolate-bars.js";',
+          'import { offset } from "../../sample.js";',
+          "export const sample = [...chocolateBars, { n: offset }]",
+        ].join("\n"),
       });
       expect(packageDataSourcePaths(join(examples, "smooth/loess"), examples)).toEqual([
         "packages/core/src/data/chocolate-bars.ts",
       ]);
-      const before = exampleSourceDigest(examples, "smooth/loess");
-      writeFileSync(join(dataDir, "chocolate-bars.ts"), "export const chocolateBars = [{ n: 2 }]");
+      expect(sharedExampleSourcePaths(join(examples, "smooth/loess"), examples)).toEqual([
+        "sample.ts",
+      ]);
+      const sourceDir = join(examples, "smooth/loess");
+      const sourceFiles = listSourceFiles(sourceDir);
+      const readSource = spyOn(fs, "readFileSync");
+      let before: string;
+      try {
+        before = exampleSourceDigest(examples, "smooth/loess");
+        for (const file of sourceFiles) {
+          const sourcePath = join(sourceDir, file);
+          expect(readSource.mock.calls.filter(([path]) => path === sourcePath)).toHaveLength(1);
+        }
+      } finally {
+        readSource.mockRestore();
+      }
+      writeFileSync(sharedPath, "export const offset = 2");
+      expect(exampleSourceDigest(examples, "smooth/loess")).not.toBe(before);
+      writeFileSync(sharedPath, sharedSource);
+      expect(exampleSourceDigest(examples, "smooth/loess")).toBe(before);
+
+      writeFileSync(packagePath, "export const chocolateBars = [{ n: 2 }]");
       expect(exampleSourceDigest(examples, "smooth/loess")).not.toBe(before);
     } finally {
       rmSync(monorepo, { recursive: true, force: true });
