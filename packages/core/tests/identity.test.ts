@@ -197,6 +197,49 @@ describe("pipeline semantic identity", () => {
     expect(model.domains.effective.panels).toHaveLength(2);
   });
 
+  it("shares frozen domain copies across fixed facets", () => {
+    const model = runPipeline(
+      {
+        data: {
+          values: [
+            { facet: "a", label: "north", value: 1 },
+            { facet: "b", label: "south", value: 5 },
+          ],
+        },
+        aes: { x: "label", y: "value" },
+        layers: [{ geom: "point" }],
+        facet: { wrap: { field: "facet" } },
+      },
+      {
+        width: 640,
+        height: 400,
+        baselineScales: { x: { type: "band", domain: ["south", "north", "baseline-only"] } },
+      },
+    );
+
+    const { effective, baseline } = model.domains;
+    expect(effective.x).toEqual(["north", "south"]);
+    expect(effective.x).not.toBe(model.scales.x.domain);
+    expect(baseline.x).toEqual(["south", "north", "baseline-only"]);
+    for (const snapshot of [effective, baseline]) {
+      expect(snapshot.panels).toHaveLength(2);
+      expect(Object.isFrozen(snapshot)).toBe(true);
+      expect(Object.isFrozen(snapshot.x)).toBe(true);
+      expect(Object.isFrozen(snapshot.y)).toBe(true);
+      for (const panel of snapshot.panels) {
+        expect(Object.isFrozen(panel)).toBe(true);
+        expect(panel.x).toBe(snapshot.x);
+        expect(panel.y).toBe(snapshot.y);
+      }
+    }
+
+    const yScale = model.scales.y;
+    if (yScale.type !== "linear") throw new Error("expected a continuous y scale");
+    const first = yScale.domain[0];
+    yScale.domain[0] = first - 1;
+    expect(effective.y[0]).toBe(first);
+  });
+
   // Uncensored second evidence pass when baselineScales + domain pins (#449).
   it("trains latest natural baseline domains beside explicit effective zoom domains", () => {
     const model = runPipeline(
