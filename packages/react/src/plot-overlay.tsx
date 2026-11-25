@@ -68,6 +68,9 @@ function hoverGuides(
   const dimensions = seed === null ? null : candidateExtent(model, seed);
   const hover = { ...focus.anchor, chrome, ...dimensions };
   if (panel === null) return { hover, lines: [], vertical: false, horizontal: false, panel: null };
+  if (inspection.mode === "exact") {
+    return { hover, lines: [], vertical: false, horizontal: false, panel };
+  }
   const obstacles = crosshairGlyphObstacles(model.scene.batches, model.scene.panels, panel.id);
   const gap =
     chrome === "ring"

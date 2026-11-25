@@ -6,6 +6,7 @@ import {
   GGPlot,
   GeomArea,
   GeomPoint,
+  GeomText,
   GuideLegend,
   Inspect,
   ThemeDark,
@@ -90,6 +91,35 @@ describe("React inspect tooltip chrome", () => {
 });
 
 describe("React inspection crosshair", () => {
+  it("keeps exact hover chrome without measuring decorative glyph obstacles", () => {
+    const rendered = vi.fn<NonNullable<GGPlotProps["onrender"]>>();
+    const view = render(
+      <GGPlot data={rows} aes={{ x: "x", y: "y" }} width={480} height={320} onrender={rendered}>
+        <GeomPoint />
+        <GeomText aes={{ label: "group" }} inspect={false} />
+        <Inspect mode="exact" />
+      </GGPlot>,
+    );
+    const glyphs = rendered.mock.calls
+      .at(-1)?.[0]
+      .scene.batches.find((batch) => batch.kind === "glyphs");
+    if (glyphs === undefined) throw new Error("Missing decorative glyphs");
+    const descriptor = Object.getOwnPropertyDescriptor(glyphs, "positions");
+    if (descriptor === undefined) throw new Error("Missing glyph positions");
+    const positions = glyphs.positions;
+    const readPositions = vi.fn(() => positions);
+    Object.defineProperty(glyphs, "positions", { get: readPositions });
+
+    try {
+      hoverFirstMark(view.container);
+      expect(view.container.querySelector(".gg-hover-ring")).not.toBeNull();
+      expect(view.container.querySelector(".gg-crosshair")).toBeNull();
+      expect(readPositions).not.toHaveBeenCalled();
+    } finally {
+      Object.defineProperty(glyphs, "positions", descriptor);
+    }
+  });
+
   it("matches the Svelte solid guide and displays the axis value", () => {
     const view = render(
       <GGPlot data={rows} aes={{ x: "x", y: "y" }} width={480} height={320}>
