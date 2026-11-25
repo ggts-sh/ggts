@@ -2,7 +2,7 @@
  * Pre-geometry edge expansion for continuous tile/raster so scale training
  * sees xmin/xmax/ymin/ymax. Band tile leaves edges null (centers train).
  */
-import { resolution as resolutionOf } from "../stats/numeric.js";
+import { tileResolution } from "../stats/numeric.js";
 import type { CellValue } from "../table.js";
 
 import { positionFieldType } from "./temporal-position.js";
@@ -25,12 +25,6 @@ function sizeAt(
   }
   if (param !== undefined) return param;
   return defaultSize;
-}
-
-function defaultResolution(values: Float64Array | null): number {
-  if (values === null || values.length === 0) return 1;
-  const gap = resolutionOf(values);
-  return gap > 0 ? gap : 1;
 }
 
 function uniqueSorted(values: Float64Array): number[] {
@@ -97,17 +91,15 @@ function expandTileFrame(frame: LayerFrame): void {
   }
   if (xType === "nominal" && yType === "nominal") return;
   const params = (frame.binding.layer.params ?? {}) as { width?: number; height?: number };
-  const defW = defaultResolution(xNumeric);
-  const defH = defaultResolution(yNumeric);
   const widthCol =
     frame.binding.widthField === null ? null : frame.table.column(frame.binding.widthField);
   const heightCol =
     frame.binding.heightField === null ? null : frame.table.column(frame.binding.heightField);
   if (xType !== "nominal") {
-    [frame.xmin, frame.xmax] = expandTileAxis(xNumeric, widthCol, params.width, defW);
+    [frame.xmin, frame.xmax] = expandTileAxis(xNumeric, widthCol, params.width);
   }
   if (yType !== "nominal") {
-    [frame.ymin, frame.ymax] = expandTileAxis(yNumeric, heightCol, params.height, defH);
+    [frame.ymin, frame.ymax] = expandTileAxis(yNumeric, heightCol, params.height);
   }
 }
 
@@ -115,8 +107,8 @@ function expandTileAxis(
   values: Float64Array,
   sizeColumn: readonly CellValue[] | null,
   param: number | undefined,
-  fallback: number,
 ): readonly [Float64Array, Float64Array] {
+  const fallback = sizeColumn === null && param === undefined ? tileResolution(values) : 1;
   const low = new Float64Array(values.length);
   const high = new Float64Array(values.length);
   for (let row = 0; row < values.length; row++) {
