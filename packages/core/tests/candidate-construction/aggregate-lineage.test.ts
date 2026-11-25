@@ -114,12 +114,15 @@ describe("aggregate lineage index (issue #184)", () => {
       [],
     );
 
-    expect(prepared.facetPanels.map((p) => ({ label: p.label, sourceRows: p.sourceRows }))).toEqual(
-      [
-        { label: "north", sourceRows: [0, 1, 2] },
-        { label: "south", sourceRows: [3, 4] },
-      ],
-    );
+    expect(
+      prepared.facetPanels.map((panel, index) => ({
+        label: panel.label,
+        sourceRows: prepared.panelFrames[index]![0]!.inputSourceRows,
+      })),
+    ).toEqual([
+      { label: "north", sourceRows: [0, 1, 2] },
+      { label: "south", sourceRows: [3, 4] },
+    ]);
 
     const index = buildCandidateIdentityIndex(prepared.panelFrames, prepared.facetPanels);
     // dmy: 1/2/2025 ≡ 01/02/2025 → 2025-02-01 UTC

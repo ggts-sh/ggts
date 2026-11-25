@@ -3,6 +3,24 @@
  */
 import { aes, gg } from "@ggts-sh/spec";
 
+import type { FacetLayout } from "../../src/pipeline/facets.ts";
+import { createLayerPanelSlicer } from "../../src/pipeline/layer-panel-data.ts";
+import { SourceRegistry } from "../../src/pipeline/source-registry.ts";
+import type { ColumnTable } from "../../src/table.ts";
+
+export function facetSlices(layout: FacetLayout, table: ColumnTable, ...facetFields: string[]) {
+  const registry = new SourceRegistry();
+  const slice = createLayerPanelSlicer({
+    filteredTable: table,
+    filteredToSource: null,
+    sourceId: registry.register(table),
+    registry,
+    facetFields,
+    faceted: layout.faceted,
+  });
+  return layout.panels.map(slice);
+}
+
 export const size = { width: 640, height: 400 };
 
 export const wrapRows = [

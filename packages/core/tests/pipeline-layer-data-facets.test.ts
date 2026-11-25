@@ -4,11 +4,67 @@
  */
 import { describe, expect, it } from "bun:test";
 
+import { createFacetPanelIdentity } from "../src/facet-identity.ts";
 import { runPipeline } from "../src/pipeline.ts";
 
 import { annotations, markCount, obs, size } from "./layer-data-fixtures.ts";
 
 describe("layer data facets", () => {
+  it("discovers open grid levels after filters and preserves layer source rows", () => {
+    const rows = [
+      { g: "drop", region: "gone", season: "lost", x: 1, y: 3 },
+      { g: "keep", region: "primary", season: "spring", x: 2, y: 4 },
+      { g: "drop", region: "gone", season: "lost", x: 3, y: 5 },
+    ];
+    const later = { region: "later", season: "winter", x: 4, y: 9 };
+    const partial = { region: "primary", x: 5, y: 10 };
+    const model = runPipeline(
+      {
+        data: { values: rows },
+        aes: { x: "x", y: "y" },
+        facet: { rows: { field: "region" }, cols: { field: "season" } },
+        layers: [
+          { geom: "point", aes: { color: "g" } },
+          { geom: "point", data: { values: [later] } },
+          { geom: "point", data: { values: [partial] } },
+        ],
+      },
+      { ...size, rowFilters: [{ scale: "color", field: "g", values: ["drop"], mode: "exclude" }] },
+    );
+
+    const panels = model.scene.panels.map(({ identity }) => identity);
+    const expectedPanels = (
+      [
+        ["later", "spring"],
+        ["later", "winter"],
+        ["primary", "spring"],
+        ["primary", "winter"],
+      ] as const
+    ).map(([region, season]) =>
+      createFacetPanelIdentity([
+        { role: "rows", field: "region", value: region },
+        { role: "cols", field: "season", value: season },
+      ]),
+    );
+    expect(panels).toEqual(expectedPanels);
+    const candidates = Array.from({ length: model.candidates.size }, (_, id) => {
+      const mark = model.candidates.candidate(id)!;
+      return [
+        mark.panelIndex,
+        mark.layerIndex,
+        mark.rowIndex,
+        model.lineage.keys(mark.lineage),
+        model.row(mark.rowIndex!),
+      ];
+    });
+    expect(candidates).toEqual([
+      [2, 0, 1, [1], rows[1]],
+      [1, 1, 3, [3], later],
+      [2, 2, 4, [4], partial],
+      [3, 2, 4, [4], partial],
+    ]);
+  });
+
   it("annotation layer without facet field replicates across all panels", () => {
     const model = runPipeline(
       {

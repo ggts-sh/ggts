@@ -1,9 +1,8 @@
 /**
- * Facet partition result types.
+ * Facet layout result types.
  */
 import { createFacetPanelIdentity } from "../facet-identity.js";
 import type { FacetPanelIdentity } from "../facet-identity.js";
-import type { ColumnTable } from "../table.js";
 
 /** Resolved strip chrome for a facet layout (defaults applied). */
 export interface FacetStripConfig {
@@ -25,9 +24,6 @@ export interface FacetPanelDef {
   label: string;
   row: number;
   col: number;
-  table: ColumnTable;
-  /** Panel-local row -> source row (null = identity, unfaceted). */
-  sourceRows: number[] | null;
 }
 
 export interface FacetLayout {
@@ -41,18 +37,15 @@ export interface FacetLayout {
   strip: FacetStripConfig;
 }
 
-export const SINGLE_PANEL = (
-  table: ColumnTable,
-  sourceRows: number[] | null = null,
-): FacetLayout => {
+export function SINGLE_PANEL(): FacetLayout {
   const identity = createFacetPanelIdentity([]);
   return {
     faceted: false,
-    panels: [{ identity, id: identity.key, label: "", row: 0, col: 0, table, sourceRows }],
+    panels: [{ identity, id: identity.key, label: "", row: 0, col: 0 }],
     nrow: 1,
     ncol: 1,
     freeX: false,
     freeY: false,
     strip: DEFAULT_FACET_STRIP,
   };
-};
+}

@@ -65,7 +65,7 @@ function oracleSlice(input: SliceInput, panel: FacetPanelDef): LayerPanelSlice {
 
 function wrapPanel(field: string, value: unknown): FacetPanelDef {
   const identity = createFacetPanelIdentity([{ role: "wrap", field, value }]);
-  return { identity, id: identity.key, label: "", row: 0, col: 0, table: EMPTY, sourceRows: null };
+  return { identity, id: identity.key, label: "", row: 0, col: 0 };
 }
 
 function gridPanel(
@@ -76,10 +76,8 @@ function gridPanel(
     ...(rows === null ? [] : [{ role: "rows" as const, field: rows.field, value: rows.value }]),
     ...(cols === null ? [] : [{ role: "cols" as const, field: cols.field, value: cols.value }]),
   ]);
-  return { identity, id: identity.key, label: "", row: 0, col: 0, table: EMPTY, sourceRows: null };
+  return { identity, id: identity.key, label: "", row: 0, col: 0 };
 }
-
-const EMPTY = ColumnTable.fromColumns({});
 
 /**
  * `unfiltered` stands in for the pre-filter source table the registry indexes,

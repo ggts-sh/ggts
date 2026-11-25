@@ -1,8 +1,8 @@
 /**
  * Facet panel row partition (encodeKey preserves `"1"`/`1` and `0`/`-0`).
  *
- * One O(n) scan groups row indices by field value — wrap/grid assemble panels
- * from these buckets instead of re-scanning once per value/cell (issue #183).
+ * One O(n) scan groups a layer's row indices by field value so panel slicing
+ * can look up a bucket instead of re-scanning per panel (issue #183).
  */
 import { encodeKey } from "../scales/state.js";
 import type { ColumnTable } from "../table.js";

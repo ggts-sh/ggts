@@ -1,6 +1,6 @@
 /**
- * Facet partition (BEFORE stats/positions — plan round-2 consensus).
- * Counts, bins, stacks, and dodges are panel-local, exactly like ggplot2.
+ * Resolve facet panel identities, positions, and strip labels. Layer slicing
+ * happens separately before panel-local statistics and positions.
  */
 import type { FacetSpec } from "@ggts-sh/spec";
 
@@ -27,10 +27,9 @@ function resolveStripConfig(facet: FacetSpec): FacetStripConfig {
 export function resolveFacet(
   facet: FacetSpec | undefined,
   table: ColumnTable,
-  baseSourceRows: number[] | null = null,
   warnings: PipelineWarning[] = [],
 ): FacetLayout {
-  if (facet === undefined) return SINGLE_PANEL(table, baseSourceRows);
+  if (facet === undefined) return SINGLE_PANEL();
   const wrapField = facetField(facet.wrap, "wrap", table);
   const rowsField = facetField(facet.rows, "rows", table);
   const colsField = facetField(facet.cols, "cols", table);
@@ -46,7 +45,6 @@ export function resolveFacet(
       ncol: facet.ncol,
       freeX,
       freeY,
-      baseSourceRows,
       strip,
       warnings,
     });
@@ -60,7 +58,6 @@ export function resolveFacet(
     colsRef: facet.cols,
     freeX,
     freeY,
-    baseSourceRows,
     strip,
     warnings,
   });
