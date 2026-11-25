@@ -72,8 +72,9 @@ function stackedAreaScene(groups: number, rows: number, panelW = 200, panelH = 1
   return plot;
 }
 
-function areaStore(plot: Scene) {
+function areaStore(plot: Scene, flip = false) {
   return buildCandidateStore(plot, {
+    flip,
     datum: ({ primitiveIndex, batchIndex }) => {
       const batch = plot.batches[batchIndex]!;
       if (batch.kind !== "paths") return { autoMode: "x" as const };
@@ -179,6 +180,46 @@ describe("filled-area hit shortlist (#1342)", () => {
       const got = store.nearest(px, py, { mode: "auto", maxDistance })?.id ?? null;
       const want = oracleNearestX(plot, px, py, maxDistance);
       expect(got).toBe(want);
+    }
+  });
+
+  it("ranks vertices on both sides of a tied axis position, including after a flip", () => {
+    for (const flip of [false, true]) {
+      const plot = stackedAreaScene(1, 40);
+      const batch = plot.batches[0] as PathsBatch;
+      for (let i = 0; i < batch.rowIndex.length; i++) {
+        batch.positions[i * 2 + (flip ? 1 : 0)] = batch.rowIndex[i]! * 2;
+        batch.positions[i * 2 + (flip ? 0 : 1)] = i < 40 ? 20 : 80;
+      }
+      const store = areaStore(plot, flip);
+      for (const mode of ["x", "auto"] as const) {
+        const center = store.nearest(flip ? 50 : 41, flip ? 41 : 50, { mode, maxDistance: 1 });
+        expect(center).toMatchObject({ id: 59, distance: 1, mode: "x" });
+        const top = store.nearest(flip ? 10 : 41, flip ? 41 : 10, { mode, maxDistance: 1 });
+        expect(top).toMatchObject({ id: 21, distance: 1, mode: "x" });
+      }
+    }
+  });
+
+  it("finds a farther valid anchor when both closest vertices lack x tokens", () => {
+    const plot = stackedAreaScene(1, 40);
+    const batch = plot.batches[0] as PathsBatch;
+    for (let i = 0; i < batch.rowIndex.length; i++) {
+      batch.positions[i * 2] = batch.rowIndex[i]! * 2;
+      batch.positions[i * 2 + 1] = i < 40 ? 20 : 80;
+    }
+    const store = buildCandidateStore(plot, {
+      datum: ({ primitiveIndex }) => {
+        const row = batch.rowIndex[primitiveIndex]!;
+        return { xValue: row === 20 ? null : row, autoMode: "x" };
+      },
+    });
+    for (const mode of ["x", "auto"] as const) {
+      expect(store.nearest(40, 20, { mode, maxDistance: 3 })).toMatchObject({
+        id: 21,
+        distance: 2,
+        mode: "x",
+      });
     }
   });
 
