@@ -9,7 +9,7 @@ import { runPipeline } from "../../src/pipeline.ts";
 import { resolveFacet } from "../../src/pipeline/facets.ts";
 import type { PipelineWarning } from "../../src/pipeline/types.ts";
 import { ColumnTable } from "../../src/table.ts";
-import { size, wrapRows } from "./fixtures.ts";
+import { facetSlices, size, wrapRows } from "./fixtures.ts";
 
 const table = ColumnTable.fromRows([
   { g: "b", x: 1 },
@@ -26,26 +26,21 @@ describe("facet levels and labels — resolveFacet (#590)", () => {
         wrap: { field: "g", levels: ["c", "a", "missing", "b"] },
       },
       table,
-      null,
       warnings,
     );
     expect(layout.panels.map((p) => p.label)).toEqual(["c", "a", "missing", "b"]);
-    expect(layout.panels[2]!.table.rowCount).toBe(0);
-    expect(layout.panels[1]!.table.rowCount).toBe(2); // two "a" rows
+    const slices = facetSlices(layout, table, "g");
+    expect(slices[2]!.table.rowCount).toBe(0);
+    expect(slices[1]!.table.rowCount).toBe(2); // two "a" rows
     expect(warnings.some((w) => w.code === "facet-levels-missing")).toBe(true);
   });
 
   it("drops data values omitted from closed levels and diagnoses them", () => {
     const warnings: PipelineWarning[] = [];
-    const layout = resolveFacet(
-      { wrap: { field: "g", levels: ["c", "a"] } },
-      table,
-      null,
-      warnings,
-    );
+    const layout = resolveFacet({ wrap: { field: "g", levels: ["c", "a"] } }, table, warnings);
     expect(layout.panels.map((p) => p.label)).toEqual(["c", "a"]);
     // "b" rows are excluded from every panel
-    const totalRows = layout.panels.reduce((n, p) => n + p.table.rowCount, 0);
+    const totalRows = facetSlices(layout, table, "g").reduce((n, p) => n + p.table.rowCount, 0);
     expect(totalRows).toBe(3); // 1 c + 2 a
     expect(warnings.some((w) => w.code === "facet-levels-unknown")).toBe(true);
   });
@@ -97,8 +92,9 @@ describe("facet levels and labels — resolveFacet (#590)", () => {
     expect(layout.ncol).toBe(2);
     expect(layout.panels.map((p) => p.label)).toEqual(["S / W", "S / E", "N / W", "N / E"]);
     // Empty combo south/west still present
-    expect(layout.panels[0]!.table.rowCount).toBe(0);
-    expect(layout.panels[1]!.table.rowCount).toBe(1);
+    const slices = facetSlices(layout, grid, "r", "c");
+    expect(slices[0]!.table.rowCount).toBe(0);
+    expect(slices[1]!.table.rowCount).toBe(1);
   });
 
   it("keeps empty panels for grid row levels absent from data", () => {
@@ -111,8 +107,9 @@ describe("facet levels and labels — resolveFacet (#590)", () => {
       grid,
     );
     expect(layout.panels).toHaveLength(2);
-    expect(layout.panels[0]!.table.rowCount).toBe(0); // south absent
-    expect(layout.panels[1]!.table.rowCount).toBe(1); // north present
+    const slices = facetSlices(layout, grid, "r", "c");
+    expect(slices[0]!.table.rowCount).toBe(0); // south absent
+    expect(slices[1]!.table.rowCount).toBe(1); // north present
   });
 });
 

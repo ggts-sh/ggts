@@ -36,7 +36,7 @@ export type { PreparedPanels } from "./prepare-panels-types.js";
  * - `sources` is one filtered table per distinct SourceRegistry namespace
  *   (caller dedupes inherited plot tables so we do not double-count).
  * - Collect every complete source (has all facet fields).
- * - One complete source → use it as-is (panel sourceRows stay real).
+ * - One complete source → discover facet levels on that source.
  * - Several complete sources → concatenate facet columns so resolveFacet
  *   discovers the union of panel keys (layers still slice by panel identity).
  * - None complete → fall back so resolveFacet can emit unknown-field.
@@ -215,14 +215,14 @@ function buildFacetLayout(
   normalized: NormalizedSpec,
   layerContexts: LayerDataContext[],
   plotSource: ColumnTable | null,
-  primaryFiltered: { table: ColumnTable; sourceRows: number[] | null },
+  table: ColumnTable,
   emptyData: boolean,
   warnings: PipelineWarning[],
 ): FacetLayout {
   const layoutSources: ColumnTable[] = [];
   const seenSourceTables = new Set<ColumnTable>();
   if (plotSource !== null) {
-    layoutSources.push(primaryFiltered.table);
+    layoutSources.push(table);
     seenSourceTables.add(plotSource);
   }
   for (const ctx of layerContexts) {
@@ -236,8 +236,8 @@ function buildFacetLayout(
     normalized.facet?.rows?.levels !== undefined ||
     normalized.facet?.cols?.levels !== undefined;
   return emptyData && !hasClosedLevels
-    ? SINGLE_PANEL(primaryFiltered.table, primaryFiltered.sourceRows)
-    : resolveFacet(normalized.facet, layoutTable, null, warnings);
+    ? SINGLE_PANEL()
+    : resolveFacet(normalized.facet, layoutTable, warnings);
 }
 
 export function preparePanels(
@@ -253,14 +253,10 @@ export function preparePanels(
   // Primary table: plot source when present, else first layer source (for
   // legacy prepared.table / prepared.sourceTable consumers).
   const sourceTable = plotSource ?? layerContexts[0]?.sourceTable ?? ColumnTable.fromRows([]);
-  const primaryFiltered =
+  const table =
     plotSource === null
-      ? {
-          table: layerContexts[0]?.filteredTable ?? ColumnTable.fromRows([]),
-          sourceRows: layerContexts[0]?.filteredToSource ?? null,
-        }
-      : filterLayerTable(plotSource, options.rowFilters);
-  const table = primaryFiltered.table;
+      ? (layerContexts[0]?.filteredTable ?? ColumnTable.fromRows([]))
+      : filterLayerTable(plotSource, options.rowFilters).table;
 
   const emptyData = layerContexts.every((ctx) => ctx.filteredTable.rowCount === 0);
   if (emptyData) warnEmptyData(warnings);
@@ -278,7 +274,7 @@ export function preparePanels(
     normalized,
     layerContexts,
     plotSource,
-    primaryFiltered,
+    table,
     emptyData,
     warnings,
   );

@@ -1,11 +1,11 @@
 /**
- * Characterization tests for the facet partition module.
+ * Characterization tests for facet layout and layer partitioning.
  * Exercises resolveFacet / SINGLE_PANEL directly so the extraction stays
  * pinned to ggplot2 panel order and free-scale contracts.
  *
  * Seams under test (issue #183):
  * - partitionByField: single O(n) pass → Map<encodeKey, row indices>
- * - resolveFacet wrap/grid: panel membership + empty-grid parity
+ * - resolveFacet with layer slicing: panel membership and empty grid parity
  * - complexity: facet-field column() reads stay O(1) in distinct levels
  */
 import { describe, expect, it, spyOn } from "bun:test";
@@ -17,6 +17,7 @@ import { assertFacetForm, facetFreeFlags } from "../src/pipeline/facets-form.ts"
 import { facetValues } from "../src/pipeline/facets-helpers.ts";
 import { partitionByField, partitionByFields } from "../src/pipeline/facets-tokens.ts";
 import { ColumnTable } from "../src/table.ts";
+import { facetSlices } from "./facets/fixtures.ts";
 
 const table = ColumnTable.fromRows([
   { g: "b", r: "y", c: "1", x: 1 },
@@ -49,16 +50,16 @@ function countColumnReads(field: string, fn: () => void): number {
 }
 
 describe("SINGLE_PANEL", () => {
-  it("returns one unfaceted panel with identity sourceRows", () => {
-    const layout = SINGLE_PANEL(table);
+  it("returns one unfaceted panel without strip chrome", () => {
+    const layout = SINGLE_PANEL();
     expect(layout.faceted).toBe(false);
     expect(layout.panels).toHaveLength(1);
     expect(layout.nrow).toBe(1);
     expect(layout.ncol).toBe(1);
     expect(layout.freeX).toBe(false);
     expect(layout.freeY).toBe(false);
-    expect(layout.panels[0]!.sourceRows).toBeNull();
-    expect(layout.panels[0]!.table.rowCount).toBe(table.rowCount);
+    expect(layout.panels[0]!.identity.values).toEqual([]);
+    expect(layout.panels[0]!.label).toBe("");
   });
 });
 
@@ -76,11 +77,11 @@ describe("resolveFacet — wrap", () => {
     expect(layout.panels[2]!.row).toBe(1);
   });
 
-  it("partitions rows into panel tables before stats", () => {
+  it("slices layer rows using wrap panel identity", () => {
     const layout = resolveFacet({ wrap: { field: "g" } }, table);
-    const panelA = layout.panels[0]!;
+    const panelA = facetSlices(layout, table, "g")[0]!;
     expect(panelA.table.rowCount).toBe(2);
-    expect(panelA.sourceRows).toEqual([1, 3]);
+    expect(panelA.globalSourceRows).toEqual([1, 3]);
   });
 
   it("honors free scale flags", () => {
@@ -124,17 +125,17 @@ describe("resolveFacet — grid", () => {
     );
   });
 
-  it("keeps empty grid combinations as empty panels with sourceRows", () => {
+  it("keeps empty grid combinations as empty panels with empty layer slices", () => {
     const sparse = ColumnTable.fromRows([
       { r: "a", c: "1", x: 1 },
       { r: "b", c: "2", x: 2 },
     ]);
     const layout = resolveFacet({ rows: { field: "r" }, cols: { field: "c" } }, sparse);
     expect(layout.panels).toHaveLength(4);
-    const empty = layout.panels.filter((p) => p.table.rowCount === 0);
+    const empty = facetSlices(layout, sparse, "r", "c").filter((p) => p.table.rowCount === 0);
     expect(empty.length).toBe(2);
     for (const panel of empty) {
-      expect(panel.sourceRows).toEqual([]);
+      expect(panel.globalSourceRows).toEqual([]);
     }
   });
 
@@ -279,7 +280,20 @@ describe("partitionByFields — single-pass composite buckets", () => {
   });
 });
 
-describe("resolveFacet — O(n) partition (issue #183)", () => {
+describe("resolveFacet — layout work and slicing integration", () => {
+  it.each([
+    ["wrap", { wrap: { field: "g" } }, 3],
+    ["grid", { rows: { field: "r" }, cols: { field: "c" } }, 4],
+  ] as const)("discovers %s layout without copying panel tables", (_name, facet, panelCount) => {
+    const subset = spyOn(ColumnTable.prototype, "subset");
+    try {
+      expect(resolveFacet(facet, table).panels).toHaveLength(panelCount);
+      expect(subset).not.toHaveBeenCalled();
+    } finally {
+      subset.mockRestore();
+    }
+  });
+
   it("wrap: column reads stay bounded as distinct levels grow", () => {
     const levels = 40;
     const rows = Array.from({ length: levels * 5 }, (_, i) => ({
@@ -290,7 +304,7 @@ describe("resolveFacet — O(n) partition (issue #183)", () => {
     const reads = countColumnReads("g", () => {
       resolveFacet({ wrap: { field: "g" } }, t);
     });
-    // facetValues + partitionByField (+ optional fieldType via column) — not per level
+    // Learn the levels without reading the field once per panel.
     expect(reads).toBeLessThanOrEqual(4);
     expect(reads).toBeLessThan(levels);
   });
@@ -319,7 +333,7 @@ describe("resolveFacet — O(n) partition (issue #183)", () => {
 
   it("wrap still assigns every source row to exactly one panel", () => {
     const layout = resolveFacet({ wrap: { field: "g" } }, table);
-    const assigned = layout.panels.flatMap((p) => p.sourceRows ?? []);
+    const assigned = facetSlices(layout, table, "g").flatMap((p) => p.globalSourceRows);
     expect(assigned.toSorted((a, b) => a - b)).toEqual([0, 1, 2, 3]);
   });
 
@@ -331,7 +345,10 @@ describe("resolveFacet — O(n) partition (issue #183)", () => {
     ]);
     const layout = resolveFacet({ rows: { field: "r" }, cols: { field: "c" } }, sparse);
     expect(layout.panels).toHaveLength(4);
-    const byLabel = Object.fromEntries(layout.panels.map((p) => [p.label, p.sourceRows]));
+    const slices = facetSlices(layout, sparse, "r", "c");
+    const byLabel = Object.fromEntries(
+      layout.panels.map((p, i) => [p.label, slices[i]!.globalSourceRows]),
+    );
     expect(byLabel["a / 1"]).toEqual([0, 1]);
     expect(byLabel["b / 2"]).toEqual([2]);
     expect(byLabel["a / 2"]).toEqual([]);
@@ -348,8 +365,7 @@ describe("resolveFacet — O(n) partition (issue #183)", () => {
     expect(layout.nrow).toBe(2);
     expect(layout.ncol).toBe(1);
     expect(layout.panels.map((p) => p.label)).toEqual(["a", "b"]);
-    expect(layout.panels[0]!.sourceRows).toEqual([1]);
-    expect(layout.panels[1]!.sourceRows).toEqual([0, 2]);
+    expect(facetSlices(layout, t, "r").map((p) => p.globalSourceRows)).toEqual([[1], [0, 2]]);
   });
 
   it("grid cols-only partitions by col field in ascending table order", () => {
@@ -362,7 +378,6 @@ describe("resolveFacet — O(n) partition (issue #183)", () => {
     expect(layout.nrow).toBe(1);
     expect(layout.ncol).toBe(2);
     expect(layout.panels.map((p) => p.label)).toEqual(["1", "2"]);
-    expect(layout.panels[0]!.sourceRows).toEqual([1]);
-    expect(layout.panels[1]!.sourceRows).toEqual([0, 2]);
+    expect(facetSlices(layout, t, "c").map((p) => p.globalSourceRows)).toEqual([[1], [0, 2]]);
   });
 });
