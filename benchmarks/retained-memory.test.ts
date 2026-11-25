@@ -4,7 +4,6 @@ import { readFileSync } from "node:fs";
 import {
   assertWithinBudget,
   findMemoryBudget,
-  findRetainedWorkload,
   createGroupedInspectionRetentionFixture,
   median,
 } from "./retained-memory";
@@ -21,12 +20,6 @@ describe("retained-memory release gate", () => {
     expect(median(even)).toBe(3);
     expect(odd).toEqual([9, 1, 5]);
     expect(even).toEqual([8, 1, 2, 3]);
-  });
-
-  it("fails loudly when the retained-memory workload is missing", () => {
-    expect(() => findRetainedWorkload([{ id: "another workload", fn: () => null }])).toThrow(
-      "retained-memory workload is missing",
-    );
   });
 
   it("fails loudly when the retained-memory baseline is missing", () => {

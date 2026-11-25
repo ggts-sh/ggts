@@ -7,7 +7,8 @@ import { registerAll, runPipeline } from "@ggts-sh/core";
 registerAll();
 
 import { createInspectionCoordinator } from "../packages/svelte/src/lib/inspection/resolver";
-import { buildWorkloads } from "./workloads";
+import { scatterSpec } from "./workload-specs";
+import { opts } from "./workloads/shared";
 
 export interface MemoryBaselineFile {
   version: 1;
@@ -44,17 +45,6 @@ export function median(values: readonly number[]): number {
   return sorted.length % 2 === 1
     ? sorted[middle]!
     : Math.round((sorted[middle - 1]! + sorted[middle]!) / 2);
-}
-
-interface RetainedWorkload {
-  id: string;
-  fn: () => unknown;
-}
-
-export function findRetainedWorkload(workloads: readonly RetainedWorkload[]): RetainedWorkload {
-  const workload = workloads.find(({ id }) => id === "pipeline scatter 100k");
-  if (!workload) throw new Error("retained-memory workload is missing");
-  return workload;
 }
 
 export function findMemoryBudget(baselines: MemoryBaselineFile, resultName: string): MemoryBudget {
@@ -162,11 +152,11 @@ export function createGroupedInspectionRetentionFixture() {
 }
 
 function main(): void {
-  const workload = findRetainedWorkload(buildWorkloads(false));
+  const scatter = scatterSpec(100_000);
   const cases = [
     {
       name: "pipeline scatter 100k retained",
-      create: workload.fn,
+      create: () => runPipeline(scatter, opts),
     },
     {
       name: "grouped inspection 1k two-slot retained",
