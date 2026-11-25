@@ -14,7 +14,8 @@
  */
 import type { CellValue } from "../table.js";
 
-import { binBreaksBins, binBreaksWidth, binIndexOf } from "./bin-breaks.js";
+import { binBreaksBins, binBreaksWidth } from "./bin-breaks.js";
+import { collectOccupiedBins, orderedOccupiedBins } from "./occupied-bins.js";
 import { summarizeValues, type SummaryFunName } from "./summary.js";
 
 export interface SummaryBinParamsInput {
@@ -57,9 +58,6 @@ export interface SummaryBinStatResult {
   cut: { fuzzy: readonly number[]; rightClosed: boolean; binIndex: Int32Array };
 }
 
-type BinBreaks = ReturnType<typeof binBreaksBins>;
-type SummaryBucket = { rows: number[]; sampleRow: number };
-
 function finiteExtent(values: Float64Array): [number, number] | undefined {
   let min = Infinity;
   let max = -Infinity;
@@ -71,41 +69,6 @@ function finiteExtent(values: Float64Array): [number, number] | undefined {
     if (value > max) max = value;
   }
   return count === 0 ? undefined : [min, max];
-}
-
-function collectBuckets(input: SummaryBinStatInput, breaks: BinBreaks) {
-  const buckets = new Map<string, SummaryBucket>();
-  const groupOrder: number[] = [];
-  const seenGroup = new Set<number>();
-  const binCount = breaks.breaks.length - 1;
-  let dropped = 0;
-
-  for (let i = 0; i < input.x.length; i++) {
-    const x = input.x[i]!;
-    const y = input.y[i]!;
-    if (!Number.isFinite(x) || !Number.isFinite(y)) {
-      dropped++;
-      continue;
-    }
-    const bin = binIndexOf(x, breaks.fuzzy, breaks.rightClosed);
-    if (bin < 0 || bin >= binCount) {
-      dropped++;
-      continue;
-    }
-    const group = input.groups[i]!;
-    if (!seenGroup.has(group)) {
-      seenGroup.add(group);
-      groupOrder.push(group);
-    }
-    const key = `${group}\0${bin}`;
-    let bucket = buckets.get(key);
-    if (bucket === undefined) {
-      bucket = { rows: [], sampleRow: i };
-      buckets.set(key, bucket);
-    }
-    bucket.rows.push(i);
-  }
-  return { buckets, groupOrder, dropped };
 }
 
 export function statSummaryBin(input: SummaryBinStatInput): SummaryBinStatResult {
@@ -139,8 +102,7 @@ export function statSummaryBin(input: SummaryBinStatInput): SummaryBinStatResult
       ? binBreaksBins(range, params.bins ?? 30, params.boundary, params.center, closed)
       : binBreaksWidth(range, params.binwidth, params.boundary, params.center, closed);
   const binCount = breaks.breaks.length - 1;
-
-  const { buckets, groupOrder, dropped } = collectBuckets(input, breaks);
+  const { occupied, dropped } = collectOccupiedBins(x, input.groups, breaks, y);
 
   const outX: number[] = [];
   const outXmin: number[] = [];
@@ -152,13 +114,11 @@ export function statSummaryBin(input: SummaryBinStatInput): SummaryBinStatResult
   const sampleRows: number[] = [];
   const outBinIndex: number[] = [];
 
-  for (const g of groupOrder) {
-    for (let bin = 0; bin < binCount; bin++) {
-      const bucket = buckets.get(`${g}\0${bin}`);
-      if (bucket === undefined || bucket.rows.length === 0) continue;
+  for (const { group, bins } of occupied.values()) {
+    for (const [bin, rows] of orderedOccupiedBins(bins, binCount)) {
       const lo = breaks.breaks[bin]!;
       const hi = breaks.breaks[bin + 1]!;
-      const values = bucket.rows.map((row) => y[row]!);
+      const values = rows.map((row) => y[row]!);
       const summarized = summarizeValues(values, fun, params.funMin, params.funMax);
       outX.push((lo + hi) / 2);
       outXmin.push(lo);
@@ -166,8 +126,8 @@ export function statSummaryBin(input: SummaryBinStatInput): SummaryBinStatResult
       outY.push(summarized.y);
       outYmin.push(summarized.ymin);
       outYmax.push(summarized.ymax);
-      outGroups.push(g);
-      sampleRows.push(bucket.sampleRow);
+      outGroups.push(group);
+      sampleRows.push(rows[0]!);
       outBinIndex.push(bin);
     }
   }
