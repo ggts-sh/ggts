@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import { fromAny } from "@total-typescript/shoehorn";
 
 import {
   aes,
@@ -9,6 +10,7 @@ import {
   scaleShapeDiscrete,
 } from "@ggts-sh/spec";
 
+import { enrichPaintLegendKeys } from "../src/pipeline/guide-paint-keys.ts";
 import { runPipeline } from "../src/pipeline.js";
 
 import { renderToSVGString } from "../src/render-svg-full.js";
@@ -28,6 +30,33 @@ function discrete(width: number, build: ReturnType<typeof gg>): SceneDiscreteLeg
 }
 
 describe("responsive guide planning", () => {
+  it("bounds shared shape reads as the color domain grows", () => {
+    const domain = Array.from({ length: 128 }, (_, index) => `series ${index}`);
+    let shapeReads = 0;
+    const binding = fromAny({
+      layer: { geom: "point" },
+      color: { field: "region", scaledConstant: null },
+      shape: {
+        field: null,
+        statColumn: null,
+        scaledConstant: null,
+        get constant() {
+          shapeReads++;
+          return "cross";
+        },
+      },
+    });
+    const enriched = enrichPaintLegendKeys(
+      { kind: "discrete", scale: "color", title: "Series", domain, firstSeen: domain },
+      [binding],
+    );
+    expect(domain.map((value) => enriched.keyOf?.(value)?.shape)).toEqual(
+      domain.map(() => "cross"),
+    );
+    expect(shapeReads).toBeGreaterThan(0);
+    expect(shapeReads).toBeLessThanOrEqual(3);
+  });
+
   it("merges semantically equivalent discrete guides into composite keys", () => {
     const legends = discrete(
       720,
