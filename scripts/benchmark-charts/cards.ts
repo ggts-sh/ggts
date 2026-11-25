@@ -46,7 +46,7 @@ export function buildCards(renderer: BrowserResults): readonly ChartCard[] {
   return HIGHLIGHTS.map(({ caseId, slug, title, metric, tab }) => {
     const id = `core-${slug}-${metric}`;
     const operation = metric === "mount" ? "First render" : "Data update";
-    const subtitle = `${operation} · SVG · milliseconds`;
+    const subtitle = `${operation} · SVG`;
     const bars = BENCHMARK_LIBRARIES.map(([lib, label]): BenchmarkBar => {
       const value = timingMs(renderer, lib, caseId, metric);
       return {
