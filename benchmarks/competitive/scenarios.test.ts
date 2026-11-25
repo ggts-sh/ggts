@@ -137,6 +137,37 @@ describe("competitive scenario catalog", () => {
     expect(nonNumericLabels).toMatchObject({ cls: ["alpha", "beta"] });
   });
 
+  test("rotates repeated labels in order and returns fresh update columns", () => {
+    const labels = ["group-00", "plain", "group-3", "group-00", "group-3"];
+    labels.length = 6;
+    const values = [1, 2, 3, 4, 5, 6];
+    const scatter = { x: values, y: values, cls: labels };
+    const bars = { category: values.map(() => "category"), value: values, stack: labels };
+
+    for (const [variant, expected] of [
+      [1, ["group-1", "plain", "group-0", "group-1", "group-0"]],
+      [2, ["group-2", "plain", "group-1", "group-2", "group-1"]],
+    ] as const) {
+      const pointUpdate = perturbForUpdate(scatter, variant);
+      const nextPointUpdate = perturbForUpdate(scatter, variant);
+      const barUpdate = perturbForUpdate(bars, variant);
+      if (!("cls" in pointUpdate && "cls" in nextPointUpdate && "stack" in barUpdate)) {
+        throw new Error("expected scatter and bar updates");
+      }
+      for (const output of [pointUpdate.cls, barUpdate.stack]) {
+        expect(output.slice(0, 5)).toEqual([...expected]);
+        expect(output).toHaveLength(6);
+        expect(5 in output).toBe(false);
+        expect(output).not.toBe(labels);
+      }
+      expect(pointUpdate.cls).not.toBe(nextPointUpdate.cls);
+      expect(pointUpdate.y).not.toBe(nextPointUpdate.y);
+      expect(barUpdate.value).not.toBe(bars.value);
+      expect(pointUpdate.x).toBe(scatter.x);
+      expect(barUpdate.category).toBe(bars.category);
+    }
+  });
+
   test("dataForCase covers every catalog entry", () => {
     for (const c of CASES) {
       const data = dataForCase(c);
