@@ -165,14 +165,13 @@ export function createInspectionState(
     },
   });
 
-  // Key off the snapshot's panelId (seed-authoritative), not focus.anchor (#787).
+  // Keep the seed-authoritative panel ID (#787) stable across same-panel moves.
+  const panelId = $derived(inspection?.panelId ?? null);
   const inspectionPanel = $derived.by((): InspectionPanelBounds | null => {
-    if (inspection === null || context.model() === null) return null;
-    const panelId = inspection.panelId;
-    if (panelId === null) return null;
-    const viewportPanel = context.model()!.viewport.panel(panelId);
-    if (viewportPanel === null) return null;
-    return { id: viewportPanel.id, ...panelBoundsFrom(viewportPanel.bounds) };
+    const viewportPanel = panelId === null ? null : context.model()?.viewport.panel(panelId);
+    return viewportPanel
+      ? { id: viewportPanel.id, ...panelBoundsFrom(viewportPanel.bounds) }
+      : null;
   });
 
   // Single owner for the presentation-focus shape (#1080); survives pin toggle.
