@@ -1,10 +1,12 @@
 /**
  * M2 pipeline — geom_function / stat_function analytic curves.
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 import { aes, gg } from "@ggts-sh/spec";
 import { runPipeline } from "../../src/pipeline.ts";
+import { bindLayer } from "../../src/pipeline/bind-layer.ts";
 import { buildFunctionFrame } from "../../src/pipeline/frame-stats-function.ts";
+import { computeFunctionPeerDomains } from "../../src/pipeline/prepare-panels-function-ranges.ts";
 import type { PathsBatch } from "../../src/scene.ts";
 import { dnorm } from "../../src/stats/function.ts";
 import { ColumnTable } from "../../src/table.ts";
@@ -46,8 +48,8 @@ describe("geom_function", () => {
 
   it("uses peer layer x extent when xlim omitted", () => {
     const model = runPipeline(
-      gg({ x: [-1, 0, 1], y: [0, 1, 0] }, aes({ x: "x" }))
-        .geomPoint({ aes: aes({ y: "y" }) })
+      gg({ x: [-1, 0, 1], y: [0, 1, 0] })
+        .geomPoint({ aes: aes({ x: "x", y: "y" }) })
         .geomFunction({ fun: "identity", n: 5 })
         .spec(),
       size,
@@ -59,6 +61,45 @@ describe("geom_function", () => {
     if (model.scales.x.type !== "band") {
       expect(model.scales.x.domain[0]).toBeLessThanOrEqual(-1);
       expect(model.scales.x.domain[1]).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("prepares numeric x views and scans them only for function layers", () => {
+    const table = ColumnTable.fromColumns({ x: [1, 2, 3], y: [10, 20, 30] });
+    const point = bindLayer(
+      { geom: "point", aes: { x: { field: "x" }, y: { field: "y" } } },
+      0,
+      table,
+      [],
+    );
+    const analytic = bindLayer(
+      { geom: "function", stat: "function", params: { fun: "identity" } },
+      1,
+      table,
+      [],
+    );
+    const values = Float64Array.of(1, 2, 3);
+    const valueCount = values.length;
+    let lengthReads = 0;
+    Object.defineProperty(values, "length", {
+      get() {
+        lengthReads++;
+        return valueCount;
+      },
+    });
+    const numeric = spyOn(table, "numeric").mockReturnValue(values);
+    try {
+      expect(computeFunctionPeerDomains([point], [table])).toEqual([undefined]);
+      expect(numeric).toHaveBeenCalledTimes(1);
+      expect(lengthReads).toBe(0);
+
+      expect(computeFunctionPeerDomains([point, analytic], [table, table])).toEqual([
+        undefined,
+        [1, 3],
+      ]);
+      expect(lengthReads).toBeGreaterThan(0);
+    } finally {
+      numeric.mockRestore();
     }
   });
 
