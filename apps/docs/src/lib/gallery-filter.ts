@@ -21,28 +21,36 @@ function uniqueSorted(values: readonly string[]): string[] {
   return [...new Set(values)].toSorted((left, right) => left.localeCompare(right));
 }
 
+const searchTextByEntry = new WeakMap<GalleryEntry, string>();
+
+/** Searchable fields stay fixed for the lifetime of each catalog entry. */
 export function filterGallery(
   entries: readonly GalleryEntry[],
   state: GalleryFilterState,
 ): GalleryEntry[] {
   const query = normalized(state.query);
+  const tokens = query === "" ? [] : query.split(" ");
   const categories = new Set(state.categories);
-  const tags = new Set(state.tags);
+  const tags = [...new Set(state.tags)];
   return entries.filter((entry) => {
     if (categories.size > 0 && !categories.has(entry.category)) return false;
-    if ([...tags].some((tag) => !entry.tags.includes(tag))) return false;
-    if (query === "") return true;
-    const haystack = normalized(
-      [
-        entry.id,
-        entry.title,
-        entry.description,
-        entry.category,
-        entry.docsSection,
-        ...entry.tags,
-      ].join(" "),
-    );
-    return query.split(" ").every((part) => haystack.includes(part));
+    if (tags.some((tag) => !entry.tags.includes(tag))) return false;
+    if (tokens.length === 0) return true;
+    let haystack = searchTextByEntry.get(entry);
+    if (haystack === undefined) {
+      haystack = normalized(
+        [
+          entry.id,
+          entry.title,
+          entry.description,
+          entry.category,
+          entry.docsSection,
+          ...entry.tags,
+        ].join(" "),
+      );
+      searchTextByEntry.set(entry, haystack);
+    }
+    return tokens.every((token) => haystack.includes(token));
   });
 }
 
