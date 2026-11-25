@@ -66,6 +66,7 @@ function expectedManualDomainLength(
   // exact inference, but known scaled constants still yield a lower bound
   // (runtime domain is at least those constants, plus any field categories).
   const seen = new Set<string>();
+  const seenColumns = fieldValueLists.length > 1 ? new Set<readonly unknown[]>() : null;
   let sawValues = false;
   let unknownFieldValues = false;
   for (const values of fieldValueLists) {
@@ -73,6 +74,8 @@ function expectedManualDomainLength(
       unknownFieldValues = true;
       continue;
     }
+    if (seenColumns?.has(values) === true) continue;
+    seenColumns?.add(values);
     sawValues = true;
     for (const value of values) {
       if (value === null) continue;
