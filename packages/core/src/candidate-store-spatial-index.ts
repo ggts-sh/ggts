@@ -32,6 +32,8 @@ export type SpatialIndex = {
    */
   readonly filledSpanStart: Int32Array;
   readonly filledSpanEnd: Int32Array;
+  /** Semantic x order for eligible spans, keyed by the span representative. */
+  readonly filledXOrders: ReadonlyMap<number, readonly number[]>;
   readonly maxPointReach: number;
   readonly pointBatchIndexes: readonly PointBatchIndex[];
   addExtendedIntersecting(
@@ -104,6 +106,7 @@ function collectExtendedBuild(
   hit: HitGeometry,
   filledSpanStart: Int32Array,
   filledSpanEnd: Int32Array,
+  filledXOrders: Map<number, number[]>,
 ): ExtendedBuild {
   const extendedIds: number[] = [];
   const extMinX: number[] = [];
@@ -129,11 +132,12 @@ function collectExtendedBuild(
       const startId = id;
       id++;
       while (id < n && isFilledPath[id] === 1 && batchIds[id] === batchIndex) {
-        const next = pathRange(batch, primitiveIds[id]!);
-        if (next === null || next[0] !== range0 || next[1] !== range1) break;
+        const next = primitiveIds[id]!;
+        if (next < range0 || next >= range1) break;
         id++;
       }
       const endId = id;
+      if (endId - startId >= 32) filledXOrders.set(startId, []);
       for (let j = startId; j < endId; j++) {
         filledSpanStart[j] = startId;
         filledSpanEnd[j] = endId;
@@ -187,6 +191,7 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
     isPoint,
     isFilledPath,
   );
+  const filledXOrders = new Map<number, number[]>();
   const {
     extendedIds,
     extMinX: extMinXBuild,
@@ -203,6 +208,7 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
     hit,
     filledSpanStart,
     filledSpanEnd,
+    filledXOrders,
   );
   const spatial = n > 0 ? new StaticQuadtree(spatialXs, spatialYs) : null;
 
@@ -301,6 +307,23 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
   // Filled-path reps only — strip shortlists for axis modes must not pull every
   // bar/segment whose tall AABB crosses an infinite strip (Devin #1342 review).
   const filledExtendedClasses = buildSizeClasses((ei) => isFilledPath[extendedIds[ei]!] === 1);
+  const axis = flip ? ys : xs;
+  if (filledXOrders.size > 0) {
+    for (const id of flip ? indexes.traversal : indexes.orderByX) {
+      const rep = filledSpanStart[id]!;
+      if (rep < 0) continue;
+      const order = filledXOrders.get(rep);
+      if (order === undefined) continue;
+      if (
+        indexes.xTokenIds[id] === -1 ||
+        autoModes[id] !== AUTO_MODE_CODE.x ||
+        !Number.isFinite(xs[id]! + ys[id]!) ||
+        (order.length > 0 && axis[id]! < axis[order.at(-1)!]!)
+      )
+        filledXOrders.delete(rep);
+      else order.push(id);
+    }
+  }
 
   const addFromClasses = (
     classes: readonly ExtendedClass[],
@@ -379,7 +402,7 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
    * Radius of the first nearest pass, which holds about the same number of
    * candidates at any chart size. `maxDistance` means one full pass, for searches
    * where a narrow pass cannot help: exact-only anchors match at any radius, and
-   * each pass scans every vertex of each filled span that crosses a strip.
+   * each pass can scan every filled vertex when the span index cannot serve it.
    */
   const firstNearestRadius = (mode: CandidateInspectMode, maxDistance: number): number => {
     if (
@@ -466,6 +489,7 @@ export function buildSpatialIndex(indexes: CandidateStoreIndexes, hit: HitGeomet
     isFilledPath,
     filledSpanStart,
     filledSpanEnd,
+    filledXOrders,
     maxPointReach,
     pointBatchIndexes,
     addExtendedIntersecting,

@@ -346,7 +346,7 @@ describe("nearest shortlist", () => {
     expect(large.firstNearestRadius("auto", 24)).toBe(24);
     expect(shortlist(plot([line(COUNT, 5)])).query.firstNearestRadius("auto", 24)).toBeLessThan(24);
     expect(shortlist(plot([points(4096, 3)])).query.firstNearestRadius("x", 24)).toBe(24);
-    // Each pass scans every vertex of each filled span that crosses a strip.
+    // Filled spans may fall back to a full vertex scan on each pass.
     const filled = shortlist(plot([filledBand(COUNT), points(COUNT, 19, 0, 1)])).query;
     expect(filled.firstNearestRadius("x", 24)).toBe(24);
   });

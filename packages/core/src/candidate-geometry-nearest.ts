@@ -131,7 +131,7 @@ function closestOrthFinite(
   return best;
 }
 
-function lowerBoundOrth(
+export function lowerBoundOrth(
   permutation: ArrayLike<number>,
   orth: ArrayLike<number>,
   start: number,

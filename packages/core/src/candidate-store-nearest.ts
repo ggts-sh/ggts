@@ -1,4 +1,8 @@
-import { directionalNearestInOrder, panelRangeInOrder } from "./candidate-geometry-nearest.js";
+import {
+  directionalNearestInOrder,
+  lowerBoundOrth,
+  panelRangeInOrder,
+} from "./candidate-geometry-nearest.js";
 import { AUTO_MODES } from "./candidate-store-indexes.js";
 import type {
   CandidateFacts,
@@ -87,7 +91,6 @@ function scanFilledExact(
   let bestDistance = Infinity;
   for (let id = end - 1; id >= start; id--) {
     if (candidateMode(id, isAuto, explicitMode, ctx.autoModes) !== "exact") continue;
-    if (!hasAxisToken(id, "exact", ctx.xTokenIds, ctx.yTokenIds)) continue;
     const distance = Math.hypot(ctx.xs[id]! - px, ctx.ys[id]! - py);
     if (distance < bestDistance) {
       bestId = id;
@@ -106,9 +109,11 @@ function scanFilledSnap(
   isAuto: boolean,
   explicitMode: ResolvedCandidateInspectMode,
   maxDistance: number,
+  order?: readonly number[],
 ): FilledSpanResult | null {
   let best: FilledSpanResult | null = null;
-  for (let id = end - 1; id >= start; id--) {
+  for (let at = end - 1; at >= start; at--) {
+    const id = order?.[at] ?? at;
     const mode = candidateMode(id, isAuto, explicitMode, ctx.autoModes);
     if (mode === "exact" || !hasAxisToken(id, mode, ctx.xTokenIds, ctx.yTokenIds)) continue;
     const measured = snapDistance(id, mode, ctx.flip, px, py, ctx.xs, ctx.ys, maxDistance);
@@ -116,7 +121,8 @@ function scanFilledSnap(
     if (
       best === null ||
       measured.distance < best.distance ||
-      (measured.distance === best.distance && measured.orth < best.orth)
+      (measured.distance === best.distance &&
+        (measured.orth < best.orth || (measured.orth === best.orth && id > best.id)))
     ) {
       best = { id, ...measured, mode };
     }
@@ -131,15 +137,39 @@ function bestFilledInSpan(
   px: number,
   py: number,
   maxDistance: number,
-  ctx: FilledSpanContext,
+  ctx: NearestContext,
 ): FilledSpanResult | null {
   const start = ctx.filledSpanStart[repId]!;
   const end = ctx.filledSpanEnd[repId]!;
   if (start < 0 || end <= start) return null;
-  return (
-    scanFilledExact(start, end, ctx, px, py, isAuto, explicitMode) ??
-    scanFilledSnap(start, end, ctx, px, py, isAuto, explicitMode, maxDistance)
+  const order =
+    (isAuto || explicitMode === "x") &&
+    Number.isFinite(px) &&
+    Number.isFinite(py) &&
+    Number.isFinite(maxDistance)
+      ? ctx.query.filledXOrders?.get(repId)
+      : undefined;
+  if (order === undefined) {
+    return (
+      scanFilledExact(start, end, ctx, px, py, isAuto, explicitMode) ??
+      scanFilledSnap(start, end, ctx, px, py, isAuto, explicitMode, maxDistance)
+    );
+  }
+
+  const axis = ctx.flip ? ctx.ys : ctx.xs;
+  const p = ctx.flip ? py : px;
+  const lo = lowerBoundOrth(order, axis, 0, order.length, p);
+  const distance = Math.min(
+    lo === 0 ? Infinity : Math.abs(axis[order[lo - 1]!]! - p),
+    lo === order.length ? Infinity : Math.abs(axis[order[lo]!]! - p),
   );
+  if (distance > maxDistance) return null;
+  // Equal axis distances can occur on both sides of the search boundary.
+  let first = lo;
+  let last = lo;
+  while (first > 0 && Math.abs(axis[order[first - 1]!]! - p) === distance) first--;
+  while (last < order.length && Math.abs(axis[order[last]!]! - p) === distance) last++;
+  return scanFilledSnap(first, last, ctx, px, py, false, "x", maxDistance, order);
 }
 
 type NearestContext = FilledSpanContext & {
@@ -153,6 +183,7 @@ type NearestContext = FilledSpanContext & {
       maxDistance: number,
     ): number[];
     firstNearestRadius(mode: CandidateInspectMode, maxDistance: number): number;
+    filledXOrders?: ReadonlyMap<number, readonly number[]>;
   };
   readonly indexesFact: (id: number) => CandidateFacts | null;
   readonly isFilledPath: Uint8Array;
