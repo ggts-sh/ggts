@@ -179,10 +179,39 @@ function layerSurvivingPanels(
   return panels;
 }
 
+type PanelLookup = (
+  fields: FieldEvidenceMap,
+  own: readonly FacetAxis[],
+  shared: readonly FacetAxis[],
+) => Set<string> | null;
+
+function createPanelLookup(facetAxes: readonly FacetAxis[]): PanelLookup {
+  type Entry = { fields: FieldEvidenceMap; panels: Map<number, Set<string> | null> };
+  // Two recent evidence maps cover repeated bar and label pairs and bound retention.
+  let recent: Entry | undefined;
+  let previous: Entry | undefined;
+  return (fields, own, shared) => {
+    if (own.length === 0) return null;
+    if (recent?.fields !== fields) {
+      const entry = previous?.fields === fields ? previous : { fields, panels: new Map() };
+      previous = recent;
+      recent = entry;
+    }
+    const key = shared.reduce((mask, axis) => mask | (1 << facetAxes.indexOf(axis)), 0);
+    const byAxes = recent.panels;
+    const cached = byAxes.get(key);
+    if (cached !== undefined) return cached;
+    const panels = layerSurvivingPanels(fields, own, shared);
+    byAxes.set(key, panels);
+    return panels;
+  };
+}
+
 function panelsOverlap(
   facetAxes: readonly FacetAxis[],
   barFields: FieldEvidenceMap | null,
   labelFields: FieldEvidenceMap | null,
+  survivingPanels: PanelLookup,
 ): boolean {
   if (facetAxes.length === 0 || barFields === null || labelFields === null) return true;
   const hasValues = (fields: FieldEvidenceMap, axis: FacetAxis) =>
@@ -190,9 +219,9 @@ function panelsOverlap(
   const barOwnAxes = facetAxes.filter((axis) => hasValues(barFields, axis));
   const labelOwnAxes = facetAxes.filter((axis) => hasValues(labelFields, axis));
   const sharedAxes = barOwnAxes.filter((axis) => hasValues(labelFields, axis));
-  const barPanels = layerSurvivingPanels(barFields, barOwnAxes, sharedAxes);
+  const barPanels = survivingPanels(barFields, barOwnAxes, sharedAxes);
   if (barPanels !== null && barPanels.size === 0) return false;
-  const labelPanels = layerSurvivingPanels(labelFields, labelOwnAxes, sharedAxes);
+  const labelPanels = survivingPanels(labelFields, labelOwnAxes, sharedAxes);
   if (labelPanels !== null && labelPanels.size === 0) return false;
   if (sharedAxes.length === 0 || barPanels === null || labelPanels === null) return true;
   for (const panel of labelPanels) {
@@ -276,6 +305,7 @@ export function collectBarEndLabelAdvisories(
   if (bars.length === 0 || labels.length === 0) return [];
 
   const facetAxes = extractFacetAxes(spec);
+  const survivingPanels = createPanelLookup(facetAxes);
   const fieldsFor = (index: number): FieldEvidenceMap | null =>
     layerEvidence !== undefined && layerEvidence !== null
       ? (layerEvidence[index] ?? null)
@@ -287,7 +317,8 @@ export function collectBarEndLabelAdvisories(
     const labelFields = fieldsFor(label.index);
     const matchedBar = bars.find(
       (bar) =>
-        channelsMatch(bar, label) && panelsOverlap(facetAxes, fieldsFor(bar.index), labelFields),
+        channelsMatch(bar, label) &&
+        panelsOverlap(facetAxes, fieldsFor(bar.index), labelFields, survivingPanels),
     );
     if (matchedBar !== undefined) {
       advisories.push(
