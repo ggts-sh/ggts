@@ -1,7 +1,7 @@
 /**
  * Pure stat_manual named registry (#814).
  */
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 import { isManualFun, statManual } from "../src/stats/manual.ts";
 
@@ -23,6 +23,29 @@ describe("statManual", () => {
     expect(result.kind).toBe("keep");
     if (result.kind !== "keep") return;
     expect(result.keep).toEqual([1, 3]);
+  });
+
+  it("keeps one source row per group without building row lists", () => {
+    const keys = [-0, NaN, 2, 0, NaN, 2, 2, 0];
+    const values = Float64Array.from(keys, (_, i) => (i === 0 ? NaN : i));
+    const input = { groups: keys, x: values, y: values };
+    const set = spyOn(Map.prototype, "set");
+    let first: ReturnType<typeof statManual>;
+    let last: ReturnType<typeof statManual>;
+    let membershipWrites: number;
+    try {
+      first = statManual({ ...input, fun: "first" });
+      last = statManual({ ...input, fun: "last" });
+      membershipWrites = set.mock.calls.filter(([, value]) => Array.isArray(value)).length;
+    } finally {
+      set.mockRestore();
+    }
+
+    expect(first).toEqual({ kind: "keep", keep: [0, 1, 2], groups: [-0, NaN, 2] });
+    expect(last).toEqual({ kind: "keep", keep: [7, 4, 6], groups: [-0, NaN, 2] });
+    expect(Object.is(first.groups[0], -0)).toBe(true);
+    expect(Object.is(last.groups[0], -0)).toBe(true);
+    expect(membershipWrites).toBe(0);
   });
 
   it("mean aggregates x and y independently", () => {
