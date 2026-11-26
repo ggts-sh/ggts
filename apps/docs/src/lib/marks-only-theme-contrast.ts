@@ -31,10 +31,11 @@ const MARKS_ONLY = new Set<string>(MARKS_ONLY_THEME_NAMES);
  */
 export const MARKS_ONLY_DARK_SITE_ROLES = {
   ink: "#e9edf4",
+  stripText: "#e9edf4",
   axisText: "#aab4c4",
   axisLine: "#e9edf4",
   tickColor: "#e9edf4",
-} as const satisfies Pick<ThemeSpec, "ink" | "axisText" | "axisLine" | "tickColor">;
+} as const satisfies Pick<ThemeSpec, "ink" | "stripText" | "axisText" | "axisLine" | "tickColor">;
 
 export type MarksOnlyDarkSiteRoles = typeof MARKS_ONLY_DARK_SITE_ROLES;
 
@@ -74,6 +75,7 @@ export function marksOnlyDarkSiteCssVars(
   const roles = MARKS_ONLY_DARK_SITE_ROLES;
   return [
     `--gg-ink:${roles.ink}`,
+    `--gg-stripText:${roles.stripText}`,
     `--gg-axisText:${roles.axisText}`,
     `--gg-axisLine:${roles.axisLine}`,
     `--gg-tickColor:${roles.tickColor}`,

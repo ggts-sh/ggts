@@ -104,6 +104,7 @@ export const WARNING_EMISSION_REGISTRY = {
   "panel-height-share-low": { channel: "warning" },
   "facet-grid-too-tall": { channel: "warning" },
   "stack-band-hidden": { channel: "warning" },
+  "strip-contrast-low": { channel: "warning" },
 } as const satisfies Record<PipelineWarningCode, EmissionRegistryEntry>;
 
 /** Every advisory code must appear exactly once. */

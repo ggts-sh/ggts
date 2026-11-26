@@ -28,6 +28,7 @@
  *  - lint-bar-end-label.ts — bar-end text/label anchor offset advisories
  *  - lint-scale-rules.ts — scale-level transform-domain-data and
  *    fractional-calendar-years (year+month/12 linear pitfall)
+ *  - lint-guide-rules.ts — guide-level rules (suppressed-mapped-guide)
  *  - lint-color-scale.ts — color/fill scale-level rules (manual-palette-too-large)
  *  - lint-node-link.ts — cross-layer, panel-local endpoint matching
  *  - lint-area-period.ts — area/line/step layers over totals on a regular period grid
@@ -52,6 +53,7 @@ import type { LintAdvisoryCode } from "./lint-catalog.js";
 import { collectLayerLintAdvisories } from "./lint-layer-rules.js";
 import { collectBarEndLabelAdvisories } from "./lint-bar-end-label.js";
 import { collectScaleLintAdvisories } from "./lint-scale-rules.js";
+import { collectSuppressedGuideAdvisories } from "./lint-guide-rules.js";
 import { collectColorScaleLintAdvisories } from "./lint-color-scale.js";
 import { collectNodeLinkAdvisories } from "./lint-node-link.js";
 import { collectPeriodTotalAdvisories } from "./lint-area-period.js";
@@ -137,6 +139,7 @@ export function lintSpec(
     ...collectLayerLintAdvisories({ layers, fieldOf }),
     ...collectBarEndLabelAdvisories(spec, layerEvidence, evidence),
     ...collectScaleLintAdvisories({ layers, scales, fieldOf }),
+    ...collectSuppressedGuideAdvisories(spec),
     ...collectColorScaleLintAdvisories({ layers, scales, plotAes, fieldOf, layerEvidence }),
     ...(layerEvidence === undefined
       ? []

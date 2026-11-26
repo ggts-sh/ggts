@@ -102,7 +102,7 @@ export const THEME_STATIC_SHELLS = [
     id: "theme-void-dark-site",
     filename: "theme-void-dark-site.svg",
     path: "/theme-shells/theme-void-dark-site.svg",
-    sha256: "99c35a393d51b7d04b4f68217a9b12f73bbf438bf2a83b67ac6772e69346b47a",
+    sha256: "d70f672b973033071bdf073278360cb5bf20de44009af70a8e76c4e9b6ebd6ac",
   },
   {
     id: "theme-stata",
@@ -192,7 +192,7 @@ export const THEME_STATIC_SHELLS = [
     id: "theme-map-dark-site",
     filename: "theme-map-dark-site.svg",
     path: "/theme-shells/theme-map-dark-site.svg",
-    sha256: "ca30a5c2ce44d0582abe5898b29c8a3ac088ee28e54c30f9f64637d170735593",
+    sha256: "c99d0b663a8c4b52e3cc2d0c8a6c1fe89a35a967948bf232be1ff1dbfc098aeb",
   },
   {
     id: "theme-solid",
@@ -204,7 +204,7 @@ export const THEME_STATIC_SHELLS = [
     id: "theme-solid-dark-site",
     filename: "theme-solid-dark-site.svg",
     path: "/theme-shells/theme-solid-dark-site.svg",
-    sha256: "482f1c0a1c31c92dfae3f2eda9a4782709f9752a2d9a1c911a22ac2402e71af5",
+    sha256: "1f72f79307a5f0ea56b5a22985ca8be9fc4dee4015d2d1fc1548e027f108231e",
   },
   {
     id: "theme-test",

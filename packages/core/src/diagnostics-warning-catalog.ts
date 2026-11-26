@@ -243,6 +243,10 @@ export const PIPELINE_WARNING_CATALOG = {
     summary:
       "One or more groups of a stacked area/col/bar layer never reach 2 px of band thickness at the rendered size; the legend keeps keys the panel hides.",
   },
+  "strip-contrast-low": {
+    summary:
+      "Facet strip text and strip background have a WCAG contrast ratio below 4.5:1; raise the contrast between theme.stripText and theme.stripFill.",
+  },
 } as const satisfies Record<string, { summary: string }>;
 
 export type PipelineWarningCode = keyof typeof PIPELINE_WARNING_CATALOG;

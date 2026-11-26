@@ -264,6 +264,14 @@ export const GuidesThemeDecls = {
       axisLine: Type.Optional(Type.String({ description: "Axis-line color (CSS color)." })),
       tickColor: Type.Optional(Type.String({ description: "Axis-tick color (CSS color)." })),
       panelBorder: Type.Optional(Type.String({ description: "Panel-border color (CSS color)." })),
+      stripFill: Type.Optional(
+        Type.String({
+          description: 'Facet strip background color (CSS color). "none" for transparent.',
+        }),
+      ),
+      stripText: Type.Optional(
+        Type.String({ description: "Facet strip label text color (CSS color)." }),
+      ),
       interactionInk: Type.Optional(
         Type.String({ description: "Primary interaction-control and overlay ink (CSS color)." }),
       ),

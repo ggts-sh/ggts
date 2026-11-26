@@ -6,6 +6,7 @@
  * numbers match what the scene renders. Each kind is aggregated to at most
  * one warning per run.
  */
+import { contrastRatio, isTransparentToken } from "../color-contrast.js";
 import type { ThemeTokens } from "../theme.js";
 import {
   DEFAULT_AXIS_TITLE_OFFSET,
@@ -23,6 +24,8 @@ const EXTREME_PANEL_ASPECT = 4;
 const MIN_PANEL_HEIGHT_SHARE = 0.5;
 /** Multi-row facet grids taller than one desktop viewport warn. */
 const MAX_FACET_GRID_HEIGHT_PX = 1200;
+/** WCAG AA minimum contrast ratio for normal-sized facet strip text. */
+const MIN_STRIP_CONTRAST_RATIO = 4.5;
 
 export interface PanelDiagnosticsInput {
   panelLayout: PanelLayoutResult;
@@ -31,7 +34,8 @@ export interface PanelDiagnosticsInput {
   coordConstrained: boolean;
   /** `theme.panelAspect: "free"` suppresses both panel-shape warnings. */
   suppressed: boolean;
-  theme?: Pick<ThemeTokens, "ticksX" | "tickLength">;
+  theme?: Pick<ThemeTokens, "ticksX" | "tickLength"> &
+    Partial<Pick<ThemeTokens, "stripFill" | "stripText" | "paper">>;
 }
 
 function isFinitePositive(value: number): boolean {
@@ -186,11 +190,45 @@ function tallFacetGridWarning({
   };
 }
 
+function stripContrastWarning({
+  panelLayout,
+  theme,
+}: PanelDiagnosticsInput): PipelineWarning | null {
+  if (!panelLayout.strip.show || panelLayout.stripBand <= 0) return null;
+  const stripFill = theme?.stripFill;
+  const stripText = theme?.stripText;
+  if (stripFill === undefined || stripText === undefined) return null;
+
+  // Facet strips paint outside .gg-panel over .gg-paper (not .gg-panel-background).
+  // When both stripFill and paper are transparent, the host page provides the surface.
+  const paper = theme?.paper;
+  const backdrop = paper !== undefined && !isTransparentToken(paper) ? paper : undefined;
+  let effectiveBg = stripFill;
+  if (isTransparentToken(stripFill)) {
+    if (backdrop === undefined) return null;
+    effectiveBg = backdrop;
+  }
+
+  const ratio = contrastRatio(
+    stripText,
+    effectiveBg,
+    backdrop === undefined ? undefined : { backdrop },
+  );
+  if (ratio === null || ratio >= MIN_STRIP_CONTRAST_RATIO) return null;
+
+  return {
+    code: "strip-contrast-low",
+    message:
+      `Facet strip text (${stripText}) on strip background (${effectiveBg}) has WCAG contrast ${ratio.toFixed(2)}:1, below the 4.5:1 AA minimum. ` +
+      "Set theme.stripText and theme.stripFill to a higher-contrast pair.",
+  };
+}
+
 /**
  * Collect final-layout panel warnings. Invalid/degenerate viewports and
  * placements produce nothing; coordinate-constrained proportions and
  * `theme.panelAspect: "free"` escape aspect/share checks, while multi-row
- * facet-grid height still warns.
+ * facet-grid height and facet-strip contrast still warn.
  */
 export function collectPanelLayoutWarnings(input: PanelDiagnosticsInput): PipelineWarning[] {
   const { viewport } = input;
@@ -206,6 +244,7 @@ export function collectPanelLayoutWarnings(input: PanelDiagnosticsInput): Pipeli
       ? []
       : [aspectWarning(input), shareWarning(input)]),
     tallFacetGridWarning(input),
+    stripContrastWarning(input),
   ];
   return candidates.filter((warning): warning is PipelineWarning => warning !== null);
 }

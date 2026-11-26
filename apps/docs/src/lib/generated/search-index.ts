@@ -20014,6 +20014,16 @@ export const DOCS_SEARCH_INDEX = [
     exact: ["stack-band-hidden"],
   },
   {
+    id: "heading:guide-errors:strip-contrast-low",
+    kind: "heading",
+    title: "strip-contrast-low",
+    summary:
+      "strip-contrast-low in Errors reference. Understand validation, render, interaction, and CLI diagnostics and recover safely.",
+    href: "/guide/errors#strip-contrast-low",
+    keywords: ["Errors reference", "Reference"],
+    exact: ["strip-contrast-low"],
+  },
+  {
     id: "heading:guide-errors:interaction-diagnostics-ggts-sh-svelte",
     kind: "heading",
     title: "Interaction diagnostics (@ggts-sh/svelte)",
@@ -20531,6 +20541,16 @@ export const DOCS_SEARCH_INDEX = [
     href: "/guide/advisories#sparse-temporal-prefix-needs-data",
     keywords: ["Advisories", "Reference"],
     exact: ["sparse-temporal-prefix (needs: data)"],
+  },
+  {
+    id: "heading:guide-advisories:suppressed-mapped-guide-needs-spec",
+    kind: "heading",
+    title: "suppressed-mapped-guide (needs: spec)",
+    summary:
+      "suppressed-mapped-guide (needs: spec) in Advisories. Spec-lint advisories and the pipeline's disclosed heuristics.",
+    href: "/guide/advisories#suppressed-mapped-guide-needs-spec",
+    keywords: ["Advisories", "Reference"],
+    exact: ["suppressed-mapped-guide (needs: spec)"],
   },
   {
     id: "heading:guide-advisories:pipeline-heuristic-advisories-ggts-sh-core",
@@ -52323,6 +52343,20 @@ export const DOCS_SEARCH_INDEX = [
       "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
     ],
     exact: ["stack-band-hidden", "warning:stack-band-hidden"],
+  },
+  {
+    id: "diagnostic:warning:strip-contrast-low",
+    kind: "diagnostic",
+    title: "strip-contrast-low · warning",
+    summary:
+      "Facet strip text and strip background have a WCAG contrast ratio below 4.5:1; raise the contrast between theme.stripText and theme.stripFill.",
+    href: "/guide/errors#strip-contrast-low",
+    keywords: [
+      "warning",
+      "warning",
+      "Inspect the warning message for its path and count, then correct the named data, scale, or option.",
+    ],
+    exact: ["strip-contrast-low", "warning:strip-contrast-low"],
   },
   {
     id: "diagnostic:interaction:INTERACTION_INTERVAL_FACET_UNSUPPORTED",

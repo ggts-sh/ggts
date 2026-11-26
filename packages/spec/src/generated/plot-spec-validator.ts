@@ -241,7 +241,7 @@ let External = [
   /(^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$)/,
   /(^order$)/,
   /(^title$|^subtitle$|^caption$|^x$|^y$|^color$|^fill$|^size$|^linewidth$|^alpha$|^shape$|^linetype$)/,
-  /(^name$|^ink$|^paper$|^accent$|^grid$|^panel$|^panelAspect$|^letterboxFill$|^axisText$|^axisLine$|^tickColor$|^panelBorder$|^interactionInk$|^interactionMuted$|^focusRing$|^crosshair$|^selectionFill$|^selectionStroke$|^tooltipPaper$|^tooltipInk$|^tooltipBorder$|^toolActive$|^fontFamily$|^fontSize$|^axisTextSize$|^fontWeight$|^titleSize$|^titleWeight$|^subtitleSize$|^subtitleWeight$|^axisTitleSize$|^axisTitleWeight$|^guideTitleSize$|^legendTitlePosition$|^legendKeySize$|^legendKeyGap$|^legendRowGap$|^guideBlockGap$|^colorbarThickness$|^colorbarLengthMin$|^captionSize$|^stripSize$|^stripWeight$|^axisLineWidth$|^tickWidth$|^tickLength$|^gridWidth$|^panelBorderWidth$|^gridDasharray$|^axisLineX$|^axisLineY$|^ticksX$|^ticksY$|^labelsX$|^labelsY$|^gridX$|^gridY$|^showPanelBorder$)/,
+  /(^name$|^ink$|^paper$|^accent$|^grid$|^panel$|^panelAspect$|^letterboxFill$|^axisText$|^axisLine$|^tickColor$|^panelBorder$|^stripFill$|^stripText$|^interactionInk$|^interactionMuted$|^focusRing$|^crosshair$|^selectionFill$|^selectionStroke$|^tooltipPaper$|^tooltipInk$|^tooltipBorder$|^toolActive$|^fontFamily$|^fontSize$|^axisTextSize$|^fontWeight$|^titleSize$|^titleWeight$|^subtitleSize$|^subtitleWeight$|^axisTitleSize$|^axisTitleWeight$|^guideTitleSize$|^legendTitlePosition$|^legendKeySize$|^legendKeyGap$|^legendRowGap$|^guideBlockGap$|^colorbarThickness$|^colorbarLengthMin$|^captionSize$|^stripSize$|^stripWeight$|^axisLineWidth$|^tickWidth$|^tickLength$|^gridWidth$|^panelBorderWidth$|^gridDasharray$|^axisLineX$|^axisLineY$|^ticksX$|^ticksY$|^labelsX$|^labelsY$|^gridX$|^gridY$|^showPanelBorder$)/,
 ];
 
 // @ts-ignore
@@ -7252,6 +7252,8 @@ const check_392 = (value) =>
   (!("axisLine" in value) || typeof value.axisLine === "string") &&
   (!("tickColor" in value) || typeof value.tickColor === "string") &&
   (!("panelBorder" in value) || typeof value.panelBorder === "string") &&
+  (!("stripFill" in value) || typeof value.stripFill === "string") &&
+  (!("stripText" in value) || typeof value.stripText === "string") &&
   (!("interactionInk" in value) || typeof value.interactionInk === "string") &&
   (!("interactionMuted" in value) ||
     (Number.isFinite(value.interactionMuted) &&

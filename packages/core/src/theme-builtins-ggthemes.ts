@@ -111,6 +111,9 @@ export const SOLARIZED_BUILTIN_THEMES = Object.freeze({
     tooltipPaper: "#eee8d5",
     tooltipInk: "#586e75",
     tooltipBorder: "#93a1a1",
+    // Facet strips: base2 background with base02 text (>= 10:1 WCAG AAA).
+    stripFill: "#eee8d5",
+    stripText: "#073642",
   }),
   // ggthemes theme_solarized (light = FALSE): same geometry on the dark
   // rebase — base03 panel (#002b36), base02 grid, base01 chrome. Accents are
@@ -146,6 +149,9 @@ export const SOLARIZED_BUILTIN_THEMES = Object.freeze({
     tooltipPaper: "#073642",
     tooltipInk: "#93a1a1",
     tooltipBorder: "#586e75",
+    // Facet strips: symmetric dark pair (base2 text on base02 background).
+    stripFill: "#073642",
+    stripText: "#eee8d5",
   }),
   // ggthemes theme_economist_white (gray_bg = TRUE): the Graphic Detail blog
   // variant of theme_economist — white panel on a light-gray (#ebebeb) plot
@@ -158,6 +164,7 @@ export const SOLARIZED_BUILTIN_THEMES = Object.freeze({
     panel: "#ffffff",
     accent: "#ed111a",
     grid: "#c9c9c9",
+    stripFill: "#e4e8ea",
     axisText: "#014d64",
     tickColor: "#6794a7",
     tickWidth: 0.5,
@@ -195,6 +202,8 @@ export const SOLARIZED_BUILTIN_THEMES = Object.freeze({
     tooltipPaper: "#fdf6e3",
     tooltipInk: "#586e75",
     tooltipBorder: "#93a1a1",
+    stripFill: "#fdf6e3",
+    stripText: "#586e75",
   }),
   // ggthemes theme_solarized_2 (light = FALSE): same geometry on the dark
   // rebase — base02 panel (#073642), base03 grid (#002b36), base01 chrome.
@@ -222,5 +231,7 @@ export const SOLARIZED_BUILTIN_THEMES = Object.freeze({
     tooltipPaper: "#002b36",
     tooltipInk: "#93a1a1",
     tooltipBorder: "#586e75",
+    stripFill: "#002b36",
+    stripText: "#93a1a1",
   }),
 } satisfies Partial<Record<ThemeName, ThemeTokens>>);

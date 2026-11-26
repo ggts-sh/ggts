@@ -225,4 +225,31 @@ describe("Legend scene rendering", () => {
     expect(container.querySelector(".gg-legend-tick")?.getAttribute("x1")).toBe("24");
     expect(container.querySelector(".gg-legend-label")?.getAttribute("x")).toBe("24");
   });
+
+  it("renders sized circle keys for a continuous size legend without a gradient ramp", () => {
+    const legend: SceneDiscreteLegend = {
+      type: "discrete",
+      scale: "size",
+      interactive: false,
+      title: "Volume",
+      position: "right",
+      direction: "vertical",
+      x: 0,
+      y: 0,
+      width: 90,
+      height: 110,
+      swatchSize: 18,
+      entries: [
+        { value: 20, label: "20", color: "#999999", size: 3.5, y: 18, height: 24 },
+        { value: 60, label: "60", color: "#999999", size: 6.5, y: 42, height: 24 },
+        { value: 100, label: "100", color: "#999999", size: 9, y: 66, height: 24 },
+      ],
+    };
+    const { container } = render(Legend, { legend, theme });
+    const circles = Array.from(container.querySelectorAll("circle.gg-legend-key"));
+    expect(circles).toHaveLength(3);
+    expect(circles.map((circle) => Number(circle.getAttribute("r")))).toEqual([3.5, 6.5, 9]);
+    expect(container.querySelector("linearGradient")).toBeNull();
+    expect(container.querySelector(".gg-legend-ramp")).toBeNull();
+  });
 });

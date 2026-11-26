@@ -117,9 +117,11 @@ describe("GGPlot point/line bundle (#1420)", () => {
     for (const pattern of TEMPORAL_RUNTIME_PATTERNS) {
       expect(included(moduleIds, pattern)).toEqual([]);
     }
-    // Production raw is about 1,112,862 bytes with adaptive legend titles and panel
-    // diagnostics (including facet-grid-too-tall). Keep modest headroom; the module
-    // checks above independently exclude specialty geoms and the Temporal polyfill.
+    // Production raw is about 1,120,579 bytes with adaptive legend titles, panel
+    // diagnostics (including facet-grid-too-tall and strip-contrast-low), strip
+    // theme tokens, and suppressed-mapped-guide lint. Keep modest headroom; the
+    // module checks above independently exclude specialty geoms and the Temporal
+    // polyfill.
     expect(rawBytes).toBeLessThan(GGPLOT_SCATTER_MAX_RAW_BYTES);
   }, 120_000);
 });
@@ -172,4 +174,4 @@ describe("GGPlot temporal scale bundle (positive control)", () => {
   }, 120_000);
 });
 
-const GGPLOT_SCATTER_MAX_RAW_BYTES = 1_114_000;
+const GGPLOT_SCATTER_MAX_RAW_BYTES = 1_122_000;
