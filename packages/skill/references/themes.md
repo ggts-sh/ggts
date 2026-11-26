@@ -69,7 +69,8 @@ One named shell per product theme — `ThemeDefault`, `ThemeLight`,
 
 Every shell and `<Theme>` also accepts role-override props (`ink`, `paper`,
 `accent`, `grid`, `panel`, `axisText`, `axisLine`, `tickColor`,
-`panelBorder`, tooltip/selection/focus roles, …): `<ThemeDark ink="#eee" />`.
+`panelBorder`, `stripFill`, `stripText`, tooltip/selection/focus roles, …):
+`<ThemeDark ink="#eee" />`.
 
 ```svelte fragment
 <GGPlot data={rows} aes={{ x: "displ", y: "hwy" }} layers={[{ geom: "point" }]}>

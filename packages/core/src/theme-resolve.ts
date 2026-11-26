@@ -273,14 +273,14 @@ function mergeFoundation(theme: ThemeSpec, base: ThemeTokens): FoundationBag {
   };
 }
 
-function pickTooltipRole(
+function pickDerivedRole(
   explicit: string | undefined,
-  baseTip: string,
+  baseRole: string,
   rederived: string,
-  pureBaseTip: string,
+  pureBaseRole: string,
 ): string {
   if (explicit !== undefined) return explicit;
-  if (baseTip !== pureBaseTip) return baseTip;
+  if (baseRole !== pureBaseRole) return baseRole;
   return rederived;
 }
 
@@ -307,27 +307,39 @@ export function resolveTheme(
   const base = resolveTheme(theme.name, builtins);
   const resolved = themed(mergeFoundation(theme, base));
   const pureFromBase = themed(foundationFromTokens(base));
+  const stripTextPinned = base.stripText !== pureFromBase.stripText;
   return {
     ...resolved,
+    stripFill:
+      theme.stripFill ??
+      (stripTextPinned
+        ? base.stripFill
+        : pickDerivedRole(undefined, base.stripFill, resolved.stripFill, pureFromBase.stripFill)),
+    stripText: pickDerivedRole(
+      theme.stripText,
+      base.stripText,
+      resolved.stripText,
+      pureFromBase.stripText,
+    ),
     interactionInk: theme.interactionInk ?? resolved.interactionInk,
     interactionMuted: theme.interactionMuted ?? resolved.interactionMuted,
     focusRing: theme.focusRing ?? resolved.focusRing,
     crosshair: theme.crosshair ?? resolved.crosshair,
     selectionFill: theme.selectionFill ?? resolved.selectionFill,
     selectionStroke: theme.selectionStroke ?? resolved.selectionStroke,
-    tooltipPaper: pickTooltipRole(
+    tooltipPaper: pickDerivedRole(
       theme.tooltipPaper,
       base.tooltipPaper,
       resolved.tooltipPaper,
       pureFromBase.tooltipPaper,
     ),
-    tooltipInk: pickTooltipRole(
+    tooltipInk: pickDerivedRole(
       theme.tooltipInk,
       base.tooltipInk,
       resolved.tooltipInk,
       pureFromBase.tooltipInk,
     ),
-    tooltipBorder: pickTooltipRole(
+    tooltipBorder: pickDerivedRole(
       theme.tooltipBorder,
       base.tooltipBorder,
       resolved.tooltipBorder,
@@ -348,6 +360,8 @@ export type ThemeColorRole =
   | "axisLine"
   | "tickColor"
   | "panelBorder"
+  | "stripFill"
+  | "stripText"
   | "interactionInk"
   | "focusRing"
   | "crosshair"

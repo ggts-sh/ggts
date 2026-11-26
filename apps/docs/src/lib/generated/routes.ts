@@ -12154,6 +12154,11 @@ export const DOCS_ROUTES = [
         level: 3,
       },
       {
+        id: "strip-contrast-low",
+        title: "strip-contrast-low",
+        level: 3,
+      },
+      {
         id: "interaction-diagnostics-ggts-sh-svelte",
         title: "Interaction diagnostics (@ggts-sh/svelte)",
         level: 2,
@@ -12423,6 +12428,11 @@ export const DOCS_ROUTES = [
       {
         id: "sparse-temporal-prefix-needs-data",
         title: "sparse-temporal-prefix (needs: data)",
+        level: 3,
+      },
+      {
+        id: "suppressed-mapped-guide-needs-spec",
+        title: "suppressed-mapped-guide (needs: spec)",
         level: 3,
       },
       {

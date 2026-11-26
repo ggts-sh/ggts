@@ -183,12 +183,14 @@ channel). `<GuideLegend channel="color" position="bottom"/>` assembles
 - `Labs` takes flat string props: `title`, `subtitle`, `caption`, `x`, `y`,
   `color`, `fill`, `size`, `linewidth`, `alpha`, `shape`, `linetype`. The
   spec type is re-exported from `@ggts-sh/svelte` as `LabsSpec`.
-  Give each text field one role: title carries the chart's message or subject;
-  optional subtitle carries measure, scope, period, or units; caption carries
-  only a source credit or required legal note. Omit the caption unless
-  attribution or a required disclaimer is needed. Keep adjacent disclosures,
-  axis titles, subtitle content, and hedging prose out of the caption; never
-  use it for commentary, chart narration, or notes from the build process.
+  Give each text field one role: title names what the chart shows (measure and
+  scope) cleanly rather than narrating conclusions or selling numbers; optional
+  subtitle adds brief contextual scope (population, period, or units) rather
+  than a list of caveats; caption carries only a source credit or required
+  legal note. Omit the caption unless attribution or a required disclaimer is
+  needed. Keep adjacent disclosures, axis titles, subtitle content, and hedging
+  prose out of the caption; never use it for commentary, chart narration, or
+  notes from the build process.
   Default tooltips and humanized axis/legend titles also read from `labs`, so
   concise field labels improve both chart chrome and tooltip content.
 

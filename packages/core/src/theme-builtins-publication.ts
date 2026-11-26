@@ -19,6 +19,7 @@ export const PUBLICATION_BUILTIN_THEMES = Object.freeze({
     panel: "#f8f2e4",
     accent: "#c72e29",
     grid: "#000000",
+    stripFill: "#e8dec8",
     axisText: "#000000",
     axisLine: "#000000",
     tickColor: "#000000",
@@ -94,6 +95,8 @@ export const PUBLICATION_BUILTIN_THEMES = Object.freeze({
     // Elevated neutral card; brighter tip ink; border stays grid-derived.
     tooltipPaper: "#353538",
     tooltipInk: "#E0E0E3",
+    stripFill: "#353538",
+    stripText: "#E0E0E3",
   }),
   // ggthemes theme_pander() with its defaults (fc black, gc grey, gl dashed,
   // boxes FALSE): white panel (pc "transparent" over white), dashed #bebebe

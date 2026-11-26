@@ -84,6 +84,7 @@ describe("marks-only theme contrast (docs dark shell)", () => {
     expect(marksOnlyDarkSiteCssVars("map", "dark")).toBe(
       [
         `--gg-ink:${MARKS_ONLY_DARK_SITE_ROLES.ink}`,
+        `--gg-stripText:${MARKS_ONLY_DARK_SITE_ROLES.stripText}`,
         `--gg-axisText:${MARKS_ONLY_DARK_SITE_ROLES.axisText}`,
         `--gg-axisLine:${MARKS_ONLY_DARK_SITE_ROLES.axisLine}`,
         `--gg-tickColor:${MARKS_ONLY_DARK_SITE_ROLES.tickColor}`,

@@ -25,6 +25,10 @@ export interface ThemeTokens {
   tickColor: string;
   /** Panel-border color. */
   panelBorder: string;
+  /** Facet strip background fill ("none" = transparent). */
+  stripFill: string;
+  /** Facet strip label text color. */
+  stripText: string;
   /** Primary ink for interaction controls and overlays. */
   interactionInk: string;
   /** Opacity applied to marks de-emphasized by an interaction. */
@@ -101,6 +105,8 @@ export type FoundationThemeTokens = Omit<
   | "tooltipBorder"
   | "toolActive"
   | "letterboxFill"
+  | "stripFill"
+  | "stripText"
 >;
 
 const HRBR_BASE: FoundationThemeTokens = {
@@ -166,21 +172,31 @@ export type TooltipRoleOverrides = {
   tooltipBorder?: string;
 };
 
+/** Optional facet-strip overrides accepted by themed() (not foundation). */
+export type StripRoleOverrides = {
+  stripFill?: string;
+  stripText?: string;
+};
+
 /**
  * Interaction colors are relationships, not a second palette. Keeping the
  * derivation here means every built-in and edition-specific theme gets a
  * coherent interaction treatment when its foundational roles change.
  *
- * Complete themes may pass optional tooltip* overrides when pure derivation
- * would leave the tip indistinguishable from the chart surface.
+ * Complete themes may pass optional tooltip* and strip* overrides when pure
+ * derivation would leave the tip or facet strip indistinguishable or
+ * low-contrast against the chart surface.
  */
 export function themed(
   overrides: Partial<FoundationThemeTokens> & {
     letterboxFill?: string;
-  } & TooltipRoleOverrides,
+  } & StripRoleOverrides &
+    TooltipRoleOverrides,
 ): ThemeTokens {
   const {
     letterboxFill,
+    stripFill: stripFillOverride,
+    stripText: stripTextOverride,
     tooltipPaper: tooltipPaperOverride,
     tooltipInk: tooltipInkOverride,
     tooltipBorder: tooltipBorderOverride,
@@ -216,6 +232,8 @@ export function themed(
   return Object.freeze({
     ...foundation,
     letterboxFill: letterboxFill ?? foundation.paper,
+    stripFill: stripFillOverride ?? foundation.grid,
+    stripText: stripTextOverride ?? foundation.ink,
     interactionInk: foundation.ink,
     interactionMuted: 0.36,
     focusRing: foundation.accent,

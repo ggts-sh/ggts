@@ -169,6 +169,7 @@ export const CORE_BUILTIN_THEMES = Object.freeze({
   clean: themed({
     accent: "#5da5da",
     grid: "#b3b3b3",
+    stripFill: "#f0f2f4",
     axisLine: "#4d4d4d",
     tickColor: "#4d4d4d",
     axisLineWidth: 0.5,
@@ -228,6 +229,8 @@ export const CORE_BUILTIN_THEMES = Object.freeze({
     panel: "#ffffff",
     accent: "#000000",
     grid: "#000000",
+    stripFill: "#000000",
+    stripText: "#ffffff",
     axisText: "#000000",
     axisLine: "#000000",
     tickColor: "#000000",

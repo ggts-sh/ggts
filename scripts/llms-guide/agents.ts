@@ -63,7 +63,8 @@ the SVG and inspect labels, axes, marks, and the story the chart tells.
 
 ## Labels and captions
 
-A title states the chart's message. Use a caption only for a source credit or
+A title names what the chart shows (measure and scope) rather than narrating
+conclusions or selling numbers. Use a caption only for a source credit or
 required legal note; omit it otherwise. Do not use a caption for commentary,
 chart narration, caveats, or notes from the build process.
 

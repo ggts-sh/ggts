@@ -18,11 +18,12 @@ export const BENCH_GGSVELTE_FILL_DARK = "#7ea1f0";
 /** Neutral grey for peer bars — only the subject is shaded. */
 export const BENCH_PEER_FILL = "#c9cfda";
 
-/** Clean card look: no grid, no panel border (bun-style). */
+/** Clean card look: no grid, no panel border, transparent strips (bun-style). */
 const BENCH_THEME: ThemeSpec = {
   name: "light",
   grid: "transparent",
   panelBorder: "transparent",
+  stripFill: "transparent",
 };
 
 /**
@@ -35,6 +36,7 @@ const DARK_SITE_FALLBACKS: Record<string, string> = {
   "var(--gg-paper, #ffffff)": "var(--gg-paper, transparent)",
   "var(--gg-panel, #ffffff)": "var(--gg-panel, transparent)",
   "var(--gg-ink, #333333)": "var(--gg-ink, #e9edf4)",
+  "var(--gg-stripText, #333333)": "var(--gg-stripText, #e9edf4)",
   "var(--gg-axisText, #4d4d4d)": "var(--gg-axisText, #aab4c4)",
   "var(--gg-tickColor, #b3b3b3)": "var(--gg-tickColor, #e9edf4)",
   // Subject bar accent: dark-shell blue.

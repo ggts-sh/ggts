@@ -202,4 +202,53 @@ describe("SceneView panel chrome branches", () => {
     expect(container.querySelector(`clipPath#${CSS.escape(clipId!)}`)).not.toBeNull();
     model.dispose();
   });
+
+  it("paints facet strips using --gg-stripFill and --gg-stripText tokens", () => {
+    const facetRows = [
+      { x: 1, y: 10, g: "alpha" },
+      { x: 2, y: 20, g: "beta" },
+    ];
+    const model = modelFor(
+      gg(facetRows, aes({ x: "x", y: "y" }))
+        .geomPoint()
+        .facet({ wrap: "g" })
+        .theme("clean")
+        .spec(),
+    );
+
+    const { container } = render(SceneView, { scene: model.scene, mode: "full" });
+    const strip = container.querySelector("g.gg-strip");
+    expect(strip?.querySelector("rect")?.getAttribute("fill")).toBe("var(--gg-stripFill, #f0f2f4)");
+    expect(strip?.querySelector("text")?.getAttribute("fill")).toBe("var(--gg-stripText, #262626)");
+    model.dispose();
+  });
+
+  it("renders a continuous size scatter legend as sized circles rather than a gradient ramp", () => {
+    const bubbleRows = [
+      { x: 1, y: 2, vol: 10 },
+      { x: 2, y: 5, vol: 50 },
+      { x: 3, y: 8, vol: 100 },
+    ];
+    const model = modelFor(
+      gg(bubbleRows, aes({ x: "x", y: "y", size: "vol" }))
+        .geomPoint()
+        .labs({ title: "Bubble volume", x: "X", y: "Y", size: "Volume" })
+        .spec(),
+    );
+
+    const { container } = render(SceneView, { scene: model.scene, mode: "full" });
+    const legend = container.querySelector("g.gg-legend-size");
+    expect(legend).not.toBeNull();
+    expect(legend?.querySelector("linearGradient")).toBeNull();
+    expect(legend?.querySelector(".gg-legend-ramp")).toBeNull();
+    const radii = Array.from(legend?.querySelectorAll("circle.gg-legend-key") ?? []).map((circle) =>
+      Number(circle.getAttribute("r")),
+    );
+    expect(radii.length).toBeGreaterThanOrEqual(3);
+    expect(new Set(radii).size).toBe(radii.length);
+    for (let i = 1; i < radii.length; i++) {
+      expect(radii[i]).toBeGreaterThan(radii[i - 1]);
+    }
+    model.dispose();
+  });
 });

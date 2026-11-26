@@ -152,8 +152,8 @@ export function renderStrip(
   const band = panel.stripBand ?? STRIP_BAND;
   if (band <= 0) return "";
   const position = panel.stripPosition ?? "top";
-  const ink = themeVar("ink", scene.theme);
-  const stripFill = themeVar("grid", scene.theme);
+  const stripText = themeVar("stripText", scene.theme);
+  const stripFill = themeVar("stripFill", scene.theme);
   const bandDraw = Math.max(1, band - 2);
   let originX = panel.x;
   let originY = panel.y;
@@ -206,7 +206,7 @@ export function renderStrip(
     `<g class="gg-strip" transform="translate(${px(originX)},${px(originY)})"${clipAttr}>` +
     clipDef +
     `<rect width="${px(rectW)}" height="${px(rectH)}" fill="${stripFill}"/>` +
-    `<text x="${px(textX)}" y="${px(textY)}" dy="0.32em" text-anchor="middle" fill="${ink}" font-size="${px(scene.theme.stripSize)}" font-weight="${scene.theme.stripWeight}"${textTransform}>${escapeXML(panel.strip)}</text>` +
+    `<text x="${px(textX)}" y="${px(textY)}" dy="0.32em" text-anchor="middle" fill="${stripText}" font-size="${px(scene.theme.stripSize)}" font-weight="${scene.theme.stripWeight}"${textTransform}>${escapeXML(panel.strip)}</text>` +
     "</g>"
   );
 }

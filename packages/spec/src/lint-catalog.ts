@@ -2,8 +2,8 @@
  * Spec lint-advisory catalog — pure data for docs and code identity.
  * Runtime SpecAdvisory instances and lintSpec() live in lint.ts;
  * Rule emission sites: lint-layer-rules.ts, lint-bar-end-label.ts, lint-scale-rules.ts,
- * lint-color-scale.ts, lint-node-link.ts, lint-area-period.ts, lint-labs-rules.ts,
- * lint-color-alpha.ts, lint-temporal-prefix.ts.
+ * lint-guide-rules.ts, lint-color-scale.ts, lint-node-link.ts, lint-area-period.ts,
+ * lint-labs-rules.ts, lint-color-alpha.ts, lint-temporal-prefix.ts.
  */
 
 /** One entry of the lint catalog (docs render straight from it). */
@@ -113,6 +113,13 @@ export const LINT_CATALOG = {
     needs: "data",
     rationale:
       "A temporal axis that starts at one early row implies the decades after it were measured and empty. Start at the first period with meaningful coverage, or state the sparse prefix explicitly.",
+  },
+  "suppressed-mapped-guide": {
+    summary:
+      'A non-positional aesthetic maps a data field while its guide is suppressed (type: "none").',
+    needs: "spec",
+    rationale:
+      "Suppressing a guide hides the mapping key from the reader. Restore the guide, drop the data mapping if it adds no signal, or label the mapped field directly on the marks.",
   },
 } as const satisfies Record<string, LintCatalogEntry>;
 

@@ -370,14 +370,14 @@
         <rect
           width={strip.width}
           height={strip.height}
-          fill={themeVar("grid", scene.theme)}
+          fill={themeVar("stripFill", scene.theme)}
         />
         <text
           x={strip.textX}
           y={strip.textY}
           dy="0.32em"
           text-anchor="middle"
-          fill={ink}
+          fill={themeVar("stripText", scene.theme)}
           font-size={scene.theme.stripSize}
           font-weight={scene.theme.stripWeight}
           transform={strip.rotate}>{panel.strip}</text

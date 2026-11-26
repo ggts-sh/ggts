@@ -27,6 +27,8 @@ const THEME_ROLE_KEYS = [
   "axisLine",
   "tickColor",
   "panelBorder",
+  "stripFill",
+  "stripText",
   "interactionInk",
   "interactionMuted",
   "focusRing",

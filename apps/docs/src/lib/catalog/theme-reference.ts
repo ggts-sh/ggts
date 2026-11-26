@@ -85,6 +85,18 @@ export const THEME_COLOR_ROLES = [
     css: "--gg-panelBorder",
   },
   {
+    name: "stripFill",
+    kind: "color",
+    affects: 'Facet strip background fill. Use "none" for transparent.',
+    css: "--gg-stripFill",
+  },
+  {
+    name: "stripText",
+    kind: "color",
+    affects: "Facet strip label text color.",
+    css: "--gg-stripText",
+  },
+  {
     name: "interactionInk",
     kind: "color",
     affects: "Primary interaction-control and overlay ink (tool rail, clear, overlays).",
