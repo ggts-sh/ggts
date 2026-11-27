@@ -1,5 +1,20 @@
 # @ggts-sh/svelte
 
+## 0.50.0
+
+### Minor Changes
+
+- 138f3b5: Add dedicated `stripFill` and `stripText` theme tokens, add the `suppressed-mapped-guide` spec-lint advisory and `strip-contrast-low` pipeline warning, fix built-in facet strip contrast across built-in themes (`clean`, `linedraw`, `wsj`, `solarized`, `solarizeddark`, `solarized_2`, `solarized_2dark`, `hcdark`, `economist_white`), and tighten `labs.title` and `labs.subtitle` guidance in `@ggts-sh/skill`.
+
+  Migration: none — additive.
+
+### Patch Changes
+
+- Updated dependencies [138f3b5]
+  - @ggts-sh/spec@0.50.0
+  - @ggts-sh/core@0.50.0
+  - @ggts-sh/compose@0.50.0
+
 ## 0.49.1
 
 ### Patch Changes
